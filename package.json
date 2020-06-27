@@ -1,5 +1,5 @@
 {
-  "name": "electron-webpack-quick-start",
+  "name": "marvin",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -9,12 +9,19 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "@material-ui/core": "^4.10.1",
+    "@babel/core": "^7.10.3",
+    "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.55",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.6.0",
+    "file-loader": "^6.0.0",
+    "material-icons": "^0.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "style-loader": "^1.2.1",
+    "typeface-roboto": "^0.0.75"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.10.1",
@@ -22,5 +29,10 @@
     "electron-builder": "^22.4.1",
     "electron-webpack": "^2.8.2",
     "webpack": "~4.42.1"
+  },
+  "electronWebpack": {
+    "renderer": {
+      "webpackConfig": "webpack.renderer.js"
+    }
   }
 }

@@ -10,18 +10,25 @@ let settingsWindow;
 function createMainWindow() {
     const window = new BrowserWindow({
         webPreferences: { nodeIntegration: true },
-        resizable: false
+        resizable: false,
+        maximizable: false,
+        minimizable: false,
+        movable: false,
+        skipTaskbar: true,
+        center: true,
+        frame: false,
+        transparent: true,
     });
-
+    
     if (isDevelopment) {
         window.webContents.openDevTools();
     }
 
     if (isDevelopment) {
-        window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+        window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/main.html`);
     } else {
         window.loadURL(formatUrl({
-            pathname: path.join(__dirname, 'index.html'),
+            pathname: path.join(__dirname, 'main.html'),
             protocol: 'file',
             slashes: true
         }));
@@ -43,7 +50,7 @@ function createMainWindow() {
 
 app.whenReady().then(() => {
     const ret = globalShortcut.register('Alt+Space', () => {
-        console.log('Test');
+        mainWindow = createMainWindow();
     });
     if (!ret) {
         console.error('Failed to register global shortcuts');
@@ -52,7 +59,7 @@ app.whenReady().then(() => {
 });
 
 app.on('will-quit', () => {
-  globalShortcut.unregisterAll();
+    globalShortcut.unregisterAll();
 })
 
 
