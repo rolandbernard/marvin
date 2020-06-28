@@ -1,0 +1,28 @@
+
+html, body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root, html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#listbox::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+#listbox::-webkit-scrollbar-track,
+#listbox::-webkit-scrollbar-track-piece,
+#listbox::-webkit-resizer,
+#listbox::-webkit-scrollbar-corner,
+#listbox::-webkit-scrollbar-button {
+    display: none;
+}
+
+#listbox::-webkit-scrollbar-thumb {
+    background: lightgrey;
+}
