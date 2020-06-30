@@ -1,41 +1,98 @@
 
-import React from 'react';
+import React, { createRef } from 'react';
+import { CircularProgress } from '@material-ui/core';
 
-function OutputList(props) {
-    const styles = {
-        root: {
-            width: '100%',
-            flex: '1 1 auto',
-            overflow: 'auto',
-        },
-        list: {
-            width: '100%',
-        },
-        result: {
-            width: '100%',
-            background: props.config.theme.background_color,
-            color: props.config.theme.text_color,
-            padding: '0.5rem',
-            fontSize: '2rem',
-            fontWeight: 300,
-        },
-    };
+class OutputList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.styles = {
+            root: {
+                width: '100%',
+                flex: '1 1 auto',
+                overflow: 'auto',
+                background: this.props.config.theme.background_color,
+            },
+            list: {
+                width: '100%',
+            },
+            result: {
+                width: '100%',
+                color: this.props.config.theme.text_color,
+                padding: '0.5rem',
+                fontSize: '2rem',
+                fontWeight: 300,
+            },
+            selected: {
+                background: this.props.config.theme.accent_color,
+            },
+            loading: {
+                width: '2rem',
+                height: '2rem',
+                margin: '0.5rem auto',
+                display: 'block',
+                color: this.props.config.theme.accent_color,
+            },
+        };
+        this.data = this.props.results;
+        this.selected = createRef();
+    }
 
-    return (
-        <div id="listbox" style={styles.root}>
-            <ul id='output-list' style={styles.list}>
-                <li style={styles.result}>Test 1</li>
-                <li style={styles.result}>Test 2</li>
-                <li style={styles.result}>Test 3</li>
-                <li style={styles.result}>Test 4</li>
-                <li style={styles.result}>Test 5</li>
-                <li style={styles.result}>Test 6</li>
-                <li style={styles.result}>Test 7</li>
-                <li style={styles.result}>Test 8</li>
-                <li style={styles.result}>Test 9</li>
-            </ul>
-        </div>
-    )
+    componentDidUpdate() {
+        this.styles = {
+            root: {
+                width: '100%',
+                flex: '1 1 auto',
+                overflow: 'auto',
+                background: this.props.config.theme.background_color,
+            },
+            list: {
+                width: '100%',
+            },
+            result: {
+                width: '100%',
+                color: this.props.config.theme.text_color,
+                padding: '0.5rem',
+                fontSize: '2rem',
+                fontWeight: 300,
+            },
+            selected: {
+                background: this.props.config.theme.accent_color,
+            },
+            loading: {
+                width: '2rem',
+                height: '2rem',
+                margin: '0.5rem auto',
+                display: 'block',
+                color: this.props.config.theme.accent_color,
+            },
+        };
+        this.selected.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        this.data = this.props.results;
+    }
+
+    render() {
+        return (
+            <div id="listbox" style={this.styles.root} >
+                <ul style={this.styles.list}>
+                    {
+                        this.data
+                        ? this.data.map((option, index) => (
+                            <li
+                                key={index}
+                                style={
+                                    index === this.props.selected
+                                        ? { ...this.styles.result, ...this.styles.selected }
+                                        : this.styles.result
+                                }
+                                ref={index === (this.props.selected % this.data.length) ? this.selected : null}
+                            >{option}</li>
+                        ))
+                        : <CircularProgress style={this.styles.loading}></CircularProgress>
+                    }
+                </ul>
+            </div>
+        )
+    }
 }
 
 export default OutputList;

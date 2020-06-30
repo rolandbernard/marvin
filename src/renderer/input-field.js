@@ -39,6 +39,7 @@ function InputField(props) {
         <TextField
             id="input-field"
             variant="outlined"
+            autoFocus
             focused={false}
             InputProps={{
                 type: 'text',
