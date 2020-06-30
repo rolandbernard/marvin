@@ -3,8 +3,9 @@ import 'typeface-roboto';
 import 'material-icons';
 import './index.css';
 
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { ipcRenderer } from 'electron';
 
 import InputField from './input-field';
 import OutputList from './output-list';
@@ -21,28 +22,32 @@ const styles = {
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
-        this.state.config = {
-            theme: {
-                background_color: 'black',
-                text_color: 'white',
-                accent_color: 'grey',
-                select_color: 'blue',
-            }
+        this.state = {
+            config: {
+                theme: {
+                    background_color: 'black',
+                    text_color: 'white',
+                    accent_color: 'grey',
+                    select_color: 'blue',
+                }
+            },
+            results: [],
+            selected: 0,
         };
-        this.state.results = [
-            'Test1', 'Test2', 'Test3', 'Test4', 'Test5',
-            'Test6', 'Test7', 'Test8', 'Test9', 'Test10',
-            'Test11', 'Test12', 'Test13', 'Test14', 'Test15',
-            'Test16', 'Test17', 'Test18', 'Test19', 'Test20',
-        ];
-        this.state.selected = 0;
-    }
+
+        ipcRenderer.on('update-options', (_, options) => {
+            this.setState({ results: options, selected: 0 });
+            console.log(options);
+        });
+        ipcRenderer.on('reset', (_) => {
+            this.setState({ results: [], selected: 0 });
+        });
+    } 
 
     handle_key_down(e) {
-        if (e.key === 'ArrowUp') {
+        if (e.key === 'ArrowUp' && this.state.results && this.state.results.length > 0) {
             this.setState({ selected: (this.state.results.length + this.state.selected - 1) % this.state.results.length });
-        } else if (e.key === 'ArrowDown') {
+        } else if (e.key === 'ArrowDown' && this.state.results && this.state.results > 0) {
             this.setState({ selected: (this.state.results.length + this.state.selected + 1) % this.state.results.length });
         } else if (e.key === 'Escape') {
             window.close();

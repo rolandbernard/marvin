@@ -1,5 +1,5 @@
 
-import { app, globalShortcut, BrowserWindow } from 'electron';
+import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 
@@ -21,15 +21,15 @@ function createMainWindow() {
         frame: false,
         show: false,
         transparent: true,
-        width: 600,
+        width: 1600,
         height: 500,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.ico'),
     });
-    
-    // if (isDevelopment) {
-    //     main_window.webContents.openDevTools();
-    // }
+
+    if (isDevelopment) {
+        main_window.webContents.openDevTools();
+    }
 
     if (isDevelopment) {
         main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/main.html`);
@@ -60,6 +60,7 @@ app.on('ready', () => {
                 if (main_window.isVisible()) {
                     main_window.hide();
                 } else {
+                    main_window.webContents.send('reset');
                     main_window.show();
                     main_window.focus();
                 }
@@ -69,9 +70,17 @@ app.on('ready', () => {
             console.error('Failed to register a global shortcut');
             app.quit();
         }
+
+        ipcMain.on('input-change', (_, query) => {
+            // ipcRenderer.send('update-options', null);
+            console.log(query);
+        });
+        ipcMain.on('execute-option', (_, option) => {
+
+        });
     } else {
-        logger.error("Other instance is already running: quitting app.");
-        quitApp();
+        console.error("Other instance is already running: quitting app.");
+        app.quit();
     }
 });
 
@@ -81,10 +90,10 @@ app.on("window-all-closed", () => {
 
 app.on('will-quit', () => {
     globalShortcut.unregisterAll();
-    if(tray_icon && !tray_icon.isDestroyed()) {
+    if (tray_icon && !tray_icon.isDestroyed()) {
         tray_icon.destroy();
     }
-    if(main_window && !main_window.isDestroyed()) {
+    if (main_window && !main_window.isDestroyed()) {
         main_window.destroy();
     }
 })
