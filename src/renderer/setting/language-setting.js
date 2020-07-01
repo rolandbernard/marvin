@@ -6,7 +6,7 @@ import { supported_languages } from '../../common/local/locale';
 
 const styles = {
     select: {
-        width: '10rem',
+        width: '20rem',
         textAlign: 'left',
     },
 };
@@ -14,7 +14,7 @@ const styles = {
 function LanguageSetting(props) {
     return (
         <div>
-            <Select style={styles.select} value={props.option}>
+            <Select style={styles.select} value={props.option} variant="outlined">
                 {Object.keys(supported_languages).map((id) => (
                     <MenuItem key={id} value={id}>{supported_languages[id]}</MenuItem>
                 ))}

@@ -51,6 +51,18 @@ function createMainWindow() {
     main_window.on('blur', hideWindow);
 }
 
+function toggleMain() {
+    if (main_window && !main_window.isDestroyed()) {
+        main_window.webContents.send('reset', config);
+        if (main_window.isVisible()) {
+            main_window.hide();
+        } else {
+            main_window.show();
+            main_window.focus();
+        }
+    }
+}
+
 function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
@@ -58,17 +70,7 @@ function startApp() {
         createMainWindow();
         createSettingsWindow();
 
-        const ret = globalShortcut.register(config.general.global_shortcut, () => {
-            if (main_window && !main_window.isDestroyed()) {
-                main_window.webContents.send('reset', config);
-                if (main_window.isVisible()) {
-                    main_window.hide();
-                } else {
-                    main_window.show();
-                    main_window.focus();
-                }
-            }
-        });
+        const ret = globalShortcut.register(config.general.global_shortcut, toggleMain);
         if (!ret) {
             console.error('Failed to register a global shortcut');
             app.quit();
@@ -89,8 +91,20 @@ function startApp() {
                 }
             }
         });
-        ipcMain.on('config-update', (_, config) => {
-            updateConfig(config);
+        ipcMain.on('config-update', (_, new_config) => {
+            if (config.general.global_shortcut !== new_config.general.global_shortcut) {
+                try {
+                    const ret = globalShortcut.register(new_config.general.global_shortcut, toggleMain);
+                    if (ret) {
+                        globalShortcut.unregister(config.general.global_shortcut);
+                    } else {
+                        new_config.general.global_shortcut = config.general.global_shortcut;
+                    }
+                } catch(e) {
+                    new_config.general.global_shortcut = config.general.global_shortcut;
+                }
+            }
+            updateConfig(new_config);
         });
     } else {
         console.error("Other instance is already running: quitting app.");
