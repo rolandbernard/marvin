@@ -1,6 +1,11 @@
 
 import React, { createRef } from 'react';
 import { CircularProgress } from '@material-ui/core';
+import SimpleText from './display/simple-text';
+
+const display_types = {
+    simple_text: SimpleText,
+};
 
 class OutputList extends React.Component {
     constructor(props) {
@@ -29,8 +34,6 @@ class OutputList extends React.Component {
                 width: '100%',
                 color: this.props.config && this.props.config.theme.text_color,
                 padding: '0.5rem',
-                fontSize: '2rem',
-                fontWeight: 300,
             },
             selected: {
                 background: this.props.config && this.props.config.theme.accent_color,
@@ -61,7 +64,7 @@ class OutputList extends React.Component {
                                         : styles.result
                                 }
                                 ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
-                            >{option}</li>
+                            >{ React.createElement(display_types[option.type], { option: option }) }</li>
                         ))
                         : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
                     }

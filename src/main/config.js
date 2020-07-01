@@ -17,6 +17,11 @@ export let config = {
         accent_color: 'grey',
         select_color: 'blue',
     },
+    modules: {
+        marvin_quote: {
+            active: true,
+        },
+    },
 };
 
 export function loadConfig() {

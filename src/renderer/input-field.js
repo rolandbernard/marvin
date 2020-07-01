@@ -21,6 +21,7 @@ class InputField extends React.Component {
             if (text_field) {
                 text_field.value = '';
             }
+            ipcRenderer.send('input-change', '');
         });
     }
 

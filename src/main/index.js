@@ -60,10 +60,10 @@ function startApp() {
 
         const ret = globalShortcut.register(config.general.global_shortcut, () => {
             if (main_window && !main_window.isDestroyed()) {
+                main_window.webContents.send('reset', config);
                 if (main_window.isVisible()) {
                     main_window.hide();
                 } else {
-                    main_window.webContents.send('reset', config);
                     main_window.show();
                     main_window.focus();
                 }
@@ -76,14 +76,15 @@ function startApp() {
 
         ipcMain.on('input-change', async (_, query) => {
             const loading = setTimeout(() => main_window.webContents.send('update-options', null), 100);
-            searchQuery(query, (results) => {
-                console.log(results);
+            await searchQuery(query, (results) => {
+                main_window.webContents.send('update-options', results);
             });
             clearTimeout(loading);
         });
         ipcMain.on('execute-option', (_, option) => {
             if (option && option.executable) {
                 executeOption(option);
+                main_window.hide();
             }
         });
     } else {
