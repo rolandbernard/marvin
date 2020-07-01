@@ -1,6 +1,14 @@
 
-function executeQuery(query, callback) {
+import MarvinQuoteModule from "./modules/marvin-quote";
+
+const modules = [
+    MarvinQuoteModule,
+];
+
+export function searchQuery(query, callback) {
 
 }
 
-export default executeQuery;
+export function executeOption(option) {
+
+}

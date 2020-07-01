@@ -14,30 +14,6 @@ function refocus() {
 class InputField extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            styles: {
-                input: {
-                    width: '100%',
-                    background: this.props.config.theme.background_color,
-                    color: this.props.config.theme.text_color,
-                    fontSize: '1.5rem',
-                    fontWeight: 300,
-                    borderRadius: 0,
-                    padding: '0.25rem',
-                },
-                text_field: {
-                    margin: 0,
-                    flex: '0 0 auto',
-                },
-                icon: {
-                    width: '2rem',
-                    height: '2rem',
-                    marginRight: '0.25rem',
-                    marginLeft: '0.5rem',
-                    color: this.props.config.theme.accent_color,
-                }
-            }
-        };
         window.onfocus = refocus;
 
         ipcRenderer.on('reset', (_) => {
@@ -56,8 +32,8 @@ class InputField extends React.Component {
         const styles = {
             input: {
                 width: '100%',
-                background: this.props.config.theme.background_color,
-                color: this.props.config.theme.text_color,
+                background: this.props.config && this.props.config.theme.background_color,
+                color: this.props.config && this.props.config.theme.text_color,
                 fontSize: '1.5rem',
                 fontWeight: 300,
                 borderRadius: 0,
@@ -72,7 +48,7 @@ class InputField extends React.Component {
                 height: '2rem',
                 marginRight: '0.25rem',
                 marginLeft: '0.5rem',
-                color: this.props.config.theme.accent_color,
+                color: this.props.config && this.props.config.theme.accent_color,
             }
         };
 

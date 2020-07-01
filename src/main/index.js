@@ -2,6 +2,8 @@
 import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
+import { loadConfig, config } from './config';
+import { executeOption, searchQuery } from './executor';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -21,15 +23,15 @@ function createMainWindow() {
         frame: false,
         show: false,
         transparent: true,
-        width: 1600,
-        height: 500,
+        width: config.general.width,
+        height: config.general.max_height,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.ico'),
     });
 
-    if (isDevelopment) {
-        main_window.webContents.openDevTools();
-    }
+    // if (isDevelopment) {
+    //     main_window.webContents.openDevTools();
+    // }
 
     if (isDevelopment) {
         main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/main.html`);
@@ -50,17 +52,18 @@ function createMainWindow() {
     main_window.on('blur', hideWindow);
 }
 
-app.on('ready', () => {
+function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
+        loadConfig();
         createMainWindow();
 
-        const ret = globalShortcut.register('Super+D', () => {
+        const ret = globalShortcut.register(config.general.global_shortcut, () => {
             if (main_window && !main_window.isDestroyed()) {
                 if (main_window.isVisible()) {
                     main_window.hide();
                 } else {
-                    main_window.webContents.send('reset');
+                    main_window.webContents.send('reset', config);
                     main_window.show();
                     main_window.focus();
                 }
@@ -71,24 +74,25 @@ app.on('ready', () => {
             app.quit();
         }
 
-        ipcMain.on('input-change', (_, query) => {
-            // ipcRenderer.send('update-options', null);
-            console.log(query);
+        ipcMain.on('input-change', async (_, query) => {
+            const loading = setTimeout(() => main_window.webContents.send('update-options', null), 100);
+            searchQuery(query, (results) => {
+                console.log(results);
+            });
+            clearTimeout(loading);
         });
         ipcMain.on('execute-option', (_, option) => {
-
+            if (option && option.executable) {
+                executeOption(option);
+            }
         });
     } else {
         console.error("Other instance is already running: quitting app.");
         app.quit();
     }
-});
+}
 
-app.on("window-all-closed", () => {
-    app.quit();
-});
-
-app.on('will-quit', () => {
+function closeApp() {
     globalShortcut.unregisterAll();
     if (tray_icon && !tray_icon.isDestroyed()) {
         tray_icon.destroy();
@@ -96,6 +100,13 @@ app.on('will-quit', () => {
     if (main_window && !main_window.isDestroyed()) {
         main_window.destroy();
     }
-})
+}
 
+app.on('ready', () => setTimeout(startApp, 500));
+
+app.on("window-all-closed", () => {
+    app.quit();
+});
+
+app.on('will-quit', () => closeApp())
 

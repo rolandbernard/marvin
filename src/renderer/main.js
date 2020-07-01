@@ -23,14 +23,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            config: {
-                theme: {
-                    background_color: 'black',
-                    text_color: 'white',
-                    accent_color: 'grey',
-                    select_color: 'blue',
-                }
-            },
+            config: null,
             results: [],
             selected: 0,
         };
@@ -39,8 +32,8 @@ class App extends React.Component {
             this.setState({ results: options, selected: 0 });
             console.log(options);
         });
-        ipcRenderer.on('reset', (_) => {
-            this.setState({ results: [], selected: 0 });
+        ipcRenderer.on('reset', (_, config) => {
+            this.setState({ results: [], selected: 0, config: config });
         });
     } 
 
@@ -51,6 +44,8 @@ class App extends React.Component {
             this.setState({ selected: (this.state.results.length + this.state.selected + 1) % this.state.results.length });
         } else if (e.key === 'Escape') {
             window.close();
+        } else if (e.key === 'Enter' && this.state.results && this.state.results.length > 0) {
+            ipcRenderer.send('execute-option', this.state.results[this.state.selected]);
         }
     }
 

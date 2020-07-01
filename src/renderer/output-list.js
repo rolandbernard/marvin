@@ -16,33 +16,35 @@ class OutputList extends React.Component {
 
     render() {
         const styles = {
-            styles: {
-                root: {
-                    width: '100%',
-                    flex: '1 1 auto',
-                    overflow: 'auto',
-                    background: this.props.config.theme.background_color,
-                },
-                list: {
-                    width: '100%',
-                },
-                result: {
-                    width: '100%',
-                    color: this.props.config.theme.text_color,
-                    padding: '0.5rem',
-                    fontSize: '2rem',
-                    fontWeight: 300,
-                },
-                selected: {
-                    background: this.props.config.theme.accent_color,
-                },
-                loading: {
-                    width: '2rem',
-                    height: '2rem',
-                    margin: '0.5rem auto',
-                    display: 'block',
-                    color: this.props.config.theme.accent_color,
-                },
+            root: {
+                width: '100%',
+                flex: '1 1 auto',
+                overflow: 'auto',
+                background: this.props.config && this.props.config.theme.background_color,
+            },
+            list: {
+                width: '100%',
+            },
+            result: {
+                width: '100%',
+                color: this.props.config && this.props.config.theme.text_color,
+                padding: '0.5rem',
+                fontSize: '2rem',
+                fontWeight: 300,
+            },
+            selected: {
+                background: this.props.config && this.props.config.theme.accent_color,
+            },
+            loading: {
+                width: '2rem',
+                height: '2rem',
+                margin: '0.5rem auto',
+                display: 'block',
+                color: this.props.config && this.props.config.theme.accent_color,
+            },
+            loading_wrap: {
+                height: '3rem',
+                overflow: 'hidden',
             },
         };
         return (
@@ -61,7 +63,7 @@ class OutputList extends React.Component {
                                 ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
                             >{option}</li>
                         ))
-                        : <CircularProgress style={styles.loading}></CircularProgress>
+                        : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
                     }
                 </ul>
             </div>
