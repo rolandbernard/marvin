@@ -24,7 +24,10 @@ class App extends React.Component {
         };
 
         ipcRenderer.on('reset', (_, config) => {
-            this.setState({ config: config, selected: this.state.selected || { def: config_definition[0], config: null } });
+            this.setState({
+                config: config,
+                selected: this.state.selected || { def: config_definition[0], config: config[config_definition[0].name] }
+            });
         });
     }
 

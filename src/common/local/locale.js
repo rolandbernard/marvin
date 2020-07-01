@@ -1,7 +1,7 @@
 
 import translation_english from "./english";
 
-const supported_languages = {
+export const supported_languages = {
     'en': 'English',
 };
 
