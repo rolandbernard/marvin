@@ -2,14 +2,13 @@
 import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import { loadConfig, config } from './config';
+import { loadConfig, config, updateConfig } from './config';
 import { executeOption, searchQuery } from './executor';
 import { createSettingsWindow } from './modules/settings';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let main_window;
-let tray_icon;
 
 function createMainWindow() {
     main_window = new BrowserWindow({
@@ -34,10 +33,10 @@ function createMainWindow() {
     }
 
     if (isDevelopment) {
-        main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/main.html`);
+        main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html`);
     } else {
         main_window.loadURL(formatUrl({
-            pathname: path.join(__dirname, 'main.html'),
+            pathname: path.join(__dirname, 'index.html'),
             protocol: 'file',
             slashes: true
         }));
@@ -75,9 +74,9 @@ function startApp() {
             app.quit();
         }
 
-        ipcMain.on('input-change', async (_, query) => {
+        ipcMain.on('input-change', (_, query) => {
             const loading = setTimeout(() => main_window.webContents.send('update-options', null), 100);
-            await searchQuery(query, (results) => {
+            searchQuery(query, (results) => {
                 clearTimeout(loading);
                 main_window.webContents.send('update-options', results);
             });
@@ -89,6 +88,9 @@ function startApp() {
                     main_window.hide();
                 }
             }
+        });
+        ipcMain.on('config-update', (_, config) => {
+            updateConfig(config);
         });
     } else {
         console.error("Other instance is already running: quitting app.");

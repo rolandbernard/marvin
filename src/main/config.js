@@ -17,7 +17,7 @@ export let config = {
         background_color: 'black',
         text_color: 'white',
         accent_color: 'grey',
-        select_color: 'blue',
+        select_color: 'grey',
     },
     modules: {
         marvin_quote: {
@@ -29,12 +29,15 @@ export let config = {
 export function loadConfig() {
     const config_path = path.join(app.getPath('userData'), 'config.json');
     if (existsSync(config_path)) {
-        config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
+        try {
+            config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
+        } catch (e) { }
     }
     writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }
 
 export function updateConfig(new_config) {
+    const config_path = path.join(app.getPath('userData'), 'config.json');
     config = mergeDeep(config, new_config);
     writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }

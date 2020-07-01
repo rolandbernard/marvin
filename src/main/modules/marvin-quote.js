@@ -1,6 +1,8 @@
 
 import { clipboard } from "electron";
 
+import { config } from '../config';
+
 const quotes = [
     'Marvin: “I think you ought to know I’m feeling very depressed.”\nTrillian: “Well, we have something that may take your mind off it.”\nMarvin: “It won’t work, I have an exceptionally large mind.“',
     'Marvin: “I am at a rough estimate thirty billion times more intelligent than you. Let me give you an example. Think of a number, any number.”\nZem: “Er, five.”\nMarvin: “Wrong. You see?”',
@@ -53,7 +55,7 @@ const quotes = [
 
 const MarvinQuoteModule = {
     valid: (query) => {
-        return query === '';
+        return config.modules.marvin_quote.active && query === '';
     },
     search: async (query) => {
         const quote = quotes[Math.floor(Math.random() * quotes.length)];

@@ -2,8 +2,9 @@
 import { stringMatchQuality } from "../../common/util";
 import { config } from '../config';
 import { BrowserWindow } from "electron";
+import { format as formatUrl } from 'url';
 import path from 'path';
-import transalations from "../../common/local/locale";
+import { getTranslation } from "../../common/local/locale";
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -49,10 +50,10 @@ const SettingsModule = {
         return [{
             type: 'icon_list_item',
             material_icon: 'settings',
-            primary: transalations[config.general.language].settings,
-            secondary: 'Test 1 2 3',
+            primary: getTranslation(config, 'settings'),
+            secondary: null,
             executable: true,
-            quality: stringMatchQuality(query, transalations[config.general.language].settings),
+            quality: stringMatchQuality(query, getTranslation(config, 'settings')),
         }];
     },
     execute: async (option) => {

@@ -4,9 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (config) {
     return {
+        mode: config.mode,
         target: 'electron-renderer',
         entry: {
-            main: './src/renderer/main.js',
+            index: './src/renderer/index.js',
             settings: './src/renderer/settings.js',
         },
         output: {
@@ -38,8 +39,8 @@ module.exports = function (config) {
             new HtmlWebpackPlugin({
                 template: 'static/index.html',
                 title: 'Marvin',
-                filename: 'main.html',
-                chunks: ['main'],
+                filename: 'index.html',
+                chunks: ['index'],
             }),
             new HtmlWebpackPlugin({
                 template: 'static/index.html',

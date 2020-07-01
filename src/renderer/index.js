@@ -1,7 +1,7 @@
 
 import 'typeface-roboto';
 import 'material-icons';
-import './main.css';
+import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

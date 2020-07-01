@@ -1,39 +1,50 @@
 {
-  "name": "marvin",
-  "version": "0.0.0",
-  "license": "MIT",
-  "scripts": {
-    "dev": "electron-webpack dev",
-    "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
-  },
-  "dependencies": {
-    "@babel/core": "^7.10.3",
-    "@material-ui/core": "^4.10.2",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.55",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^3.6.0",
-    "file-loader": "^6.0.0",
-    "material-icons": "^0.3.1",
-    "material-ui-color": "^0.4.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "source-map-support": "^0.5.16",
-    "style-loader": "^1.2.1",
-    "typeface-roboto": "^0.0.75"
-  },
-  "devDependencies": {
-    "@babel/preset-react": "^7.10.1",
-    "electron": "8.2.0",
-    "electron-builder": "^22.4.1",
-    "electron-webpack": "^2.8.2",
-    "webpack": "~4.42.1"
-  },
-  "electronWebpack": {
-    "renderer": {
-      "webpackConfig": "webpack.renderer.js"
+    "name": "marvin",
+    "version": "0.0.0",
+    "license": "MIT",
+    "scripts": {
+        "dev": "electron-webpack dev",
+        "compile": "electron-webpack",
+        "dist": "yarn compile && electron-builder",
+        "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    },
+    "dependencies": {
+        "@babel/core": "^7.10.3",
+        "@material-ui/core": "^4.10.2",
+        "@material-ui/icons": "^4.9.1",
+        "@material-ui/lab": "^4.0.0-alpha.55",
+        "babel-loader": "^8.1.0",
+        "css-loader": "^3.6.0",
+        "file-loader": "^6.0.0",
+        "material-icons": "^0.3.1",
+        "material-ui-color": "^0.4.4",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "source-map-support": "^0.5.16",
+        "style-loader": "^1.2.1",
+        "styled-components": "^5.1.1",
+        "typeface-roboto": "^0.0.75"
+    },
+    "devDependencies": {
+        "@babel/preset-react": "^7.10.1",
+        "electron": "8.2.0",
+        "electron-builder": "^22.4.1",
+        "electron-webpack": "^2.8.2",
+        "webpack": "~4.42.1"
+    },
+    "electronWebpack": {
+        "renderer": {
+            "webpackConfig": "webpack.renderer.js"
+        },
+        "main": {
+            "webpackConfig": "webpack.main.js"
+        }
+    },
+    "description": "Simple keystroke launcher for Linux",
+    "author": "Roland Bernard",
+    "build": {
+        "appId": "com.rolandbernard.${name}",
+        "productName": "Marvin",
+        "copyright": "Copyright © 2020 ${author}"
     }
-  }
 }

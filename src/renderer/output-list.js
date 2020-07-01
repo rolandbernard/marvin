@@ -38,7 +38,7 @@ class OutputList extends React.Component {
                 padding: '0.5rem',
             },
             selected: {
-                background: this.props.config && this.props.config.theme.accent_color,
+                background: this.props.config && this.props.config.theme.select_color,
             },
             loading: {
                 width: '2rem',
