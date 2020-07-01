@@ -57,7 +57,12 @@ const MarvinQuoteModule = {
     },
     search: async (query) => {
         const quote = quotes[Math.floor(Math.random() * quotes.length)];
-        return [{ type: 'simple_text', text: quote, executable: true, quality: 1.0 }];
+        return [{
+            type: 'simple_text',
+            text: quote,
+            executable: true,
+            quality: 1.0
+        }];
     },
     execute: async (option) => {
         clipboard.writeText(option.text);

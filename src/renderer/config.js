@@ -3,7 +3,7 @@ const config_definition = [
     { name: 'general', options: [
         { name: 'global_shortcut', type: 'shortcut' },
         { name: 'language', type: 'language' },
-        { name: 'debounce_time', type: 'time' },
+        { name: 'debounce_time', type: 'duration' },
         { name: 'width', type: 'size' },
         { name: 'max_height', type: 'size' },
         { name: 'max_results', type: 'size' },

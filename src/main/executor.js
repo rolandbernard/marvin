@@ -1,9 +1,11 @@
 
 import MarvinQuoteModule from "./modules/marvin-quote";
 import { config } from "./config";
+import SettingsModule from "./modules/settings";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
+    settings: SettingsModule,
 };
 
 export async function searchQuery(query, callback) {

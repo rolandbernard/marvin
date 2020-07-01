@@ -2,6 +2,7 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { app } from "electron";
 import path from 'path';
+import { mergeDeep } from '../common/util';
 
 export let config = {
     general: {
@@ -28,8 +29,12 @@ export let config = {
 export function loadConfig() {
     const config_path = path.join(app.getPath('userData'), 'config.json');
     if (existsSync(config_path)) {
-        config = JSON.parse(readFileSync(config_path, { encoding: 'utf8' }));
-    } else {
-        writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
+        config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
     }
+    writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
+}
+
+export function updateConfig(new_config) {
+    config = mergeDeep(config, new_config);
+    writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }

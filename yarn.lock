@@ -4579,6 +4579,11 @@ material-icons@^0.3.1:
   resolved "https://registry.yarnpkg.com/material-icons/-/material-icons-0.3.1.tgz#425e06e2448632d6249d6e1ffe2993682c5b171e"
   integrity sha512-5Hbj76A6xDPcDZEbM4oxTknhWuMwGWnAHVLLPCEq9eVlcHb0fn4koU9ZeyMy1wjARtDEPAHfd5ZdL2Re5hf0zQ==
 
+material-ui-color@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/material-ui-color/-/material-ui-color-0.4.4.tgz#9a96edb0c2a7332be776917524161566fe626b82"
+  integrity sha512-loIMHIUb9Zd1jqv8H/5ghiT+OOMBV1hJWEDtbnVkeMErgJ7wG82DwgyDezXdWIqyDTWzRdA2ASsRVgrmYsHyqw==
+
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"

@@ -15,6 +15,7 @@ const translation_english = {
     modules: 'Modules',
     marvin_quotes: 'Marvin quotes',
     active: 'Active',
+    settings: 'Settings',
 };
 
 export default translation_english;

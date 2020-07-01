@@ -1,3 +1,4 @@
+
 import translation_english from "./english";
 
 const supported_languages = {
@@ -8,4 +9,4 @@ const transalations = {
     'en': translation_english,
 };
 
-export default transitions;
+export default transalations;

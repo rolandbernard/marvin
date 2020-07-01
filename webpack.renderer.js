@@ -7,6 +7,7 @@ module.exports = function (config) {
         target: 'electron-renderer',
         entry: {
             main: './src/renderer/main.js',
+            settings: './src/renderer/settings.js',
         },
         output: {
             path: path.resolve(__dirname, "dist/renderer"),
@@ -39,6 +40,12 @@ module.exports = function (config) {
                 title: 'Marvin',
                 filename: 'main.html',
                 chunks: ['main'],
+            }),
+            new HtmlWebpackPlugin({
+                template: 'static/index.html',
+                title: 'Marvin Settings',
+                filename: 'settings.html',
+                chunks: ['settings'],
             }),
         ],
         devServer: {

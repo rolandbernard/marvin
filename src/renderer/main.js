@@ -1,7 +1,7 @@
 
 import 'typeface-roboto';
 import 'material-icons';
-import './index.css';
+import './main.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -30,7 +30,6 @@ class App extends React.Component {
 
         ipcRenderer.on('update-options', (_, options) => {
             this.setState({ results: options, selected: 0 });
-            console.log(options);
         });
         ipcRenderer.on('reset', (_, config) => {
             this.setState({ results: [], selected: 0, config: config });

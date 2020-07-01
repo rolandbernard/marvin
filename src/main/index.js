@@ -4,11 +4,11 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { loadConfig, config } from './config';
 import { executeOption, searchQuery } from './executor';
+import { createSettingsWindow } from './modules/settings';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let main_window;
-let settings_window;
 let tray_icon;
 
 function createMainWindow() {
@@ -23,15 +23,15 @@ function createMainWindow() {
         frame: false,
         show: false,
         transparent: true,
-        width: config.general.width,
+        width: config.general.width + (isDevelopment ? 1000 : 0),
         height: config.general.max_height,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.ico'),
     });
 
-    // if (isDevelopment) {
-    //     main_window.webContents.openDevTools();
-    // }
+    if (isDevelopment) {
+        main_window.webContents.openDevTools();
+    }
 
     if (isDevelopment) {
         main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/main.html`);
@@ -57,6 +57,7 @@ function startApp() {
     if (gotSingleInstanceLock) {
         loadConfig();
         createMainWindow();
+        createSettingsWindow();
 
         const ret = globalShortcut.register(config.general.global_shortcut, () => {
             if (main_window && !main_window.isDestroyed()) {
@@ -77,14 +78,16 @@ function startApp() {
         ipcMain.on('input-change', async (_, query) => {
             const loading = setTimeout(() => main_window.webContents.send('update-options', null), 100);
             await searchQuery(query, (results) => {
+                clearTimeout(loading);
                 main_window.webContents.send('update-options', results);
             });
-            clearTimeout(loading);
         });
         ipcMain.on('execute-option', (_, option) => {
             if (option && option.executable) {
                 executeOption(option);
-                main_window.hide();
+                if(option.stay_open) {
+                    main_window.hide();
+                }
             }
         });
     } else {
