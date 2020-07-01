@@ -17,7 +17,8 @@ const config_definition = [
     { name: 'modules', pages: [
         { name: 'marvin_quote', active: 'active', options: [
             { name: 'active', type: 'active' },
-        ], type: 'page' }
+            { name: 'quality', type: 'quality' },
+        ], type: 'page', description: 'marvin_quote_description' }
     ], type: 'subheader' }
 ];
 

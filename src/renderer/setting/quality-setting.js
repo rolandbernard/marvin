@@ -9,10 +9,10 @@ const styles = {
     },
 };
 
-function SizeSetting(props) {
+function QualitySetting(props) {
     const onUpdate = (e) => {
-        if (e.target.value.length > 0 && parseInt(e.target.value) >= 0) {
-            props.onUpdate(parseInt(e.target.value));
+        if(e.target.value.length > 0 && parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 1) {
+            props.onUpdate(parseFloat(e.target.value));
         }
     };
     return (
@@ -28,4 +28,4 @@ function SizeSetting(props) {
     );
 }
 
-export default SizeSetting;
+export default QualitySetting;

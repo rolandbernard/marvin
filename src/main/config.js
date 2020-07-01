@@ -22,6 +22,7 @@ export let config = {
     modules: {
         marvin_quote: {
             active: true,
+            quality: 1.0,
         },
     },
 };

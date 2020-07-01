@@ -6,6 +6,7 @@ import ColorSetting from './setting/color-setting';
 import LanguageSetting from './setting/language-setting';
 import ShortcutSetting from './setting/shortcut-setting';
 import SizeSetting from './setting/size-setting';
+import QualitySetting from './setting/quality-setting';
 
 const styles = {
     table: {
@@ -27,6 +28,10 @@ const styles = {
         textAlign: 'right',
         padding: '1rem',
     },
+    desc: {
+        margin: '2rem',
+        fontSize: '1.1rem',
+    }
 };
 
 const setting_types = {
@@ -35,11 +40,13 @@ const setting_types = {
     language: LanguageSetting,
     shortcut: ShortcutSetting,
     size: SizeSetting,
+    quality: QualitySetting,
 };
 
 function SettingsPage(props) {
     return (
         <div>
+            <div style={styles.desc}>{props.page && props.page.def && props.page.def.description && getTranslation(props.config, props.page.def.description)}</div>
             <table style={styles.table}>
                 <tbody>
                     {props.page && props.page.def && props.page.def.options && props.page.def.options.map((def) => (

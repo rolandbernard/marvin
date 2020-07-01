@@ -4,8 +4,8 @@ const translation_english = {
     global_shortcut: 'Global shortcut',
     language: 'Language',
     debounce_time: 'Debounce time [ms]',
-    width: 'Width',
-    max_height: 'Maximum height',
+    width: 'Width [px]',
+    max_height: 'Maximum height [px]',
     max_results: 'Maximum results',
     theme: 'Color theme',
     background_color: 'Background color',
@@ -16,6 +16,8 @@ const translation_english = {
     marvin_quote: 'Marvin quotes',
     active: 'Active',
     settings: 'Settings',
+    marvin_quote_description: 'This module will show you random, inspiring and uplifting quotes from Marvin the paranied robot.',
+    quality: 'Priority',
 };
 
 export default translation_english;
