@@ -26,7 +26,6 @@ export let config = {
 
 export function loadConfig() {
     const config_path = path.join(app.getPath('userData'), 'config.json');
-    console.log(config_path);
     if (existsSync(config_path)) {
         config = JSON.parse(readFileSync(config_path, { encoding: 'utf8' }));
     } else {
