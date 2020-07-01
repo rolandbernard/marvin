@@ -6,6 +6,7 @@ const config_definition = [
         { name: 'debounce_time', type: 'time' },
         { name: 'width', type: 'size' },
         { name: 'max_height', type: 'size' },
+        { name: 'max_results', type: 'size' },
     ], type: 'page' },
     { name: 'theme', options: [
         { name: 'background_color', type: 'color' },

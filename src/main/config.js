@@ -10,6 +10,7 @@ export let config = {
         debounce_time: 0,
         width: 600,
         max_height: 500,
+        max_results: 200,
     },
     theme: {
         background_color: 'black',

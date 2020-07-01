@@ -6,6 +6,7 @@ const translation_english = {
     debounce_time: 'Debounce time',
     width: 'Width',
     max_height: 'Maximum height',
+    max_results: 'Maximum results',
     theme: 'Theme',
     background_color: 'Background color',
     text_color: 'Text color',
