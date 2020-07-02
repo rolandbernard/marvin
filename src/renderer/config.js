@@ -18,7 +18,10 @@ const config_definition = [
         { name: 'marvin_quote', active: 'active', options: [
             { name: 'active', type: 'active' },
             { name: 'quality', type: 'quality' },
-        ], type: 'page', description: 'marvin_quote_description' }
+        ], type: 'page', description: 'marvin_quote_description' },
+        { name: 'linux_system', active: 'active', options: [
+            { name: 'active', type: 'active' },
+        ], type: 'page', description: 'linux_system_description' },
     ], type: 'subheader' }
 ];
 

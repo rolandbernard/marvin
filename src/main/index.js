@@ -3,7 +3,7 @@ import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { loadConfig, config, updateConfig } from './config';
-import { executeOption, searchQuery } from './executor';
+import { executeOption, searchQuery, initModules, deinitModules } from './executor';
 import { createSettingsWindow } from './modules/settings';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -67,6 +67,7 @@ function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
         loadConfig();
+        initModules();
         createMainWindow();
         createSettingsWindow();
 
@@ -120,6 +121,7 @@ function closeApp() {
     if (main_window && !main_window.isDestroyed()) {
         main_window.destroy();
     }
+    deinitModules();
 }
 
 app.on('ready', () => setTimeout(startApp, 500));

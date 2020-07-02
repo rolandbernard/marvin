@@ -16,6 +16,7 @@ export function createSettingsWindow() {
         skipTaskbar: true,
         center: true,
         show: false,
+        width: config.general.width * 2,
         icon: path.join(__static, 'logo.ico'),
     });
 

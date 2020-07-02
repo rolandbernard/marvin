@@ -81,10 +81,10 @@ class App extends React.Component {
             },
             drawer: {
                 flex: '0.5 1 20rem',
-                minWidth: 'min-content',
             },
             settings: {
                 flex: '1 1 70%',
+                overflow: 'auto',
             },
             paper: {
                 width: '100%',

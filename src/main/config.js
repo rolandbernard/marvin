@@ -24,11 +24,16 @@ export let config = {
             active: true,
             quality: 1.0,
         },
+        linux_system: {
+            active: true,
+        },
     },
 };
 
+const config_filename = 'marvin.json';
+
 export function loadConfig() {
-    const config_path = path.join(app.getPath('userData'), 'config.json');
+    const config_path = path.join(app.getPath('userData'), config_filename);
     if (existsSync(config_path)) {
         try {
             config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
@@ -38,7 +43,7 @@ export function loadConfig() {
 }
 
 export function updateConfig(new_config) {
-    const config_path = path.join(app.getPath('userData'), 'config.json');
+    const config_path = path.join(app.getPath('userData'), config_filename);
     config = mergeDeep(config, new_config);
     writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }

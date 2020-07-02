@@ -1,0 +1,42 @@
+
+import { stringMatchQuality } from "../../common/util";
+import { config } from "../config";
+import { exec } from 'child_process';
+import { getTranslation } from "../../common/local/locale";
+
+const LinuxSystemModule = {
+    valid: (query) => {
+        return config.modules.linux_system.active && query.length >= 1;
+    },
+    search: async (query) => {
+        return [
+            {
+                type: 'icon_list_item',
+                material_icon: 'power_settings_new',
+                primary: getTranslation(config, 'shutdown'),
+                secondary: null,
+                executable: true,
+                quality: stringMatchQuality(query, getTranslation(config, 'shutdown')),
+                command: 'shutdown now',
+            },
+            {
+                type: 'icon_list_item',
+                material_icon: 'replay',
+                primary: getTranslation(config, 'reboot'),
+                secondary: null,
+                executable: true,
+                quality: stringMatchQuality(query, getTranslation(config, 'reboot')),
+                command: 'reboot',
+            },
+        ];
+    },
+    execute: (option) => {
+        return new Promise((resolve) => {
+            exec(option.command, () => {
+                resolve();
+            })
+        });
+    },
+}
+
+export default LinuxSystemModule;
