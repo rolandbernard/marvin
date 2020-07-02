@@ -18,6 +18,9 @@ const translation_english = {
     settings: 'Settings',
     marvin_quote_description: 'This module will show you random, inspiring and uplifting quotes from Marvin the paranied robot.',
     quality: 'Priority',
+    quality_error: 'Value must be between 0.0 and 1.0',
+    size_error: 'Value must be an integer greater than 0',
+    color_error: 'Value must be a valid shortcut',
 };
 
 export default translation_english;

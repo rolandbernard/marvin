@@ -8,6 +8,7 @@ const styles = {
     select: {
         width: '20rem',
         textAlign: 'left',
+        maxHeight: '3.5rem',
     },
 };
 
