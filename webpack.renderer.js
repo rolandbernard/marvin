@@ -7,8 +7,8 @@ module.exports = function (config) {
         mode: config.mode,
         target: 'electron-renderer',
         entry: {
-            index: './src/renderer/index.js',
-            settings: './src/renderer/settings.js',
+            index: './src/renderer/main/index.js',
+            settings: './src/renderer/settings/settings.js',
         },
         output: {
             path: path.resolve(__dirname, "dist/renderer"),

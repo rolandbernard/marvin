@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { TextField } from '@material-ui/core';
-import { getTranslation } from '../../common/local/locale';
+import { getTranslation } from '../../../common/local/locale';
 
 const styles = {
     text: {
@@ -11,19 +11,14 @@ const styles = {
     },
 };
 
-function isValidShortcut(shortcut) {
-    // TODO: Implement a check to prevent inserting an illegal shortcut
-    return true;
-}
-
-function ShortcutSetting(props) {
+function SizeSetting(props) {
     const [error, setError] = useState(null);
     const onUpdate = (e) => {
-        if(isValidShortcut(e.target.value)) {
-            props.onUpdate(e.target.value);
+        if (e.target.value.length > 0 && parseInt(e.target.value) === parseFloat(e.target.value) && parseInt(e.target.value) >= 0) {
+            props.onUpdate(parseInt(e.target.value));
             setError(null);
         } else {
-            setError(getTranslation(props.config, 'shortcut_error'));
+            setError(getTranslation(props.config, 'size_error'));
         }
     };
     return (
@@ -32,12 +27,14 @@ function ShortcutSetting(props) {
                 style={styles.text}
                 defaultValue={props.option}
                 variant="outlined"
+                type="number"
                 onChange={onUpdate}
                 error={error !== null}
+                min={0}
                 helperText={error}
             ></TextField>
         </div>
     );
 }
 
-export default ShortcutSetting;
+export default SizeSetting;

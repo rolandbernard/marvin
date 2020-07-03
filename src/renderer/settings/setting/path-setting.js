@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { TextField } from '@material-ui/core';
-import { getTranslation } from '../../common/local/locale';
+import { getTranslation } from '../../../common/local/locale';
 import path from 'path';
 
 const styles = {

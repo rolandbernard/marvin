@@ -2,7 +2,7 @@
 import React from 'react';
 import { Select, MenuItem } from '@material-ui/core';
 
-import { supported_languages } from '../../common/local/locale';
+import { supported_languages } from '../../../common/local/locale';
 
 const styles = {
     select: {

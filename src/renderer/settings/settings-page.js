@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { getTranslation } from '../common/local/locale';
+import { getTranslation } from '../../common/local/locale';
 import setting_types from './setting/setting-types';
 
 const styles = {

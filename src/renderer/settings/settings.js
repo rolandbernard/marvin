@@ -12,7 +12,7 @@ import FiberManualRecordOutlined from '@material-ui/icons/FiberManualRecordOutli
 
 import Logo from './logo.svg';
 import config_definition from './config';
-import { getTranslation } from '../common/local/locale';
+import { getTranslation } from '../../common/local/locale';
 import SettingsPage from './settings-page';
 
 class App extends React.Component {
