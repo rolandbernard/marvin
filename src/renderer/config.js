@@ -22,6 +22,10 @@ const config_definition = [
         { name: 'linux_system', active: 'active', options: [
             { name: 'active', type: 'active' },
         ], type: 'page', description: 'linux_system_description' },
+        { name: 'folders', active: 'active', options: [
+            { name: 'active', type: 'active' },
+            { name: 'directories', type: 'array', base: { name: 'path', type: 'path' } },
+        ], type: 'page', description: 'folders_description' },
     ], type: 'subheader' }
 ];
 

@@ -5,9 +5,9 @@ import { getTranslation } from '../../common/local/locale';
 
 const styles = {
     text: {
-        width: '20rem',
+        width: '-webkit-fill-available',
         textAlign: 'left',
-        maxHeight: '3.5rem',
+        height: '3.5rem',
     },
 };
 

@@ -4,11 +4,13 @@ import SettingsModule from "./modules/settings";
 import MarvinQuoteModule from "./modules/marvin-quote";
 import LinuxSystemModule from './modules/linux-system';
 import AsyncLock from "async-lock";
+import FoldersModule from "./modules/folders";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
     settings: SettingsModule,
     linux_system: LinuxSystemModule,
+    folders: FoldersModule,
 };
 
 let last_query_timeout = null;
@@ -27,15 +29,17 @@ export function searchQuery(query, callback) {
         last_query_timeout = setTimeout(async () => {
             let results = [];
             let lock = new AsyncLock();
-            await Promise.all(Object.keys(modules).filter((id) => modules[id].valid(query)).map(async (id) => {
-                lock.acquire('results', async () => {
+            await Promise.all(Object.keys(modules).filter((id) => modules[id].valid(query)).map((id) => {
+                return new Promise((resolve) => lock.acquire('results', async () => {
+                    let result = (await modules[id].search(query));
                     results = results
-                        .concat((await modules[id].search(query)).map((option) => ({ ...option, module: id })))
+                        .concat(result.map((option) => ({ ...option, module: id })))
                         .filter((option) => option.quality > 0)
                         .sort((a, b) => b.quality - a.quality)
                         .slice(0, config.general.max_results);
-                    callback(results);
-                });
+                    // callback(results);
+                    resolve();
+                }));
             }));
             callback(results);
             resolve();

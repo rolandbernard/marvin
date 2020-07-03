@@ -18,9 +18,17 @@ const palette = {
     darkblue: 'darkblue',
 };
 
+const styles = {
+    input: {
+        float: 'right',
+        height: '3.5rem',
+        padding: '0.5rem',
+    },
+}
+
 function ColorSetting(props) {
     return (
-        <div>
+        <div style={styles.input}>
             <ColorPicker
                 deferred
                 value={props.option}

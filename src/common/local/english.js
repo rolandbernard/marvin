@@ -20,7 +20,8 @@ const translation_english = {
     
     quality_error: 'Value must be between 0.0 and 1.0',
     size_error: 'Value must be an integer greater than 0',
-    color_error: 'Value must be a valid shortcut',
+    shortcut_error: 'Value must be a valid shortcut',
+    path_error: 'Value must be a valid absolute path',
 
     marvin_quote: 'Marvin quotes',
     marvin_quote_description: 'This module will show you random, inspiring and uplifting quotes from Marvin the paranied robot.',
@@ -30,6 +31,11 @@ const translation_english = {
     linux_system_description: 'This module will provide some fundamantal linux system commands',
     reboot: 'Reboot',
     shutdown: 'Shutdown',
+
+    folders: 'Folders',
+    folders_description: 'This module allows you to browse your files',
+    directories: 'Directories',
+    path: 'Path',
 };
 
 export default translation_english;

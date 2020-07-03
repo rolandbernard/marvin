@@ -39,7 +39,7 @@ class App extends React.Component {
     handle_key_down(e) {
         if (e.key === 'ArrowUp' && this.state.results && this.state.results.length > 0) {
             this.setState({ selected: (this.state.results.length + this.state.selected - 1) % this.state.results.length });
-        } else if (e.key === 'ArrowDown' && this.state.results && this.state.results > 0) {
+        } else if (e.key === 'ArrowDown' && this.state.results && this.state.results.length > 0) {
             this.setState({ selected: (this.state.results.length + this.state.selected + 1) % this.state.results.length });
         } else if (e.key === 'Escape') {
             window.close();

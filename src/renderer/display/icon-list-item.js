@@ -40,8 +40,8 @@ function IconListItem(props) {
                 {
                     props.option.material_icon
                         ? <Avatar alt={props.option.primary}><Icon>{props.option.material_icon}</Icon></Avatar>
-                        : props.option.icon_uri
-                            ? <Avatar alt={props.option.primary} src={props.option.icon_uri}></Avatar>
+                        : props.option.uri_icon
+                            ? <Avatar alt={props.option.primary} src={props.option.uri_icon}></Avatar>
                             : <Avatar>{props.option.primary[0]}</Avatar>
                 }
             </div>

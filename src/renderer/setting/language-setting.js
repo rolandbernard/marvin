@@ -6,9 +6,9 @@ import { supported_languages } from '../../common/local/locale';
 
 const styles = {
     select: {
-        width: '20rem',
+        width: '-webkit-fill-available',
         textAlign: 'left',
-        maxHeight: '3.5rem',
+        height: '3.5rem',
     },
 };
 

@@ -27,6 +27,10 @@ export let config = {
         linux_system: {
             active: true,
         },
+        folders: {
+            active: true,
+            directories: [ "/", app.getPath('home') ],
+        },
     },
 };
 
