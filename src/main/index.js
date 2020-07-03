@@ -109,7 +109,7 @@ function startApp() {
         });
     } else {
         console.error("Other instance is already running: quitting app.");
-        app.quit();
+        closeApp();
     }
 }
 
@@ -122,13 +122,11 @@ function closeApp() {
         main_window.destroy();
     }
     deinitModules();
+    app.quit();
 }
 
 app.on('ready', () => setTimeout(startApp, 500));
 
-app.on("window-all-closed", () => {
-    app.quit();
-});
+app.on("window-all-closed", closeApp);
 
-app.on('will-quit', () => closeApp())
 
