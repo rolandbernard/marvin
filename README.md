@@ -24,3 +24,6 @@ This module will show you random, inspiring and uplifting quotes from Marvin the
 #### Linux system
 This module will give you access to some fundamental linux system operations. (Reboot, Shutdown)
 
+#### Folders
+This module allows you to browse files.
+
