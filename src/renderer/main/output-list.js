@@ -66,7 +66,7 @@ class OutputList extends React.Component {
                                         : styles.result
                                 }
                                 ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
-                            >{ React.createElement(display_types[option.type], { option: option }) }</li>
+                            >{ React.createElement(display_types[option.type], { option: option, config: this.props.config }) }</li>
                         ))
                         : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
                     }
