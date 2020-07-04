@@ -63,7 +63,7 @@ const MarvinQuoteModule = {
             type: 'simple_text',
             text: quote,
             executable: true,
-            quality: 1.0
+            quality: config.modules.marvin_quote.quality,
         }];
     },
     execute: async (option) => {
