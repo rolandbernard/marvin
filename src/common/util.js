@@ -4,9 +4,9 @@ export function stringMatchQuality(text, pattern) {
 	text = text.toUpperCase();
 	pattern = pattern.toUpperCase();
 	if (text === pattern) {
-		return 1;
-	} else if (pattern.includes(text)) {
 		return 0.9;
+	} else if (pattern.includes(text)) {
+		return 0.8;
 	} else {
 		return 0;
 	}

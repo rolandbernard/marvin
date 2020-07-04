@@ -47,6 +47,12 @@ function createMainWindow() {
         main_window.hide();
     };
 
+    main_window.webContents.on('will-navigate', (e) => {
+        e.preventDefault();
+    });
+    main_window.webContents.on('new-window', (e) => {
+        e.preventDefault();
+    });
     main_window.on('close', hideWindow);
     main_window.on('blur', hideWindow);
 }
@@ -115,9 +121,6 @@ function startApp() {
 
 function closeApp() {
     globalShortcut.unregisterAll();
-    if (tray_icon && !tray_icon.isDestroyed()) {
-        tray_icon.destroy();
-    }
     if (main_window && !main_window.isDestroyed()) {
         main_window.destroy();
     }

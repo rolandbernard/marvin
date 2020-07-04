@@ -28,6 +28,7 @@ const styles = {
     },
     button: {
         padding: '0.5rem',
+        width: '1px',
     },
 };
 
@@ -37,6 +38,7 @@ function ArraySetting(props) {
             <table style={styles.table}>
                 <tbody>
                     {props.option && props.option.map((option, index) => (
+                        !(props.def instanceof Array) ?
                         <tr style={styles.tr} key={index}>
                             <td style={styles.name}>{getTranslation(props.config, props.def.name)}</td>
                             <td style={styles.value}>
@@ -60,12 +62,45 @@ function ArraySetting(props) {
                                     }
                                 }}><DeleteIcon></DeleteIcon></IconButton>
                             </td>
-                        </tr>
+                        </tr> :
+                        <tr key={index}><td style={styles.value} colSpan="2">
+                            <table style={styles.table}>
+                                <tbody>
+                                    {props.def.map((def) => (
+                                        <tr style={styles.tr} key={def.name}>
+                                            {def.type !== 'array' && <td style={styles.name}>{getTranslation(props.config, def.name)}</td>}
+                                            <td style={styles.value} colSpan={def.type === 'array' ? 2 : 1}>
+                                                {def.type === 'array' && <div style={styles.array_name}>{getTranslation(props.config, def.name)}</div>}
+                                                {React.createElement(setting_types[def.type], {
+                                                    option: props.option && props.option[index][def.name],
+                                                    def: def.base,
+                                                    definition: def,
+                                                    onUpdate: (value) => {
+                                                        if (props.option) {
+                                                            props.option[index][def.name] = value;
+                                                            props.onUpdate(props.option);
+                                                        }
+                                                    },
+                                                    config: props.config,
+                                                })}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </td><td style={styles.button}>
+                            <IconButton onClick={() => {
+                                if (props.option) {
+                                    props.option.splice(index, 1);
+                                    props.onUpdate(props.option);
+                                }
+                            }}><DeleteIcon></DeleteIcon></IconButton>
+                        </td></tr>
                     ))}
                     <tr><td></td><td></td><td style={styles.button}>
                         <IconButton onClick={() => {
                             if (props.option) {
-                                props.option.push(null);
+                                props.option.push(props.definition.default);
                                 props.onUpdate(props.option);
                             }
                         }}><AddIcon></AddIcon></IconButton>

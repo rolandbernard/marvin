@@ -3,10 +3,12 @@ import React, { createRef } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import SimpleText from './display/simple-text';
 import IconListItem from './display/icon-list-item';
+import HtmlItem from './display/html-item';
 
 const display_types = {
     simple_text: SimpleText,
     icon_list_item: IconListItem,
+    html: HtmlItem,
 };
 
 class OutputList extends React.Component {
@@ -35,7 +37,6 @@ class OutputList extends React.Component {
             result: {
                 width: '100%',
                 color: this.props.config && this.props.config.theme.text_color,
-                padding: '0.5rem',
             },
             selected: {
                 background: this.props.config && this.props.config.theme.select_color,

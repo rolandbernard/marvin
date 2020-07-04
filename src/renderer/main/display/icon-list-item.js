@@ -7,13 +7,14 @@ function IconListItem(props) {
         root: {
             display: 'flex',
             flexFlow: 'row nowrap',
+            padding: '0.5rem',
         },
         avatar_wrap: {
             flex: '0 0 auto',
             paddingRight: '0.75rem',
         },
         avatar: {
-            color: props.config.theme.accent_color,
+            color: props.config && props.config.theme.accent_color,
             background: 'transparent',
         },
         text: {

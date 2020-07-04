@@ -7,6 +7,7 @@ const styles = {
         fontWeight: 300,
         whiteSpace: 'pre-wrap',
         margin: '0 1rem',
+        padding: '0.5rem',
     },
 }
 

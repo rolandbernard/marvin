@@ -36,6 +36,12 @@ const translation_english = {
     folders_description: 'This module allows you to browse your files',
     directories: 'Directories',
     path: 'Path',
+   
+    html: 'HTML',
+    html_description: 'This module allows you to create custom HTML entries',
+    entries: 'Entries',
+    name: 'Name',
+    default_quality: 'Default quality',
 };
 
 export default translation_english;

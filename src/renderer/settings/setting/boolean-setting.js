@@ -10,7 +10,7 @@ const styles = {
     },
 }
 
-function ActiveSetting(props) {
+function BooleanSetting(props) {
     return (
         <div style={styles.input}>
             <Switch checked={props.option} onChange={(e) => props.onUpdate(e.target.checked)}></Switch>
@@ -18,4 +18,4 @@ function ActiveSetting(props) {
     );
 }
 
-export default ActiveSetting;
+export default BooleanSetting;

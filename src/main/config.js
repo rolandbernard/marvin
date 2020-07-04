@@ -31,6 +31,12 @@ export let config = {
             active: true,
             directories: [ "/", app.getPath('home') ],
         },
+        html: {
+            active: false,
+            entries: [
+                { name: 'Time', html: '<h1>Hello world</h1>', default_quality: 0.95 }
+            ],
+        },
     },
 };
 

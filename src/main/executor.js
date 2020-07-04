@@ -5,12 +5,14 @@ import MarvinQuoteModule from "./modules/marvin-quote";
 import LinuxSystemModule from './modules/linux-system';
 import AsyncLock from "async-lock";
 import FoldersModule from "./modules/folders";
+import HtmlModule from "./modules/html";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
     settings: SettingsModule,
     linux_system: LinuxSystemModule,
     folders: FoldersModule,
+    html: HtmlModule,
 };
 
 let last_query_timeout = null;

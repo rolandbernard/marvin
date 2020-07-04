@@ -48,6 +48,7 @@ function SettingsPage(props) {
                                 {React.createElement(setting_types[def.type], {
                                     option: props.page && props.page.config && props.page.config[def.name],
                                     def: def.base,
+                                    definition: def,
                                     onUpdate: (value) => {
                                         if(props.page && props.page.config) {
                                             props.page.config[def.name] = value;
