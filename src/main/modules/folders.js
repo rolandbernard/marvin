@@ -49,7 +49,7 @@ const FoldersModule = {
             } catch (e) { console.error(e) }
         }))).reduce((a, b) => a.concat(b));
     },
-    execute: async (option) => {
+    execute: (option) => {
         return new Promise((resolve) => {
             exec(`xdg-open ${option.file}`, () => {
                 resolve();
