@@ -27,3 +27,5 @@ This module will give you access to some fundamental linux system operations. (R
 #### Folders
 This module allows you to browse files.
 
+#### HTML
+This module allows you to create custom HTML entries.
