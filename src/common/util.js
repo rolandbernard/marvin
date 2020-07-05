@@ -5,8 +5,10 @@ export function stringMatchQuality(text, pattern) {
 	pattern = pattern.toUpperCase();
 	if (text === pattern) {
 		return 0.9;
-	} else if (pattern.includes(text)) {
+	} else if(pattern.startsWith(text)) {
 		return 0.8;
+	} else if (pattern.includes(text)) {
+		return 0.7;
 	} else {
 		return 0;
 	}

@@ -45,6 +45,9 @@ const translation_english = {
 
     calculator: 'Calculator',
     calculator_description: 'This module allows you to do calculations using mathjs',
+    
+    linux_applications: 'Linux applications',
+    linux_applications_description: 'This module allows you to start applications on linux',
 };
 
 export default translation_english;

@@ -11,7 +11,7 @@ function IconListItem(props) {
         },
         avatar_wrap: {
             flex: '0 0 auto',
-            paddingRight: '0.75rem',
+            paddingRight: '0.25rem',
         },
         avatar: {
             color: props.config && props.config.theme.accent_color,

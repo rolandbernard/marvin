@@ -39,6 +39,10 @@ export let config = {
             active: true,
             quality: 1.0,
         },
+        linux_applications: {
+            active: true,
+            directories: [ "/usr/share/applications/", path.join(app.getPath('home'), '.local/share/applications/') ],
+        }
     },
 };
 

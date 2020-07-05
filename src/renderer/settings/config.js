@@ -24,7 +24,7 @@ const config_definition = [
         ], type: 'page', description: 'linux_system_description' },
         { name: 'folders', active: 'active', options: [
             { name: 'active', type: 'boolean' },
-            { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '' },
+            { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
         ], type: 'page', description: 'folders_description' },
         { name: 'html', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -37,7 +37,11 @@ const config_definition = [
         { name: 'calculator', active: 'active', options: [
             { name: 'active', type: 'boolean' },
             { name: 'quality', type: 'quality' },
-        ], type: 'page', description: 'caclulator_description' },
+        ], type: 'page', description: 'calculator_description' },
+        { name: 'linux_applications', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
+        ], type: 'page', description: 'linux_applications_description' },
     ], type: 'subheader' }
 ];
 

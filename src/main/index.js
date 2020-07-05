@@ -69,11 +69,11 @@ function toggleMain() {
     }
 }
 
-function startApp() {
+async function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
         loadConfig();
-        initModules();
+        await initModules();
         createMainWindow();
         createSettingsWindow();
 
@@ -98,7 +98,7 @@ function startApp() {
                 }
             }
         });
-        ipcMain.on('config-update', (_, new_config) => {
+        ipcMain.on('config-update', async (_, new_config) => {
             if (config.general.global_shortcut !== new_config.general.global_shortcut) {
                 try {
                     const ret = globalShortcut.register(new_config.general.global_shortcut, toggleMain);
@@ -112,7 +112,7 @@ function startApp() {
                 }
             }
             updateConfig(new_config);
-            updateModules();
+            await updateModules();
         });
     } else {
         console.error("Other instance is already running: quitting app.");
@@ -120,12 +120,12 @@ function startApp() {
     }
 }
 
-function closeApp() {
+async function closeApp() {
     globalShortcut.unregisterAll();
     if (main_window && !main_window.isDestroyed()) {
         main_window.destroy();
     }
-    deinitModules();
+    await deinitModules();
     app.quit();
 }
 

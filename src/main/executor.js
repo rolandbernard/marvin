@@ -7,6 +7,7 @@ import AsyncLock from "async-lock";
 import FoldersModule from "./modules/folders";
 import HtmlModule from "./modules/html";
 import CalculatorModule from "./modules/calculator";
+import LinuxApplicationModule from "./modules/linux-applications";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -15,20 +16,21 @@ const modules = {
     folders: FoldersModule,
     html: HtmlModule,
     calculator: CalculatorModule,
+    linux_applications: LinuxApplicationModule,
 };
 
 let last_query_timeout = null;
 
 export function initModules() {
-    Object.values(modules).forEach((module) => module.init && module.init());
+    return Promise.all(Object.values(modules).map((module) => module.init && module.init()));
 }
 
 export function updateModules() {
-    Object.values(modules).forEach((module) => module.update && module.update());
+    return Promise.all(Object.values(modules).map((module) => module.update && module.update()));
 }
 
 export function deinitModules() {
-    Object.values(modules).forEach((module) => module.deinit && module.deinit());
+    return Promise.all(Object.values(modules).map((module) => module.deinit && module.deinit()));
 }
 
 export function searchQuery(query, callback) {
