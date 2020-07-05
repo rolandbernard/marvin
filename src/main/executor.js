@@ -21,6 +21,10 @@ export function initModules() {
     Object.values(modules).forEach((module) => module.init && module.init());
 }
 
+export function updateModules() {
+    Object.values(modules).forEach((module) => module.update && module.update());
+}
+
 export function deinitModules() {
     Object.values(modules).forEach((module) => module.deinit && module.deinit());
 }

@@ -3,7 +3,7 @@ import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { loadConfig, config, updateConfig } from './config';
-import { executeOption, searchQuery, initModules, deinitModules } from './executor';
+import { executeOption, searchQuery, initModules, deinitModules, updateModules } from './executor';
 import { createSettingsWindow } from './modules/settings';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -112,6 +112,7 @@ function startApp() {
                 }
             }
             updateConfig(new_config);
+            updateModules();
         });
     } else {
         console.error("Other instance is already running: quitting app.");
