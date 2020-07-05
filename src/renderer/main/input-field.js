@@ -69,6 +69,7 @@ class InputField extends React.Component {
                     ),
                     style: styles.input
                 }}
+                inputRef={this.props.inputRef}
                 style={styles.text_field}
                 onBlur={refocus}
                 onChange={(e) => this.handleUpdate(e)}

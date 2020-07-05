@@ -16,6 +16,7 @@ const FoldersModule = {
                 return await new Promise((resolve) => {
                     exists(directory, (exist) => {
                         if(exist) {
+                            let query_dir = query[query.length-1] === '/' ? query : path.dirname(query);
                             let dir = query[query.length-1] === '/' ? path.join(directory, query) : path.dirname(path.join(directory, query));
                             exists(dir, (exist) => {
                                 if(exist) {
@@ -30,6 +31,7 @@ const FoldersModule = {
                                                     primary: file,
                                                     secondary: path.join(dir, file),
                                                     executable: true,
+                                                    complete: path.join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
                                                     quality: query[query.length-1] === '/' ? 0.5 : stringMatchQuality(path.basename(query), file),
                                                     file: path.join(dir, file),
                                                 };

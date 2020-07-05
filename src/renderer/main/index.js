@@ -3,7 +3,7 @@ import 'typeface-roboto';
 import 'material-icons';
 import './index.css';
 
-import React from 'react';
+import React, { createRef } from 'react';
 import ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron';
 
@@ -27,6 +27,7 @@ class App extends React.Component {
             results: [],
             selected: 0,
         };
+        this.input = createRef();
 
         ipcRenderer.on('update-options', (_, options) => {
             this.setState({ results: options, selected: 0 });
@@ -47,13 +48,17 @@ class App extends React.Component {
             window.close();
         } else if (e.key === 'Enter' && this.state.results && this.state.results.length > 0) {
             ipcRenderer.send('execute-option', this.state.results[this.state.selected]);
+        } else if (e.key === 'Tab' && this.state.results && this.state.results.length > 0
+            && this.state.results[this.state.selected].complete) {
+            this.input.current.value = this.state.results[this.state.selected].complete;
+            ipcRenderer.send('input-change', this.input.current.value);
         }
     }
 
     render() {
         return (
             <div style={styles.root} onKeyDown={(e) => this.handle_key_down(e)}>
-                <InputField config={this.state.config}></InputField>
+                <InputField config={this.state.config} inputRef={this.input}></InputField>
                 <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
             </div>
         );
