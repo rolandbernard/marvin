@@ -46,6 +46,9 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'url_description' },
+        { name: 'locate', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+        ], type: 'page', description: 'locate_description' },
     ], type: 'subheader' }
 ];
 

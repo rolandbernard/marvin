@@ -39,3 +39,5 @@ This module allows you to start applications on linux.
 #### URL module
 This module allows you to open urls.
 
+#### Locate
+This module allows you to search for files using locate.

@@ -9,6 +9,7 @@ import HtmlModule from "./modules/html";
 import CalculatorModule from "./modules/calculator";
 import LinuxApplicationModule from "./modules/linux-applications";
 import UrlModule from "./modules/url";
+import LocateModule from "./modules/locate";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -19,6 +20,7 @@ const modules = {
     calculator: CalculatorModule,
     linux_applications: LinuxApplicationModule,
     url: UrlModule,
+    locate: LocateModule,
 };
 
 let last_query_timeout = null;
@@ -35,25 +37,33 @@ export function deinitModules() {
     return Promise.all(Object.values(modules).map((module) => module.deinit && module.deinit()));
 }
 
+let exec_id = 0;
+
 export function searchQuery(query, callback) {
     return new Promise((resolve) => {
+        exec_id++;
+        const beginn_id = exec_id;
         clearTimeout(last_query_timeout);
         last_query_timeout = setTimeout(async () => {
             let results = [];
             let lock = new AsyncLock();
             await Promise.all(Object.keys(modules).filter((id) => modules[id].valid(query)).map((id) => {
                 return new Promise((resolve) => lock.acquire('results', async () => {
-                    let result = (await modules[id].search(query));
-                    results = results
-                        .concat(result.map((option) => ({ ...option, module: id })))
-                        .filter((option) => option.quality > 0)
-                        .sort((a, b) => b.quality - a.quality)
-                        .slice(0, config.general.max_results);
-                    // callback(results);
-                    resolve();
+                    if(exec_id === beginn_id) {
+                        let result = (await modules[id].search(query));
+                        results = results
+                            .concat(result.map((option) => ({ ...option, module: id })))
+                            .filter((option) => option.quality > 0)
+                            .sort((a, b) => b.quality - a.quality)
+                            .slice(0, config.general.max_results);
+                        callback(results);
+                        resolve();
+                    }
                 }));
             }));
-            callback(results);
+            if(exec_id === beginn_id) {
+                callback(results);
+            }
             resolve();
         }, config.general.debounce_time);
     });

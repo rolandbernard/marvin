@@ -1,8 +1,6 @@
 
-import { stringMatchQuality } from "../../common/util";
 import { config } from "../config";
 import { exec } from 'child_process';
-import { getTranslation } from "../../common/local/locale";
 
 function isValidUrl(str) {
     let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -41,7 +39,7 @@ const UrlModule = {
         return new Promise((resolve) => {
             exec(`xdg-open ${option.url}`, () => {
                 resolve();
-            })
+            });
         });
     },
 }

@@ -47,6 +47,9 @@ export let config = {
             active: true,
             quality: 1.0,
         },
+        locate: {
+            active: true,
+        },
     },
 };
 

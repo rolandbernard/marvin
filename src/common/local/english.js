@@ -51,6 +51,9 @@ const translation_english = {
     
     url: 'URL module',
     url_description: 'This module allows you to open urls',
+    
+    locate: 'Locate',
+    locate_description: 'This module allows you to search for files using locate',
 };
 
 export default translation_english;
