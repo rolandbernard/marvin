@@ -34,6 +34,10 @@ const config_definition = [
                 { name: 'default_quality', type: 'quality' },
             ], default: { name: '', html: '', default_quality: 0.0 } },
         ], type: 'page', description: 'html_description' },
+        { name: 'calculator', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'quality', type: 'quality' },
+        ], type: 'page', description: 'caclulator_description' },
     ], type: 'subheader' }
 ];
 

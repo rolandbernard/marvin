@@ -42,6 +42,9 @@ const translation_english = {
     entries: 'Entries',
     name: 'Name',
     default_quality: 'Default quality',
+
+    calculator: 'Calculator',
+    calculator_description: 'This module allows you to do calculations using mathjs',
 };
 
 export default translation_english;

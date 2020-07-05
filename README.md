@@ -29,3 +29,6 @@ This module allows you to browse files.
 
 #### HTML
 This module allows you to create custom HTML entries.
+
+#### Calculator
+This module allows you to do calculations using mathjs.

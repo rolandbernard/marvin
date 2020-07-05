@@ -6,6 +6,7 @@ import LinuxSystemModule from './modules/linux-system';
 import AsyncLock from "async-lock";
 import FoldersModule from "./modules/folders";
 import HtmlModule from "./modules/html";
+import CalculatorModule from "./modules/calculator";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -13,6 +14,7 @@ const modules = {
     linux_system: LinuxSystemModule,
     folders: FoldersModule,
     html: HtmlModule,
+    calculator: CalculatorModule,
 };
 
 let last_query_timeout = null;

@@ -35,6 +35,10 @@ export let config = {
             active: false,
             entries: [ ],
         },
+        calculator: {
+            active: true,
+            quality: 1.0,
+        },
     },
 };
 
