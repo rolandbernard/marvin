@@ -93,7 +93,7 @@ async function startApp() {
         ipcMain.on('execute-option', (_, option) => {
             if (option && option.executable) {
                 executeOption(option);
-                if(option.stay_open) {
+                if(!option.stay_open) {
                     main_window.hide();
                 }
             }

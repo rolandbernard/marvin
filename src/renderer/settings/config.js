@@ -42,6 +42,10 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
         ], type: 'page', description: 'linux_applications_description' },
+        { name: 'url', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'quality', type: 'quality' },
+        ], type: 'page', description: 'url_description' },
     ], type: 'subheader' }
 ];
 

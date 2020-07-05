@@ -48,6 +48,9 @@ const translation_english = {
     
     linux_applications: 'Linux applications',
     linux_applications_description: 'This module allows you to start applications on linux',
+    
+    url: 'URL module',
+    url_description: 'This module allows you to open urls',
 };
 
 export default translation_english;

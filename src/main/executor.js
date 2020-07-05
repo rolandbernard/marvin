@@ -8,6 +8,7 @@ import FoldersModule from "./modules/folders";
 import HtmlModule from "./modules/html";
 import CalculatorModule from "./modules/calculator";
 import LinuxApplicationModule from "./modules/linux-applications";
+import UrlModule from "./modules/url";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -17,6 +18,7 @@ const modules = {
     html: HtmlModule,
     calculator: CalculatorModule,
     linux_applications: LinuxApplicationModule,
+    url: UrlModule,
 };
 
 let last_query_timeout = null;
@@ -57,6 +59,6 @@ export function searchQuery(query, callback) {
     });
 }
 
-export async function executeOption(option) {
-    await modules[option.module].execute(option);
+export function executeOption(option) {
+    return modules[option.module].execute(option);
 }

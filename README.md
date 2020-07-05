@@ -35,3 +35,7 @@ This module allows you to do calculations using mathjs.
 
 #### Linux applications
 This module allows you to start applications on linux.
+
+#### URL module
+This module allows you to open urls.
+
