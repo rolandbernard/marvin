@@ -84,7 +84,7 @@ async function startApp() {
         }
 
         ipcMain.on('input-change', (_, query) => {
-            const loading = setTimeout(() => main_window.webContents.send('update-options', null), 250);
+            const loading = setTimeout(() => main_window.webContents.send('update-options', null), 500);
             searchQuery(query, (results) => {
                 clearTimeout(loading);
                 main_window.webContents.send('update-options', results);
