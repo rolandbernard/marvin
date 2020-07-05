@@ -33,9 +33,7 @@ export let config = {
         },
         html: {
             active: false,
-            entries: [
-                { name: 'Time', html: '<h1>Hello world</h1>', default_quality: 0.95 }
-            ],
+            entries: [ ],
         },
     },
 };
