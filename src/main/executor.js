@@ -10,6 +10,7 @@ import CalculatorModule from "./modules/calculator";
 import LinuxApplicationModule from "./modules/linux-applications";
 import UrlModule from "./modules/url";
 import LocateModule from "./modules/locate";
+import ShortcutModule from "./modules/shortcuts";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -21,22 +22,22 @@ const modules = {
     linux_applications: LinuxApplicationModule,
     url: UrlModule,
     locate: LocateModule,
+    shortcuts: ShortcutModule,
 };
-
-let last_query_timeout = null;
 
 export function initModules() {
     return Promise.all(Object.values(modules).map((module) => module.init && module.init()));
 }
 
-export function updateModules() {
-    return Promise.all(Object.values(modules).map((module) => module.update && module.update()));
+export function updateModules(old_config) {
+    return Promise.all(Object.values(modules).map((module) => module.update && module.update(old_config)));
 }
 
 export function deinitModules() {
     return Promise.all(Object.values(modules).map((module) => module.deinit && module.deinit()));
 }
 
+let last_query_timeout = null;
 let exec_id = 0;
 
 export function searchQuery(query, callback) {
@@ -48,7 +49,7 @@ export function searchQuery(query, callback) {
             let results = [];
             let lock = new AsyncLock();
             await Promise.all(Object.keys(modules).filter((id) => modules[id].valid(query)).map((id) => {
-                return new Promise((resolve) => lock.acquire('results', async () => {
+                return new Promise((resolv) => lock.acquire('results', async () => {
                     if(exec_id === beginn_id) {
                         let result = (await modules[id].search(query));
                         results = results
@@ -57,8 +58,10 @@ export function searchQuery(query, callback) {
                             .sort((a, b) => b.quality - a.quality)
                             .slice(0, config.general.max_results);
                         callback(results);
+                    } else {
                         resolve();
                     }
+                    resolv();
                 }));
             }));
             if(exec_id === beginn_id) {

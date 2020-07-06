@@ -53,3 +53,7 @@ This module allows you to open urls.
 
 #### Locate
 This module allows you to search for files using locate.
+
+#### Shortcuts
+This module allows you to define shortcuts to run shell scripts.
+

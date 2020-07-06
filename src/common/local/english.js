@@ -54,6 +54,11 @@ const translation_english = {
     
     locate: 'Locate',
     locate_description: 'This module allows you to search for files using locate',
+    
+    shortcuts: 'Shortcuts',
+    shortcuts_description: 'This module allows you to define shortcuts to run shell scripts',
+    shortcut: 'Shortcut',
+    script: 'Script',
 };
 
 export default translation_english;

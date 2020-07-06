@@ -8,7 +8,7 @@ export let config = {
     general: {
         global_shortcut: 'Super+D',
         language: 'en',
-        debounce_time: 0,
+        debounce_time: 100,
         width: 600,
         max_height: 500,
         max_results: 200,
@@ -47,8 +47,11 @@ export let config = {
             active: true,
             quality: 1.0,
         },
-        locate: {
-            active: true,
+        shortcuts: {
+            active: false,
+            shortcuts: [
+                { shortcut: 'Super+C', script: 'code' },
+            ],
         },
     },
 };
