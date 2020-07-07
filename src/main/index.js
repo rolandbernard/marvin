@@ -75,15 +75,14 @@ async function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
         loadConfig();
-        await initModules();
-        createMainWindow();
-        createSettingsWindow();
-
         const ret = globalShortcut.register(config.general.global_shortcut, toggleMain);
         if (!ret) {
             console.error('Failed to register a global shortcut');
             app.quit();
         }
+        await initModules();
+        createMainWindow();
+        createSettingsWindow();
 
         ipcMain.on('input-change', (_, query) => {
             clearTimeout(last_loading);
