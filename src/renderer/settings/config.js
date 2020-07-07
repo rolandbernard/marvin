@@ -56,6 +56,10 @@ const config_definition = [
                 { name: 'script', type: 'code' },
             ], default: { shortcut: '', script: '' } },
         ], type: 'page', description: 'shortcuts_description' },
+        { name: 'command', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+        ], type: 'page', description: 'command_description' },
     ], type: 'subheader' }
 ];
 

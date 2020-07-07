@@ -215,17 +215,11 @@ const LinuxApplicationModule = {
         }).reduce((a, b) => a.concat(b));
     },
     execute: (option) => {
-        return new Promise((resolve) => {
-            if (getProp(option.app, 'Terminal') === 'true') {
-                exec(`xterm -e '${getProp(option.app, 'Exec').replace(/\%./g, '')}'`, () => {
-                    resolve();
-                })
-            } else {
-                exec(`${getProp(option.app, 'Exec').replace(/\%./g, '')}`, () => {
-                    resolve();
-                })
-            }
-        });
+        if (getProp(option.app, 'Terminal') === 'true') {
+            exec(`xterm -e "${getProp(option.app, 'Exec').replace(/\%./g, '').replace(/\"/g, '\\"')}"`);
+        } else {
+            exec(`${getProp(option.app, 'Exec').replace(/\%./g, '')}`);
+        }
     },
 };
 

@@ -9,7 +9,7 @@ const ShortcutModule = {
             config.modules.shortcuts.shortcuts.forEach((shortcut) => {
                 try {
                     globalShortcut.register(shortcut.shortcut, () => {
-                        exec(`sh <<< "${shortcut.script.replace(/"/g, '\\"')}"`);
+                        exec(`sh <<< "${shortcut.script.replace(/\"/g, '\\"')}"`);
                     });
                 } catch (e) { }
             });

@@ -53,6 +53,10 @@ export let config = {
                 { shortcut: 'Super+C', script: 'code' },
             ],
         },
+        command: {
+            active: true,
+            prefix: '$',
+        },
     },
 };
 

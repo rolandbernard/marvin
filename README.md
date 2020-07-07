@@ -57,3 +57,5 @@ This module allows you to search for files using locate.
 #### Shortcuts
 This module allows you to define shortcuts to run shell scripts.
 
+#### Command
+This module allows you to execute shell commands.

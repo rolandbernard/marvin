@@ -11,6 +11,7 @@ import LinuxApplicationModule from "./modules/linux-applications";
 import UrlModule from "./modules/url";
 import LocateModule from "./modules/locate";
 import ShortcutModule from "./modules/shortcuts";
+import CommandModule from './modules/command';
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -23,6 +24,7 @@ const modules = {
     url: UrlModule,
     locate: LocateModule,
     shortcuts: ShortcutModule,
+    command: CommandModule,
 };
 
 export function initModules() {
