@@ -209,7 +209,9 @@ const LinuxApplicationModule = {
                 primary: getProp(value, 'Name', name),
                 secondary: getProp(value, 'Comment', name),
                 executable: true,
-                quality: stringMatchQuality(query, name + desc + getProp(app.desktop, 'GenericName', '')),
+                quality: Math.max(stringMatchQuality(query, name),
+                                0.75 * stringMatchQuality(query, desc),
+                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', ''))),
                 app: value,
             }));
         }).reduce((a, b) => a.concat(b));
