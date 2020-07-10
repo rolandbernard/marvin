@@ -31,11 +31,7 @@ const LinuxSystemModule = {
         ];
     },
     execute: (option) => {
-        return new Promise((resolve) => {
-            exec(option.command, () => {
-                resolve();
-            })
-        });
+        exec(option.command);
     },
 }
 

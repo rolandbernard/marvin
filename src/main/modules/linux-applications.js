@@ -209,23 +209,19 @@ const LinuxApplicationModule = {
                 primary: getProp(value, 'Name', name),
                 secondary: getProp(value, 'Comment', name),
                 executable: true,
-                quality: stringMatchQuality(query, name + desc + getProp(app.desktop, 'GenericName', '')),
+                quality: Math.max(stringMatchQuality(query, name),
+                                0.75 * stringMatchQuality(query, desc),
+                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', ''))),
                 app: value,
             }));
         }).reduce((a, b) => a.concat(b));
     },
     execute: (option) => {
-        return new Promise((resolve) => {
-            if (getProp(option.app, 'Terminal') === 'true') {
-                exec(`xterm -e '${getProp(option.app, 'Exec').replace(/\%./g, '')}'`, () => {
-                    resolve();
-                })
-            } else {
-                exec(`${getProp(option.app, 'Exec').replace(/\%./g, '')}`, () => {
-                    resolve();
-                })
-            }
-        });
+        if (getProp(option.app, 'Terminal') === 'true') {
+            exec(`xterm -e "${getProp(option.app, 'Exec').replace(/\%./g, '').replace(/\"/g, '\\"')}"`);
+        } else {
+            exec(`${getProp(option.app, 'Exec').replace(/\%./g, '')}`);
+        }
     },
 };
 

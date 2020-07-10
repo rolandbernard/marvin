@@ -6,9 +6,9 @@ export function stringMatchQuality(text, pattern) {
 	if (text === pattern) {
 		return 0.9;
 	} else if(pattern.startsWith(text)) {
-		return 0.8;
+		return 0.7 + 0.2 * (text.length / pattern.length);
 	} else if (pattern.includes(text)) {
-		return 0.7;
+		return 0.5 + 0.4 * (text.length / pattern.length);
 	} else {
 		return 0;
 	}
