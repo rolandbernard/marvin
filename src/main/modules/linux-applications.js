@@ -211,6 +211,8 @@ const LinuxApplicationModule = {
                 executable: true,
                 quality: Math.max(stringMatchQuality(query, name),
                                 0.75 * stringMatchQuality(query, desc),
+                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'Keywords', '')),
+                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'Categories', '')),
                                 0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', ''))),
                 app: value,
             }));
