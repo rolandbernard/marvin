@@ -17,6 +17,11 @@ function CodeSetting(props) {
     const onUpdate = (e) => {
         props.onUpdate(e.target.value);
     };
+    const onKeyDown = (e) => {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+        }
+    };
     return (
         <div>
             <TextField
@@ -25,6 +30,7 @@ function CodeSetting(props) {
                 rowsMax={7}
                 variant="outlined"
                 onChange={onUpdate}
+                onKeyDown={onKeyDown}
                 multiline
                 inputProps={{
                     style: styles.input,

@@ -49,13 +49,15 @@ export let config = {
         },
         shortcuts: {
             active: false,
-            shortcuts: [
-                { shortcut: 'Super+C', script: 'code' },
-            ],
+            shortcuts: [ ],
         },
         command: {
             active: true,
             prefix: '$',
+        },
+        scripts: {
+            active: false,
+            entries: [ ],
         },
     },
 };

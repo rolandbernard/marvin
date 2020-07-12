@@ -63,3 +63,6 @@ This module allows you to define shortcuts to run shell scripts.
 This module allows you to execute shell commands.
 
 ![screenshot](img/command.png)
+
+#### Scripts
+This module allows you to create custom entries to execute shell scripts.

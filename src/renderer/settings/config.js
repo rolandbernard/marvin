@@ -60,6 +60,14 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
         ], type: 'page', description: 'command_description' },
+        { name: 'scripts', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'entries', type: 'array', base: [
+                { name: 'name', type: 'text' },
+                { name: 'script', type: 'code' },
+                { name: 'default_quality', type: 'quality' },
+            ], default: { name: '', script: '', default_quality: 0.0 } },
+        ], type: 'page', description: 'scripts_description' },
     ], type: 'subheader' }
 ];
 

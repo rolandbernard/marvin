@@ -65,6 +65,9 @@ const translation_english = {
     prefix: 'Prefix',
     execute: 'Execute',
     execute_in_terminal: 'Execute in terminal', 
+
+    scripts: 'Scripts',
+    scripts_description: 'This module allows you to create custom entries to execute shell scripts',
 };
 
 export default translation_english;
