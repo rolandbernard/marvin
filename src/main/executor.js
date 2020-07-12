@@ -61,7 +61,9 @@ export function searchQuery(query, callback) {
                             .filter((option) => option.quality > 0)
                             .sort((a, b) => b.quality - a.quality)
                             .slice(0, config.general.max_results);
-                        callback(results);
+                        if(config.general.incremental_results) {
+                            callback(results);
+                        }
                     } else {
                         resolve();
                     }

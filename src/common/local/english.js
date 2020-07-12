@@ -7,6 +7,7 @@ const translation_english = {
     width: 'Width [px]',
     max_height: 'Maximum height [px]',
     max_results: 'Maximum results',
+    incremental_results: 'Incremental results',
 
     theme: 'Color theme',
     background_color: 'Background color',
@@ -54,6 +55,7 @@ const translation_english = {
     
     locate: 'Locate',
     locate_description: 'This module allows you to search for files using locate',
+    search_limit: 'Search limit',
     
     shortcuts: 'Shortcuts',
     shortcuts_description: 'This module allows you to define shortcuts to run shell scripts',

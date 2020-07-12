@@ -7,6 +7,7 @@ const translation_german = {
     width: 'Breite [px]',
     max_height: 'Maximale Höhe [px]',
     max_results: 'Maximale Ergebnisse',
+    incremental_results: 'Inkrementelle Ergebnisse',
 
     theme: 'Farbschema',
     background_color: 'Hintergundfarbe',
@@ -54,6 +55,7 @@ const translation_german = {
     
     locate: 'Locate',
     locate_description: 'Mit diesem Modul können Sie mithilfe von locate nach Dateien suchen',
+    search_limit: 'Suchlimit',
     
     shortcuts: 'Shortcuts',
     shortcuts_description: 'Mit diesem Modul können Shortcuts zur Ausführung von Shell-Scripts definiert werden',

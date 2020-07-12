@@ -7,6 +7,7 @@ const config_definition = [
         { name: 'width', type: 'size' },
         { name: 'max_height', type: 'size' },
         { name: 'max_results', type: 'size' },
+        { name: 'incremental_results', type: 'boolean' },
     ], type: 'page' },
     { name: 'theme', icon: 'palette', options: [
         { name: 'background_color', type: 'color' },
@@ -48,6 +49,7 @@ const config_definition = [
         ], type: 'page', description: 'url_description' },
         { name: 'locate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'search_limit', type: 'size' },
         ], type: 'page', description: 'locate_description' },
         { name: 'shortcuts', active: 'active', options: [
             { name: 'active', type: 'boolean' },

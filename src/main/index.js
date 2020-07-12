@@ -86,7 +86,7 @@ async function startApp() {
 
         ipcMain.on('input-change', (_, query) => {
             clearTimeout(last_loading);
-            last_loading = setTimeout(() => main_window.webContents.send('update-options', null), 250);
+            last_loading = setTimeout(() => main_window.webContents.send('update-options', null), config.general.debounce_time + 100);            
             searchQuery(query, (results) => {
                 clearTimeout(last_loading);
                 main_window.webContents.send('update-options', results);

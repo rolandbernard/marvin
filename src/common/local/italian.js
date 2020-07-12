@@ -7,6 +7,7 @@ const translation_italian = {
     width: 'Larghezza [px]',
     max_height: 'Altezza massima [px]',
     max_results: 'Risultati massimi',
+    incremental_results: 'Risultati incrementali',
 
     theme: 'Combinazione di colori',
     background_color: 'Colore di sfondo',
@@ -54,6 +55,7 @@ const translation_italian = {
     
     locate: 'Locate',
     locate_description: 'Questo modulo consente di cercare i file utilizzando locate',
+    search_limit: 'Limite di ricerca',
     
     shortcuts: 'Shortcuts',
     shortcuts_description: 'Questo modulo consente di definire collegamenti per eseguire script di shell',
