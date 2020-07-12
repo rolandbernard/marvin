@@ -1,4 +1,4 @@
-<assets src="static/logo.png" width="48"/> Marvin
+<img src="static/logo.png" width="48"/> Marvin
 ===
 This is a keystroke launcher for Linux. It is build using electron but it has not been ported to Windows or MacOs yet.
 
