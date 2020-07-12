@@ -69,24 +69,26 @@ function toggleMain() {
     }
 }
 
+let last_loading = null;
+
 async function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
         loadConfig();
-        await initModules();
-        createMainWindow();
-        createSettingsWindow();
-
         const ret = globalShortcut.register(config.general.global_shortcut, toggleMain);
         if (!ret) {
             console.error('Failed to register a global shortcut');
             app.quit();
         }
+        await initModules();
+        createMainWindow();
+        createSettingsWindow();
 
         ipcMain.on('input-change', (_, query) => {
-            const loading = setTimeout(() => main_window.webContents.send('update-options', null), 500);
+            clearTimeout(last_loading);
+            last_loading = setTimeout(() => main_window.webContents.send('update-options', null), 250);
             searchQuery(query, (results) => {
-                clearTimeout(loading);
+                clearTimeout(last_loading);
                 main_window.webContents.send('update-options', results);
             });
         });
@@ -111,8 +113,9 @@ async function startApp() {
                     new_config.general.global_shortcut = config.general.global_shortcut;
                 }
             }
+            const old_config = new_config;
             updateConfig(new_config);
-            await updateModules();
+            await updateModules(old_config);
         });
     } else {
         console.error("Other instance is already running: quitting app.");

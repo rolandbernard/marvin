@@ -22,7 +22,7 @@ function CodeSetting(props) {
             <TextField
                 style={styles.text}
                 defaultValue={props.option}
-                rows={10}
+                rowsMax={7}
                 variant="outlined"
                 onChange={onUpdate}
                 multiline

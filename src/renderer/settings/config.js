@@ -49,6 +49,17 @@ const config_definition = [
         { name: 'locate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
         ], type: 'page', description: 'locate_description' },
+        { name: 'shortcuts', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'shortcuts', type: 'array', base: [
+                { name: 'shortcut', type: 'shortcut' },
+                { name: 'script', type: 'code' },
+            ], default: { shortcut: '', script: '' } },
+        ], type: 'page', description: 'shortcuts_description' },
+        { name: 'command', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+        ], type: 'page', description: 'command_description' },
     ], type: 'subheader' }
 ];
 
