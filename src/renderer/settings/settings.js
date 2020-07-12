@@ -118,7 +118,7 @@ class App extends React.Component {
                     </List>
                 </Drawer>
                 <div style={styles.settings}>
-                    <SettingsPage page={this.state.selected} onUpdate={() => this.onUpdate()}></SettingsPage>
+                    <SettingsPage page={this.state.selected} onUpdate={() => this.onUpdate()} config={this.state.config}></SettingsPage>
                 </div>
             </div>
         );

@@ -24,7 +24,7 @@ const translation_english = {
     path_error: 'Value must be a valid absolute path',
 
     marvin_quote: 'Marvin quotes',
-    marvin_quote_description: 'This module will show you random, inspiring and uplifting quotes from Marvin the paranied robot.',
+    marvin_quote_description: 'This module will show you random, inspiring and uplifting quotes from Marvin the paranied android',
     quality: 'Priority',
 
     linux_system: 'Linux system',
@@ -41,7 +41,7 @@ const translation_english = {
     html_description: 'This module allows you to create custom HTML entries',
     entries: 'Entries',
     name: 'Name',
-    default_quality: 'Default quality',
+    default_quality: 'Default priority',
 
     calculator: 'Calculator',
     calculator_description: 'This module allows you to do calculations using mathjs',
