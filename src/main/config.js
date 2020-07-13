@@ -64,6 +64,11 @@ export let config = {
             active: false,
             entries: [ ],
         },
+        clipboard: {
+            active: false,
+            refresh_time: 20,
+            maximum_history: 1000,
+        },
     },
 };
 

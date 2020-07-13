@@ -190,10 +190,12 @@ async function loadApplications() {
 
 const LinuxApplicationModule = {
     init: async () => {
-        await loadApplications();
+        if(config.modules.linux_applications.active) {
+            await loadApplications();
+        }
     },
     update: async () => {
-        await loadApplications();
+        await LinuxApplicationModule.init();
     },
     valid: (query) => {
         return config.modules.linux_applications.active && query.length >= 1;

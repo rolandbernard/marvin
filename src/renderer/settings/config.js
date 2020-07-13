@@ -70,6 +70,11 @@ const config_definition = [
                 { name: 'default_quality', type: 'quality' },
             ], default: { name: '', script: '', default_quality: 0.0 } },
         ], type: 'page', description: 'scripts_description' },
+        { name: 'clipboard', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'refresh_time', type: 'size' },
+            { name: 'maximum_history', type: 'size' },
+        ], type: 'page', description: 'clipboard_description' },
     ], type: 'subheader' }
 ];
 

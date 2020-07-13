@@ -13,6 +13,7 @@ import LocateModule from "./modules/locate";
 import ShortcutModule from "./modules/shortcuts";
 import CommandModule from './modules/command';
 import ScriptsModule from "./modules/scripts";
+import ClipboardModule from "./modules/clipboard";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -27,6 +28,7 @@ const modules = {
     shortcuts: ShortcutModule,
     command: CommandModule,
     scripts: ScriptsModule,
+    clipboard: ClipboardModule,
 };
 
 export function initModules() {

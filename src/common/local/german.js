@@ -70,6 +70,11 @@ const translation_german = {
 
     scripts: 'Scripts',
     scripts_description: 'Mit diesem Modul können Sie benutzerdefinierte Einträge erstellen, um Shell-Scripte auszuführen',
+
+    clipboard: 'Zwischenablage',
+    clipboard_description: 'Mit diesem Modul kann auf den Verlauf der Zwischenablage zugegriffen werden',
+    refresh_time: 'Aktualisierungsintervall',
+    maximum_history: 'Maximale einträge',
 };
 
 export default translation_german;

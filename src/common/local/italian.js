@@ -70,6 +70,11 @@ const translation_italian = {
 
     scripts: 'Script',
     scripts_description: 'Questo modulo consente di creare voci personalizzate per eseguire script di shell',
+
+    clipboard: 'Appunti',
+    clipboard_description: 'Questo modulo ti consente di accedere alla cronologia degli appunti',
+    refresh_time: 'Intervallo di aggiornamento',
+    maximum_history: 'voci massime',
 };
 
 export default translation_italian;

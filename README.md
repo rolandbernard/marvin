@@ -66,3 +66,8 @@ This module allows you to execute shell commands.
 
 #### Scripts
 This module allows you to create custom entries to execute shell scripts.
+
+#### Clipboard
+This module allows you to access your clipboard history.
+
+![screenshot](assets/clipboard.png)

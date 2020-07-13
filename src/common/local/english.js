@@ -70,6 +70,11 @@ const translation_english = {
 
     scripts: 'Scripts',
     scripts_description: 'This module allows you to create custom entries to execute shell scripts',
+
+    clipboard: 'Clipboard',
+    clipboard_description: 'This module allows you to access your clipboard history',
+    refresh_time: 'Refresh interval',
+    maximum_history: 'Maximum history',
 };
 
 export default translation_english;

@@ -129,11 +129,12 @@ async function closeApp() {
         main_window.destroy();
     }
     await deinitModules();
-    app.quit();
 }
 
 app.on('ready', () => setTimeout(startApp, 500));
 
-app.on("window-all-closed", closeApp);
-
-
+app.on('before-quit', closeApp);
+app.on("window-all-closed", () => {
+    closeApp();
+    app.quit();
+});
