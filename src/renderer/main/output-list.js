@@ -4,11 +4,13 @@ import { CircularProgress } from '@material-ui/core';
 import SimpleText from './display/simple-text';
 import IconListItem from './display/icon-list-item';
 import HtmlItem from './display/html-item';
+import IconText from './display/icon-text';
 
 const display_types = {
     simple_text: SimpleText,
     icon_list_item: IconListItem,
     html: HtmlItem,
+    icon_text: IconText,
 };
 
 class OutputList extends React.Component {

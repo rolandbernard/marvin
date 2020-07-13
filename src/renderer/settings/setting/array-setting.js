@@ -100,7 +100,7 @@ function ArraySetting(props) {
                     <tr><td></td><td></td><td style={styles.button}>
                         <IconButton onClick={() => {
                             if (props.option) {
-                                props.option.push(props.definition.default);
+                                props.option.push(JSON.parse(JSON.stringify(props.definition.default)));
                                 props.onUpdate(props.option);
                             }
                         }}><AddIcon></AddIcon></IconButton>

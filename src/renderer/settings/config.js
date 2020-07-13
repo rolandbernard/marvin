@@ -7,6 +7,7 @@ const config_definition = [
         { name: 'width', type: 'size' },
         { name: 'max_height', type: 'size' },
         { name: 'max_results', type: 'size' },
+        { name: 'incremental_results', type: 'boolean' },
     ], type: 'page' },
     { name: 'theme', icon: 'palette', options: [
         { name: 'background_color', type: 'color' },
@@ -48,6 +49,7 @@ const config_definition = [
         ], type: 'page', description: 'url_description' },
         { name: 'locate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'search_limit', type: 'size' },
         ], type: 'page', description: 'locate_description' },
         { name: 'shortcuts', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -60,6 +62,19 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
         ], type: 'page', description: 'command_description' },
+        { name: 'scripts', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'entries', type: 'array', base: [
+                { name: 'name', type: 'text' },
+                { name: 'script', type: 'code' },
+                { name: 'default_quality', type: 'quality' },
+            ], default: { name: '', script: '', default_quality: 0.0 } },
+        ], type: 'page', description: 'scripts_description' },
+        { name: 'clipboard', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'refresh_time', type: 'size' },
+            { name: 'maximum_history', type: 'size' },
+        ], type: 'page', description: 'clipboard_description' },
     ], type: 'subheader' }
 ];
 

@@ -86,7 +86,7 @@ async function startApp() {
 
         ipcMain.on('input-change', (_, query) => {
             clearTimeout(last_loading);
-            last_loading = setTimeout(() => main_window.webContents.send('update-options', null), 250);
+            last_loading = setTimeout(() => main_window.webContents.send('update-options', null), config.general.debounce_time + 100);            
             searchQuery(query, (results) => {
                 clearTimeout(last_loading);
                 main_window.webContents.send('update-options', results);
@@ -129,11 +129,12 @@ async function closeApp() {
         main_window.destroy();
     }
     await deinitModules();
-    app.quit();
 }
 
 app.on('ready', () => setTimeout(startApp, 500));
 
-app.on("window-all-closed", closeApp);
-
-
+app.on('before-quit', closeApp);
+app.on("window-all-closed", () => {
+    closeApp();
+    app.quit();
+});

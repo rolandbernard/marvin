@@ -13,9 +13,12 @@ const styles = {
 };
 
 function LanguageSetting(props) {
+    const onChange = (e) => {
+        props.onUpdate(e.target.value);
+    };
     return (
         <div>
-            <Select style={styles.select} value={props.option} variant="outlined">
+            <Select style={styles.select} value={props.option} variant="outlined" onChange={onChange}>
                 {Object.keys(supported_languages).map((id) => (
                     <MenuItem key={id} value={id}>{supported_languages[id]}</MenuItem>
                 ))}

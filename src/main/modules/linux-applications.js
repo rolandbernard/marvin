@@ -190,10 +190,12 @@ async function loadApplications() {
 
 const LinuxApplicationModule = {
     init: async () => {
-        await loadApplications();
+        if(config.modules.linux_applications.active) {
+            await loadApplications();
+        }
     },
     update: async () => {
-        await loadApplications();
+        await LinuxApplicationModule.init();
     },
     valid: (query) => {
         return config.modules.linux_applications.active && query.length >= 1;
@@ -211,6 +213,8 @@ const LinuxApplicationModule = {
                 executable: true,
                 quality: Math.max(stringMatchQuality(query, name),
                                 0.75 * stringMatchQuality(query, desc),
+                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'Keywords', '')),
+                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'Categories', '')),
                                 0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', ''))),
                 app: value,
             }));

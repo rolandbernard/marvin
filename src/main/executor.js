@@ -12,6 +12,8 @@ import UrlModule from "./modules/url";
 import LocateModule from "./modules/locate";
 import ShortcutModule from "./modules/shortcuts";
 import CommandModule from './modules/command';
+import ScriptsModule from "./modules/scripts";
+import ClipboardModule from "./modules/clipboard";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -25,6 +27,8 @@ const modules = {
     locate: LocateModule,
     shortcuts: ShortcutModule,
     command: CommandModule,
+    scripts: ScriptsModule,
+    clipboard: ClipboardModule,
 };
 
 export function initModules() {
@@ -59,7 +63,9 @@ export function searchQuery(query, callback) {
                             .filter((option) => option.quality > 0)
                             .sort((a, b) => b.quality - a.quality)
                             .slice(0, config.general.max_results);
-                        callback(results);
+                        if(config.general.incremental_results) {
+                            callback(results);
+                        }
                     } else {
                         resolve();
                     }

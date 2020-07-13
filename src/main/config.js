@@ -12,6 +12,7 @@ export let config = {
         width: 600,
         max_height: 500,
         max_results: 200,
+        incremental_results: true,
     },
     theme: {
         background_color: 'black',
@@ -47,15 +48,26 @@ export let config = {
             active: true,
             quality: 1.0,
         },
+        locate: {
+            active: false,
+            search_limit: 1000,
+        },
         shortcuts: {
             active: false,
-            shortcuts: [
-                { shortcut: 'Super+C', script: 'code' },
-            ],
+            shortcuts: [ ],
         },
         command: {
             active: true,
             prefix: '$',
+        },
+        scripts: {
+            active: false,
+            entries: [ ],
+        },
+        clipboard: {
+            active: false,
+            refresh_time: 20,
+            maximum_history: 1000,
         },
     },
 };

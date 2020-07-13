@@ -21,17 +21,17 @@ The program uses different modules to provide different functionalities.
 #### Marvin quotes
 This module will show you random, inspiring and uplifting quotes from Marvin the paranoid robot.
 
-![screenshot](img/marvin_quotes.png)
+![screenshot](assets/marvin_quotes.png)
 
 #### Linux system
 This module will give you access to some fundamental linux system operations. (Reboot, Shutdown)
 
-![screenshot](img/linux_system.png)
+![screenshot](assets/linux_system.png)
 
 #### Folders
 This module allows you to browse files.
 
-![screenshot](img/folders.png)
+![screenshot](assets/folders.png)
 
 #### HTML
 This module allows you to create custom HTML entries.
@@ -39,22 +39,22 @@ This module allows you to create custom HTML entries.
 #### Calculator
 This module allows you to do calculations using mathjs.
 
-![screenshot](img/calculator.png)
+![screenshot](assets/calculator.png)
 
 #### Linux applications
 This module allows you to start applications on linux.
 
-![screenshot](img/linux_application.png)
+![screenshot](assets/linux_application.png)
 
 #### URL module
 This module allows you to open urls.
 
-![screenshot](img/url.png)
+![screenshot](assets/url.png)
 
 #### Locate
 This module allows you to search for files using locate.
 
-![screenshot](img/locate.png)
+![screenshot](assets/locate.png)
 
 #### Shortcuts
 This module allows you to define shortcuts to run shell scripts.
@@ -62,4 +62,12 @@ This module allows you to define shortcuts to run shell scripts.
 #### Command
 This module allows you to execute shell commands.
 
-![screenshot](img/command.png)
+![screenshot](assets/command.png)
+
+#### Scripts
+This module allows you to create custom entries to execute shell scripts.
+
+#### Clipboard
+This module allows you to access your clipboard history.
+
+![screenshot](assets/clipboard.png)

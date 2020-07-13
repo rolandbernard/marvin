@@ -1,6 +1,5 @@
 
 import { clipboard } from "electron";
-
 import { config } from '../config';
 
 const quotes = [
