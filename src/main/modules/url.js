@@ -35,12 +35,8 @@ const UrlModule = {
             url: completeUrl(query),
         }];
     },
-    execute: (option) => {
-        return new Promise((resolve) => {
-            exec(`xdg-open ${option.url}`, () => {
-                resolve();
-            });
-        });
+    execute: async (option) => {
+        exec(`xdg-open ${option.url}`);
     },
 }
 

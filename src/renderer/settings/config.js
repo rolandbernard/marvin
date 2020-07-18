@@ -78,6 +78,9 @@ const config_definition = [
         { name: 'deepl', active: 'active', options: [
             { name: 'active', type: 'boolean' },
         ], type: 'page', description: 'deepl_description' },
+        { name: 'linux_windows', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+        ], type: 'page', description: 'linux_windows_description' },
     ], type: 'subheader' }
 ];
 

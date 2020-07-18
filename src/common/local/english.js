@@ -78,6 +78,9 @@ const translation_english = {
 
     deepl: 'Deepl',
     deepl_description: 'This module allows you to translate text by using Deepl in a headless Chromium window',
+    
+    linux_windows: 'Linux windows',
+    linux_windows_description: 'This module allows you to find open windows',
 };
 
 export default translation_english;

@@ -142,7 +142,7 @@ const DeeplModule = {
             resolve();
             return;
         }
-        await page.keyboard.type(text);
+        await page.keyboard.type(text, { delay: 10 });
         if (stop) {
             resolve();
             return;
@@ -162,6 +162,7 @@ const DeeplModule = {
             await page.waitFor(100);
             max_wait--;
         }
+        await page.waitFor(100);
         if (stop) {
             resolve();
             return;
@@ -174,7 +175,7 @@ const DeeplModule = {
             quality: 1.0,
         })))).filter((option) => option.text.length > 0);
     },
-    execute: (option) => {
+    execute: async (option) => {
         clipboard.writeText(option.text);
     },
 };

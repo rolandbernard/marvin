@@ -48,7 +48,7 @@ const ClipboardModule = {
         clearInterval(interval);
     },
     valid: (query) => {
-        return config.modules.clipboard.active && query.length > 0;
+        return config.modules.clipboard.active && query.trim().length > 0;
     },
     search: async (query) => {
         const clipboard_match = stringMatchQuality(query, getTranslation(config, 'clipboard'));

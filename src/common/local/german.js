@@ -78,6 +78,9 @@ const translation_german = {
     
     deepl: 'Deepl',
     deepl_description: 'Mit diesem Modul können Sie Texte mithilfe von Deepl in einem headless Chromium-Fenster übersetzen',
+
+    linux_windows: 'Linux windows',
+    linux_windows_description: 'Mit diesem Modul können Sie geöffnete Fenster finden',
 };
 
 export default translation_german;

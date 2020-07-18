@@ -72,6 +72,9 @@ export let config = {
         deepl: {
             active: false,
         },
+        linux_windows: {
+            active: false,
+        },
     },
 };
 

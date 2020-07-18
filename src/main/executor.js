@@ -15,6 +15,7 @@ import CommandModule from './modules/command';
 import ScriptsModule from "./modules/scripts";
 import ClipboardModule from "./modules/clipboard";
 import DeeplModule from "./modules/deepl";
+import LinuxWindowsModule from "./modules/linux-windows";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -31,6 +32,7 @@ const modules = {
     scripts: ScriptsModule,
     clipboard: ClipboardModule,
     deepl: DeeplModule,
+    linux_windows: LinuxWindowsModule,
 };
 
 export function initModules() {
@@ -75,6 +77,7 @@ export function searchQuery(query, callback) {
                             }
                         });
                     } catch(e) {
+                        console.error(e);
                         resolve();
                     } finally {
                         resolv();

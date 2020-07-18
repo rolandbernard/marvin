@@ -4,7 +4,7 @@ import * as math from 'mathjs';
 
 const CalculatorModule = {
     valid: (query) => {
-        return config.modules.calculator.active && query.length >= 1;
+        return config.modules.calculator.active && query.trim().length >= 1;
     },
     search: async (query) => {
         try {
