@@ -75,6 +75,9 @@ const translation_english = {
     clipboard_description: 'This module allows you to access your clipboard history',
     refresh_time: 'Refresh interval',
     maximum_history: 'Maximum history',
+
+    deepl: 'Deepl',
+    deepl_description: 'This module allows you to translate text by using Deepl in a headless Chromium window',
 };
 
 export default translation_english;

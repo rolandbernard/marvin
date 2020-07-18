@@ -20,6 +20,8 @@
         "material-icons": "^0.3.1",
         "material-ui-color": "^0.4.4",
         "mathjs": "^7.0.2",
+        "puppeteer-core": "^5.2.0",
+        "puppeteer-in-electron": "^3.0.3",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "source-map-support": "^0.5.16",

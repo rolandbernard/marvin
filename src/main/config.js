@@ -69,6 +69,9 @@ export let config = {
             refresh_time: 20,
             maximum_history: 1000,
         },
+        deepl: {
+            active: false,
+        },
     },
 };
 

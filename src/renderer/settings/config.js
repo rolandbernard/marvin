@@ -75,6 +75,9 @@ const config_definition = [
             { name: 'refresh_time', type: 'size' },
             { name: 'maximum_history', type: 'size' },
         ], type: 'page', description: 'clipboard_description' },
+        { name: 'deepl', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+        ], type: 'page', description: 'deepl_description' },
     ], type: 'subheader' }
 ];
 
