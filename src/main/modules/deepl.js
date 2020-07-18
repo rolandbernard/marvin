@@ -85,7 +85,6 @@ const DeeplModule = {
             const to = query.toLowerCase().lastIndexOf(' to ');
             const lang_name = query.substr(to + 4).toLowerCase().trim();
             const lang = Object.keys(languages).find((l) => languages[l].find((n) => n.toLowerCase() === lang_name));
-            console.log(lang, last_lang);
             const text = query.substr(0, to).trim();
             await page.goto('https://www.deepl.com/translator')
             await page.waitFor(100);
