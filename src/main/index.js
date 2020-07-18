@@ -124,17 +124,12 @@ async function startApp() {
 }
 
 async function closeApp() {
+    await deinitModules();
     globalShortcut.unregisterAll();
     if (main_window && !main_window.isDestroyed()) {
         main_window.destroy();
     }
-    await deinitModules();
 }
 
 app.on('ready', () => setTimeout(startApp, 500));
-
-app.on('before-quit', closeApp);
-app.on("window-all-closed", () => {
-    closeApp();
-    app.quit();
-});
+app.on('before-exit', closeApp);

@@ -75,6 +75,9 @@ const translation_italian = {
     clipboard_description: 'Questo modulo ti consente di accedere alla cronologia degli appunti',
     refresh_time: 'Intervallo di aggiornamento',
     maximum_history: 'voci massime',
+    
+    deepl: 'Deepl',
+    deepl_description: 'Questo modulo consente di tradurre testi utilizzando Deepl in una finestra headless di Chromium',
 };
 
 export default translation_italian;

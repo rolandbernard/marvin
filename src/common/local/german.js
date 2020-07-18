@@ -75,6 +75,9 @@ const translation_german = {
     clipboard_description: 'Mit diesem Modul kann auf den Verlauf der Zwischenablage zugegriffen werden',
     refresh_time: 'Aktualisierungsintervall',
     maximum_history: 'Maximale einträge',
+    
+    deepl: 'Deepl',
+    deepl_description: 'Mit diesem Modul können Sie Texte mithilfe von Deepl in einem headless Chromium-Fenster übersetzen',
 };
 
 export default translation_german;

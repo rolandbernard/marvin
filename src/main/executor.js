@@ -14,6 +14,7 @@ import ShortcutModule from "./modules/shortcuts";
 import CommandModule from './modules/command';
 import ScriptsModule from "./modules/scripts";
 import ClipboardModule from "./modules/clipboard";
+import DeeplModule from "./modules/deepl";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -29,6 +30,7 @@ const modules = {
     command: CommandModule,
     scripts: ScriptsModule,
     clipboard: ClipboardModule,
+    deepl: DeeplModule,
 };
 
 export function initModules() {
@@ -49,30 +51,37 @@ let exec_id = 0;
 export function searchQuery(query, callback) {
     return new Promise((resolve) => {
         exec_id++;
-        const beginn_id = exec_id;
+        const begin_id = exec_id;
         clearTimeout(last_query_timeout);
         last_query_timeout = setTimeout(async () => {
             let results = [];
             let lock = new AsyncLock();
             await Promise.all(Object.keys(modules).filter((id) => modules[id].valid(query)).map((id) => {
-                return new Promise((resolv) => lock.acquire('results', async () => {
-                    if(exec_id === beginn_id) {
+                return new Promise(async (resolv) => {
+                    try {
                         let result = (await modules[id].search(query));
-                        results = results
-                            .concat(result.map((option) => ({ ...option, module: id })))
-                            .filter((option) => option.quality > 0)
-                            .sort((a, b) => b.quality - a.quality)
-                            .slice(0, config.general.max_results);
-                        if(config.general.incremental_results) {
-                            callback(results);
-                        }
-                    } else {
+                        lock.acquire('results', () => {
+                            if (exec_id === begin_id) {
+                                results = results
+                                    .concat(result.map((option) => ({ ...option, module: id })))
+                                    .filter((option) => option.quality > 0)
+                                    .sort((a, b) => b.quality - a.quality)
+                                    .slice(0, config.general.max_results);
+                                if (config.general.incremental_results && results.length > 0) {
+                                    callback(results);
+                                }
+                            } else {
+                                resolve();
+                            }
+                        });
+                    } catch(e) {
                         resolve();
+                    } finally {
+                        resolv();
                     }
-                    resolv();
-                }));
+                });
             }));
-            if(exec_id === beginn_id) {
+            if(exec_id === begin_id) {
                 callback(results);
             }
             resolve();

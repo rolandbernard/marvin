@@ -71,3 +71,8 @@ This module allows you to create custom entries to execute shell scripts.
 This module allows you to access your clipboard history.
 
 ![screenshot](assets/clipboard.png)
+
+#### Deepl
+This module allows you to translate text by using Deepl in a headless Chromium window.
+
+![screenshot](assets/deepl.png)
