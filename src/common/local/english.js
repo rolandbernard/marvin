@@ -77,10 +77,13 @@ const translation_english = {
     maximum_history: 'Maximum history',
 
     deepl: 'Deepl',
-    deepl_description: 'This module allows you to translate text by using Deepl in a headless Chromium window',
+    deepl_description: 'This module allows you to translate text by using Deepl in a headless window',
     
     linux_windows: 'Linux windows',
     linux_windows_description: 'This module allows you to find open windows',
+
+    google_translate: 'Google Translate',
+    google_translate_description: 'This module allows you to translate text by using Google Translate in a headless window',
 };
 
 export default translation_english;

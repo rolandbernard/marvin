@@ -81,6 +81,9 @@ const config_definition = [
         { name: 'linux_windows', active: 'active', options: [
             { name: 'active', type: 'boolean' },
         ], type: 'page', description: 'linux_windows_description' },
+        { name: 'google_translate', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+        ], type: 'page', description: 'google_translate_description' },
     ], type: 'subheader' }
 ];
 

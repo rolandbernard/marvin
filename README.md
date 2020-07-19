@@ -73,9 +73,12 @@ This module allows you to access your clipboard history.
 ![screenshot](assets/clipboard.png)
 
 #### Deepl
-This module allows you to translate text by using Deepl in a headless Chromium window.
+This module allows you to translate text by using Deepl in a headless window.
 
 ![screenshot](assets/deepl.png)
 
 #### Linux windows
 This module allows you to find open windows.
+
+#### Google Translate
+This module allows you to translate text by using Google Translate in a headless window.

@@ -16,6 +16,7 @@ import ScriptsModule from "./modules/scripts";
 import ClipboardModule from "./modules/clipboard";
 import DeeplModule from "./modules/deepl";
 import LinuxWindowsModule from "./modules/linux-windows";
+import GoogleTranslateModule from "./modules/google-translate";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -33,6 +34,7 @@ const modules = {
     clipboard: ClipboardModule,
     deepl: DeeplModule,
     linux_windows: LinuxWindowsModule,
+    google_translate: GoogleTranslateModule,
 };
 
 export function initModules() {

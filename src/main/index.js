@@ -113,7 +113,7 @@ async function startApp() {
                     new_config.general.global_shortcut = config.general.global_shortcut;
                 }
             }
-            const old_config = new_config;
+            const old_config = JSON.parse(JSON.stringify(config));
             updateConfig(new_config);
             await updateModules(old_config);
         });

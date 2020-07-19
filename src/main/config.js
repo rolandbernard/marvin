@@ -75,6 +75,9 @@ export let config = {
         linux_windows: {
             active: false,
         },
+        google_translate: {
+            active: false,
+        },
     },
 };
 

@@ -1,10 +1,9 @@
 
-import puppeteer from 'puppeteer-core';
 import pie from 'puppeteer-in-electron';
 import { config } from '../config';
-import { clipboard, app, BrowserWindow } from 'electron';
+import { clipboard, BrowserWindow } from 'electron';
+import { browser } from '../puppeteer';
 
-let browser = null;
 let page = null;
 let window = null;
 
@@ -13,18 +12,17 @@ let last_lang = null;
 
 let languages = {
     'en-EN': [ 'English', 'Inglese', 'Englisch' ],
-    'de-DE': [ 'German', 'Tedesco', 'Deutsch' ],
     'fr-FR': [ 'French', 'Francese', 'Französisch' ],
     'es-ES': [ 'Spanish', 'Spagnolo', 'Spanisch' ],
+    'pt-PT': [ 'Portuguese', 'Portugiesisch', 'Portoghese' ],
     'it-IT': [ 'Italian', 'Italiano', 'Italienisch' ],
     'nl-NL': [ 'Dutch', 'Olandese', 'Niederländisch' ],
     'pl-PL': [ 'Polish', 'Polacco', 'Polnisch' ],
+    'de-DE': [ 'German', 'Tedesco', 'Deutsch' ],
+    'ru-RU': [ 'Russian', 'Russo', 'Russisch' ],
+    'ja-JA': [ 'Japanese', 'Giapponese', 'Japanisch' ],
+    'zh-ZH': [ 'Chinese', 'Cinese', 'Chinesisch' ],
 };
-
-(async () => {
-    await pie.initialize(app);
-    browser = await pie.connect(app, puppeteer);
-})();
 
 const DeeplModule = {
     init: async () => {
@@ -86,13 +84,7 @@ const DeeplModule = {
             const lang_name = query.substr(to + 4).toLowerCase().trim();
             const lang = Object.keys(languages).find((l) => languages[l].find((n) => n.toLowerCase() === lang_name));
             const text = query.substr(0, to).trim();
-            await page.goto('https://www.deepl.com/translator')
-            await page.waitFor(100);
-            if (stop) {
-                resolve();
-                return;
-            }
-            await page.click('button[dl-test=translator-target-lang-btn]');
+            await page.click('textarea[dl-test=translator-source-input]');
             if (stop) {
                 resolve();
                 return;
@@ -102,23 +94,48 @@ const DeeplModule = {
                 resolve();
                 return;
             }
-            await page.click(`div[dl-test=translator-target-lang-list] button[dl-test=translator-lang-option-${lang}]`);
+            await page.keyboard.down('Control');
+            await page.keyboard.press('a');
+            await page.keyboard.up('Control');
+            await page.keyboard.press('Backspace');
             if (stop) {
                 resolve();
                 return;
             }
-            last_lang = lang;
+            if (last_lang != lang) {
+                await page.waitFor(100);
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                await page.click('button[dl-test=translator-target-lang-btn]');
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                await page.waitFor(100);
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                await page.click(`div[dl-test=translator-target-lang-list] button[dl-test=translator-lang-option-${lang}]`);
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                last_lang = lang;
+            }
             await page.waitFor(20);
             if (stop) {
                 resolve();
                 return;
             }
-            await page.focus('textarea[dl-test=translator-source-input]');
+            await page.click('textarea[dl-test=translator-source-input]');
             if (stop) {
                 resolve();
                 return;
             }
-            await page.waitFor(20);
+            await page.waitFor(100);
             if (stop) {
                 resolve();
                 return;
@@ -128,17 +145,17 @@ const DeeplModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(500);
+            await page.waitForSelector('.lmt--active_translation_request');
             if (stop) {
                 resolve();
                 return;
             }
-            await page.waitForNavigation({ waitUntil: 'networkidle0' })
+            await page.waitForSelector('.lmt--active_translation_request', { hidden: true });
             if (stop) {
                 resolve();
                 return;
             }
-            await page.waitFor(500);
+            await page.waitFor(100);
             if (stop) {
                 resolve();
                 return;

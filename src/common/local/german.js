@@ -77,10 +77,13 @@ const translation_german = {
     maximum_history: 'Maximale einträge',
     
     deepl: 'Deepl',
-    deepl_description: 'Mit diesem Modul können Sie Texte mithilfe von Deepl in einem headless Chromium-Fenster übersetzen',
+    deepl_description: 'Mit diesem Modul können Sie Texte mithilfe von Deepl in einem headless Fenster übersetzen',
 
     linux_windows: 'Linux windows',
     linux_windows_description: 'Mit diesem Modul können Sie geöffnete Fenster finden',
+
+    google_translate: 'Google Translate',
+    google_translate_description: 'Mit diesem Modul können Sie Texte mithilfe von Google Translate in einem headless Fenster übersetzen',
 };
 
 export default translation_german;
