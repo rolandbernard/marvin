@@ -36,6 +36,8 @@ This module allows you to browse files.
 #### HTML
 This module allows you to create custom HTML entries.
 
+![screenshot](assets/html.png)
+
 #### Calculator
 This module allows you to do calculations using mathjs.
 
@@ -80,5 +82,9 @@ This module allows you to translate text by using Deepl in a headless window.
 #### Linux windows
 This module allows you to find open windows.
 
+![screenshot](assets/linux_windows.png)
+
 #### Google Translate
 This module allows you to translate text by using Google Translate in a headless window.
+
+![screenshot](assets/google_translate.png)
