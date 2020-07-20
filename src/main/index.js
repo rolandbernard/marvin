@@ -57,10 +57,11 @@ function createMainWindow() {
     main_window.on('blur', hideWindow);
 }
 
-function toggleMain(op) {
+async function toggleMain(op) {
     if (main_window && !main_window.isDestroyed()) {
         main_window.webContents.send('reset', config);
         if ((op === undefined || !op ) && main_window.isVisible()) {
+            await new Promise(res => setTimeout(() => res(), 50));
             main_window.hide();
         } else if ((op === undefined || op ) && !main_window.isVisible()) {
             main_window.show();
