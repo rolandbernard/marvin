@@ -10,7 +10,7 @@ $ cd /tmp
 $ git clone https://github.com/rolandbernard/marvin
 $ cd marvin
 $ yarn dist
-$ sudo cp dist/Marvin-X.X.X.AppImage /usr/bin/marvin
+$ sudo cp ./dist/Marvin-*.AppImage /usr/bin/marvin
 ```
 
 ## Features
