@@ -18,7 +18,8 @@ const DuckduckgoModule = {
                         resolve([
                             {
                                 type: 'icon_text',
-                                material_icon: 'assessment',
+                                uri_icon: data.Image,
+                                material_icon: data.Image ? null : 'assessment',
                                 text: data.AbstractText,
                                 executable: true,
                                 quality: config.modules.duckduckgo.quality,
