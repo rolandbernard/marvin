@@ -1,10 +1,9 @@
 
-import puppeteer from 'puppeteer-core';
 import pie from 'puppeteer-in-electron';
 import { config } from '../config';
-import { clipboard, app, BrowserWindow } from 'electron';
+import { clipboard, BrowserWindow } from 'electron';
+import { browser } from '../puppeteer';
 
-let browser = null;
 let page = null;
 let window = null;
 
@@ -13,24 +12,26 @@ let last_lang = null;
 
 let languages = {
     'en-EN': [ 'English', 'Inglese', 'Englisch' ],
-    'de-DE': [ 'German', 'Tedesco', 'Deutsch' ],
     'fr-FR': [ 'French', 'Francese', 'Französisch' ],
     'es-ES': [ 'Spanish', 'Spagnolo', 'Spanisch' ],
+    'pt-PT': [ 'Portuguese', 'Portugiesisch', 'Portoghese' ],
     'it-IT': [ 'Italian', 'Italiano', 'Italienisch' ],
     'nl-NL': [ 'Dutch', 'Olandese', 'Niederländisch' ],
     'pl-PL': [ 'Polish', 'Polacco', 'Polnisch' ],
+    'de-DE': [ 'German', 'Tedesco', 'Deutsch' ],
+    'ru-RU': [ 'Russian', 'Russo', 'Russisch' ],
+    'ja-JA': [ 'Japanese', 'Giapponese', 'Japanisch' ],
+    'zh-ZH': [ 'Chinese', 'Cinese', 'Chinesisch' ],
 };
-
-(async () => {
-    await pie.initialize(app);
-    browser = await pie.connect(app, puppeteer);
-})();
 
 const DeeplModule = {
     init: async () => {
         if(config.modules.deepl.active) {
             window = new BrowserWindow({
                 show: false,
+                width: 1000,
+                height: 1000,
+                resizable: false,
             });
             const url = 'https://www.deepl.com/translator';
             await window.loadURL(url);;
@@ -38,6 +39,9 @@ const DeeplModule = {
                 await new Promise((res) => setTimeout(() => res(), 100));
             }
             page = await pie.getPage(browser, window);
+            try {
+                await page.click('.dl_cookieBanner--buttonSelected');
+            } catch (e) { }
         }
     },
     update: async (old_config) => {
@@ -64,7 +68,7 @@ const DeeplModule = {
                 return false;
             } else {
                 const lang = query.substr(to + 4).toLowerCase().trim();
-                return Object.values(languages).find((l) => l.find((n) => n.toLowerCase() === lang));
+                return query.substr(0, to).trim().length >= 1 && Object.values(languages).find((l) => l.find((n) => n.toLowerCase() === lang));
             }
         } else {
             return false;
@@ -75,106 +79,99 @@ const DeeplModule = {
         cancel_last = () => {
             stop = true;
         };
-        const to = query.toLowerCase().lastIndexOf(' to ');
-        const lang_name = query.substr(to + 4).toLowerCase().trim();
-        const lang = Object.keys(languages).find((l) => languages[l].find((n) => n.toLowerCase() === lang_name));
-        const text = query.substr(0, to);
-        if (last_lang !== lang) {
-            await page.click('button[dl-test=translator-target-lang-btn]', { delay: Math.random() * 100 + 50 });
+        try {
+            const to = query.toLowerCase().lastIndexOf(' to ');
+            const lang_name = query.substr(to + 4).toLowerCase().trim();
+            const lang = Object.keys(languages).find((l) => languages[l].find((n) => n.toLowerCase() === lang_name));
+            const text = query.substr(0, to).trim();
+            await page.click('textarea[dl-test=translator-source-input]');
             if (stop) {
                 resolve();
                 return;
             }
-            await page.waitFor(Math.random() * 100 + 50);
-            if (stop) {
-                resolve();
-                return;
-            }
-            await page.click(`div[dl-test=translator-target-lang-list] button[dl-test=translator-lang-option-${lang}]`, { delay: Math.random() * 100 + 50 });
-            if (stop) {
-                resolve();
-                return;
-            }
-            await page.waitFor(Math.random() * 100 + 50);
-            if (stop) {
-                resolve();
-                return;
-            }
-            last_lang = lang;
-        }
-        await page.focus('textarea[dl-test=translator-source-input]');
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.waitFor(Math.random() * 100 + 50);
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.keyboard.down('Control');
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.waitFor(Math.random() * 100 + 50);
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.keyboard.press('a');
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.waitFor(Math.random() * 100 + 50);
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.keyboard.up('Control');
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.waitFor(Math.random() * 100 + 50);
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.keyboard.type(text);
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.waitFor(100);
-        if (stop) {
-            resolve();
-            return;
-        }
-        await page.waitForNavigation({ waitUntil: 'networkidle0' })
-        if (stop) {
-            resolve();
-            return;
-        }
-        let max_wait = 50;
-        while((await (await (await page.$('p[dl-test=translator-target-result-as-text-entry]')).getProperty('innerText')).jsonValue()).trim().length === 0 && max_wait > 0) {
             await page.waitFor(100);
-            max_wait--;
+            if (stop) {
+                resolve();
+                return;
+            }
+            await page.keyboard.down('Control');
+            await page.keyboard.press('a');
+            await page.keyboard.up('Control');
+            await page.keyboard.press('Backspace');
+            if (stop) {
+                resolve();
+                return;
+            }
+            if (last_lang != lang) {
+                await page.waitFor(100);
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                await page.click('button[dl-test=translator-target-lang-btn]');
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                await page.waitFor(100);
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                await page.click(`div[dl-test=translator-target-lang-list] button[dl-test=translator-lang-option-${lang}]`);
+                if (stop) {
+                    resolve();
+                    return;
+                }
+                last_lang = lang;
+            }
+            await page.waitFor(20);
+            if (stop) {
+                resolve();
+                return;
+            }
+            await page.click('textarea[dl-test=translator-source-input]');
+            if (stop) {
+                resolve();
+                return;
+            }
+            await page.waitFor(100);
+            if (stop) {
+                resolve();
+                return;
+            }
+            await page.keyboard.type(text);
+            if (stop) {
+                resolve();
+                return;
+            }
+            await page.waitForSelector('.lmt--active_translation_request');
+            if (stop) {
+                resolve();
+                return;
+            }
+            await page.waitForSelector('.lmt--active_translation_request', { hidden: true });
+            if (stop) {
+                resolve();
+                return;
+            }
+            await page.waitFor(100);
+            if (stop) {
+                resolve();
+                return;
+            }
+            return (await Promise.all((await page.$$('p[dl-test=translator-target-result-as-text-entry]')).map(async (elem) => ({
+                type: 'icon_text',
+                material_icon: 'translate',
+                text: (await (await elem.getProperty('innerText')).jsonValue()).trim(),
+                executable: true,
+                quality: 1.0,
+            })))).filter((option) => option.text.length >= 1);
+        } catch (e) {
+            return [];
         }
-        if (stop) {
-            resolve();
-            return;
-        }
-        return (await Promise.all((await page.$$('p[dl-test=translator-target-result-as-text-entry]')).map(async (elem) => ({
-            type: 'icon_text',
-            material_icon: 'translate',
-            text: (await (await elem.getProperty('innerText')).jsonValue()).trim(),
-            executable: true,
-            quality: 1.0,
-        })))).filter((option) => option.text.length > 0);
     },
-    execute: (option) => {
+    execute: async (option) => {
         clipboard.writeText(option.text);
     },
 };

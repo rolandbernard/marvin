@@ -1,6 +1,7 @@
 
 import { config } from "../config";
 import { exec } from 'child_process';
+import { getTranslation } from "../../common/local/locale";
 
 function isValidUrl(str) {
     let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -29,18 +30,14 @@ const UrlModule = {
             type: 'icon_list_item',
             material_icon: 'language',
             primary: query,
-            secondary: null,
+            secondary: getTranslation(config, 'open_in_browser'),
             executable: true,
             quality: config.modules.url.quality,
             url: completeUrl(query),
         }];
     },
-    execute: (option) => {
-        return new Promise((resolve) => {
-            exec(`xdg-open ${option.url}`, () => {
-                resolve();
-            });
-        });
+    execute: async (option) => {
+        exec(`xdg-open ${option.url}`);
     },
 }
 

@@ -72,6 +72,17 @@ export let config = {
         deepl: {
             active: false,
         },
+        linux_windows: {
+            active: false,
+        },
+        google_translate: {
+            active: false,
+        },
+        duckduckgo: {
+            active: false,
+            debounce_time: 500,
+            quality: 0.1,
+        },
     },
 };
 

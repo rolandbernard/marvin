@@ -78,6 +78,17 @@ const config_definition = [
         { name: 'deepl', active: 'active', options: [
             { name: 'active', type: 'boolean' },
         ], type: 'page', description: 'deepl_description' },
+        { name: 'linux_windows', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+        ], type: 'page', description: 'linux_windows_description' },
+        { name: 'google_translate', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+        ], type: 'page', description: 'google_translate_description' },
+        { name: 'duckduckgo', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'debounce_time', type: 'size' },
+            { name: 'quality', type: 'quality' },
+        ], type: 'page', description: 'duckduckgo_description' },
     ], type: 'subheader' }
 ];
 

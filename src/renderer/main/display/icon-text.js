@@ -36,10 +36,10 @@ function IconText(props) {
             <div style={styles.avatar_wrap}>
                 {
                     props.option.material_icon
-                        ? <Avatar variant="square" alt={props.option.text} style={styles.avatar}><Icon>{props.option.material_icon}</Icon></Avatar>
+                        ? <Avatar variant="square" alt={props.option.icon_alt || props.option.primary} style={styles.avatar}><Icon>{props.option.material_icon}</Icon></Avatar>
                         : props.option.uri_icon
-                            ? <Avatar variant="square" alt={props.option.text} src={props.option.uri_icon} style={styles.avatar}></Avatar>
-                            : <Avatar variant="square" style={styles.avatar}>{props.option.text[0]}</Avatar>
+                            ? <Avatar variant="square" alt={props.option.icon_alt || props.option.primary} src={props.option.uri_icon} style={styles.avatar}></Avatar>
+                            : <Avatar variant="square" style={styles.avatar}>{(props.option.icon_alt || props.option.primary)[0]}</Avatar>
                 }
             </div>
             <div style={styles.text}>

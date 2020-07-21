@@ -34,7 +34,7 @@ const ClipboardModule = {
             interval = setInterval(() => {
                 const text = clipboard.readText();
                 if (text && clipboard_history[0] !== text) {
-                    clipboard_history = [text].concat(clipboard_history).slice(0, config.modules.clipboard.maximum_history);
+                    clipboard_history = Array.from(new Set([text].concat(clipboard_history))).slice(0, config.modules.clipboard.maximum_history);
                     updateClipboard();
                 }
             }, config.modules.clipboard.refresh_time);
@@ -48,7 +48,7 @@ const ClipboardModule = {
         clearInterval(interval);
     },
     valid: (query) => {
-        return config.modules.clipboard.active && query.length > 0;
+        return config.modules.clipboard.active && query.trim().length > 0;
     },
     search: async (query) => {
         const clipboard_match = stringMatchQuality(query, getTranslation(config, 'clipboard'));

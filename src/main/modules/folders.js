@@ -8,7 +8,7 @@ import { exec } from "child_process";
 
 const FoldersModule = {
     valid: (query) => {
-        return config.modules.folders.active && query.length >= 1;
+        return config.modules.folders.active && query.trim().length >= 1;
     },
     search: async (query) => {
         return (await Promise.all(config.modules.folders.directories.map(async (directory) => {
@@ -51,12 +51,8 @@ const FoldersModule = {
             } catch (e) { console.error(e) }
         }))).reduce((a, b) => a.concat(b));
     },
-    execute: (option) => {
-        return new Promise((resolve) => {
-            exec(`xdg-open ${option.file}`, () => {
-                resolve();
-            })
-        });
+    execute: async (option) => {
+        exec(`xdg-open ${option.file}`);
     },
 }
 

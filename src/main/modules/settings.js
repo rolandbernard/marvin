@@ -45,7 +45,7 @@ export function createSettingsWindow() {
 
 const SettingsModule = {
     valid: (query) => {
-        return query.length >= 1;
+        return query.trim().length >= 1;
     },
     search: async (query) => {
         return [{

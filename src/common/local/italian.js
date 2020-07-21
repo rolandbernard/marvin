@@ -52,6 +52,7 @@ const translation_italian = {
     
     url: 'URL modulo',
     url_description: 'Questo modulo ti consente di aprire gli URL',
+    open_in_browser: 'Apri nel browser',
     
     locate: 'Locate',
     locate_description: 'Questo modulo consente di cercare i file utilizzando locate',
@@ -77,7 +78,16 @@ const translation_italian = {
     maximum_history: 'voci massime',
     
     deepl: 'Deepl',
-    deepl_description: 'Questo modulo consente di tradurre testi utilizzando Deepl in una finestra headless di Chromium',
+    deepl_description: 'Questo modulo consente di tradurre testi utilizzando Deepl in una finestra headless',
+
+    linux_windows: 'Linux windows',
+    linux_windows_description: 'With this module you can find open windows',
+
+    google_translate: 'Google Translate',
+    google_translate_description: 'Questo modulo consente di tradurre testi utilizzando Google Translate in una finestra headless',
+
+    duckduckgo: 'DuckDuckGo Instant Answer',
+    duckduckgo_description: 'Questo modulo fornisce le risposte istantanee DuckDuckGo per la tua query',
 };
 
 export default translation_italian;

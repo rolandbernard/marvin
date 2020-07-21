@@ -8,7 +8,7 @@ import { app } from "electron";
 
 const LocateModule = {
     valid: (query) => {
-        return config.modules.locate.active && query.length >= 1;
+        return config.modules.locate.active && query.trim().length >= 1;
     },
     search: (query) => {
         return new Promise((resolve) => {
@@ -34,12 +34,8 @@ const LocateModule = {
             });
         });
     },
-    execute: (option) => {
-        return new Promise((resolve) => {
-            exec(`xdg-open ${option.file}`, () => {
-                resolve();
-            })
-        });
+    execute: async (option) => {
+        exec(`xdg-open ${option.file}`);
     },
 }
 

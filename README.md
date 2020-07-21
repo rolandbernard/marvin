@@ -10,7 +10,7 @@ $ cd /tmp
 $ git clone https://github.com/rolandbernard/marvin
 $ cd marvin
 $ yarn dist
-$ sudo cp dist/Marvin-X.X.X.AppImage /usr/bin/marvin
+$ sudo cp ./dist/Marvin-*.AppImage /usr/bin/marvin
 ```
 
 ## Features
@@ -35,6 +35,8 @@ This module allows you to browse files.
 
 #### HTML
 This module allows you to create custom HTML entries.
+
+![screenshot](assets/html.png)
 
 #### Calculator
 This module allows you to do calculations using mathjs.
@@ -73,6 +75,21 @@ This module allows you to access your clipboard history.
 ![screenshot](assets/clipboard.png)
 
 #### Deepl
-This module allows you to translate text by using Deepl in a headless Chromium window.
+This module allows you to translate text by using Deepl in a headless window.
 
 ![screenshot](assets/deepl.png)
+
+#### Linux windows
+This module allows you to find open windows.
+
+![screenshot](assets/linux_windows.png)
+
+#### Google Translate
+This module allows you to translate text by using Google Translate in a headless window.
+
+![screenshot](assets/google_translate.png)
+
+#### DuckDuckGo Instant Answer
+This module gives you the DuckDuckGo Instant Answers for your query.
+
+![screenshot](assets/duckduckgo.png)

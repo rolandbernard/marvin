@@ -44,7 +44,7 @@ function createMainWindow() {
 
     const hideWindow = (e) => {
         e.preventDefault();
-        main_window.hide();
+        toggleMain(false);
     };
 
     main_window.webContents.on('will-navigate', (e) => {
@@ -57,12 +57,13 @@ function createMainWindow() {
     main_window.on('blur', hideWindow);
 }
 
-function toggleMain() {
+async function toggleMain(op) {
     if (main_window && !main_window.isDestroyed()) {
         main_window.webContents.send('reset', config);
-        if (main_window.isVisible()) {
+        if ((op === undefined || !op ) && main_window.isVisible()) {
+            await new Promise(res => setTimeout(() => res(), 50));
             main_window.hide();
-        } else {
+        } else if ((op === undefined || op ) && !main_window.isVisible()) {
             main_window.show();
             main_window.focus();
         }
@@ -96,7 +97,7 @@ async function startApp() {
             if (option && option.executable) {
                 executeOption(option);
                 if(!option.stay_open) {
-                    main_window.hide();
+                    toggleMain(false);
                 }
             }
         });
@@ -113,7 +114,7 @@ async function startApp() {
                     new_config.general.global_shortcut = config.general.global_shortcut;
                 }
             }
-            const old_config = new_config;
+            const old_config = JSON.parse(JSON.stringify(config));
             updateConfig(new_config);
             await updateModules(old_config);
         });

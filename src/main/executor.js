@@ -15,6 +15,9 @@ import CommandModule from './modules/command';
 import ScriptsModule from "./modules/scripts";
 import ClipboardModule from "./modules/clipboard";
 import DeeplModule from "./modules/deepl";
+import LinuxWindowsModule from "./modules/linux-windows";
+import GoogleTranslateModule from "./modules/google-translate";
+import DuckduckgoModule from "./modules/duckduckgo";
 
 const modules = {
     marvin_quote: MarvinQuoteModule,
@@ -31,6 +34,9 @@ const modules = {
     scripts: ScriptsModule,
     clipboard: ClipboardModule,
     deepl: DeeplModule,
+    linux_windows: LinuxWindowsModule,
+    google_translate: GoogleTranslateModule,
+    duckduckgo: DuckduckgoModule,
 };
 
 export function initModules() {
@@ -75,6 +81,7 @@ export function searchQuery(query, callback) {
                             }
                         });
                     } catch(e) {
+                        console.error(e);
                         resolve();
                     } finally {
                         resolv();

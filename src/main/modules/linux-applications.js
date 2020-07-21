@@ -198,7 +198,7 @@ const LinuxApplicationModule = {
         await LinuxApplicationModule.init();
     },
     valid: (query) => {
-        return config.modules.linux_applications.active && query.length >= 1;
+        return config.modules.linux_applications.active && query.trim().length >= 1;
     },
     search: async (query) => {
         return applications.map((app) => {
@@ -220,7 +220,7 @@ const LinuxApplicationModule = {
             }));
         }).reduce((a, b) => a.concat(b));
     },
-    execute: (option) => {
+    execute: async (option) => {
         if (getProp(option.app, 'Terminal') === 'true') {
             exec(`xterm -e "${getProp(option.app, 'Exec').replace(/\%./g, '').replace(/\"/g, '\\"')}"`);
         } else {
