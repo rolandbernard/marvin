@@ -88,3 +88,8 @@ This module allows you to find open windows.
 This module allows you to translate text by using Google Translate in a headless window.
 
 ![screenshot](assets/google_translate.png)
+
+#### DuckDuckGo Instant Answer
+This module gives you the DuckDuckGo Instant Answers for your query.
+
+![screenshot](assets/duckduckgo.png)
