@@ -52,6 +52,7 @@ const translation_english = {
     
     url: 'URL module',
     url_description: 'This module allows you to open urls',
+    open_in_browser: 'Open in browser',
     
     locate: 'Locate',
     locate_description: 'This module allows you to search for files using locate',
@@ -84,6 +85,9 @@ const translation_english = {
 
     google_translate: 'Google Translate',
     google_translate_description: 'This module allows you to translate text by using Google Translate in a headless window',
+
+    duckduckgo: 'DuckDuckGo Instant Answer',
+    duckduckgo_description: 'This module gives you the DuckDuckGo Instant Answers for your query',
 };
 
 export default translation_english;

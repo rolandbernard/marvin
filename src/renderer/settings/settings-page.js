@@ -41,7 +41,7 @@ function SettingsPage(props) {
             <table style={styles.table}>
                 <tbody>
                     {props.page && props.page.def && props.page.def.options && props.page.def.options.map((def) => (
-                        <tr style={styles.tr} key={def.name}>
+                        <tr style={styles.tr} key={props.page.def.name + '_' + def.name}>
                             {def.type !== 'array' && <td style={styles.name}>{getTranslation(props.config, def.name)}</td>}
                             <td style={styles.value} colSpan={def.type === 'array' ? 2 : 1}>
                                 {def.type === 'array' && <div style={styles.array_name}>{getTranslation(props.config, def.name)}</div>} 

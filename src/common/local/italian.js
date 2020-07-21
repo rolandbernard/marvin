@@ -52,6 +52,7 @@ const translation_italian = {
     
     url: 'URL modulo',
     url_description: 'Questo modulo ti consente di aprire gli URL',
+    open_in_browser: 'Apri nel browser',
     
     locate: 'Locate',
     locate_description: 'Questo modulo consente di cercare i file utilizzando locate',
@@ -84,6 +85,9 @@ const translation_italian = {
 
     google_translate: 'Google Translate',
     google_translate_description: 'Questo modulo consente di tradurre testi utilizzando Google Translate in una finestra headless',
+
+    duckduckgo: 'DuckDuckGo Instant Answer',
+    duckduckgo_description: 'Questo modulo fornisce le risposte istantanee DuckDuckGo per la tua query',
 };
 
 export default translation_italian;

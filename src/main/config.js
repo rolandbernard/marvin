@@ -78,6 +78,11 @@ export let config = {
         google_translate: {
             active: false,
         },
+        duckduckgo: {
+            active: false,
+            debounce_time: 500,
+            quality: 0.1,
+        },
     },
 };
 
