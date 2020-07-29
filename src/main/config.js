@@ -13,6 +13,7 @@ export let config = {
         max_height: 500,
         max_results: 200,
         incremental_results: true,
+        smooth_scrolling: true,
     },
     theme: {
         background_color: 'black',

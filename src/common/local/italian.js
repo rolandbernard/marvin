@@ -8,6 +8,7 @@ const translation_italian = {
     max_height: 'Altezza massima [px]',
     max_results: 'Risultati massimi',
     incremental_results: 'Risultati incrementali',
+    smooth_scrolling: 'Scorrimento regolare',
 
     theme: 'Combinazione di colori',
     background_color: 'Colore di sfondo',
