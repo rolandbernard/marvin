@@ -47,6 +47,8 @@ const translation_german = {
 
     calculator: 'Taschenrechner',
     calculator_description: 'Mit diesem Modul können Sie Berechnungen mithilfe von mathjs durchführen',
+    simplified: 'vereinfacht',
+    rationalized: 'rationalisiert',
     
     linux_applications: 'Linux Anwendungen',
     linux_applications_description: 'Mit diesem Modul können Sie Anwendungen unter Linux starten',

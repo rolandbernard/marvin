@@ -47,6 +47,8 @@ const translation_italian = {
 
     calculator: 'Calcolatore',
     calculator_description: 'Questo modulo ti permette di fare calcoli usando mathjs',
+    simplified: 'semplificato',
+    rationalized: 'razionalizzato',
     
     linux_applications: 'Applicazioni Linux',
     linux_applications_description: 'Questo modulo consente di avviare applicazioni su Linux',
