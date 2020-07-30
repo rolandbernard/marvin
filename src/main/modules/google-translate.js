@@ -256,7 +256,7 @@ const GoogleTranslateModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(100);
+            await page.waitFor(500);
             if (stop) {
                 resolve();
                 return;
