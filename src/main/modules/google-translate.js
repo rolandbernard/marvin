@@ -151,7 +151,7 @@ const GoogleTranslateModule = {
                     await page.waitFor(100);
                     await page.click('.language-list-unfiltered-langs-sl_list .language_list_item_wrapper-auto');
                 } catch (e) { }
-            })()
+            })();
         }
     },
     update: async (old_config) => {
