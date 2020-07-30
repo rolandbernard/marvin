@@ -201,9 +201,7 @@ async function loadApplications() {
                 const path = await findIconPath(getProp(value, 'Icon'), theme, fallback_theme);
                 if (path) {
                     icons[getProp(value, 'Icon')] = await pathToDataUrl(path);
-                } else {
-                    console.log(getProp(value, 'Icon'));
-                }
+                } 
             }
         }));
     }));
@@ -230,8 +228,7 @@ const LinuxApplicationModule = {
                 type: 'icon_list_item',
                 uri_icon: icons[getProp(value, 'Icon')] || icon,
                 primary: getProp(value, 'Name', name),
-                // secondary: getProp(value, 'Comment', name),
-                secondary: app.application,
+                secondary: getProp(value, 'Comment', name),
                 executable: true,
                 quality: Math.max(stringMatchQuality(query, name),
                                 0.75 * stringMatchQuality(query, desc),
