@@ -54,11 +54,17 @@ function createIconIndex(theme, fallback_theme) {
                     if (!icon_index[path.basename(value)]) {
                         icon_index[path.basename(value)] = value;
                     }
+                    if (!icon_index[path.basename(value).toLowerCase()]) {
+                        icon_index[path.basename(value).toLowerCase()] = value;
+                    }
                 });
                 exec(`find -L ${icon_path}/${fallback_theme}/ -type f`, { maxBuffer: 1024 * 1024 * 500 }, (_, stdout, __) => {
                     stdout.split('\n').forEach((value) => {
                         if (!icon_index[path.basename(value)]) {
                             icon_index[path.basename(value)] = value;
+                        }
+                        if (!icon_index[path.basename(value).toLowerCase()]) {
+                            icon_index[path.basename(value).toLowerCase()] = value;
                         }
                     });
                     exec(`find -L ${icon_path}/ -type f`, { maxBuffer: 1024 * 1024 * 500 }, (_, stdout, __) => {
@@ -66,11 +72,17 @@ function createIconIndex(theme, fallback_theme) {
                             if (!icon_index[path.basename(value)]) {
                                 icon_index[path.basename(value)] = value;
                             }
+                            if (!icon_index[path.basename(value).toLowerCase()]) {
+                                icon_index[path.basename(value).toLowerCase()] = value;
+                            }
                         });
                         exec(`find -L ${icon_path_pixmaps}/ -type f`, { maxBuffer: 1024 * 1024 * 500 }, (_, stdout, __) => {
                             stdout.split('\n').forEach((value) => {
                                 if (!icon_index[path.basename(value)]) {
                                     icon_index[path.basename(value)] = value;
+                                }
+                                if (!icon_index[path.basename(value).toLowerCase()]) {
+                                    icon_index[path.basename(value).toLowerCase()] = value;
                                 }
                             });
                             resolve();
@@ -88,7 +100,14 @@ function findIconPath(name) {
             if(exist) {
                 resolve(name);
             } else {
-                const possible = [`${name}`, `${name}.svg`, `${name}.png`];
+                const possible = [
+                    `${name}`,
+                    `${name}.svg`,
+                    `${name}.png`,
+                    `${name.toLowerCase()}`,
+                    `${name.toLowerCase()}.svg`,
+                    `${name.toLowerCase()}.png`
+                ];
                 for(let file of possible) {
                     if(icon_index[file]) {
                         resolve(icon_index[file]);
@@ -182,7 +201,7 @@ async function loadApplications() {
                 const path = await findIconPath(getProp(value, 'Icon'), theme, fallback_theme);
                 if (path) {
                     icons[getProp(value, 'Icon')] = await pathToDataUrl(path);
-                }
+                } 
             }
         }));
     }));

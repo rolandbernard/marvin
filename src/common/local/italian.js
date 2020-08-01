@@ -8,6 +8,7 @@ const translation_italian = {
     max_height: 'Altezza massima [px]',
     max_results: 'Risultati massimi',
     incremental_results: 'Risultati incrementali',
+    smooth_scrolling: 'Scorrimento regolare',
 
     theme: 'Combinazione di colori',
     background_color: 'Colore di sfondo',
@@ -46,6 +47,8 @@ const translation_italian = {
 
     calculator: 'Calcolatore',
     calculator_description: 'Questo modulo ti permette di fare calcoli usando mathjs',
+    simplified: 'semplificato',
+    rationalized: 'razionalizzato',
     
     linux_applications: 'Applicazioni Linux',
     linux_applications_description: 'Questo modulo consente di avviare applicazioni su Linux',

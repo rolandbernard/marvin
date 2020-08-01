@@ -8,6 +8,7 @@ const translation_english = {
     max_height: 'Maximum height [px]',
     max_results: 'Maximum results',
     incremental_results: 'Incremental results',
+    smooth_scrolling: 'Smooth scrolling',
 
     theme: 'Color theme',
     background_color: 'Background color',
@@ -46,6 +47,8 @@ const translation_english = {
 
     calculator: 'Calculator',
     calculator_description: 'This module allows you to do calculations using mathjs',
+    simplified: 'simplified',
+    rationalized: 'rationalized',
     
     linux_applications: 'Linux applications',
     linux_applications_description: 'This module allows you to start applications on linux',

@@ -33,15 +33,25 @@ const DeeplModule = {
                 height: 1000,
                 resizable: false,
             });
-            const url = 'https://www.deepl.com/translator';
-            await window.loadURL(url);;
-            while(!browser) {
-                await new Promise((res) => setTimeout(() => res(), 100));
-            }
-            page = await pie.getPage(browser, window);
-            try {
-                await page.click('.dl_cookieBanner--buttonSelected');
-            } catch (e) { }
+            (async () => {
+                const url = 'https://www.deepl.com/translator';
+                let success = false;
+                while (!success) {
+                    try {
+                        await window.loadURL(url);;
+                        success = true;
+                    } catch (e) {
+                        await new Promise(res => setTimeout(() => res(), 500));
+                    }
+                }
+                while (!browser) {
+                    await new Promise((res) => setTimeout(() => res(), 100));
+                }
+                page = await pie.getPage(browser, window);
+                try {
+                    await page.click('.dl_cookieBanner--buttonSelected');
+                } catch (e) { }
+            })()
         }
     },
     update: async (old_config) => {
@@ -58,7 +68,7 @@ const DeeplModule = {
         }
     },
     valid: (query) => {
-        if (config.modules.deepl.active) {
+        if (config.modules.deepl.active && page) {
             if (cancel_last) {
                 cancel_last();
                 cancel_last = null;

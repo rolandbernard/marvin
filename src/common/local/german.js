@@ -8,6 +8,7 @@ const translation_german = {
     max_height: 'Maximale Höhe [px]',
     max_results: 'Maximale Ergebnisse',
     incremental_results: 'Inkrementelle Ergebnisse',
+    smooth_scrolling: 'Flüssiges Scrollen',
 
     theme: 'Farbschema',
     background_color: 'Hintergundfarbe',
@@ -46,6 +47,8 @@ const translation_german = {
 
     calculator: 'Taschenrechner',
     calculator_description: 'Mit diesem Modul können Sie Berechnungen mithilfe von mathjs durchführen',
+    simplified: 'vereinfacht',
+    rationalized: 'rationalisiert',
     
     linux_applications: 'Linux Anwendungen',
     linux_applications_description: 'Mit diesem Modul können Sie Anwendungen unter Linux starten',

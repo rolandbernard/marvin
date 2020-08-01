@@ -131,17 +131,27 @@ const GoogleTranslateModule = {
                 height: 1000,
                 resizable: false,
             });
-            const url = 'https://translate.google.com/';
-            await window.loadURL(url);;
-            while(!browser) {
-                await new Promise((res) => setTimeout(() => res(), 100));
-            }
-            page = await pie.getPage(browser, window);
-            try {
-                await page.click('.tlid-open-source-language-list');
-                await page.waitFor(100);
-                await page.click('.language-list-unfiltered-langs-sl_list .language_list_item_wrapper-auto');
-            } catch (e) { }
+            (async () => {
+                const url = 'https://translate.google.com/';
+                let success = false;
+                while (!success) {
+                    try {
+                        await window.loadURL(url);;
+                        success = true;
+                    } catch (e) {
+                        await new Promise(res => setTimeout(() => res(), 500));
+                    }
+                }
+                while (!browser) {
+                    await new Promise((res) => setTimeout(() => res(), 100));
+                }
+                page = await pie.getPage(browser, window);
+                try {
+                    await page.click('.tlid-open-source-language-list');
+                    await page.waitFor(100);
+                    await page.click('.language-list-unfiltered-langs-sl_list .language_list_item_wrapper-auto');
+                } catch (e) { }
+            })();
         }
     },
     update: async (old_config) => {
@@ -158,7 +168,7 @@ const GoogleTranslateModule = {
         }
     },
     valid: (query) => {
-        if (config.modules.google_translate.active) {
+        if (config.modules.google_translate.active && page) {
             if (cancel_last) {
                 cancel_last();
                 cancel_last = null;
@@ -246,7 +256,7 @@ const GoogleTranslateModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(100);
+            await page.waitFor(500);
             if (stop) {
                 resolve();
                 return;
