@@ -40,7 +40,7 @@ const CalculatorModule = {
                 executable: true,
             });
         } catch(e) { }
-        return ret.filter((val, index) => ret.findIndex((v) => v.primary === val.primary) === index);
+        return ret.filter((val, index) => val.primary.substr(2).trim() != query.trim() && ret.findIndex((v) => v.primary === val.primary) === index);
     },
     execute: async (option) => {
         clipboard.writeText(option.primary.substr(2));
