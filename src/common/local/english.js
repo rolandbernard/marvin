@@ -24,9 +24,6 @@ const translation_english = {
     size_error: 'Value must be an integer greater than 0',
     shortcut_error: 'Value must be a valid shortcut',
     path_error: 'Value must be a valid absolute path',
-
-    marvin_quote: 'Marvin quotes',
-    marvin_quote_description: 'This module will show you random, inspiring and uplifting quotes from Marvin the paranied android',
     quality: 'Priority',
 
     linux_system: 'Linux system',

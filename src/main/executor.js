@@ -1,7 +1,6 @@
 
 import { config } from "./config";
 import SettingsModule from "./modules/settings";
-import MarvinQuoteModule from "./modules/marvin-quote";
 import LinuxSystemModule from './modules/linux-system';
 import AsyncLock from "async-lock";
 import FoldersModule from "./modules/folders";
@@ -20,7 +19,6 @@ import GoogleTranslateModule from "./modules/google-translate";
 import DuckduckgoModule from "./modules/duckduckgo";
 
 const modules = {
-    marvin_quote: MarvinQuoteModule,
     settings: SettingsModule,
     linux_system: LinuxSystemModule,
     folders: FoldersModule,

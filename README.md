@@ -18,10 +18,6 @@ With the global shortcut (Super+D by default, but can be changed) you can open t
 The program uses different modules to provide different functionalities.
 
 ### Modules
-#### Marvin quotes
-This module will show you random, inspiring and uplifting quotes from Marvin the paranoid robot.
-
-![screenshot](assets/marvin_quotes.png)
 
 #### Linux system
 This module will give you access to some fundamental linux system operations. (Reboot, Shutdown)

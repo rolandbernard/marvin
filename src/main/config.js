@@ -22,10 +22,6 @@ export let config = {
         select_color: 'grey',
     },
     modules: {
-        marvin_quote: {
-            active: true,
-            quality: 1.0,
-        },
         linux_system: {
             active: true,
         },
