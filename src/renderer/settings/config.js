@@ -17,10 +17,6 @@ const config_definition = [
         { name: 'select_color', type: 'color' },
     ], type: 'page' },
     { name: 'modules', pages: [
-        { name: 'marvin_quote', active: 'active', options: [
-            { name: 'active', type: 'boolean' },
-            { name: 'quality', type: 'quality' },
-        ], type: 'page', description: 'marvin_quote_description' },
         { name: 'linux_system', active: 'active', options: [
             { name: 'active', type: 'boolean' },
         ], type: 'page', description: 'linux_system_description' },

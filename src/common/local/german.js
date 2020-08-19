@@ -24,9 +24,6 @@ const translation_german = {
     size_error: 'Der Wert muss eine Ganzzahl größer als 0 sein',
     shortcut_error: 'Der Wert muss ein gültiger Shortcut sein',
     path_error: 'Der Wert muss ein gültiger absoluter Pfad sein',
-
-    marvin_quote: 'Marvin Zitate',
-    marvin_quote_description: 'Dieses Modul zeigt zufällige und inspirierende Zittate des depressiven Roboters Marvin',
     quality: 'Priorität',
 
     linux_system: 'Linux System',

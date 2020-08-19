@@ -24,9 +24,6 @@ const translation_italian = {
     size_error: 'Il valore deve essere un numero intero maggiore di 0',
     shortcut_error: 'Il valore deve essere un shortcut valido',
     path_error: 'Il valore deve essere un percorso assoluto valido',
-
-    marvin_quote: 'Marvin citazioni',
-    marvin_quote_description: 'Questo modulo ti mostrerà delle citazioni casuali ispiratrici di Marvin il robot paranoico',
     quality: 'Priorità',
 
     linux_system: 'Sistema Linux',
