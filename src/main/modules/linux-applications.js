@@ -235,7 +235,8 @@ const LinuxApplicationModule = {
                                 0.75 * stringMatchQuality(query, getProp(app.desktop, 'Keywords', '')),
                                 0.75 * stringMatchQuality(query, getProp(app.desktop, 'Categories', '')),
                                 0.75 * stringMatchQuality(query, app.application.replace('.desktop', '')),
-                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', ''))),
+                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', '')),
+                                0.25 * stringMatchQuality(query, getProp(value, 'Name', name))),
                 app: value,
             }));
         }).reduce((a, b) => a.concat(b));
