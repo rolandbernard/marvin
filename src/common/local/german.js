@@ -49,6 +49,7 @@ const translation_german = {
     
     linux_applications: 'Linux Anwendungen',
     linux_applications_description: 'Mit diesem Modul können Sie Anwendungen unter Linux starten',
+    refresh_interval_min: 'Aktualisierungsintervall [min]', 
     
     url: 'URL Modul',
     url_description: 'Mit diesem Modul ist es möglich URLs zu öffnen',

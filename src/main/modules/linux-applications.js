@@ -207,14 +207,21 @@ async function loadApplications() {
     }));
 }
 
+let update_interval = null;
+
 const LinuxApplicationModule = {
     init: async () => {
         if(config.modules.linux_applications.active) {
             await loadApplications();
+            update_interval = setInterval(() => loadApplications(), 60 * 1000 * config.modules.linux_applications.refresh_interval_min);
         }
     },
     update: async () => {
+        await LinuxApplicationModule.deinit();
         await LinuxApplicationModule.init();
+    },
+    deinit: async () => {
+        clearInterval(update_interval);
     },
     valid: (query) => {
         return config.modules.linux_applications.active && query.trim().length >= 1;

@@ -40,6 +40,7 @@ export let config = {
         linux_applications: {
             active: true,
             directories: [ "/usr/share/applications/", path.join(app.getPath('home'), '.local/share/applications/') ],
+            refresh_interval_min: 30, 
         },
         url: {
             active: true,

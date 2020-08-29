@@ -39,6 +39,7 @@ const config_definition = [
         { name: 'linux_applications', active: 'active', options: [
             { name: 'active', type: 'boolean' },
             { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
+            { name: 'refresh_interval_min', type: 'size' },
         ], type: 'page', description: 'linux_applications_description' },
         { name: 'url', active: 'active', options: [
             { name: 'active', type: 'boolean' },
