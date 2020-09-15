@@ -81,6 +81,11 @@ export let config = {
             debounce_time: 500,
             quality: 0.1,
         },
+        history: {
+            active: false,
+            quality: 0.1,
+            maximum_history: 1000,
+        },
     },
 };
 

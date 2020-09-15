@@ -89,6 +89,9 @@ const translation_english = {
 
     duckduckgo: 'DuckDuckGo Instant Answer',
     duckduckgo_description: 'This module gives you the DuckDuckGo Instant Answers for your query',
+    
+    history: 'History',
+    history_description: 'This module allows you to execute recent options again',
 };
 
 export default translation_english;

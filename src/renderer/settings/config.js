@@ -87,6 +87,11 @@ const config_definition = [
             { name: 'debounce_time', type: 'size' },
             { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'duckduckgo_description' },
+        { name: 'history', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'quality', type: 'quality' },
+            { name: 'maximum_history', type: 'size' },
+        ], type: 'page', description: 'history_description' },
     ], type: 'subheader' }
 ];
 

@@ -89,3 +89,8 @@ This module allows you to translate text by using Google Translate in a headless
 This module gives you the DuckDuckGo Instant Answers for your query.
 
 ![screenshot](assets/duckduckgo.png)
+
+#### History
+This module allows you to execute recent options again.
+
+
