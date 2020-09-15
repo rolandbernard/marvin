@@ -49,6 +49,7 @@ const translation_english = {
     
     linux_applications: 'Linux applications',
     linux_applications_description: 'This module allows you to start applications on linux',
+    refresh_interval_min: 'Refresh interval [min]', 
     
     url: 'URL module',
     url_description: 'This module allows you to open urls',
@@ -88,6 +89,9 @@ const translation_english = {
 
     duckduckgo: 'DuckDuckGo Instant Answer',
     duckduckgo_description: 'This module gives you the DuckDuckGo Instant Answers for your query',
+    
+    history: 'History',
+    history_description: 'This module allows you to execute recent options again',
 };
 
 export default translation_english;

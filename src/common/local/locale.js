@@ -17,8 +17,8 @@ const transalations = {
 
 export function getTranslation(config, text) {
     if(config && config.general && config.general.language) {
-        return transalations[config.general.language][text] || transalations['en'][text];
+        return transalations[config.general.language][text] || transalations['en'][text] || text;
     } else {
-        return transalations['en'][text];
+        return transalations['en'][text] || text;
     }
 }

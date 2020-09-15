@@ -17,6 +17,7 @@ import DeeplModule from "./modules/deepl";
 import LinuxWindowsModule from "./modules/linux-windows";
 import GoogleTranslateModule from "./modules/google-translate";
 import DuckduckgoModule from "./modules/duckduckgo";
+import HistoryModule from "./modules/history";
 
 const modules = {
     settings: SettingsModule,
@@ -35,6 +36,7 @@ const modules = {
     linux_windows: LinuxWindowsModule,
     google_translate: GoogleTranslateModule,
     duckduckgo: DuckduckgoModule,
+    history: HistoryModule,
 };
 
 export function initModules() {
@@ -67,7 +69,7 @@ export function searchQuery(query, callback) {
                         lock.acquire('results', () => {
                             if (exec_id === begin_id) {
                                 results = results
-                                    .concat(result.map((option) => ({ ...option, module: id })))
+                                    .concat(result.map((option) => ({ module: id, ...option })))
                                     .filter((option) => option.quality > 0)
                                     .sort((a, b) => b.quality - a.quality)
                                     .slice(0, config.general.max_results);
@@ -95,5 +97,6 @@ export function searchQuery(query, callback) {
 }
 
 export function executeOption(option) {
+    Object.values(modules).forEach((module) => module.globalExecute && module.globalExecute(option));
     return modules[option.module].execute(option);
 }

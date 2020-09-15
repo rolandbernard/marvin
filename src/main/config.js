@@ -40,6 +40,7 @@ export let config = {
         linux_applications: {
             active: true,
             directories: [ "/usr/share/applications/", path.join(app.getPath('home'), '.local/share/applications/') ],
+            refresh_interval_min: 30, 
         },
         url: {
             active: true,
@@ -79,6 +80,11 @@ export let config = {
             active: false,
             debounce_time: 500,
             quality: 0.1,
+        },
+        history: {
+            active: false,
+            quality: 0.1,
+            maximum_history: 1000,
         },
     },
 };
