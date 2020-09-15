@@ -93,4 +93,5 @@ This module gives you the DuckDuckGo Instant Answers for your query.
 #### History
 This module allows you to execute recent options again.
 
+![screenshot](assets/history.png)
 
