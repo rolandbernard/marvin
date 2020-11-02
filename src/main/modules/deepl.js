@@ -11,7 +11,7 @@ let cancel_last = null;
 let last_lang = null;
 
 let languages = {
-    'en-EN': [ 'English', 'Inglese', 'Englisch' ],
+    'en-US': [ 'English', 'Inglese', 'Englisch' ],
     'fr-FR': [ 'French', 'Francese', 'Französisch' ],
     'es-ES': [ 'Spanish', 'Spagnolo', 'Spanisch' ],
     'pt-PT': [ 'Portuguese', 'Portugiesisch', 'Portoghese' ],
