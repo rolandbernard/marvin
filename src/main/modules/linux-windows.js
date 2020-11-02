@@ -5,7 +5,7 @@ import { exec } from 'child_process';
 
 const LinuxWindowsModule = {
     valid: (query) => {
-        return config.modules.linux_windows.active && query.trim().length >= 1;
+        return query.trim().length >= 1;
     },
     search: (query) => {
         return new Promise((resolve) => {

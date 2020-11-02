@@ -8,7 +8,7 @@ import { exec } from "child_process";
 
 const FoldersModule = {
     valid: (query) => {
-        return config.modules.folders.active && query.trim().length >= 1;
+        return query.trim().length >= 1;
     },
     search: async (query) => {
         return (await Promise.all(config.modules.folders.directories.map(async (directory) => {

@@ -168,7 +168,7 @@ const GoogleTranslateModule = {
         }
     },
     valid: (query) => {
-        if (config.modules.google_translate.active && page) {
+        if (page) {
             if (cancel_last) {
                 cancel_last();
                 cancel_last = null;

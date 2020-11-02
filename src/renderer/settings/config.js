@@ -19,13 +19,16 @@ const config_definition = [
     { name: 'modules', pages: [
         { name: 'linux_system', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
         ], type: 'page', description: 'linux_system_description' },
         { name: 'folders', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
         ], type: 'page', description: 'folders_description' },
         { name: 'html', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'entries', type: 'array', base: [
                 { name: 'name', type: 'text' },
                 { name: 'html', type: 'code' },
@@ -34,23 +37,28 @@ const config_definition = [
         ], type: 'page', description: 'html_description' },
         { name: 'calculator', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'calculator_description' },
         { name: 'linux_applications', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
             { name: 'refresh_interval_min', type: 'size' },
         ], type: 'page', description: 'linux_applications_description' },
         { name: 'url', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'url_description' },
         { name: 'locate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'search_limit', type: 'size' },
         ], type: 'page', description: 'locate_description' },
         { name: 'shortcuts', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'shortcuts', type: 'array', base: [
                 { name: 'shortcut', type: 'shortcut' },
                 { name: 'script', type: 'code' },
@@ -62,6 +70,7 @@ const config_definition = [
         ], type: 'page', description: 'command_description' },
         { name: 'scripts', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'entries', type: 'array', base: [
                 { name: 'name', type: 'text' },
                 { name: 'script', type: 'code' },
@@ -70,25 +79,31 @@ const config_definition = [
         ], type: 'page', description: 'scripts_description' },
         { name: 'clipboard', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'refresh_time', type: 'size' },
             { name: 'maximum_history', type: 'size' },
         ], type: 'page', description: 'clipboard_description' },
         { name: 'deepl', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
         ], type: 'page', description: 'deepl_description' },
         { name: 'linux_windows', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
         ], type: 'page', description: 'linux_windows_description' },
         { name: 'google_translate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
         ], type: 'page', description: 'google_translate_description' },
         { name: 'duckduckgo', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'debounce_time', type: 'size' },
             { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'duckduckgo_description' },
         { name: 'history', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
             { name: 'quality', type: 'quality' },
             { name: 'maximum_history', type: 'size' },
         ], type: 'page', description: 'history_description' },

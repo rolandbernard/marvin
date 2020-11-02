@@ -24,34 +24,42 @@ export let config = {
     modules: {
         linux_system: {
             active: true,
+            prefix: '',
         },
         folders: {
             active: true,
+            prefix: '',
             directories: [ "/", app.getPath('home') ],
         },
         html: {
             active: false,
+            prefix: '',
             entries: [ ],
         },
         calculator: {
             active: true,
+            prefix: '',
             quality: 1.0,
         },
         linux_applications: {
             active: true,
+            prefix: '',
             directories: [ "/usr/share/applications/", path.join(app.getPath('home'), '.local/share/applications/') ],
             refresh_interval_min: 30, 
         },
         url: {
             active: true,
+            prefix: '',
             quality: 1.0,
         },
         locate: {
             active: false,
+            prefix: '',
             search_limit: 1000,
         },
         shortcuts: {
             active: false,
+            prefix: '',
             shortcuts: [ ],
         },
         command: {
@@ -60,29 +68,36 @@ export let config = {
         },
         scripts: {
             active: false,
+            prefix: '',
             entries: [ ],
         },
         clipboard: {
             active: false,
+            prefix: '',
             refresh_time: 20,
             maximum_history: 1000,
         },
         deepl: {
             active: false,
+            prefix: '',
         },
         linux_windows: {
             active: false,
+            prefix: '',
         },
         google_translate: {
             active: false,
+            prefix: '',
         },
         duckduckgo: {
             active: false,
+            prefix: '',
             debounce_time: 500,
             quality: 0.1,
         },
         history: {
             active: false,
+            prefix: '',
             quality: 0.1,
             maximum_history: 1000,
         },

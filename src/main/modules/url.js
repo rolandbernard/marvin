@@ -23,7 +23,7 @@ function completeUrl(str) {
 
 const UrlModule = {
     valid: (query) => {
-        return config.modules.url.active && isValidUrl(query);
+        return isValidUrl(query);
     },
     search: async (query) => {
         return [{
