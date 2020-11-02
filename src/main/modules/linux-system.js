@@ -6,7 +6,7 @@ import { getTranslation } from "../../common/local/locale";
 
 const LinuxSystemModule = {
     valid: (query) => {
-        return config.modules.linux_system.active && query.trim().length >= 1;
+        return query.trim().length >= 1;
     },
     search: async (query) => {
         return [

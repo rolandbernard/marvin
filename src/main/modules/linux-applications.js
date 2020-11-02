@@ -224,7 +224,7 @@ const LinuxApplicationModule = {
         clearInterval(update_interval);
     },
     valid: (query) => {
-        return config.modules.linux_applications.active && query.trim().length >= 1;
+        return query.trim().length >= 1;
     },
     search: async (query) => {
         return applications.map((app) => {

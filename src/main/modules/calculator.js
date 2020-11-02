@@ -6,7 +6,7 @@ import { getTranslation } from '../../common/local/locale';
 
 const CalculatorModule = {
     valid: (query) => {
-        return config.modules.calculator.active && query.trim().length >= 1;
+        return query.trim().length >= 1;
     },
     search: async (query) => {
         const ret = [];

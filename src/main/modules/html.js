@@ -4,7 +4,7 @@ import { config } from "../config";
 
 const HtmlModule = {
     valid: () => {
-        return config.modules.html.active;
+        return true;
     },
     search: async (query) => {
         return config.modules.html.entries.map((entry) => ({

@@ -5,9 +5,7 @@ import { exec } from "child_process";
 
 const CommandModule = {
     valid: (query) => {
-        return config.modules.command.active
-            && query.startsWith(config.modules.command.prefix)
-            && query.replace(config.modules.command.prefix, '').trim().length >= 1;
+        return query.length >= 1;
     },
     search: async (query) => {
         return [

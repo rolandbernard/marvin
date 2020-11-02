@@ -60,12 +60,21 @@ export function searchQuery(query, callback) {
         const begin_id = exec_id;
         clearTimeout(last_query_timeout);
         last_query_timeout = setTimeout(async () => {
+            query = query.trim();
             let results = [];
             let lock = new AsyncLock();
-            await Promise.all(Object.keys(modules).filter((id) => modules[id].valid(query)).map((id) => {
+            let to_eval = Object.keys(modules).filter((id) => config.modules[id]?.prefix
+                ? config.modules[id].active && query.startsWith(config.modules[id].prefix) : false);
+            if(to_eval.length === 0) {
+                to_eval = Object.keys(modules).filter((id) => config.modules[id]
+                    ? config.modules[id].active && !config.modules[id].prefix : true);
+            }
+            await Promise.all(to_eval.filter((id) => config.modules[id]?.prefix
+                ? modules[id].valid(query.replace(config.modules[id].prefix, '').trim()) : modules[id].valid(query))
+            .map((id) => {
                 return new Promise(async (resolv) => {
                     try {
-                        let result = (await modules[id].search(query));
+                        let result = (await modules[id].search(config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query));
                         lock.acquire('results', () => {
                             if (exec_id === begin_id) {
                                 results = results

@@ -32,7 +32,7 @@ const HistoryModule = {
         }
     },
     valid: (query) => {
-        return config.modules.history.active && query.trim().length == 0;
+        return query.trim().length == 0;
     },
     search: async (query) => {
         return execute_history.map((option) => ({

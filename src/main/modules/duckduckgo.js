@@ -7,7 +7,7 @@ let last_search = null;
 
 const DuckduckgoModule = {
     valid: (query) => {
-        return config.modules.duckduckgo.active && query.trim().length >= 1;
+        return query.trim().length >= 1;
     },
     search: (query) => {
         clearTimeout(last_search);

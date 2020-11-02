@@ -5,8 +5,8 @@ import { exec } from "child_process";
 import { stringMatchQuality } from '../../common/util';
 
 const ScriptsModule = {
-    valid: (query) => {
-        return config.modules.scripts.active;
+    valid: () => {
+        return true;
     },
     search: async (query) => {
         return config.modules.scripts.entries.map((entry) => ({

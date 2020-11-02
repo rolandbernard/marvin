@@ -8,7 +8,7 @@ import { app } from "electron";
 
 const LocateModule = {
     valid: (query) => {
-        return config.modules.locate.active && query.trim().length >= 1;
+        return query.trim().length >= 1;
     },
     search: (query) => {
         return new Promise((resolve) => {

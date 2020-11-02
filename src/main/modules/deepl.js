@@ -68,7 +68,7 @@ const DeeplModule = {
         }
     },
     valid: (query) => {
-        if (config.modules.deepl.active && page) {
+        if (page) {
             if (cancel_last) {
                 cancel_last();
                 cancel_last = null;
