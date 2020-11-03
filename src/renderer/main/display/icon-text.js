@@ -26,6 +26,7 @@ function IconText(props) {
             fontSize: '1rem',
             fontWeight: 300,
             whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
             padding: '0.25rem 0',
             maxHeight: '15rem',
         },
