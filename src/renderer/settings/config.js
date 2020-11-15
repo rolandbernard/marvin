@@ -9,6 +9,7 @@ const config_definition = [
         { name: 'max_results', type: 'size' },
         { name: 'incremental_results', type: 'boolean' },
         { name: 'smooth_scrolling', type: 'boolean' },
+        { name: 'recenter_on_show', type: 'boolean' },
     ], type: 'page' },
     { name: 'theme', icon: 'palette', options: [
         { name: 'background_color', type: 'color' },

@@ -14,6 +14,7 @@ export let config = {
         max_results: 200,
         incremental_results: true,
         smooth_scrolling: true,
+        recenter_on_show: true,
     },
     theme: {
         background_color: 'black',
