@@ -9,6 +9,7 @@ const translation_german = {
     max_results: 'Maximale Ergebnisse',
     incremental_results: 'Inkrementelle Ergebnisse',
     smooth_scrolling: 'Flüssiges Scrollen',
+    recenter_on_show: 'Zentrieren des Fensters beim Öffnen',
 
     theme: 'Farbschema',
     background_color: 'Hintergundfarbe',

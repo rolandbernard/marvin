@@ -65,6 +65,9 @@ async function toggleMain(op) {
             main_window.hide();
         } else if ((op === undefined || op ) && !main_window.isVisible()) {
             main_window.show();
+            if(config.general.recenter_on_show) {
+                main_window.center();
+            }
             main_window.focus();
         }
     }

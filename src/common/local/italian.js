@@ -9,6 +9,7 @@ const translation_italian = {
     max_results: 'Risultati massimi',
     incremental_results: 'Risultati incrementali',
     smooth_scrolling: 'Scorrimento regolare',
+    recenter_on_show: "Centrare la finestra dopo l'apertura",
 
     theme: 'Combinazione di colori',
     background_color: 'Colore di sfondo',
