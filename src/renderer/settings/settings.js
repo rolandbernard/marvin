@@ -107,11 +107,18 @@ class App extends React.Component {
             top: {
                 marginTop: '2rem',
             },
+            version: {
+                color: 'grey',
+                fontSize: '0.75rem',
+                paddingBottom: '1rem',
+                paddingLeft: '1rem',
+            },
         };
         return (
             <div style={styles.root}>
                 <Drawer variant="permanent" anchor="left" style={styles.drawer} PaperProps={{ style: styles.paper }}>
                     <div style={styles.top}><img src={Logo} style={styles.logo}></img><div style={styles.title}>Settings</div></div>
+                    <div style={styles.version}>v{this.state.config && this.state.config.version}</div>
                     <Divider />
                     <List>
                         {this.renderConfigDrawerContent(config_definition, this.state.config)}

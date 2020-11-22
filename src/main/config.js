@@ -5,6 +5,7 @@ import path from 'path';
 import { mergeDeep } from '../common/util';
 
 export let config = {
+    version: app.getVersion(),
     general: {
         global_shortcut: 'Super+D',
         language: 'en',
