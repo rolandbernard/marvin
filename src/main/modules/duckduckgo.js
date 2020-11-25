@@ -43,7 +43,7 @@ const DuckduckgoModule = {
                             },
                             {
                                 type: 'icon_text',
-                                uri_icon: data.Image,
+                                uri_icon: (data.Image[0] === '/' ? `https://duckduckgo.com/${data.Image}` : data.Image),
                                 material_icon: data.Image ? null : 'assessment',
                                 text: data.AbstractText,
                                 executable: true,
@@ -52,7 +52,7 @@ const DuckduckgoModule = {
                             },
                         ].concat(data.RelatedTopics.reduce((a, b) => b.Topics ? a.concat(b.Topics) : a.concat([b]), []).map((data) => ({
                             type: 'icon_text',
-                            uri_icon: data.Icon.URL,
+                            uri_icon: (data.Icon.URL[0] === '/' ? `https://duckduckgo.com/${data.Icon.URL}` : data.Icon.URL),
                             material_icon: data.Icon.URL ? null : 'assessment',
                             text: data.Text,
                             executable: true,
@@ -60,7 +60,7 @@ const DuckduckgoModule = {
                             url: data.FirstURL,
                         }))).concat(data.Results.reduce((a, b) => b.Topics ? a.concat(b.Topics) : a.concat([b]), []).map((data) => ({
                             type: 'icon_text',
-                            uri_icon: data.Icon.URL,
+                            uri_icon: (data.Icon.URL[0] === '/' ? `https://duckduckgo.com/${data.Icon.URL}` : data.Icon.URL),
                             material_icon: data.Icon.URL ? null : 'assessment',
                             text: data.Text,
                             executable: true,
