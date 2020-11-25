@@ -20,7 +20,7 @@ const ScriptsModule = {
         }));
     },
     execute: async (option) => {
-        exec(`sh <<< "${option.script.replace(/\"/g, '\\"')}"`);
+        exec(`sh <<< '${option.script.replace(/\'/g, "'\\''")}'`);
     },
 }
 

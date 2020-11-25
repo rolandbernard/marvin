@@ -25,7 +25,7 @@ const CommandModule = {
                 secondary: getTranslation(config, 'execute_in_terminal') + ': `' + query.replace(config.modules.command.prefix, '').trim() + '`',
                 executable: true,
                 quality: 1.0,
-                command: `xterm -e "${query.replace(config.modules.command.prefix, '').trim().replace(/\"/g, '\\"')}"`,
+                command: `xterm -e '${query.replace(config.modules.command.prefix, '').trim().replace(/\'/g, "'\\''")}'`,
             },
         ];
     },

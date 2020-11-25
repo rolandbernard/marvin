@@ -270,7 +270,7 @@ const LinuxApplicationModule = {
     },
     execute: async (option) => {
         if (getProp(option.app, 'Terminal') === 'true') {
-            exec(`xterm -e "${getProp(option.app, 'Exec').replace(/\%./g, '').replace(/\"/g, '\\"')}"`);
+            exec(`xterm -e '${getProp(option.app, 'Exec').replace(/\%./g, '').replace(/\'/g, "'\\''")}'`);
         } else {
             exec(`${getProp(option.app, 'Exec').replace(/\%./g, '')}`);
         }
