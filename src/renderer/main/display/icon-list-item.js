@@ -22,6 +22,7 @@ function IconListItem(props) {
             display: 'flex',
             flexFlow: 'column',
             overflow: 'hidden',
+            justifyContent: 'center',
         },
         primary: {
             fontSize: '1.25rem',
@@ -52,7 +53,7 @@ function IconListItem(props) {
             </div>
             <div style={styles.text}>
                 <div style={styles.primary}>{props.option.primary}</div>
-                <div style={styles.secondary}>{props.option.secondary}</div>
+                {props.option.secondary && (<div style={styles.secondary}>{props.option.secondary}</div>)}
             </div>
         </div>
     );
