@@ -104,6 +104,12 @@ export let config_default = {
             quality: 0.1,
             maximum_history: 1000,
         },
+        color: {
+            active: false,
+            prefix: '',
+            quality: 1,
+            color_preview: false,
+        },
     },
 };
 

@@ -109,6 +109,12 @@ const config_definition = [
             { name: 'quality', type: 'quality' },
             { name: 'maximum_history', type: 'size' },
         ], type: 'page', description: 'history_description' },
+        { name: 'color', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'quality', type: 'quality' },
+            { name: 'color_preview', type: 'boolean' },
+        ], type: 'page', description: 'color_description' },
     ], type: 'subheader' }
 ];
 

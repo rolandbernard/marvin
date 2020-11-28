@@ -7,16 +7,17 @@ const styles = {
         height: '0',
         boxSizing: 'border-box',
         border: 'none',
+        position: 'absolute',
     },
 }
 
 function IFramePreview(props) {
     const ref = createRef();
     const onLoad = () => {
-        ref.current.style.width = '100%';
+        ref.current.style.width = '50%';
         ref.current.style.height = '100%';
         if(props.onLoad) {
-            props.onLoad();
+            props.onLoad('50%');
         }
     };
     return (

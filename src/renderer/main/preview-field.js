@@ -1,22 +1,28 @@
 
 import React, { createRef } from 'react';
-import IFrameItem from './preview/iframe';
+import ColorPreview from './preview/color';
+import IFramePreview from './preview/iframe';
 
 const preview_types = {
-    iframe: IFrameItem,
+    iframe: IFramePreview,
+    color: ColorPreview,
 };
 
 const styles = {
     preview: {
         flex: '0 0 auto',
     },
+    preview_none: {
+        display: 'none',
+        flex: '0 0 0',
+        width: 0,
+    },
 }
 
 function PreviewField(props) {
     const ref = createRef();
-    const onLoad = () => {
-        ref.current.style.width = '50%';
-        ref.current.style.height = '100%';
+    const onLoad = (width) => {
+        ref.current.style.width = width;
     };
     const result = props.result;
     const preview = result && result.preview;
@@ -25,7 +31,7 @@ function PreviewField(props) {
             { React.createElement(preview_types[preview.type], { onLoad: onLoad, preview: preview, config: props.config }) }
         </div>
     ) : (
-        <div></div>
+        <div style={styles.preview_none}></div>
     );
 }
 

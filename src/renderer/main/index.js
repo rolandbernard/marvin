@@ -14,17 +14,18 @@ import PreviewField from './preview-field';
 const styles = {
     root: {
         width: '100%',
-        height: '100%',
         display: 'flex',
         flexFlow: 'column',
-    },
-    output: {
-        display: 'flex',
-        flexFlow: 'row nowrap',
-        width: '100%',
         height: '100%',
     },
+    output: {
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+    },
     list: {
+        display: 'flex',
+        flexFlow: 'row nowrap',
         width: '100%',
     }
 };
@@ -72,8 +73,8 @@ class App extends React.Component {
                 <div style={styles.output}>
                     <div style={styles.list}>
                         <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
+                        <PreviewField config={this.state.config} result={this.state.results[this.state.selected]}></PreviewField>
                     </div>
-                    <PreviewField config={this.state.config} result={this.state.results[this.state.selected]}></PreviewField>
                 </div>
             </div>
         );
