@@ -36,6 +36,7 @@ const translation_italian = {
     folders_description: 'Questo modulo ti consente di sfogliare i tuoi file',
     directories: 'Elenchi',
     path: 'Percorso',
+    file_preview: 'Anteprima file',
    
     html: 'HTML',
     html_description: 'Questo modulo consente di creare inserimenti HTML personalizzate',

@@ -26,6 +26,7 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
+            { name: 'file_preview', type: 'boolean' },
         ], type: 'page', description: 'folders_description' },
         { name: 'html', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -57,6 +58,7 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'search_limit', type: 'size' },
+            { name: 'file_preview', type: 'boolean' },
         ], type: 'page', description: 'locate_description' },
         { name: 'shortcuts', active: 'active', options: [
             { name: 'active', type: 'boolean' },

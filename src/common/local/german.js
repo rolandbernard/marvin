@@ -36,6 +36,7 @@ const translation_german = {
     folders_description: 'Dieses Modul ermöglicht das durchsuchen von Dateien',
     directories: 'Verzeichnisse',
     path: 'Pfad',
+    file_preview: 'Datei-Vorschau',
    
     html: 'HTML',
     html_description: 'Mit diesem Modul können Sie benutzerdefinierte HTML-Einträge erstellen',

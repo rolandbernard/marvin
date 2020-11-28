@@ -2,9 +2,52 @@
 import { stringMatchQuality } from "../../common/util";
 import { config } from "../config";
 import { stat, exists, readdir } from "fs";
-import path from 'path';
+import path, { extname } from 'path';
+import { format } from 'url';
 import { app } from "electron";
 import { exec } from "child_process";
+
+function generateFilePreview(path) {
+    if(extname(path).match(/\.(pdf)/i)) {
+        return {
+            type: 'embed',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else if(extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
+        return {
+            type: 'image',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else if(extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
+        return {
+            type: 'video',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else if(extname(path).match(/\.(mp3|wav|flac|mpeg)/i)) {
+        return {
+            type: 'audio',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else {
+        return null;
+    }
+}
 
 const FoldersModule = {
     valid: (query) => {
@@ -34,6 +77,7 @@ const FoldersModule = {
                                                     complete: path.join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
                                                     quality: query[query.length-1] === '/' ? 0.5 : stringMatchQuality(path.basename(query), file),
                                                     file: path.join(dir, file),
+                                                    preview: config.modules.folders.file_preview && generateFilePreview(path.join(dir, file)),
                                                 };
                                                 resolve(option);
                                             });

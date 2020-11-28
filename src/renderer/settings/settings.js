@@ -76,6 +76,7 @@ class App extends React.Component {
                 height: '100%',
                 display: 'flex',
                 flexFlow: 'row',
+                background: '#f0f0f0',
                 // background: this.state.config && this.state.config.theme.background_color,
                 // color: this.state.config && this.state.config.theme.text_color,
             },

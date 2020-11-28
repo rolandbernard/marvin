@@ -17,9 +17,12 @@ function IFramePreview(props) {
     const ref = createRef();
     const onLoad = () => {
         ref.current.style.width = '50%';
-        ref.current.style.height = 'calc(100% - 3.5rem)';
+        ref.current.style.height = '100%';
         if(props.onLoad) {
-            props.onLoad('0%');
+            console.log(ref.current.currentDocument.body.innerHTML);
+            if(ref.current.currentDocument.body.innerHTML) {
+                props.onLoad('50%');
+            }
         }
     };
     return (

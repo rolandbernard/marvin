@@ -32,6 +32,7 @@ export let config_default = {
             active: true,
             prefix: '',
             directories: [ "/", app.getPath('home') ],
+            file_preview: false,
         },
         html: {
             active: false,
@@ -59,6 +60,7 @@ export let config_default = {
             active: false,
             prefix: '',
             search_limit: 1000,
+            file_preview: false,
         },
         shortcuts: {
             active: false,

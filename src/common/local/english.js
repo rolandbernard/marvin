@@ -36,6 +36,7 @@ const translation_english = {
     folders_description: 'This module allows you to browse your files',
     directories: 'Directories',
     path: 'Path',
+    file_preview: 'File preview',
    
     html: 'HTML',
     html_description: 'This module allows you to create custom HTML entries',

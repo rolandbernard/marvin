@@ -6,6 +6,48 @@ import path from 'path';
 import { exec } from "child_process";
 import { app } from "electron";
 
+function generateFilePreview(path) {
+    if(extname(path).match(/\.(pdf)/i)) {
+        return {
+            type: 'embed',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else if(extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
+        return {
+            type: 'image',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else if(extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
+        return {
+            type: 'video',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else if(extname(path).match(/\.(mp3|wav|flac|mpeg)/i)) {
+        return {
+            type: 'audio',
+            url: format({
+                pathname: path,
+                protocol: 'file',
+                slashes: true,
+            }),
+        };
+    } else {
+        return null;
+    }
+}
+
 const LocateModule = {
     valid: (query) => {
         return query.trim().length >= 1;
@@ -24,6 +66,7 @@ const LocateModule = {
                                 executable: true,
                                 quality: query[query.length - 1] === '/' ? 0.25 : 0.5 * stringMatchQuality(path.basename(query), path.basename(file)),
                                 file: file,
+                                preview: config.modules.locate.file_preview && generateFilePreview(file),
                             };
                             resolve(option);
                         });

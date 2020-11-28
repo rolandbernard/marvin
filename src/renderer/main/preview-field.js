@@ -1,11 +1,19 @@
 
 import React, { createRef } from 'react';
+import AudioPreview from './preview/audio';
 import ColorPreview from './preview/color';
+import EmbedPreview from './preview/embed';
 import IFramePreview from './preview/iframe';
+import ImagePreview from './preview/image';
+import VideoPreview from './preview/video';
 
 const preview_types = {
     iframe: IFramePreview,
     color: ColorPreview,
+    image: ImagePreview,
+    embed: EmbedPreview,
+    video: VideoPreview,
+    audio: AudioPreview,
 };
 
 const styles = {
