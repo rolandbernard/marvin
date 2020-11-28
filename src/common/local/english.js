@@ -55,6 +55,7 @@ const translation_english = {
     url: 'URL module',
     url_description: 'This module allows you to open urls',
     open_in_browser: 'Open in browser',
+    url_preview: 'URL Preview',
     
     locate: 'Locate',
     locate_description: 'This module allows you to search for files using locate',

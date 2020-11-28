@@ -55,6 +55,7 @@ const translation_german = {
     url: 'URL Modul',
     url_description: 'Mit diesem Modul ist es möglich URLs zu öffnen',
     open_in_browser: 'Im Browser öffnen',
+    url_preview: 'URL-Vorschau',
     
     locate: 'Locate',
     locate_description: 'Mit diesem Modul können Sie mithilfe von locate nach Dateien suchen',

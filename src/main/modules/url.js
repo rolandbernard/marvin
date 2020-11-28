@@ -26,6 +26,7 @@ const UrlModule = {
         return isValidUrl(query);
     },
     search: async (query) => {
+        const url = completeUrl(query);
         return [{
             type: 'icon_list_item',
             material_icon: 'language',
@@ -33,7 +34,11 @@ const UrlModule = {
             secondary: getTranslation(config, 'open_in_browser'),
             executable: true,
             quality: config.modules.url.quality,
-            url: completeUrl(query),
+            url: url,
+            preview: config.modules.url.url_preview && {
+                type: 'iframe',
+                url: url,
+            },
         }];
     },
     execute: async (option) => {

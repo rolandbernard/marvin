@@ -12,7 +12,10 @@ let main_window;
 
 function createMainWindow() {
     main_window = new BrowserWindow({
-        webPreferences: { nodeIntegration: true },
+        webPreferences: {
+            nodeIntegration: true,
+            webSecurity: false,
+        },
         resizable: false,
         maximizable: false,
         minimizable: false,

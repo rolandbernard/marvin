@@ -4,7 +4,7 @@ import { app } from "electron";
 import path from 'path';
 import { mergeDeep } from '../common/util';
 
-export let config = {
+export let config_default = {
     version: app.getVersion(),
     general: {
         global_shortcut: 'Super+D',
@@ -53,6 +53,7 @@ export let config = {
             active: true,
             prefix: '',
             quality: 1.0,
+            url_preview: false,
         },
         locate: {
             active: false,
@@ -105,6 +106,8 @@ export let config = {
         },
     },
 };
+
+export let config = config_default;
 
 const config_filename = 'marvin.json';
 

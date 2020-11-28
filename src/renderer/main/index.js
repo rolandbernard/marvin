@@ -9,13 +9,23 @@ import { ipcRenderer } from 'electron';
 
 import InputField from './input-field';
 import OutputList from './output-list';
+import PreviewField from './preview-field';
 
 const styles = {
     root: {
         width: '100%',
-        maxHeight: '100%',
+        height: '100%',
         display: 'flex',
         flexFlow: 'column',
+    },
+    output: {
+        display: 'flex',
+        flexFlow: 'row nowrap',
+        width: '100%',
+        height: '100%',
+    },
+    list: {
+        width: '100%',
     }
 };
 
@@ -59,7 +69,12 @@ class App extends React.Component {
         return (
             <div style={styles.root} onKeyDown={(e) => this.handle_key_down(e)}>
                 <InputField config={this.state.config} inputRef={this.input}></InputField>
-                <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
+                <div style={styles.output}>
+                    <div style={styles.list}>
+                        <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
+                    </div>
+                    <PreviewField config={this.state.config} result={this.state.results[this.state.selected]}></PreviewField>
+                </div>
             </div>
         );
     }

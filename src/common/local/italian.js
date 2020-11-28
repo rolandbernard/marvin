@@ -55,6 +55,7 @@ const translation_italian = {
     url: 'URL modulo',
     url_description: 'Questo modulo ti consente di aprire gli URL',
     open_in_browser: 'Apri nel browser',
+    url_preview: 'Anteprima URL',
     
     locate: 'Locate',
     locate_description: 'Questo modulo consente di cercare i file utilizzando locate',

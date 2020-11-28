@@ -51,6 +51,7 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'quality', type: 'quality' },
+            { name: 'url_preview', type: 'boolean' },
         ], type: 'page', description: 'url_description' },
         { name: 'locate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
