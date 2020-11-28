@@ -1,8 +1,8 @@
 
 import { stringMatchQuality } from "../../common/util";
 import { config } from "../config";
-import { stat, exists, readdir } from "fs";
-import path from 'path';
+import path, { extname } from 'path';
+import { format } from 'url';
 import { exec } from "child_process";
 import { app } from "electron";
 
