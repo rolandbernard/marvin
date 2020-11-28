@@ -95,3 +95,8 @@ This module allows you to execute recent options again.
 
 ![screenshot](assets/history.png)
 
+#### Color
+This module allows you to convert colors between hex/rgb/hsl.
+
+![screenshot](assets/color.png)
+

@@ -6,8 +6,9 @@ function rgbToHsl(color) {
     const max = Math.max(...color);
     const min = Math.min(...color);
     const l = (max + min) / 2;
-    let h, s;
-    if (max != min) {
+    let h = 0;
+    let s = 0;
+    if (max !== min) {
         if (l < 0.5) {
             s = (max - min) / (max + min);
         } else {
@@ -70,7 +71,7 @@ function parseColor(query) {
     } else if(match = query.match(/^\s*rgb\s*\(\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)\s*$/)) {
         return [parseInt(match[1]) / 100, parseInt(match[2]) / 100, parseInt(match[3]) / 100];
     } else if(match = query.match(/^\s*hsl\s*\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)\s*$/)) {
-        return [parseInt(match[1]) / 360, parseInt(match[2]) / 100, parseInt(match[3]) / 100];
+        return hslToRgb([parseInt(match[1]) / 360, parseInt(match[2]) / 100, parseInt(match[3]) / 100]);
     } else {
         return false;
     }
