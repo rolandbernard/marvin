@@ -102,6 +102,7 @@ const config_definition = [
             { name: 'prefix', type: 'text' },
             { name: 'debounce_time', type: 'size' },
             { name: 'quality', type: 'quality' },
+            { name: 'url_preview', type: 'boolean' },
         ], type: 'page', description: 'duckduckgo_description' },
         { name: 'history', active: 'active', options: [
             { name: 'active', type: 'boolean' },

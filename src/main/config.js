@@ -97,6 +97,7 @@ export let config_default = {
             prefix: '',
             debounce_time: 500,
             quality: 0.1,
+            url_preview: false,
         },
         history: {
             active: false,

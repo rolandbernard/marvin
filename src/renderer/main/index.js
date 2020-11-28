@@ -73,7 +73,7 @@ class App extends React.Component {
                 <div style={styles.output}>
                     <div style={styles.list}>
                         <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
-                        <PreviewField config={this.state.config} result={this.state.results[this.state.selected]}></PreviewField>
+                        <PreviewField config={this.state.config} result={this.state.results && this.state.results[this.state.selected]}></PreviewField>
                     </div>
                 </div>
             </div>
