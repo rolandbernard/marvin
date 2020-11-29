@@ -1,4 +1,5 @@
 
+import { TurnedInRounded } from '@material-ui/icons';
 import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
@@ -15,6 +16,8 @@ function createMainWindow() {
         webPreferences: {
             nodeIntegration: true,
             plugins: true,
+            contextIsolation: false,
+            webSecurity: !isDevelopment,
         },
         resizable: false,
         maximizable: false,
@@ -29,6 +32,7 @@ function createMainWindow() {
         height: config.general.max_height,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.png'),
+        paintWhenInitiallyHidden: true,
     });
 
     if (isDevelopment) {
