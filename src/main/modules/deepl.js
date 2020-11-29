@@ -99,7 +99,7 @@ const DeeplModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(100);
+            await page.waitForTimeout(100);
             if (stop) {
                 resolve();
                 return;
@@ -113,7 +113,7 @@ const DeeplModule = {
                 return;
             }
             if (last_lang != lang) {
-                await page.waitFor(100);
+                await page.waitForTimeout(100);
                 if (stop) {
                     resolve();
                     return;
@@ -123,7 +123,7 @@ const DeeplModule = {
                     resolve();
                     return;
                 }
-                await page.waitFor(100);
+                await page.waitForTimeout(100);
                 if (stop) {
                     resolve();
                     return;
@@ -135,7 +135,7 @@ const DeeplModule = {
                 }
                 last_lang = lang;
             }
-            await page.waitFor(20);
+            await page.waitForTimeout(20);
             if (stop) {
                 resolve();
                 return;
@@ -145,7 +145,7 @@ const DeeplModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(100);
+            await page.waitForTimeout(100);
             if (stop) {
                 resolve();
                 return;
@@ -165,7 +165,7 @@ const DeeplModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(100);
+            await page.waitForTimeout(100);
             if (stop) {
                 resolve();
                 return;

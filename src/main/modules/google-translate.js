@@ -148,7 +148,7 @@ const GoogleTranslateModule = {
                 page = await pie.getPage(browser, window);
                 try {
                     await page.click('.tlid-open-source-language-list');
-                    await page.waitFor(100);
+                    await page.waitForTimeout(100);
                     await page.click('.language-list-unfiltered-langs-sl_list .language_list_item_wrapper-auto');
                 } catch (e) { }
             })();
@@ -199,7 +199,7 @@ const GoogleTranslateModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(100);
+            await page.waitForTimeout(100);
             if (stop) {
                 resolve();
                 return;
@@ -212,7 +212,7 @@ const GoogleTranslateModule = {
                 return;
             }
             if (last_lang != lang) {
-                await page.waitFor(100);
+                await page.waitForTimeout(100);
                 if (stop) {
                     resolve();
                     return;
@@ -222,7 +222,7 @@ const GoogleTranslateModule = {
                     resolve();
                     return;
                 }
-                await page.waitFor(100);
+                await page.waitForTimeout(100);
                 if (stop) {
                     resolve();
                     return;
@@ -234,7 +234,7 @@ const GoogleTranslateModule = {
                 }
                 last_lang = lang;
             }
-            await page.waitFor(20);
+            await page.waitForTimeout(20);
             if (stop) {
                 resolve();
                 return;
@@ -256,7 +256,7 @@ const GoogleTranslateModule = {
                 resolve();
                 return;
             }
-            await page.waitFor(500);
+            await page.waitForTimeout(500);
             if (stop) {
                 resolve();
                 return;
