@@ -17,7 +17,9 @@ const styles = {
 function EmbedPreview(props) {
     const ref = createRef();
     const onLoad = () => {
-        props.onLoad('0%');
+        if(props.onLoad) {
+            props.onLoad('0%');
+        }
     };
     useEffect(() => {
         ref.current.innerHTML = `<embed style="width:100%; height: 100%;" src="${props.preview.url}"></embed>`;

@@ -3,14 +3,17 @@ import React, { useEffect } from 'react';
 
 const styles = {
     color_preview: {
-        width: '100%',
+        width: '30%',
+        position: 'absolute',
+        right: 0,
+        top: 0,
     },
 }
 
 function AudioPreview(props) {
     useEffect(() => {
         if(props.onLoad) {
-            props.onLoad('20%');
+            props.onLoad('0%');
         }
     }, []);
     return (

@@ -12,12 +12,16 @@ let settings_window;
 
 export function createSettingsWindow() {
     settings_window = new BrowserWindow({
-        webPreferences: { nodeIntegration: true },
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
         skipTaskbar: true,
         center: true,
         show: false,
         width: config.general.width * 2,
         icon: path.join(__static, 'logo.png'),
+        paintWhenInitiallyHidden: true,
     });
 
     if (isDevelopment) {

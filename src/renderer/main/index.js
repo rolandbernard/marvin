@@ -30,6 +30,8 @@ const styles = {
         display: 'flex',
         flexFlow: 'row nowrap',
         width: '100%',
+        height: 'min-content',
+        maxHeight: '100%',
         overflow: 'hidden',
     },
     list: {
