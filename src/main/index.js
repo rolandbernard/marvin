@@ -12,7 +12,10 @@ let main_window;
 
 function createMainWindow() {
     main_window = new BrowserWindow({
-        webPreferences: { nodeIntegration: true },
+        webPreferences: {
+            nodeIntegration: true,
+            plugins: true,
+        },
         resizable: false,
         maximizable: false,
         minimizable: false,
@@ -25,7 +28,7 @@ function createMainWindow() {
         width: config.general.width + (isDevelopment ? 1000 : 0),
         height: config.general.max_height,
         alwaysOnTop: true,
-        icon: path.join(__static, 'logo.ico'),
+        icon: path.join(__static, 'logo.png'),
     });
 
     if (isDevelopment) {

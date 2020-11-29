@@ -1,14 +1,13 @@
 
 export function stringMatchQuality(text, pattern) {
-    // TODO: Improve this
-    text = text.toUpperCase();
-    pattern = pattern.toUpperCase();
-    if (text === pattern) {
-        return 0.9;
-    } else if (pattern.startsWith(text)) {
-        return 0.7 + 0.2 * (text.length / pattern.length);
-    } else if (pattern.includes(text)) {
-        return 0.5 + 0.4 * (text.length / pattern.length);
+    const text_upper = text.toUpperCase();
+    const pattern_upper = pattern.toUpperCase();
+    if (text_upper === pattern_upper) {
+        return (text === pattern ? 1.0 : 0.9);
+    } else if (pattern_upper.startsWith(text_upper)) {
+        return 0.7 + 0.2 * (text_upper.length / pattern_upper.length);
+    } else if (pattern_upper.includes(text_upper)) {
+        return 0.5 + 0.4 * (text_upper.length / pattern_upper.length);
     } else {
         return 0;
     }

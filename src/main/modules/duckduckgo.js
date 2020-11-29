@@ -25,6 +25,10 @@ const DuckduckgoModule = {
                                 executable: true,
                                 quality: 1,
                                 url: data.Redirect,
+                                preview: config.modules.duckduckgo.url_preview && data.Redirect && {
+                                    type: 'iframe',
+                                    url: data.Redirect,
+                                },
                             },
                             {
                                 type: 'icon_text',
@@ -40,32 +44,48 @@ const DuckduckgoModule = {
                                 executable: true,
                                 quality: 1,
                                 url: data.DefinitionURL,
+                                preview: config.modules.duckduckgo.url_preview && data.DefinitionURL && {
+                                    type: 'iframe',
+                                    url: data.DefinitionURL,
+                                },
                             },
                             {
                                 type: 'icon_text',
-                                uri_icon: data.Image,
+                                uri_icon: (data.Image[0] === '/' ? `https://duckduckgo.com/${data.Image}` : data.Image),
                                 material_icon: data.Image ? null : 'assessment',
                                 text: data.AbstractText,
                                 executable: true,
                                 quality: 1,
                                 url: data.AbstractURL,
+                                preview: config.modules.duckduckgo.url_preview && data.AbstractURL && {
+                                    type: 'iframe',
+                                    url: data.AbstractURL,
+                                },
                             },
                         ].concat(data.RelatedTopics.reduce((a, b) => b.Topics ? a.concat(b.Topics) : a.concat([b]), []).map((data) => ({
                             type: 'icon_text',
-                            uri_icon: data.Icon.URL,
+                            uri_icon: (data.Icon.URL[0] === '/' ? `https://duckduckgo.com/${data.Icon.URL}` : data.Icon.URL),
                             material_icon: data.Icon.URL ? null : 'assessment',
                             text: data.Text,
                             executable: true,
                             quality: config.modules.duckduckgo.quality,
                             url: data.FirstURL,
+                            preview: config.modules.duckduckgo.url_preview && data.FirstURL && {
+                                type: 'iframe',
+                                url: data.FirstURL,
+                            },
                         }))).concat(data.Results.reduce((a, b) => b.Topics ? a.concat(b.Topics) : a.concat([b]), []).map((data) => ({
                             type: 'icon_text',
-                            uri_icon: data.Icon.URL,
+                            uri_icon: (data.Icon.URL[0] === '/' ? `https://duckduckgo.com/${data.Icon.URL}` : data.Icon.URL),
                             material_icon: data.Icon.URL ? null : 'assessment',
                             text: data.Text,
                             executable: true,
                             quality: config.modules.duckduckgo.quality,
                             url: data.FirstURL,
+                            preview: config.modules.duckduckgo.url_preview && data.FirstURL && {
+                                type: 'iframe',
+                                url: data.FirstURL,
+                            },
                         }))).filter((el) => el.text?.length >= 1 || (el.primary?.length >= 1 && el.secondary?.length >= 1)));
                     }).catch((e) => { });
                 }).catch((e) => { });

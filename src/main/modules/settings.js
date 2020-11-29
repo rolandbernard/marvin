@@ -17,7 +17,7 @@ export function createSettingsWindow() {
         center: true,
         show: false,
         width: config.general.width * 2,
-        icon: path.join(__static, 'logo.ico'),
+        icon: path.join(__static, 'logo.png'),
     });
 
     if (isDevelopment) {

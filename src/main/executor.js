@@ -18,6 +18,7 @@ import LinuxWindowsModule from "./modules/linux-windows";
 import GoogleTranslateModule from "./modules/google-translate";
 import DuckduckgoModule from "./modules/duckduckgo";
 import HistoryModule from "./modules/history";
+import ColorModule from "./modules/color";
 
 const modules = {
     settings: SettingsModule,
@@ -37,6 +38,7 @@ const modules = {
     google_translate: GoogleTranslateModule,
     duckduckgo: DuckduckgoModule,
     history: HistoryModule,
+    color: ColorModule,
 };
 
 export function initModules() {

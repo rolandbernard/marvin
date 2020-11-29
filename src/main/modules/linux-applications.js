@@ -1,13 +1,31 @@
 
 import { config } from "../config";
-import { readdir, readFile, exists, writeFileSync } from "fs";
-import path from 'path';
+import { readdir, readFile, exists, writeFileSync, existsSync, readFileSync } from "fs";
+import { app } from 'electron';
+import path, { join } from 'path';
 import { exec } from "child_process";
 import { stringMatchQuality } from "../../common/util";
 
 let applications = [];
 let icons = {};
 let icon_index = null;
+
+const application_cache_filename = 'applications.json';
+
+function loadApplicationCache() {
+    const cache_path = path.join(app.getPath('userData'), application_cache_filename);
+    if (existsSync(cache_path)) {
+        try {
+            applications = JSON.parse(readFileSync(cache_path, { encoding: 'utf8' }));
+        } catch (e) { }
+    }
+    writeFileSync(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
+}
+
+function updateCache() {
+    const cache_path = path.join(app.getPath('userData'), application_cache_filename);
+    writeFileSync(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
+}
 
 function getProp(object, name, fallback) {
     return (object[name] instanceof Object)
@@ -139,8 +157,10 @@ function pathToDataUrl(path) {
 }
 
 async function loadApplications() {
-    applications.length = 0;
-    applications = (await Promise.all(config.modules.linux_applications.directories.map((directory) => new Promise((resolve) => {
+    const theme = await getIconTheme();
+    const fallback_theme = await getIconFallbackTheme();
+    await createIconIndex(theme, fallback_theme);
+    applications = (await Promise.all((await Promise.all(config.modules.linux_applications.directories.map((directory) => new Promise((resolve) => {
         readdir(directory, async (_, files) => {
             resolve(files ? (await Promise.all(files.filter((file) => file.endsWith('.desktop')).map((file) => new Promise((resolve) => {
                 readFile(path.join(directory, file), { encoding: 'utf8' }, (_, data) => {
@@ -191,20 +211,19 @@ async function loadApplications() {
                 });
             })))).filter((entry) => entry) : []);
         });
-    })))).reduce((a, b) => a.concat(b));
-    const theme = await getIconTheme();
-    const fallback_theme = await getIconFallbackTheme();
-    await createIconIndex(theme, fallback_theme);
-    await Promise.all(applications.map((application) => {
-        return Promise.all(Object.values(application).filter((value) => value instanceof Object).map(async (value) => {
+    })))).reduce((a, b) => a.concat(b)).map(async (application) => {
+        await Promise.all(Object.values(application).filter((value) => value instanceof Object).map(async (value) => {
             if (getProp(value, 'Icon') && !icons[getProp(value, 'Icon')]) {
                 const path = await findIconPath(getProp(value, 'Icon'), theme, fallback_theme);
                 if (path) {
                     icons[getProp(value, 'Icon')] = await pathToDataUrl(path);
                 } 
             }
+            value.icon = icons[getProp(value, 'Icon')];
         }));
-    }));
+        return application;
+    })));
+    updateCache();
 }
 
 let update_interval = null;
@@ -212,7 +231,8 @@ let update_interval = null;
 const LinuxApplicationModule = {
     init: async () => {
         if(config.modules.linux_applications.active) {
-            await loadApplications();
+            loadApplicationCache();
+            loadApplications();
             update_interval = setInterval(() => loadApplications(), 60 * 1000 * config.modules.linux_applications.refresh_interval_min);
         }
     },
@@ -230,10 +250,10 @@ const LinuxApplicationModule = {
         return applications.map((app) => {
             const name = getProp(app.desktop, 'Name', app.application.replace('.desktop', ''));
             const desc = getProp(app.desktop, 'Comment', '');
-            const icon = icons[getProp(app.desktop, 'Icon')];
+            const icon = app.desktop.icon;
             return Object.values(app).filter((value) => value instanceof Object).map((value) => ({
                 type: 'icon_list_item',
-                uri_icon: icons[getProp(value, 'Icon')] || icon,
+                uri_icon: value.icon || icon,
                 primary: getProp(value, 'Name', name),
                 secondary: getProp(value, 'Comment', name),
                 executable: true,
@@ -250,7 +270,7 @@ const LinuxApplicationModule = {
     },
     execute: async (option) => {
         if (getProp(option.app, 'Terminal') === 'true') {
-            exec(`xterm -e "${getProp(option.app, 'Exec').replace(/\%./g, '').replace(/\"/g, '\\"')}"`);
+            exec(`xterm -e '${getProp(option.app, 'Exec').replace(/\%./g, '').replace(/\'/g, "'\\''")}'`);
         } else {
             exec(`${getProp(option.app, 'Exec').replace(/\%./g, '')}`);
         }

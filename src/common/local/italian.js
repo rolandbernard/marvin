@@ -36,6 +36,7 @@ const translation_italian = {
     folders_description: 'Questo modulo ti consente di sfogliare i tuoi file',
     directories: 'Elenchi',
     path: 'Percorso',
+    file_preview: 'Anteprima file',
    
     html: 'HTML',
     html_description: 'Questo modulo consente di creare inserimenti HTML personalizzate',
@@ -55,6 +56,7 @@ const translation_italian = {
     url: 'URL modulo',
     url_description: 'Questo modulo ti consente di aprire gli URL',
     open_in_browser: 'Apri nel browser',
+    url_preview: 'Anteprima URL',
     
     locate: 'Locate',
     locate_description: 'Questo modulo consente di cercare i file utilizzando locate',
@@ -93,6 +95,10 @@ const translation_italian = {
     
     history: 'Cronologia',
     history_description: 'Questo modulo consente di eseguire nuovamente le opzioni',
+    
+    color: 'Colori',
+    color_description: 'Questo modulo ti consente di convertite colori tra hex/rgb/hsl',
+    color_preview: 'Anteprima colore',
 };
 
 export default translation_italian;

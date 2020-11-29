@@ -29,6 +29,7 @@ function IconText(props) {
             wordBreak: 'break-word',
             padding: '0.25rem 0',
             maxHeight: '15rem',
+            justifyContent: 'center',
         },
     }
 

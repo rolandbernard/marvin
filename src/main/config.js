@@ -4,7 +4,8 @@ import { app } from "electron";
 import path from 'path';
 import { mergeDeep } from '../common/util';
 
-export let config = {
+export let config_default = {
+    version: app.getVersion(),
     general: {
         global_shortcut: 'Super+D',
         language: 'en',
@@ -31,6 +32,7 @@ export let config = {
             active: true,
             prefix: '',
             directories: [ "/", app.getPath('home') ],
+            file_preview: false,
         },
         html: {
             active: false,
@@ -52,11 +54,13 @@ export let config = {
             active: true,
             prefix: '',
             quality: 1.0,
+            url_preview: false,
         },
         locate: {
             active: false,
             prefix: '',
             search_limit: 1000,
+            file_preview: false,
         },
         shortcuts: {
             active: false,
@@ -95,6 +99,7 @@ export let config = {
             prefix: '',
             debounce_time: 500,
             quality: 0.1,
+            url_preview: false,
         },
         history: {
             active: false,
@@ -102,8 +107,16 @@ export let config = {
             quality: 0.1,
             maximum_history: 1000,
         },
+        color: {
+            active: false,
+            prefix: '',
+            quality: 1,
+            color_preview: false,
+        },
     },
 };
+
+export let config = config_default;
 
 const config_filename = 'marvin.json';
 

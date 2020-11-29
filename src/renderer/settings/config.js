@@ -26,6 +26,7 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
+            { name: 'file_preview', type: 'boolean' },
         ], type: 'page', description: 'folders_description' },
         { name: 'html', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -51,11 +52,13 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'quality', type: 'quality' },
+            { name: 'url_preview', type: 'boolean' },
         ], type: 'page', description: 'url_description' },
         { name: 'locate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'search_limit', type: 'size' },
+            { name: 'file_preview', type: 'boolean' },
         ], type: 'page', description: 'locate_description' },
         { name: 'shortcuts', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -101,6 +104,7 @@ const config_definition = [
             { name: 'prefix', type: 'text' },
             { name: 'debounce_time', type: 'size' },
             { name: 'quality', type: 'quality' },
+            { name: 'url_preview', type: 'boolean' },
         ], type: 'page', description: 'duckduckgo_description' },
         { name: 'history', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -108,6 +112,12 @@ const config_definition = [
             { name: 'quality', type: 'quality' },
             { name: 'maximum_history', type: 'size' },
         ], type: 'page', description: 'history_description' },
+        { name: 'color', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'quality', type: 'quality' },
+            { name: 'color_preview', type: 'boolean' },
+        ], type: 'page', description: 'color_description' },
     ], type: 'subheader' }
 ];
 

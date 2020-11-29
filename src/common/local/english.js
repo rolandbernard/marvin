@@ -36,6 +36,7 @@ const translation_english = {
     folders_description: 'This module allows you to browse your files',
     directories: 'Directories',
     path: 'Path',
+    file_preview: 'File preview',
    
     html: 'HTML',
     html_description: 'This module allows you to create custom HTML entries',
@@ -52,9 +53,10 @@ const translation_english = {
     linux_applications_description: 'This module allows you to start applications on linux',
     refresh_interval_min: 'Refresh interval [min]', 
     
-    url: 'URL module',
+    url: 'URL',
     url_description: 'This module allows you to open urls',
     open_in_browser: 'Open in browser',
+    url_preview: 'URL preview',
     
     locate: 'Locate',
     locate_description: 'This module allows you to search for files using locate',
@@ -93,6 +95,10 @@ const translation_english = {
     
     history: 'History',
     history_description: 'This module allows you to execute recent options again',
+    
+    color: 'Color',
+    color_description: 'This module allows you to convert colors between hex/rgb/hsl',
+    color_preview: 'Color preview',
 };
 
 export default translation_english;

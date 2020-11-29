@@ -36,6 +36,7 @@ const translation_german = {
     folders_description: 'Dieses Modul ermöglicht das durchsuchen von Dateien',
     directories: 'Verzeichnisse',
     path: 'Pfad',
+    file_preview: 'Datei-Vorschau',
    
     html: 'HTML',
     html_description: 'Mit diesem Modul können Sie benutzerdefinierte HTML-Einträge erstellen',
@@ -52,9 +53,10 @@ const translation_german = {
     linux_applications_description: 'Mit diesem Modul können Sie Anwendungen unter Linux starten',
     refresh_interval_min: 'Aktualisierungsintervall [min]', 
     
-    url: 'URL Modul',
+    url: 'URL',
     url_description: 'Mit diesem Modul ist es möglich URLs zu öffnen',
     open_in_browser: 'Im Browser öffnen',
+    url_preview: 'URL-Vorschau',
     
     locate: 'Locate',
     locate_description: 'Mit diesem Modul können Sie mithilfe von locate nach Dateien suchen',
@@ -93,6 +95,10 @@ const translation_german = {
     
     history: 'Verlauf',
     history_description: 'Dieses Modul erlaub es Optionen erneut auszuführen',
+    
+    color: 'Farben',
+    color_description: 'Mit diesem Modul ist es möglich Farben zwischen hex/rgb/hsl unzuwandeln',
+    color_preview: 'Farben-Vorschau',
 };
 
 export default translation_german;
