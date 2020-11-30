@@ -12,10 +12,15 @@ const config_definition = [
         { name: 'recenter_on_show', type: 'boolean' },
     ], type: 'page' },
     { name: 'theme', icon: 'palette', options: [
-        { name: 'background_color', type: 'color' },
-        { name: 'text_color', type: 'color' },
+        { name: 'background_color_input', type: 'color' },
+        { name: 'background_color_output', type: 'color' },
+        { name: 'text_color_input', type: 'color' },
+        { name: 'text_color_output', type: 'color' },
         { name: 'accent_color', type: 'color' },
         { name: 'select_color', type: 'color' },
+        { name: 'border_radius', type: 'size' },
+        { name: 'background_blur_input', type: 'size' },
+        { name: 'background_blur_output', type: 'size' },
     ], type: 'page' },
     { name: 'modules', pages: [
         { name: 'linux_system', active: 'active', options: [

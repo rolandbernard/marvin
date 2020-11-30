@@ -31,14 +31,14 @@ class OutputList extends React.Component {
                 width: '100%',
                 flex: '1 1 auto',
                 overflow: 'auto',
-                background: this.props.config && this.props.config.theme.background_color,
+                background: this.props.config && this.props.config.theme.background_color_output,
             },
             list: {
                 width: '100%',
             },
             result: {
                 width: '100%',
-                color: this.props.config && this.props.config.theme.text_color,
+                color: this.props.config && this.props.config.theme.text_color_output,
             },
             selected: {
                 background: this.props.config && this.props.config.theme.select_color,
