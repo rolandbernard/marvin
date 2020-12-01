@@ -59,7 +59,9 @@ function createMainWindow() {
         e.preventDefault();
     });
     main_window.on('close', hideWindow);
-    main_window.on('blur', hideWindow);
+    if (!isDevelopment) {
+        main_window.on('blur', hideWindow);
+    }
 }
 
 async function toggleMain(op) {
