@@ -18,9 +18,9 @@ const translation_english = {
     text_color_output: 'Text color (Output)',
     accent_color: 'Accent color',
     select_color: 'Selection color',
-    border_radius: 'Border radius',
-    background_blur_input: 'Background blur (Input)',
-    background_blur_output: 'Background blur (Output)',
+    border_radius: 'Border radius [px]',
+    background_blur_input: 'Background blur (Input) [px]',
+    background_blur_output: 'Background blur (Output) [px]',
 
     modules: 'Modules',
     active: 'Active',

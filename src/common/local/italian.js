@@ -18,9 +18,9 @@ const translation_italian = {
     text_color_output: 'Colore del testo (Output)',
     accent_color: 'Colore di accento',
     select_color: 'Colore di selezione',
-    border_radius: 'Raggio di confine',
-    background_blur_input: 'Sfocatura di sfondo (Input)',
-    background_blur_output: 'Sfocatura di sfondo (Output)',
+    border_radius: 'Raggio di confine [px]',
+    background_blur_input: 'Sfocatura di sfondo (Input) [px]',
+    background_blur_output: 'Sfocatura di sfondo (Output) [px]',
 
     modules: 'Moduli',
     active: 'Attivo',

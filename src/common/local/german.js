@@ -18,9 +18,9 @@ const translation_german = {
     text_color_output: 'Textfarbe (Ausgabe)',
     accent_color: 'Akzentfarbe',
     select_color: 'Auswahlfarbe',
-    border_radius: 'Randradius',
-    background_blur_input: 'Hintergrundunschärfe (Eingabe)',
-    background_blur_output: 'Hintergrundunschärfe (Ausgabe)',
+    border_radius: 'Randradius [px]',
+    background_blur_input: 'Hintergrundunschärfe (Eingabe) [px]',
+    background_blur_output: 'Hintergrundunschärfe (Ausgabe) [px]',
 
     modules: 'Module',
     active: 'Aktiv',
