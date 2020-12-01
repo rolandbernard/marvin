@@ -18,6 +18,7 @@ function createMainWindow() {
             plugins: true,
             contextIsolation: false,
             webSecurity: !isDevelopment,
+            experimentalFeatures: true,
         },
         resizable: false,
         maximizable: false,
@@ -28,16 +29,12 @@ function createMainWindow() {
         frame: false,
         show: false,
         transparent: true,
-        width: config.general.width + (isDevelopment ? 1000 : 0),
+        width: config.general.width,
         height: config.general.max_height,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.png'),
         paintWhenInitiallyHidden: true,
     });
-
-    if (isDevelopment) {
-        main_window.webContents.openDevTools();
-    }
 
     if (isDevelopment) {
         main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html`);
