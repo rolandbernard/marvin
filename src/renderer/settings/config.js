@@ -19,8 +19,8 @@ const config_definition = [
         { name: 'accent_color', type: 'color' },
         { name: 'select_color', type: 'color' },
         { name: 'border_radius', type: 'size' },
-        { name: 'background_blur_input', type: 'size' },
-        { name: 'background_blur_output', type: 'size' },
+        // { name: 'background_blur_input', type: 'size' },
+        // { name: 'background_blur_output', type: 'size' },
     ], type: 'page' },
     { name: 'modules', pages: [
         { name: 'linux_system', active: 'active', options: [
