@@ -70,7 +70,7 @@ class App extends React.Component {
                 height: 'min-content',
                 maxHeight: '100%',
                 overflow: 'hidden',
-                backdropFilter: this.state.config && `blur(${this.state.config.theme.background_blur_input}px)`,
+                // backdropFilter: this.state.config && `blur(${this.state.config.theme.background_blur_input}px)`,
                 borderRadius: this.state.config && `0 0 ${this.state.config.theme.border_radius}px ${this.state.config.theme.border_radius}px`,
             },
             list: {

@@ -19,10 +19,7 @@ function IFramePreview(props) {
         ref.current.style.width = '50%';
         ref.current.style.height = '100%';
         if(props.onLoad) {
-            console.log(ref.current.currentDocument.body.innerHTML);
-            if(ref.current.currentDocument.body.innerHTML) {
-                props.onLoad('50%');
-            }
+            props.onLoad('0%');
         }
     };
     return (

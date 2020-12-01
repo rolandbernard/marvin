@@ -38,7 +38,7 @@ class InputField extends React.Component {
                 padding: '0.275rem',
                 background: this.props.config && this.props.config.theme.background_color_input,
                 color: this.props.config && this.props.config.theme.text_color_input,
-                backdropFilter: this.props.config && `blur(${this.props.config.theme.background_blur_input}px)`,
+                // backdropFilter: this.props.config && `blur(${this.props.config.theme.background_blur_input}px)`,
                 borderRadius: this.props.config && `${this.props.config.theme.border_radius}px ${this.props.config.theme.border_radius}px 0 0`,
             },
             text_field: {
