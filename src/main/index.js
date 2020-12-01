@@ -11,6 +11,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let main_window;
 
+app.commandLine.appendSwitch("disable-gpu"); // Transparancy will not work without this
+
 function createMainWindow() {
     main_window = new BrowserWindow({
         webPreferences: {
@@ -33,7 +35,6 @@ function createMainWindow() {
         height: config.general.max_height,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.png'),
-        paintWhenInitiallyHidden: true,
     });
 
     if (isDevelopment) {
