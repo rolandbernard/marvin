@@ -33,12 +33,13 @@ class InputField extends React.Component {
         const styles = {
             input: {
                 width: '100%',
-                background: this.props.config && this.props.config.theme.background_color,
-                color: this.props.config && this.props.config.theme.text_color,
                 fontSize: '1.5rem',
                 fontWeight: 300,
-                borderRadius: 0,
-                padding: '0.25rem',
+                padding: '0.275rem',
+                background: this.props.config && this.props.config.theme.background_color_input,
+                color: this.props.config && this.props.config.theme.text_color_input,
+                // backdropFilter: this.props.config && `blur(${this.props.config.theme.background_blur_input}px)`,
+                borderRadius: this.props.config && `${this.props.config.theme.border_radius}px ${this.props.config.theme.border_radius}px 0 0`,
             },
             text_field: {
                 margin: 0,

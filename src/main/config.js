@@ -18,10 +18,15 @@ export let config_default = {
         recenter_on_show: true,
     },
     theme: {
-        background_color: 'black',
-        text_color: 'white',
+        background_color_input: 'black',
+        background_color_output: 'black',
+        text_color_input: 'white',
+        text_color_output: 'white',
         accent_color: 'white',
         select_color: 'grey',
+        border_radius: 0,
+        background_blur_input: 0,
+        background_blur_output: 0,
     },
     modules: {
         linux_system: {

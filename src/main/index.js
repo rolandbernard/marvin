@@ -11,6 +11,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let main_window;
 
+app.commandLine.appendSwitch("disable-gpu"); // Transparancy will not work without this
+
 function createMainWindow() {
     main_window = new BrowserWindow({
         webPreferences: {
@@ -18,6 +20,7 @@ function createMainWindow() {
             plugins: true,
             contextIsolation: false,
             webSecurity: !isDevelopment,
+            experimentalFeatures: true,
         },
         resizable: false,
         maximizable: false,
@@ -28,16 +31,11 @@ function createMainWindow() {
         frame: false,
         show: false,
         transparent: true,
-        width: config.general.width + (isDevelopment ? 1000 : 0),
+        width: config.general.width,
         height: config.general.max_height,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.png'),
-        paintWhenInitiallyHidden: true,
     });
-
-    if (isDevelopment) {
-        main_window.webContents.openDevTools();
-    }
 
     if (isDevelopment) {
         main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html`);
@@ -61,7 +59,9 @@ function createMainWindow() {
         e.preventDefault();
     });
     main_window.on('close', hideWindow);
-    main_window.on('blur', hideWindow);
+    if (!isDevelopment) {
+        main_window.on('blur', hideWindow);
+    }
 }
 
 async function toggleMain(op) {

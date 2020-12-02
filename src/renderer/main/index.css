@@ -30,3 +30,7 @@ html, body, * {
 #listbox::-webkit-scrollbar-thumb {
     background: lightgrey;
 }
+
+.MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}

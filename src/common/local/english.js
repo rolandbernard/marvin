@@ -12,10 +12,15 @@ const translation_english = {
     recenter_on_show: 'Recenter when opening the main window',
 
     theme: 'Color theme',
-    background_color: 'Background color',
-    text_color: 'Text color',
+    background_color_input: 'Background color (Input)',
+    background_color_output: 'Background color (Output)',
+    text_color_input: 'Text color (Input)',
+    text_color_output: 'Text color (Output)',
     accent_color: 'Accent color',
     select_color: 'Selection color',
+    border_radius: 'Border radius [px]',
+    background_blur_input: 'Background blur (Input) [px]',
+    background_blur_output: 'Background blur (Output) [px]',
 
     modules: 'Modules',
     active: 'Active',

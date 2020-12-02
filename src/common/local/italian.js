@@ -12,10 +12,15 @@ const translation_italian = {
     recenter_on_show: "Centrare la finestra dopo l'apertura",
 
     theme: 'Combinazione di colori',
-    background_color: 'Colore di sfondo',
-    text_color: 'Colore del testo',
+    background_color_input: 'Colore di sfondo (Input)',
+    background_color_output: 'Colore di sfondo (Output)',
+    text_color_input: 'Colore del testo (Input)',
+    text_color_output: 'Colore del testo (Output)',
     accent_color: 'Colore di accento',
     select_color: 'Colore di selezione',
+    border_radius: 'Raggio di confine [px]',
+    background_blur_input: 'Sfocatura di sfondo (Input) [px]',
+    background_blur_output: 'Sfocatura di sfondo (Output) [px]',
 
     modules: 'Moduli',
     active: 'Attivo',

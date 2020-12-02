@@ -12,10 +12,15 @@ const translation_german = {
     recenter_on_show: 'Zentrieren des Fensters beim Öffnen',
 
     theme: 'Farbschema',
-    background_color: 'Hintergundfarbe',
-    text_color: 'Textfarbe',
+    background_color_input: 'Hintergundfarbe (Eingabe)',
+    background_color_output: 'Hintergundfarbe (Ausgabe)',
+    text_color_input: 'Textfarbe (Eingabe)',
+    text_color_output: 'Textfarbe (Ausgabe)',
     accent_color: 'Akzentfarbe',
     select_color: 'Auswahlfarbe',
+    border_radius: 'Randradius [px]',
+    background_blur_input: 'Hintergrundunschärfe (Eingabe) [px]',
+    background_blur_output: 'Hintergrundunschärfe (Ausgabe) [px]',
 
     modules: 'Module',
     active: 'Aktiv',
