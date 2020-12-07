@@ -35,7 +35,7 @@ function generateFilePreview(path) {
                 slashes: true,
             }),
         };
-    } else if(extname(path).match(/\.(mp3|wav|flac|mpeg)/i)) {
+    } else if(extname(path).match(/\.(mp3|wav|mpeg)/i)) {
         return {
             type: 'audio',
             url: format({
