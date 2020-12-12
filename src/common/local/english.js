@@ -100,6 +100,7 @@ const translation_english = {
     
     history: 'History',
     history_description: 'This module allows you to execute recent options again',
+    searchable: 'Searchable',
     
     color: 'Color',
     color_description: 'This module allows you to convert colors between hex/rgb/hsl',

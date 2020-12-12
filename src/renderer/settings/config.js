@@ -113,6 +113,7 @@ const config_definition = [
         ], type: 'page', description: 'duckduckgo_description' },
         { name: 'history', active: 'active', options: [
             { name: 'active', type: 'boolean' },
+            { name: 'searchable', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'quality', type: 'quality' },
             { name: 'maximum_history', type: 'size' },

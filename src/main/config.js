@@ -108,6 +108,7 @@ export let config_default = {
         },
         history: {
             active: false,
+            searchable: true,
             prefix: '',
             quality: 0.1,
             maximum_history: 1000,
