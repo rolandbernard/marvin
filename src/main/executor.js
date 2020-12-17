@@ -56,6 +56,8 @@ export function deinitModules() {
 let last_query_timeout = null;
 let exec_id = 0;
 
+const MAX_TRANSFER_LEN = 500;
+
 export function searchQuery(query, callback) {
     return new Promise((resolve) => {
         exec_id++;
@@ -95,7 +97,18 @@ export function searchQuery(query, callback) {
                                     })
                                     .slice(0, config.general.max_results)
                                 if (config.general.incremental_results && results.length > 0) {
-                                    callback(results);
+                                    callback(results.map((opt) => {
+                                        if(opt.text?.length > MAX_TRANSFER_LEN) {
+                                            opt.text = opt.text.substr(0, MAX_TRANSFER_LEN);
+                                        }
+                                        if(opt.primary?.length > MAX_TRANSFER_LEN) {
+                                            opt.primary = opt.primary.substr(0, MAX_TRANSFER_LEN);
+                                        }
+                                        if(opt.secondary?.length > MAX_TRANSFER_LEN) {
+                                            opt.secondary = opt.secondary.substr(0, MAX_TRANSFER_LEN);
+                                        }
+                                        return opt;
+                                    }));
                                 }
                             } else {
                                 resolve();
