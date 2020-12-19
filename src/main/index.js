@@ -82,6 +82,8 @@ async function toggleMain(op) {
 
 let last_loading = null;
 
+const MAX_TRANSFER_LEN = 100;
+
 async function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
@@ -100,7 +102,18 @@ async function startApp() {
             last_loading = setTimeout(() => main_window.webContents.send('update-options', null), config.general.debounce_time + 100);            
             searchQuery(query, (results) => {
                 clearTimeout(last_loading);
-                main_window.webContents.send('update-options', results);
+                main_window.webContents.send('update-options', results.map((opt) => {
+                    if (opt.text?.length > MAX_TRANSFER_LEN) {
+                        opt.text = opt.text.substr(0, MAX_TRANSFER_LEN);
+                    }
+                    if (opt.primary?.length > MAX_TRANSFER_LEN) {
+                        opt.primary = opt.primary.substr(0, MAX_TRANSFER_LEN);
+                    }
+                    if (opt.secondary?.length > MAX_TRANSFER_LEN) {
+                        opt.secondary = opt.secondary.substr(0, MAX_TRANSFER_LEN);
+                    }
+                    return opt;
+                }));
             });
         });
         ipcMain.on('execute-option', (_, option) => {
