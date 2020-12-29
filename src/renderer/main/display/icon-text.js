@@ -8,6 +8,7 @@ function IconText(props) {
             display: 'flex',
             flexFlow: 'row nowrap',
             padding: '0.5rem',
+            alignItems: 'center',
         },
         avatar_wrap: {
             flex: '0 0 auto',
@@ -19,8 +20,6 @@ function IconText(props) {
         },
         text: {
             flex: '1 1 auto',
-            display: 'flex',
-            flexFlow: 'column',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             fontSize: '1rem',
@@ -29,7 +28,6 @@ function IconText(props) {
             wordBreak: 'break-word',
             padding: '0.25rem 0',
             maxHeight: '15rem',
-            justifyContent: 'center',
         },
     }
 
