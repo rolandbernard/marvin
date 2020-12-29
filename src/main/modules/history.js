@@ -32,13 +32,28 @@ const HistoryModule = {
         }
     },
     valid: (query) => {
-        return query.trim().length == 0;
+        return query.trim().length == 0 || config.modules.history.searchable;
     },
     search: async (query) => {
-        return execute_history.map((option) => ({
-            ...option,
-            quality: config.modules.history.quality,
-        }));
+        if(query === "") {
+            return execute_history.map((option) => ({
+                ...option,
+                quality: config.modules.history.quality
+            }));
+        } else {
+            return execute_history.map((option, i) => {
+                let quality = Math.max(
+                    stringMatchQuality(query, option.primary),
+                    stringMatchQuality(query, option.text),
+                    stringMatchQuality(query, option.html),
+                    stringMatchQuality(query, option.secondary)
+                );
+                return {
+                    ...option,
+                    quality: Math.min(1.0, quality + quality / (i + 1))
+                };
+            });
+        }
     },
     globalExecute: async (option) => {
         if (config.modules.history.active) {

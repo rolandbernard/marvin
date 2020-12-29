@@ -100,6 +100,7 @@ const translation_german = {
     
     history: 'Verlauf',
     history_description: 'Dieses Modul erlaub es Optionen erneut auszuführen',
+    searchable: 'Durchsuchbar',
     
     color: 'Farben',
     color_description: 'Mit diesem Modul ist es möglich Farben zwischen hex/rgb/hsl unzuwandeln',

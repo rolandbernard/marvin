@@ -79,11 +79,21 @@ export function searchQuery(query, callback) {
                         let result = (await modules[id].search(config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query));
                         lock.acquire('results', () => {
                             if (exec_id === begin_id) {
+                                let existing = new Set();
                                 results = results
                                     .concat(result.map((option) => ({ module: id, ...option })))
                                     .filter((option) => option.quality > 0)
                                     .sort((a, b) => b.quality - a.quality)
-                                    .slice(0, config.general.max_results);
+                                    .filter((el) => {
+                                        let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");  
+                                        if (!existing.has(value)) {
+                                            existing.add(value);
+                                            return true;
+                                        } else {
+                                            return false;
+                                        }
+                                    })
+                                    .slice(0, config.general.max_results)
                                 if (config.general.incremental_results && results.length > 0) {
                                     callback(results);
                                 }

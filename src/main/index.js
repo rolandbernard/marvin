@@ -82,6 +82,8 @@ async function toggleMain(op) {
 
 let last_loading = null;
 
+const MAX_TRANSFER_LEN = 1000;
+
 async function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
     if (gotSingleInstanceLock) {
@@ -95,17 +97,37 @@ async function startApp() {
         createMainWindow();
         createSettingsWindow();
 
+        const original_option = new Map();
         ipcMain.on('input-change', (_, query) => {
             clearTimeout(last_loading);
             last_loading = setTimeout(() => main_window.webContents.send('update-options', null), config.general.debounce_time + 100);            
             searchQuery(query, (results) => {
                 clearTimeout(last_loading);
-                main_window.webContents.send('update-options', results);
+                original_option.clear();
+                main_window.webContents.send('update-options', results.map((opt) => {
+                    const new_opt = { ...opt };
+                    if (new_opt.text?.length > MAX_TRANSFER_LEN) {
+                        new_opt.text = new_opt.text.substr(0, MAX_TRANSFER_LEN) + '...';
+                    }
+                    if (new_opt.primary?.length > MAX_TRANSFER_LEN) {
+                        new_opt.primary = new_opt.primary.substr(0, MAX_TRANSFER_LEN) + '...';
+                    }
+                    if (new_opt.secondary?.length > MAX_TRANSFER_LEN) {
+                        new_opt.secondary = new_opt.secondary.substr(0, MAX_TRANSFER_LEN) + '...';
+                    }
+                    original_option.set(JSON.stringify(new_opt), opt);
+                    return new_opt;
+                }));
             });
         });
         ipcMain.on('execute-option', (_, option) => {
             if (option && option.executable) {
-                executeOption(option);
+                const key = JSON.stringify(option);
+                if(original_option.has(key)) {
+                    executeOption(original_option.get(key));
+                } else {
+                    executeOption(option);
+                }
                 if(!option.stay_open) {
                     toggleMain(false);
                 }

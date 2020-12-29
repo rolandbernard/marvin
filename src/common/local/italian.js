@@ -100,6 +100,7 @@ const translation_italian = {
     
     history: 'Cronologia',
     history_description: 'Questo modulo consente di eseguire nuovamente le opzioni',
+    searchable: 'Cercabile',
     
     color: 'Colori',
     color_description: 'Questo modulo ti consente di convertite colori tra hex/rgb/hsl',
