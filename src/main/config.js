@@ -133,6 +133,7 @@ export function loadConfig() {
             config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
         } catch (e) { }
     }
+    config.version = app.getVersion();
     writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }
 
