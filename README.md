@@ -7,7 +7,7 @@ This is a keystroke launcher for Linux. It is build using electron but it has no
 Download the `Marvin-*.AppImage` file for the newest release here: https://github.com/rolandbernard/marvin/releases
 and copy it to a directory in your `PATH` variable (e.g. to `$ sudo cp Marvin-*.AppImage /usr/bin/marvin`).
 
-### From sorce
+### From source
 To install from source, you can execute the following commands.
 ```
 $ cd /tmp
