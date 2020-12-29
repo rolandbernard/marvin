@@ -82,7 +82,7 @@ async function toggleMain(op) {
 
 let last_loading = null;
 
-const MAX_TRANSFER_LEN = 100;
+const MAX_TRANSFER_LEN = 1000;
 
 async function startApp() {
     const gotSingleInstanceLock = app.requestSingleInstanceLock();
