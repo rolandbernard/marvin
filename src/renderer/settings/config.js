@@ -1,8 +1,10 @@
 
+import { supported_languages } from '../../common/local/locale';
+
 const config_definition = [
     { name: 'general', icon: 'settings', options: [
         { name: 'global_shortcut', type: 'shortcut' },
-        { name: 'language', type: 'language' },
+        { name: 'language', type: 'select', options: Object.keys(supported_languages)},
         { name: 'debounce_time', type: 'size' },
         { name: 'width', type: 'size' },
         { name: 'max_height', type: 'size' },
