@@ -2,9 +2,9 @@
 import { config } from "../config";
 import { clipboard } from 'electron';
 
-function rgbToHsl(color) {
-    const max = Math.max(...color);
-    const min = Math.min(...color);
+function rgbToHsl([r, g, b, a]) {
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
     const l = (max + min) / 2;
     let h = 0;
     let s = 0;
@@ -14,22 +14,26 @@ function rgbToHsl(color) {
         } else {
             s = (max - min) / (2.0 - max - min);
         }
-        if (color[0] === max) {
-            h = (color[1] - color[2]) / (max - min);
-        } else if (color[1] === max) {
-            h = 2.0 + (color[2] - color[0]) / (max - min);
+        if (r === max) {
+            h = (g - b) / (max - min);
+        } else if (g === max) {
+            h = 2.0 + (b - r) / (max - min);
         } else {
-            h = 4.0 + (color[0] - color[1]) / (max - min);
+            h = 4.0 + (r - g) / (max - min);
         }
     }
     h = h / 6;
     while (h < 0) {
         h += 1;
     }
-    return [h, s, l];
+    if (a) {
+        return [h, s, l, a];
+    } else {
+        return [h, s, l];
+    }
 }
 
-function hslToRgb([h, s, l]) {
+function hslToRgb([h, s, l, a]) {
     let r = l;
     let g = l;
     let b = l;
@@ -57,28 +61,44 @@ function hslToRgb([h, s, l]) {
         g = hueToRgb(p, q, h);
         b = hueToRgb(p, q, h - 1 / 3);
     }
-    return [r, g, b];
+    if (a) {
+        return [r, g, b, a];
+    } else {
+        return [r, g, b];
+    }
+}
+
+function parseValue(string, max = 1.0) {
+    if (string.endsWith('%')) {
+        const value = parseFloat(string.substr(0, string.length - 1));
+        return value / 100;
+    } else {
+        const value = parseFloat(string);
+        return Math.min(value, max) / max;
+    }
 }
 
 function parseColor(query) {
     let match = false;
-    if(match = query.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i)) {
-        return [parseInt(match[1], 16) / 15, parseInt(match[2], 16) / 15, parseInt(match[3], 16) / 15];
-    } else if(match = query.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i)) {
-        return [parseInt(match[1], 16) / 255, parseInt(match[2], 16) / 255, parseInt(match[3], 16) / 255];
-    } else if(match = query.match(/^\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/)) {
-        return [parseInt(match[1]) / 255, parseInt(match[2]) / 255, parseInt(match[3]) / 255];
-    } else if(match = query.match(/^\s*rgb\s*\(\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)\s*$/)) {
-        return [parseInt(match[1]) / 100, parseInt(match[2]) / 100, parseInt(match[3]) / 100];
-    } else if(match = query.match(/^\s*hsl\s*\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)\s*$/)) {
-        return hslToRgb([parseInt(match[1]) / 360, parseInt(match[2]) / 100, parseInt(match[3]) / 100]);
+    if(match = query.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])?$/i)) {
+        return match.slice(1).filter(v => v).map(v => parseInt(v, 16) / 15);
+    } else if(match = query.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})?$/i)) {
+        return match.slice(1).filter(v => v).map(v => parseInt(v, 16) / 255);
+    } else if(match = query.match(/^\s*rgba?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
+        return match.slice(1, 4).map(v => parseValue(v, 255)).concat(match[4] ? [parseValue(match[4])] : []);
+    } else if(match = query.match(/^\s*hsla?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
+        return hslToRgb([parseValue(match[1], 360), parseValue(match[2], 255), parseValue(match[3], 255)].concat(match[4] ? [parseValue(match[4])] : []));
     } else {
         return false;
     }
 }
 
 function colorAsRgb(color) {
-    return 'rgb(' + color.map(c => Math.round(c * 255)).join(', ') + ')';
+    if (color.length == 4) {
+        return 'rgba(' + color.slice(0, 3).map(c => Math.round(c * 255)).join(', ') + ', ' + Math.round(color[3] * 100) / 100 + ')';
+    } else {
+        return 'rgb(' + color.map(c => Math.round(c * 255)).join(', ') + ')';
+    }
 }
 
 function colorAsHex(color) {
@@ -94,9 +114,16 @@ function colorAsHex(color) {
 
 function colorAsHsl(color) {
     const hsl = rgbToHsl(color);
-    return 'hsl(' + Math.round(hsl[0] * 360) + ', '
-        + Math.round(hsl[1] * 100) + '%, '
-        + Math.round(hsl[2] * 100) + '%)';
+    if (color.length == 4) {
+        return 'hsla(' + Math.round(hsl[0] * 360) + ', '
+            + Math.round(hsl[1] * 100) + '%, '
+            + Math.round(hsl[2] * 100) + '%, '
+            + Math.round(hsl[3] * 100) / 100 + ')';
+    } else {
+        return 'hsl(' + Math.round(hsl[0] * 360) + ', '
+            + Math.round(hsl[1] * 100) + '%, '
+            + Math.round(hsl[2] * 100) + '%)';
+    }
 }
 
 const ColorModule = {
