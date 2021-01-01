@@ -19,6 +19,7 @@ import GoogleTranslateModule from "./modules/google-translate";
 import DuckduckgoModule from "./modules/duckduckgo";
 import HistoryModule from "./modules/history";
 import ColorModule from "./modules/color";
+import WebSearchModule from "./modules/web-search";
 
 const modules = {
     settings: SettingsModule,
@@ -39,6 +40,7 @@ const modules = {
     duckduckgo: DuckduckgoModule,
     history: HistoryModule,
     color: ColorModule,
+    web_search: WebSearchModule,
 };
 
 export function initModules() {

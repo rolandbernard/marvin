@@ -105,6 +105,11 @@ const translation_english = {
     color: 'Color',
     color_description: 'This module allows you to convert colors between hex/rgb/hsl',
     color_preview: 'Color preview',
+    
+    web_search: 'Web search',
+    web_search_description: 'This module allows you to quicky do a web search.',
+    patterns: 'Patterns',
+    url_pattern: 'Url',
 };
 
 export default translation_english;

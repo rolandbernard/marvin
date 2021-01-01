@@ -126,6 +126,15 @@ const config_definition = [
             { name: 'quality', type: 'quality' },
             { name: 'color_preview', type: 'boolean' },
         ], type: 'page', description: 'color_description' },
+        { name: 'web_search', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'patterns', type: 'array', base: [
+                { name: 'prefix', type: 'text' },
+                { name: 'url_pattern', type: 'text' },
+            ], default: { name: '', script: '', default_quality: 0.0 } },
+            { name: 'url_preview', type: 'boolean' },
+        ], type: 'page', description: 'web_search_description' },
     ], type: 'subheader' }
 ];
 
