@@ -109,7 +109,7 @@ const translation_english = {
     web_search: 'Web search',
     web_search_description: 'This module allows you to quicky do a web search',
     patterns: 'Patterns',
-    url_pattern: 'Url',
+    url_pattern: 'URL',
 };
 
 export default translation_english;

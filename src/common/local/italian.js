@@ -105,6 +105,11 @@ const translation_italian = {
     color: 'Colori',
     color_description: 'Questo modulo ti consente di convertite colori tra hex/rgb/hsl',
     color_preview: 'Anteprima colore',
+    
+    web_search: 'Ricerca sul web',
+    web_search_description: 'Questo modulo consente di effettuare rapidamente una ricerca sul web',
+    patterns: 'Modelli',
+    url_pattern: 'URL',
 };
 
 export default translation_italian;

@@ -105,6 +105,11 @@ const translation_german = {
     color: 'Farben',
     color_description: 'Mit diesem Modul ist es möglich Farben zwischen hex/rgb/hsl unzuwandeln',
     color_preview: 'Farben-Vorschau',
+    
+    web_search: 'Web-Suche',
+    web_search_description: 'Mit diesem Modul ist es möglich schnell Websuchen durchzuführen',
+    patterns: 'Muster',
+    url_pattern: 'URL',
 };
 
 export default translation_german;
