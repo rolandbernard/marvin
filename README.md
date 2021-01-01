@@ -100,3 +100,9 @@ This module allows you to convert colors between hex/rgb/hsl.
 
 ![screenshot](assets/color.png)
 
+#### Web search
+This module allows you to quicky do a web search. It will open a URL, by inserting
+the query at a specific location.
+
+![screenshot](assets/web_search.png)
+

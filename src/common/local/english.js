@@ -107,7 +107,7 @@ const translation_english = {
     color_preview: 'Color preview',
     
     web_search: 'Web search',
-    web_search_description: 'This module allows you to quicky do a web search.',
+    web_search_description: 'This module allows you to quicky do a web search',
     patterns: 'Patterns',
     url_pattern: 'Url',
 };
