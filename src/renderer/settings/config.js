@@ -132,7 +132,7 @@ const config_definition = [
             { name: 'patterns', type: 'array', base: [
                 { name: 'prefix', type: 'text' },
                 { name: 'url_pattern', type: 'text' },
-            ], default: { name: '', script: '', default_quality: 0.0 } },
+            ], default: { prefix: '', url_pattern: '' } },
             { name: 'url_preview', type: 'boolean' },
         ], type: 'page', description: 'web_search_description' },
     ], type: 'subheader' }
