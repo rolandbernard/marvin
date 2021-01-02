@@ -9,6 +9,7 @@ import ArraySetting from './array-setting';
 import PathSetting from './path-setting';
 import TextSetting from './text-setting';
 import CodeSetting from './code-setting';
+import OptionSetting from './option-setting';
 
 const setting_types = {
     boolean: BooleanSetting,
@@ -21,6 +22,7 @@ const setting_types = {
     path: PathSetting,
     text: TextSetting,
     code: CodeSetting,
+    option: OptionSetting,
 };
 
 export default setting_types;
