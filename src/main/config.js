@@ -131,6 +131,12 @@ export let config_default = {
             ],
             url_preview: false,
         },
+        alias: {
+            active: false,
+            prefix: '',
+            aliases: [ ],
+            prefix_text: true,
+        },
     },
 };
 

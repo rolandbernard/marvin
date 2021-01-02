@@ -20,6 +20,7 @@ import DuckduckgoModule from "./modules/duckduckgo";
 import HistoryModule from "./modules/history";
 import ColorModule from "./modules/color";
 import WebSearchModule from "./modules/web-search";
+import AliasModule from "./modules/alias";
 
 const modules = {
     settings: SettingsModule,
@@ -41,6 +42,7 @@ const modules = {
     history: HistoryModule,
     color: ColorModule,
     web_search: WebSearchModule,
+    alias: AliasModule,
 };
 
 export function initModules() {
