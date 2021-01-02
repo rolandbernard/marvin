@@ -23,10 +23,10 @@ class App extends React.Component {
             selected: null,
         };
 
-        ipcRenderer.on('reset', (_, config) => {
+        ipcRenderer.on('update-config', (_, config) => {
             this.setState({
                 config: config,
-                selected: { def: config_definition[0], config: config[config_definition[0].name] }
+                selected: this.state.selected || { def: config_definition[0], config: config[config_definition[0].name] }
             });
         });
     }
@@ -65,7 +65,7 @@ class App extends React.Component {
     }
 
     onUpdate() {
-        ipcRenderer.send('config-update', this.state.config);
+        ipcRenderer.send('update-config', this.state.config);
         this.setState({ config: this.state.config });
     }
 

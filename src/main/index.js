@@ -66,7 +66,8 @@ function createMainWindow() {
 
 async function toggleMain(op) {
     if (main_window && !main_window.isDestroyed()) {
-        main_window.webContents.send('reset', config);
+        main_window.webContents.send('update-config', config);
+        main_window.webContents.send('reset');
         if ((op === undefined || !op ) && main_window.isVisible()) {
             await new Promise(res => setTimeout(() => res(), 50));
             main_window.hide();
@@ -98,13 +99,13 @@ async function startApp() {
         createSettingsWindow();
 
         const original_option = new Map();
-        ipcMain.on('input-change', (_, query) => {
+        ipcMain.on('search-options', (msg, query) => {
             clearTimeout(last_loading);
-            last_loading = setTimeout(() => main_window.webContents.send('update-options', null), config.general.debounce_time + 100);            
+            last_loading = setTimeout(() => msg.sender.send('update-options', null), config.general.debounce_time + 100);            
             searchQuery(query, (results) => {
                 clearTimeout(last_loading);
                 original_option.clear();
-                main_window.webContents.send('update-options', results.map((opt) => {
+                msg.sender.send('update-options', results.map((opt) => {
                     const new_opt = { ...opt };
                     if (new_opt.text?.length > MAX_TRANSFER_LEN) {
                         new_opt.text = new_opt.text.substr(0, MAX_TRANSFER_LEN) + '...';
@@ -133,7 +134,7 @@ async function startApp() {
                 }
             }
         });
-        ipcMain.on('config-update', async (_, new_config) => {
+        ipcMain.on('update-config', async (_, new_config) => {
             if (config.general.global_shortcut !== new_config.general.global_shortcut) {
                 try {
                     const ret = globalShortcut.register(new_config.general.global_shortcut, toggleMain);
