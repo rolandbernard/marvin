@@ -7,8 +7,8 @@ import React, { createRef } from 'react';
 import ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron';
 
+import OutputList from '../common/output-list';
 import InputField from './input-field';
-import OutputList from './output-list';
 import PreviewField from './preview-field';
 
 class App extends React.Component {
