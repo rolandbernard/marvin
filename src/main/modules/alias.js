@@ -8,7 +8,7 @@ const AliasModule = {
     },
     search: async (query) => {
         if (config.modules.alias.prefix_text) {
-            return config.modules.alias.aliases.map((entry) => ({
+            return config.modules.alias.aliases.filter((entry) => entry.option).map((entry) => ({
                 ...entry.option,
                 primary: (entry.name + ': ' + entry.option.primary),
                 text: (entry.name + ': ' + entry.option.text),

@@ -110,6 +110,12 @@ const translation_german = {
     web_search_description: 'Mit diesem Modul ist es möglich schnell Websuchen durchzuführen',
     patterns: 'Muster',
     url_pattern: 'URL',
+
+    alias: 'Alias',
+    alias_description: 'Mit diesem Modul können Sie einen Alias für eine bestimmte Option hinzufügen, mit welchem dann nach der Option gesucht werden kann',
+    aliases: 'Aliase',
+    option: 'Option',
+    prefix_text: 'Name als Präfix hinzufügen',
 };
 
 export default translation_german;

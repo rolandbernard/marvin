@@ -110,6 +110,12 @@ const translation_english = {
     web_search_description: 'This module allows you to quicky do a web search',
     patterns: 'Patterns',
     url_pattern: 'URL',
+
+    alias: 'Alias',
+    alias_description: 'This module allows you to add an alias for a certail option, that allows you to search it under a different name',
+    aliases: 'Aliases',
+    option: 'Option',
+    prefix_text: 'Add name as prefix',
 };
 
 export default translation_english;
