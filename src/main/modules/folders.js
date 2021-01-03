@@ -66,7 +66,7 @@ const FoldersModule = {
                                     readdir(dir, async (_, files) => {
                                         resolve(await Promise.all(files.map((file) => new Promise((resolve) => {
                                             stat(path.join(dir, file), async (_, stats) => {
-                                                let option = {
+                                                let option = stats && {
                                                     type: 'icon_list_item',
                                                     uri_icon: stats.isDirectory() ? null
                                                         : (await app.getFileIcon(path.join(dir, file))).toDataURL(),
@@ -93,7 +93,7 @@ const FoldersModule = {
                     });
                 });
             } catch (e) { console.error(e) }
-        }))).reduce((a, b) => a.concat(b));
+        }))).filter((a) => a).reduce((a, b) => a.concat(b));
     },
     execute: async (option) => {
         exec(`xdg-open ${option.file}`);
