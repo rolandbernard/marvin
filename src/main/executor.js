@@ -19,6 +19,8 @@ import GoogleTranslateModule from "./modules/google-translate";
 import DuckduckgoModule from "./modules/duckduckgo";
 import HistoryModule from "./modules/history";
 import ColorModule from "./modules/color";
+import WebSearchModule from "./modules/web-search";
+import AliasModule from "./modules/alias";
 
 const modules = {
     settings: SettingsModule,
@@ -39,6 +41,8 @@ const modules = {
     duckduckgo: DuckduckgoModule,
     history: HistoryModule,
     color: ColorModule,
+    web_search: WebSearchModule,
+    alias: AliasModule,
 };
 
 export function initModules() {
@@ -71,44 +75,46 @@ export function searchQuery(query, callback) {
                 to_eval = Object.keys(modules).filter((id) => config.modules[id]
                     ? config.modules[id].active && !config.modules[id].prefix : true);
             }
-            await Promise.all(to_eval.filter((id) => config.modules[id]?.prefix
-                ? modules[id].valid(query.replace(config.modules[id].prefix, '').trim()) : modules[id].valid(query))
-            .map((id) => {
-                return new Promise(async (resolv) => {
-                    try {
-                        let result = (await modules[id].search(config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query));
-                        lock.acquire('results', () => {
-                            if (exec_id === begin_id) {
-                                let existing = new Set();
-                                results = results
-                                    .concat(result.map((option) => ({ module: id, ...option })))
-                                    .filter((option) => option.quality > 0)
-                                    .sort((a, b) => b.quality - a.quality)
-                                    .filter((el) => {
-                                        let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");  
-                                        if (!existing.has(value)) {
-                                            existing.add(value);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    })
-                                    .slice(0, config.general.max_results)
-                                if (config.general.incremental_results && results.length > 0) {
-                                    callback(results);
+            await Promise.all(
+                to_eval.filter((id) => (
+                    config.modules[id]?.prefix ? modules[id].valid(query.replace(config.modules[id].prefix, '').trim()) : modules[id].valid(query)
+                ))
+                .map((id) => {
+                    return new Promise(async (resolv) => {
+                        try {
+                            let result = (await modules[id].search(config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query));
+                            await lock.acquire('results', () => {
+                                if (exec_id === begin_id) {
+                                    let existing = new Set();
+                                    results = results
+                                        .concat(result.map((option) => ({ module: id, ...option })))
+                                        .filter((option) => option.quality > 0)
+                                        .sort((a, b) => b.quality - a.quality)
+                                        .filter((el) => {
+                                            let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");  
+                                            if (!existing.has(value)) {
+                                                existing.add(value);
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        })
+                                        .slice(0, config.general.max_results)
+                                    if (config.general.incremental_results && results.length > 0) {
+                                        callback(results);
+                                    }
+                                } else {
+                                    resolve();
                                 }
-                            } else {
-                                resolve();
-                            }
-                        });
-                    } catch(e) {
-                        console.error(e);
-                        resolve();
-                    } finally {
-                        resolv();
-                    }
-                });
-            }));
+                            });
+                        } catch(e) {
+                            console.error(e);
+                        } finally {
+                            resolv();
+                        }
+                    });
+                })
+            );
             if(exec_id === begin_id) {
                 callback(results);
             }

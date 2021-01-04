@@ -62,7 +62,7 @@ const SettingsModule = {
         }];
     },
     execute: async (option) => {
-        settings_window.webContents.send('reset', config);
+        settings_window.webContents.send('update-config', config);
         settings_window.show();
         settings_window.focus();
     },

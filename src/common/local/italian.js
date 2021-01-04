@@ -105,6 +105,17 @@ const translation_italian = {
     color: 'Colori',
     color_description: 'Questo modulo ti consente di convertite colori tra hex/rgb/hsl',
     color_preview: 'Anteprima colore',
+    
+    web_search: 'Ricerca sul web',
+    web_search_description: 'Questo modulo consente di effettuare rapidamente una ricerca sul web',
+    patterns: 'Modelli',
+    url_pattern: 'URL',
+
+    alias: 'Alias',
+    alias_description: 'Con questo modulo è possibile aggiungere un alias per un\'opzione specifica, che può poi essere utilizzato per cercare l\'opzione',
+    aliases: 'Alias',
+    option: 'Opzione',
+    prefix_text: 'Aggiungi il nome come prefisso',
 };
 
 export default translation_italian;

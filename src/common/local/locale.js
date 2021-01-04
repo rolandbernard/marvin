@@ -10,9 +10,9 @@ export const supported_languages = {
 };
 
 const transalations = {
-    'en': translation_english,
-    'it': translation_italian,
-    'de': translation_german,
+    'en': { ...translation_english, ...supported_languages },
+    'it': { ...translation_italian, ...supported_languages },
+    'de': { ...translation_german, ...supported_languages },
 };
 
 export function getTranslation(config, text) {

@@ -1,8 +1,10 @@
 
+import { supported_languages } from '../../common/local/locale';
+
 const config_definition = [
     { name: 'general', icon: 'settings', options: [
         { name: 'global_shortcut', type: 'shortcut' },
-        { name: 'language', type: 'language' },
+        { name: 'language', type: 'select', options: Object.keys(supported_languages)},
         { name: 'debounce_time', type: 'size' },
         { name: 'width', type: 'size' },
         { name: 'max_height', type: 'size' },
@@ -124,6 +126,24 @@ const config_definition = [
             { name: 'quality', type: 'quality' },
             { name: 'color_preview', type: 'boolean' },
         ], type: 'page', description: 'color_description' },
+        { name: 'web_search', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'patterns', type: 'array', base: [
+                { name: 'prefix', type: 'text' },
+                { name: 'url_pattern', type: 'text' },
+            ], default: { prefix: '', url_pattern: '' } },
+            { name: 'url_preview', type: 'boolean' },
+        ], type: 'page', description: 'web_search_description' },
+        { name: 'alias', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'aliases', type: 'array', base: [
+                { name: 'name', type: 'text' },
+                { name: 'option', type: 'option' },
+            ], default: { name: '', option: null } },
+            { name: 'prefix_text', type: 'boolean' },
+        ], type: 'page', description: 'alias_description' },
     ], type: 'subheader' }
 ];
 

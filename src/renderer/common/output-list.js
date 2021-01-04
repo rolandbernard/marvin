@@ -1,10 +1,12 @@
 
 import React, { createRef } from 'react';
 import { CircularProgress } from '@material-ui/core';
+
 import SimpleText from './display/simple-text';
 import IconListItem from './display/icon-list-item';
 import HtmlItem from './display/html-item';
 import IconText from './display/icon-text';
+import './output-list.css';
 
 const display_types = {
     simple_text: SimpleText,

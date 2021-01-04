@@ -119,6 +119,24 @@ export let config_default = {
             quality: 1,
             color_preview: false,
         },
+        web_search: {
+            active: false,
+            prefix: '',
+            patterns: [
+                { prefix: 'd?', url_pattern: 'https://duckduckgo.com/?q=$' },
+                { prefix: 'g?', url_pattern: 'https://www.google.com/search?q=$' },
+                { prefix: 'b?', url_pattern: 'https://www.bing.com/search?q=$' },
+                { prefix: 'w?', url_pattern: 'https://en.wikipedia.org/wiki/Special:Search?search=$' },
+                { prefix: 's?', url_pattern: 'https://stackoverflow.com/search?q=$' },
+            ],
+            url_preview: false,
+        },
+        alias: {
+            active: false,
+            prefix: '',
+            aliases: [ ],
+            prefix_text: true,
+        },
     },
 };
 

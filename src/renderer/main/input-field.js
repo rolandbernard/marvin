@@ -21,12 +21,12 @@ class InputField extends React.Component {
             if (text_field) {
                 text_field.value = '';
             }
-            ipcRenderer.send('input-change', '');
+            ipcRenderer.send('search-options', '');
         });
     }
 
     handleUpdate(e) {
-        ipcRenderer.send('input-change', e.target.value);
+        ipcRenderer.send('search-options', e.target.value);
     }
 
     render() {

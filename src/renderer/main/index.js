@@ -7,8 +7,8 @@ import React, { createRef } from 'react';
 import ReactDOM from 'react-dom';
 import { ipcRenderer } from 'electron';
 
+import OutputList from '../common/output-list';
 import InputField from './input-field';
-import OutputList from './output-list';
 import PreviewField from './preview-field';
 
 class App extends React.Component {
@@ -24,8 +24,11 @@ class App extends React.Component {
         ipcRenderer.on('update-options', (_, options) => {
             this.setState({ results: options, selected: 0 });
         });
-        ipcRenderer.on('reset', (_, config) => {
-            this.setState({ results: [], selected: 0, config: config });
+        ipcRenderer.on('update-config', (_, config) => {
+            this.setState({ config: config });
+        });
+        ipcRenderer.on('reset', (_) => {
+            this.setState({ results: [], selected: 0 });
         });
     } 
 
@@ -43,7 +46,7 @@ class App extends React.Component {
         } else if (e.key === 'Tab' && this.state.results && this.state.results.length > 0
             && this.state.results[this.state.selected].complete) {
             this.input.current.value = this.state.results[this.state.selected].complete;
-            ipcRenderer.send('input-change', this.input.current.value);
+            ipcRenderer.send('search-options', this.input.current.value);
         }
     }
 
