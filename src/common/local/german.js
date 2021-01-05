@@ -116,6 +116,9 @@ const translation_german = {
     aliases: 'Aliase',
     option: 'Option',
     prefix_text: 'Name als Präfix hinzufügen',
+
+    currency_converter: 'Währungsumrechner',
+    currency_converter_description: 'Mit diesem Modul ist es möglich schnell zwischen Wahrungen umzurechnen',
 };
 
 export default translation_german;

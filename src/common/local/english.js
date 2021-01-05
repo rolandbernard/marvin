@@ -116,6 +116,9 @@ const translation_english = {
     aliases: 'Aliases',
     option: 'Option',
     prefix_text: 'Add name as prefix',
+
+    currency_converter: 'Currency converter',
+    currency_converter_description: 'This module allows you to quickly convert between currencies',
 };
 
 export default translation_english;

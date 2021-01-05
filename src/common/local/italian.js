@@ -116,6 +116,9 @@ const translation_italian = {
     aliases: 'Alias',
     option: 'Opzione',
     prefix_text: 'Aggiungi il nome come prefisso',
+
+    currency_converter: 'Convertitore di valuta',
+    currency_converter_description: 'Questo modulo consente di convertire rapidamente tra valute',
 };
 
 export default translation_italian;
