@@ -21,6 +21,7 @@ import HistoryModule from "./modules/history";
 import ColorModule from "./modules/color";
 import WebSearchModule from "./modules/web-search";
 import AliasModule from "./modules/alias";
+import CurrencyConverterModule from "./modules/currency-converter";
 
 const modules = {
     settings: SettingsModule,
@@ -43,6 +44,7 @@ const modules = {
     color: ColorModule,
     web_search: WebSearchModule,
     alias: AliasModule,
+    currency_converter: CurrencyConverterModule,
 };
 
 export function initModules() {

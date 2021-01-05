@@ -137,6 +137,11 @@ export let config_default = {
             aliases: [ ],
             prefix_text: true,
         },
+        currency_converter: {
+            active: false,
+            prefix: '',
+            refresh_interval_min: 60, 
+        },
     },
 };
 

@@ -144,6 +144,11 @@ const config_definition = [
             ], default: { name: '', option: null } },
             { name: 'prefix_text', type: 'boolean' },
         ], type: 'page', description: 'alias_description' },
+        { name: 'currency_converter', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'refresh_interval_min', type: 'size' },
+        ], type: 'page', description: 'currency_converter_description' },
     ], type: 'subheader' }
 ];
 
