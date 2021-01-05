@@ -110,3 +110,8 @@ This module allows you to add an alias for a certail option, that allows you to 
 
 ![screenshot](assets/alias.png)
 
+#### Currency converter
+This module allows you to quickly convert between currencies
+
+![screenshot](assets/currency_converter.png)
+
