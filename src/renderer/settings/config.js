@@ -149,6 +149,11 @@ const config_definition = [
             { name: 'prefix', type: 'text' },
             { name: 'refresh_interval_min', type: 'size' },
         ], type: 'page', description: 'currency_converter_description' },
+        { name: 'dictionary', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'debounce_time', type: 'size' },
+        ], type: 'page', description: 'dictionary_description' },
     ], type: 'subheader' }
 ];
 
