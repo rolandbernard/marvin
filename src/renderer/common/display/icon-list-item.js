@@ -30,8 +30,10 @@ function IconListItem(props) {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            paddingBottom: '0.125rem',
         },
         secondary: {
+            paddingTop: '0.125rem',
             fontSize: '0.75rem',
             fontWeight: 300,
             whiteSpace: 'nowrap',
