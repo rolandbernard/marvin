@@ -25,7 +25,7 @@ const DictionaryModule = {
         return query.trim().length >= 1;
     },
     search: async (query) => {
-        let lang = 'en';
+        let lang = config.general.language;
         const to = query.toLowerCase().lastIndexOf(' in ');
         if (to > 0) {
             const lang_part = query.substr(to + 4).toLowerCase().trim();
