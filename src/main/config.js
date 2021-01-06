@@ -142,6 +142,11 @@ export let config_default = {
             prefix: '',
             refresh_interval_min: 60, 
         },
+        dictionary: {
+            active: false,
+            prefix: 'dict?',
+            debounce_time: 500,
+        },
     },
 };
 
