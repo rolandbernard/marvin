@@ -119,6 +119,9 @@ const translation_english = {
 
     currency_converter: 'Currency converter',
     currency_converter_description: 'This module allows you to quickly convert between currencies',
+
+    dictionary: 'Dictionary',
+    dictionary_description: 'This module allows you to quickly lookup definitions and synonyms for words',
 };
 
 export default translation_english;

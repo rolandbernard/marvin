@@ -119,6 +119,9 @@ const translation_italian = {
 
     currency_converter: 'Convertitore di valuta',
     currency_converter_description: 'Questo modulo consente di convertire rapidamente tra valute',
+
+    dictionary: 'Dizionario',
+    dictionary_description: 'Questo modulo può essere utilizzato per cercare rapidamente definizioni e sinonimi di parole',
 };
 
 export default translation_italian;

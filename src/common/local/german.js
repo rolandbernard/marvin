@@ -119,6 +119,9 @@ const translation_german = {
 
     currency_converter: 'Währungsumrechner',
     currency_converter_description: 'Mit diesem Modul ist es möglich schnell zwischen Wahrungen umzurechnen',
+
+    dictionary: 'Wörterbuch',
+    dictionary_description: 'Mit diesem Modul können schnell Definitionen und Synonyme für Wörter nachgeschlagen werden',
 };
 
 export default translation_german;
