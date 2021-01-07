@@ -153,6 +153,11 @@ export let config_default = {
             debounce_time: 500,
             quality: 1.0,
         },
+        bookmarks: {
+            active: false,
+            prefix: '',
+            url_preview: false,
+        },
     },
 };
 

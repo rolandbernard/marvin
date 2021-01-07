@@ -23,6 +23,7 @@ import WebSearchModule from "./modules/web-search";
 import AliasModule from "./modules/alias";
 import CurrencyConverterModule from "./modules/currency-converter";
 import DictionaryModule from "./modules/dictionary";
+import BookmarksModule from "./modules/bookmarks";
 
 const modules = {
     settings: SettingsModule,
@@ -47,6 +48,7 @@ const modules = {
     alias: AliasModule,
     currency_converter: CurrencyConverterModule,
     dictionary: DictionaryModule,
+    bookmarks: BookmarksModule,
 };
 
 export function initModules() {

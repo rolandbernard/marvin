@@ -26,6 +26,7 @@
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "source-map-support": "^0.5.16",
+        "sqlite3": "^5.0.0",
         "style-loader": "^1.2.1",
         "styled-components": "^5.1.1",
         "typeface-roboto": "^0.0.75"

@@ -160,6 +160,11 @@ const config_definition = [
             { name: 'debounce_time', type: 'size' },
             { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'dictionary_description' },
+        { name: 'bookmarks', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'url_preview', type: 'boolean' },
+        ], type: 'page', description: 'bookmarks_description' },
     ], type: 'subheader' }
 ];
 
