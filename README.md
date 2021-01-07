@@ -119,3 +119,8 @@ This module allows you to quickly convert between currencies.
 This module allows you to quickly lookup definitions and synonyms for words.
 
 ![screenshot](assets/dictionary.png)
+
+#### Bookmarks
+This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks.
+
+![screenshot](assets/bookmarks.png)
