@@ -122,6 +122,9 @@ const translation_german = {
 
     dictionary: 'Wörterbuch',
     dictionary_description: 'Mit diesem Modul können schnell Definitionen und Synonyme für Wörter nachgeschlagen werden',
+
+    bookmarks: 'Lesezeichen',
+    bookmarks_description: 'Mit diesem Modul ist es möglich Lesezeichen von Firefox, Midori und Chromium/Google Chrome zu durchsuchen',
 };
 
 export default translation_german;

@@ -122,6 +122,9 @@ const translation_italian = {
 
     dictionary: 'Dizionario',
     dictionary_description: 'Questo modulo può essere utilizzato per cercare rapidamente definizioni e sinonimi di parole',
+
+    bookmarks: 'Segnalibri',
+    bookmarks_description: 'Con questo modulo è possibile cercare tra i segnalibri di Firefox, Midori e Chromium/Google Chrome',
 };
 
 export default translation_italian;

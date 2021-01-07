@@ -122,6 +122,9 @@ const translation_english = {
 
     dictionary: 'Dictionary',
     dictionary_description: 'This module allows you to quickly lookup definitions and synonyms for words',
+
+    bookmarks: 'Bookmarks',
+    bookmarks_description: 'This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks',
 };
 
 export default translation_english;
