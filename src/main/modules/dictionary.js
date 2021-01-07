@@ -63,8 +63,8 @@ const DictionaryModule = {
                                             text: secondary,
                                         }
                                     });
-                                }).reduce((a, b) => a.concat(b));
-                            }).reduce((a, b) => a.concat(b)));
+                                }).flat();
+                            }).flat());
                         } else {
                             resolve([]);
                         }

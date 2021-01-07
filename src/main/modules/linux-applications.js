@@ -211,7 +211,7 @@ async function loadApplications() {
                 });
             })))).filter((entry) => entry) : []);
         });
-    })))).reduce((a, b) => a.concat(b)).map(async (application) => {
+    })))).flat().map(async (application) => {
         await Promise.all(Object.values(application).filter((value) => value instanceof Object).map(async (value) => {
             if (getProp(value, 'Icon') && !icons[getProp(value, 'Icon')]) {
                 const path = await findIconPath(getProp(value, 'Icon'), theme, fallback_theme);
@@ -266,7 +266,7 @@ const LinuxApplicationModule = {
                                 0.25 * stringMatchQuality(query, getProp(value, 'Name', name))),
                 app: value,
             }));
-        }).reduce((a, b) => a.concat(b));
+        }).flat();
     },
     execute: async (option) => {
         if (getProp(option.app, 'Terminal') === 'true') {
