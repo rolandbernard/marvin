@@ -78,6 +78,7 @@ const config_definition = [
         { name: 'command', active: 'active', options: [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
+            { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'command_description' },
         { name: 'scripts', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -97,6 +98,7 @@ const config_definition = [
         { name: 'deepl', active: 'active', options: [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
+            { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'deepl_description' },
         { name: 'linux_windows', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -105,6 +107,7 @@ const config_definition = [
         { name: 'google_translate', active: 'active', options: [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
+            { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'google_translate_description' },
         { name: 'duckduckgo', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -134,6 +137,7 @@ const config_definition = [
                 { name: 'url_pattern', type: 'text' },
             ], default: { prefix: '', url_pattern: '' } },
             { name: 'url_preview', type: 'boolean' },
+            { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'web_search_description' },
         { name: 'alias', active: 'active', options: [
             { name: 'active', type: 'boolean' },
@@ -148,11 +152,13 @@ const config_definition = [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'refresh_interval_min', type: 'size' },
+            { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'currency_converter_description' },
         { name: 'dictionary', active: 'active', options: [
             { name: 'active', type: 'boolean' },
             { name: 'prefix', type: 'text' },
             { name: 'debounce_time', type: 'size' },
+            { name: 'quality', type: 'quality' },
         ], type: 'page', description: 'dictionary_description' },
     ], type: 'subheader' }
 ];

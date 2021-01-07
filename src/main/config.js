@@ -75,6 +75,7 @@ export let config_default = {
         command: {
             active: true,
             prefix: '$',
+            quality: 1.0,
         },
         scripts: {
             active: false,
@@ -90,6 +91,7 @@ export let config_default = {
         deepl: {
             active: false,
             prefix: '',
+            quality: 1.0,
         },
         linux_windows: {
             active: false,
@@ -98,6 +100,7 @@ export let config_default = {
         google_translate: {
             active: false,
             prefix: '',
+            quality: 1.0,
         },
         duckduckgo: {
             active: false,
@@ -130,6 +133,7 @@ export let config_default = {
                 { prefix: 's?', url_pattern: 'https://stackoverflow.com/search?q=$' },
             ],
             url_preview: false,
+            quality: 1.0,
         },
         alias: {
             active: false,
@@ -141,11 +145,13 @@ export let config_default = {
             active: false,
             prefix: '',
             refresh_interval_min: 60, 
+            quality: 1.0,
         },
         dictionary: {
             active: false,
             prefix: 'dict?',
             debounce_time: 500,
+            quality: 1.0,
         },
     },
 };

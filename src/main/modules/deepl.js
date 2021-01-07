@@ -175,7 +175,7 @@ const DeeplModule = {
                 material_icon: 'translate',
                 text: (await (await elem.getProperty('innerText')).jsonValue()).trim(),
                 executable: true,
-                quality: 1.0,
+                quality: config.modules.deepl.quality,
             })))).filter((option) => option.text.length >= 1);
         } catch (e) {
             return [];

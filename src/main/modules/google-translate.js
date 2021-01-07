@@ -270,7 +270,7 @@ const GoogleTranslateModule = {
                 material_icon: 'g_translate',
                 text: first_text,
                 executable: true,
-                quality: 1.0,
+                quality: config.modules.google_translate.quality,
             }].concat((await Promise.all((await page.$$('.gt-baf-term-text')).map(async (elem, index) => {
                 let text = ''
                 let translation = '';
@@ -284,7 +284,7 @@ const GoogleTranslateModule = {
                     primary: text,
                     secondary: translation,
                     executable: true,
-                    quality: 1.0,
+                    quality: config.modules.google_translate.quality,
                     text: text,
                 };
             }))).filter((option) => option.text.length >= 1));

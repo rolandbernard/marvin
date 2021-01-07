@@ -59,7 +59,7 @@ const DictionaryModule = {
                                             primary: primary,
                                             secondary: secondary,
                                             executable: true,
-                                            quality: 1.0,
+                                            quality: config.modules.dictionary.quality,
                                             text: secondary,
                                         }
                                     });

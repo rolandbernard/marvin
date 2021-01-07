@@ -1,5 +1,5 @@
 
-import { clipboard, app } from 'electron';
+import { clipboard } from 'electron';
 import { config } from '../config';
 import fetch from 'node-fetch';
 
@@ -86,7 +86,7 @@ const CurrencyConverterModule = {
             primary: '= ' + (Math.round(result * 100) / 100) + ' ' + req.to,
             secondary: req.value + ' ' + req.from,
             executable: true,
-            quality: 1.0,
+            quality: config.modules.currency_converter.quality,
         }];
     },
     execute: async (option) => {

@@ -15,7 +15,7 @@ const CommandModule = {
                 primary: query.replace(config.modules.command.prefix, '').trim(),
                 secondary: getTranslation(config, 'execute') + ': `' + query.replace(config.modules.command.prefix, '').trim() + '`',
                 executable: true,
-                quality: 1.0,
+                quality: config.modules.command.quality,
                 command: query.replace(config.modules.command.prefix, '').trim(),
             },
             {
@@ -24,7 +24,7 @@ const CommandModule = {
                 primary: query.replace(config.modules.command.prefix, '').trim(),
                 secondary: getTranslation(config, 'execute_in_terminal') + ': `' + query.replace(config.modules.command.prefix, '').trim() + '`',
                 executable: true,
-                quality: 1.0,
+                quality: config.modules.command.quality,
                 command: `xterm -e '${query.replace(config.modules.command.prefix, '').trim().replace(/\'/g, "'\\''")}'`,
             },
         ];

@@ -23,7 +23,7 @@ const DuckduckgoModule = {
                                 primary: query,
                                 secondary: data.Redirect,
                                 executable: true,
-                                quality: 1,
+                                quality: config.modules.duckduckgo.quality,
                                 url: data.Redirect,
                                 preview: config.modules.duckduckgo.url_preview && data.Redirect && {
                                     type: 'iframe',
@@ -35,14 +35,14 @@ const DuckduckgoModule = {
                                 material_icon: 'assessment',
                                 text: data.Answer,
                                 executable: true,
-                                quality: 1,
+                                quality: config.modules.duckduckgo.quality,
                             },
                             {
                                 type: 'icon_text',
                                 material_icon: 'assessment',
                                 text: data.Definition,
                                 executable: true,
-                                quality: 1,
+                                quality: config.modules.duckduckgo.quality,
                                 url: data.DefinitionURL,
                                 preview: config.modules.duckduckgo.url_preview && data.DefinitionURL && {
                                     type: 'iframe',
@@ -55,7 +55,7 @@ const DuckduckgoModule = {
                                 material_icon: data.Image ? null : 'assessment',
                                 text: data.AbstractText,
                                 executable: true,
-                                quality: 1,
+                                quality: config.modules.duckduckgo.quality,
                                 url: data.AbstractURL,
                                 preview: config.modules.duckduckgo.url_preview && data.AbstractURL && {
                                     type: 'iframe',
