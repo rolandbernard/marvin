@@ -165,6 +165,11 @@ const config_definition = [
             { name: 'prefix', type: 'text' },
             { name: 'url_preview', type: 'boolean' },
         ], type: 'page', description: 'bookmarks_description' },
+        { name: 'email', active: 'active', options: [
+            { name: 'active', type: 'boolean' },
+            { name: 'prefix', type: 'text' },
+            { name: 'quality', type: 'quality' },
+        ], type: 'page', description: 'email_description' },
     ], type: 'subheader' }
 ];
 

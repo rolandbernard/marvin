@@ -24,6 +24,7 @@ import AliasModule from "./modules/alias";
 import CurrencyConverterModule from "./modules/currency-converter";
 import DictionaryModule from "./modules/dictionary";
 import BookmarksModule from "./modules/bookmarks";
+import EmailModule from "./modules/email";
 
 const modules = {
     settings: SettingsModule,
@@ -49,6 +50,7 @@ const modules = {
     currency_converter: CurrencyConverterModule,
     dictionary: DictionaryModule,
     bookmarks: BookmarksModule,
+    email: EmailModule,
 };
 
 export function initModules() {

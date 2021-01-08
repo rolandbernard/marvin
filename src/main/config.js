@@ -158,6 +158,11 @@ export let config_default = {
             prefix: '',
             url_preview: false,
         },
+        email: {
+            active: false,
+            prefix: '',
+            quality: 1.0,
+        },
     },
 };
 
