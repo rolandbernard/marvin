@@ -124,3 +124,9 @@ This module allows you to quickly lookup definitions and synonyms for words.
 This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks.
 
 ![screenshot](assets/bookmarks.png)
+
+#### Email
+This module allows one to quickly start writing a new email.
+
+![screenshot](assets/email.png)
+
