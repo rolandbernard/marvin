@@ -125,6 +125,10 @@ const translation_english = {
 
     bookmarks: 'Bookmarks',
     bookmarks_description: 'This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks',
+
+    email: 'Email',
+    email_description: 'This module allows one to quickly start writing a new email',
+    open_new_emial: 'Open new email',
 };
 
 export default translation_english;

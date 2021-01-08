@@ -125,6 +125,10 @@ const translation_german = {
 
     bookmarks: 'Lesezeichen',
     bookmarks_description: 'Mit diesem Modul ist es möglich Lesezeichen von Firefox, Midori und Chromium/Google Chrome zu durchsuchen',
+
+    email: 'E-Mail',
+    email_description: 'Mit diesem Modul ist es möglich schnell eine neue E-Mail zu beginnen',
+    open_new_emial: 'Neue E-Mail öffnen',
 };
 
 export default translation_german;
