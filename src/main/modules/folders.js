@@ -93,7 +93,7 @@ const FoldersModule = {
                     });
                 });
             } catch (e) { console.error(e) }
-        }))).filter((a) => a).reduce((a, b) => a.concat(b));
+        }))).filter((a) => a).flat();
     },
     execute: async (option) => {
         exec(`xdg-open ${option.file}`);

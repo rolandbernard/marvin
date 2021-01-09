@@ -116,6 +116,19 @@ const translation_german = {
     aliases: 'Aliase',
     option: 'Option',
     prefix_text: 'Name als Präfix hinzufügen',
+
+    currency_converter: 'Währungsumrechner',
+    currency_converter_description: 'Mit diesem Modul ist es möglich schnell zwischen Wahrungen umzurechnen',
+
+    dictionary: 'Wörterbuch',
+    dictionary_description: 'Mit diesem Modul können schnell Definitionen und Synonyme für Wörter nachgeschlagen werden',
+
+    bookmarks: 'Lesezeichen',
+    bookmarks_description: 'Mit diesem Modul ist es möglich Lesezeichen von Firefox, Midori und Chromium/Google Chrome zu durchsuchen',
+
+    email: 'E-Mail',
+    email_description: 'Mit diesem Modul ist es möglich schnell eine neue E-Mail zu beginnen',
+    open_new_emial: 'Neue E-Mail öffnen',
 };
 
 export default translation_german;

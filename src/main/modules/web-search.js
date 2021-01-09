@@ -17,7 +17,7 @@ const WebSearchModule = {
                 primary: url,
                 secondary: getTranslation(config, 'open_in_browser'),
                 executable: true,
-                quality: 1,
+                quality: config.modules.web_search.quality,
                 url: url,
                 preview: config.modules.url.url_preview && {
                     type: 'iframe',

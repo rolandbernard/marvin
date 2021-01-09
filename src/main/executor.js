@@ -21,6 +21,10 @@ import HistoryModule from "./modules/history";
 import ColorModule from "./modules/color";
 import WebSearchModule from "./modules/web-search";
 import AliasModule from "./modules/alias";
+import CurrencyConverterModule from "./modules/currency-converter";
+import DictionaryModule from "./modules/dictionary";
+import BookmarksModule from "./modules/bookmarks";
+import EmailModule from "./modules/email";
 
 const modules = {
     settings: SettingsModule,
@@ -43,6 +47,10 @@ const modules = {
     color: ColorModule,
     web_search: WebSearchModule,
     alias: AliasModule,
+    currency_converter: CurrencyConverterModule,
+    dictionary: DictionaryModule,
+    bookmarks: BookmarksModule,
+    email: EmailModule,
 };
 
 export function initModules() {

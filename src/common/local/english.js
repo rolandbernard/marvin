@@ -116,6 +116,19 @@ const translation_english = {
     aliases: 'Aliases',
     option: 'Option',
     prefix_text: 'Add name as prefix',
+
+    currency_converter: 'Currency converter',
+    currency_converter_description: 'This module allows you to quickly convert between currencies',
+
+    dictionary: 'Dictionary',
+    dictionary_description: 'This module allows you to quickly lookup definitions and synonyms for words',
+
+    bookmarks: 'Bookmarks',
+    bookmarks_description: 'This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks',
+
+    email: 'Email',
+    email_description: 'This module allows one to quickly start writing a new email',
+    open_new_emial: 'Open new email',
 };
 
 export default translation_english;

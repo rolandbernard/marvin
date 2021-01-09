@@ -116,6 +116,19 @@ const translation_italian = {
     aliases: 'Alias',
     option: 'Opzione',
     prefix_text: 'Aggiungi il nome come prefisso',
+
+    currency_converter: 'Convertitore di valuta',
+    currency_converter_description: 'Questo modulo consente di convertire rapidamente tra valute',
+
+    dictionary: 'Dizionario',
+    dictionary_description: 'Questo modulo può essere utilizzato per cercare rapidamente definizioni e sinonimi di parole',
+
+    bookmarks: 'Segnalibri',
+    bookmarks_description: 'Con questo modulo è possibile cercare tra i segnalibri di Firefox, Midori e Chromium/Google Chrome',
+
+    email: 'E-mail',
+    email_description: 'Con questo modulo è possibile avviare rapidamente una nuova e-mail',
+    open_new_emial: 'Apri una nuova e-mail',
 };
 
 export default translation_italian;

@@ -114,3 +114,23 @@ This module allows you to add an alias for a certail option, that allows you to 
 
 ![screenshot](assets/alias.png)
 
+#### Currency converter
+This module allows you to quickly convert between currencies.
+
+![screenshot](assets/currency_converter.png)
+
+#### Dictionary
+This module allows you to quickly lookup definitions and synonyms for words.
+
+![screenshot](assets/dictionary.png)
+
+#### Bookmarks
+This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks.
+
+![screenshot](assets/bookmarks.png)
+
+#### Email
+This module allows one to quickly start writing a new email.
+
+![screenshot](assets/email.png)
+
