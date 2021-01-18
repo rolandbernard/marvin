@@ -128,7 +128,7 @@ const translation_italian = {
 
     email: 'E-mail',
     email_description: 'Con questo modulo è possibile avviare rapidamente una nuova e-mail',
-    open_new_emial: 'Apri una nuova e-mail',
+    open_new_email: 'Apri una nuova e-mail',
 };
 
 export default translation_italian;

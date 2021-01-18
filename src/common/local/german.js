@@ -128,7 +128,7 @@ const translation_german = {
 
     email: 'E-Mail',
     email_description: 'Mit diesem Modul ist es möglich schnell eine neue E-Mail zu beginnen',
-    open_new_emial: 'Neue E-Mail öffnen',
+    open_new_email: 'Neue E-Mail öffnen',
 };
 
 export default translation_german;

@@ -128,7 +128,7 @@ const translation_english = {
 
     email: 'Email',
     email_description: 'This module allows one to quickly start writing a new email',
-    open_new_emial: 'Open new email',
+    open_new_email: 'Open new email',
 };
 
 export default translation_english;
