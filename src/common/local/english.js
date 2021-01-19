@@ -25,7 +25,7 @@ const translation_english = {
     modules: 'Modules',
     active: 'Active',
     settings: 'Settings',
-    
+
     quality_error: 'Value must be between 0.0 and 1.0',
     size_error: 'Value must be an integer greater than 0',
     shortcut_error: 'Value must be a valid shortcut',
@@ -42,7 +42,7 @@ const translation_english = {
     directories: 'Directories',
     path: 'Path',
     file_preview: 'File preview',
-   
+
     html: 'HTML',
     html_description: 'This module allows you to create custom HTML entries',
     entries: 'Entries',
@@ -53,20 +53,20 @@ const translation_english = {
     calculator_description: 'This module allows you to do calculations using mathjs',
     simplified: 'simplified',
     rationalized: 'rationalized',
-    
+
     linux_applications: 'Linux applications',
     linux_applications_description: 'This module allows you to start applications on linux',
-    refresh_interval_min: 'Refresh interval [min]', 
-    
+    refresh_interval_min: 'Refresh interval [min]',
+
     url: 'URL',
     url_description: 'This module allows you to open urls',
     open_in_browser: 'Open in browser',
     url_preview: 'URL preview',
-    
+
     locate: 'Locate',
     locate_description: 'This module allows you to search for files using locate',
     search_limit: 'Search limit',
-    
+
     shortcuts: 'Shortcuts',
     shortcuts_description: 'This module allows you to define shortcuts to run shell scripts',
     shortcut: 'Shortcut',
@@ -76,7 +76,7 @@ const translation_english = {
     command_description: 'This module allows you to execute shell commands',
     prefix: 'Prefix',
     execute: 'Execute',
-    execute_in_terminal: 'Execute in terminal', 
+    execute_in_terminal: 'Execute in terminal',
 
     scripts: 'Scripts',
     scripts_description: 'This module allows you to create custom entries to execute shell scripts',
@@ -88,7 +88,7 @@ const translation_english = {
 
     deepl: 'Deepl',
     deepl_description: 'This module allows you to translate text by using Deepl in a headless window',
-    
+
     linux_windows: 'Linux windows',
     linux_windows_description: 'This module allows you to find open windows',
 
@@ -97,15 +97,15 @@ const translation_english = {
 
     duckduckgo: 'DuckDuckGo Instant Answer',
     duckduckgo_description: 'This module gives you the DuckDuckGo Instant Answers for your query',
-    
+
     history: 'History',
     history_description: 'This module allows you to execute recent options again',
     searchable: 'Searchable',
-    
+
     color: 'Color',
     color_description: 'This module allows you to convert colors between hex/rgb/hsl',
     color_preview: 'Color preview',
-    
+
     web_search: 'Web search',
     web_search_description: 'This module allows you to quicky do a web search',
     patterns: 'Patterns',

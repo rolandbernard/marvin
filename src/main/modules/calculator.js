@@ -19,7 +19,7 @@ const CalculatorModule = {
                 quality: config.modules.calculator.quality,
                 executable: true,
             });
-        } catch(e) { }
+        } catch (e) { }
         try {
             ret.push({
                 type: 'icon_list_item',
@@ -29,7 +29,7 @@ const CalculatorModule = {
                 quality: config.modules.calculator.quality,
                 executable: true,
             });
-        } catch(e) { }
+        } catch (e) { }
         try {
             ret.push({
                 type: 'icon_list_item',
@@ -39,7 +39,7 @@ const CalculatorModule = {
                 quality: config.modules.calculator.quality,
                 executable: true,
             });
-        } catch(e) { }
+        } catch (e) { }
         return ret.filter((val, index) =>
             val.primary.substr(2).replace(/ /g, '').trim() !== query.replace(/ /g, '').trim()
             && ret.findIndex((v) => v.primary === val.primary) === index

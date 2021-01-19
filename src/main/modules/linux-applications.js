@@ -36,7 +36,7 @@ function getProp(object, name, fallback) {
 function getIconTheme() {
     return new Promise((resolve) => {
         exec(`gtk-query-settings gtk-icon-theme-name | awk -F: '{print $2; exit}' | head -c -2 | tail -c +3`, (_, stdout, __) => {
-            const theme = stdout && stdout.trim();            
+            const theme = stdout && stdout.trim();
             if (theme) {
                 resolve(theme);
             } else {
@@ -49,7 +49,7 @@ function getIconTheme() {
 function getIconFallbackTheme() {
     return new Promise((resolve) => {
         exec(`gtk-query-settings gtk-fallback-icon-theme | awk -F: '{print $2; exit}' | head -c -2 | tail -c +3`, (_, stdout, __) => {
-            const theme = stdout && stdout.trim();            
+            const theme = stdout && stdout.trim();
             if (theme) {
                 resolve(theme);
             } else {
@@ -115,7 +115,7 @@ function createIconIndex(theme, fallback_theme) {
 function findIconPath(name) {
     return new Promise((resolve) => {
         exists(name, (exist) => {
-            if(exist) {
+            if (exist) {
                 resolve(name);
             } else {
                 const possible = [
@@ -126,8 +126,8 @@ function findIconPath(name) {
                     `${name.toLowerCase()}.svg`,
                     `${name.toLowerCase()}.png`
                 ];
-                for(let file of possible) {
-                    if(icon_index[file]) {
+                for (let file of possible) {
+                    if (icon_index[file]) {
                         resolve(icon_index[file]);
                         return;
                     }
@@ -141,7 +141,7 @@ function findIconPath(name) {
 function pathToDataUrl(path) {
     return new Promise((resolve) => {
         readFile(path, (_, data) => {
-            if(data) {
+            if (data) {
                 const mime_endings = {
                     '__default__': 'text/plain',
                     '.png': 'image/png',
@@ -202,7 +202,7 @@ async function loadApplications() {
                                 }
                             }
                             resolve(ret);
-                        } catch(e) {
+                        } catch (e) {
                             resolve(null);
                         }
                     } else {
@@ -217,7 +217,7 @@ async function loadApplications() {
                 const path = await findIconPath(getProp(value, 'Icon'), theme, fallback_theme);
                 if (path) {
                     icons[getProp(value, 'Icon')] = await pathToDataUrl(path);
-                } 
+                }
             }
             value.icon = icons[getProp(value, 'Icon')];
         }));
@@ -230,7 +230,7 @@ let update_interval = null;
 
 const LinuxApplicationModule = {
     init: async () => {
-        if(config.modules.linux_applications.active) {
+        if (config.modules.linux_applications.active) {
             loadApplicationCache();
             loadApplications();
             update_interval = setInterval(() => loadApplications(), 60 * 1000 * config.modules.linux_applications.refresh_interval_min);
@@ -258,12 +258,12 @@ const LinuxApplicationModule = {
                 secondary: getProp(value, 'Comment', name),
                 executable: true,
                 quality: Math.max(stringMatchQuality(query, name),
-                                0.75 * stringMatchQuality(query, desc),
-                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'Keywords', '')),
-                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'Categories', '')),
-                                0.75 * stringMatchQuality(query, app.application.replace('.desktop', '')),
-                                0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', '')),
-                                0.25 * stringMatchQuality(query, getProp(value, 'Name', name))),
+                    0.75 * stringMatchQuality(query, desc),
+                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'Keywords', '')),
+                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'Categories', '')),
+                    0.75 * stringMatchQuality(query, app.application.replace('.desktop', '')),
+                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', '')),
+                    0.25 * stringMatchQuality(query, getProp(value, 'Name', name))),
                 app: value,
             }));
         }).flat();

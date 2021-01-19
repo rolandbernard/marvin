@@ -12,7 +12,7 @@ const styles = {
 
 function ImagePreview(props) {
     useEffect(() => {
-        if(props.onLoad) {
+        if (props.onLoad) {
             props.onLoad('0%');
         }
     }, []);

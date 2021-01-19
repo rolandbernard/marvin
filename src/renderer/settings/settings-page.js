@@ -44,13 +44,13 @@ function SettingsPage(props) {
                         <tr style={styles.tr} key={props.page.def.name + '_' + def.name}>
                             {def.type !== 'array' && <td style={styles.name}>{getTranslation(props.config, def.name)}</td>}
                             <td style={styles.value} colSpan={def.type === 'array' ? 2 : 1}>
-                                {def.type === 'array' && <div style={styles.array_name}>{getTranslation(props.config, def.name)}</div>} 
+                                {def.type === 'array' && <div style={styles.array_name}>{getTranslation(props.config, def.name)}</div>}
                                 {React.createElement(setting_types[def.type], {
                                     option: props.page && props.page.config && props.page.config[def.name],
                                     def: def.base,
                                     definition: def,
                                     onUpdate: (value) => {
-                                        if(props.page && props.page.config) {
+                                        if (props.page && props.page.config) {
                                             props.page.config[def.name] = value;
                                             props.onUpdate();
                                         }

@@ -66,4 +66,3 @@ const ClipboardModule = {
 }
 
 export default ClipboardModule;
-

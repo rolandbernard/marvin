@@ -80,13 +80,13 @@ function parseValue(string, max = 1.0) {
 
 function parseColor(query) {
     let match = false;
-    if(match = query.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])?$/i)) {
+    if (match = query.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])?$/i)) {
         return match.slice(1).filter(v => v).map(v => parseInt(v, 16) / 15);
-    } else if(match = query.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})?$/i)) {
+    } else if (match = query.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})?$/i)) {
         return match.slice(1).filter(v => v).map(v => parseInt(v, 16) / 255);
-    } else if(match = query.match(/^\s*rgba?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
+    } else if (match = query.match(/^\s*rgba?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
         return match.slice(1, 4).map(v => parseValue(v, 255)).concat(match[4] ? [parseValue(match[4])] : []);
-    } else if(match = query.match(/^\s*hsla?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
+    } else if (match = query.match(/^\s*hsla?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
         return hslToRgb([parseValue(match[1], 360), parseValue(match[2], 255), parseValue(match[3], 255)].concat(match[4] ? [parseValue(match[4])] : []));
     } else {
         return false;
@@ -103,7 +103,7 @@ function colorAsRgb(color) {
 
 function colorAsHex(color) {
     function padString(str) {
-        if(str.length === 1) {
+        if (str.length === 1) {
             return '0' + str;
         } else {
             return str;

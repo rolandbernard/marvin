@@ -1,5 +1,4 @@
 
-import { config } from '../config';
 import { stringMatchQuality } from '../../common/util';
 import { exec } from 'child_process';
 

@@ -93,7 +93,7 @@ const DuckduckgoModule = {
         });
     },
     execute: async (option) => {
-        if(option.url) {
+        if (option.url) {
             exec(`xdg-open ${option.url}`);
         } else {
             clipboard.writeText(option.text);

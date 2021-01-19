@@ -10,7 +10,7 @@ const styles = {
 }
 
 function evalScripts(node) {
-    if(node.tagName === 'SCRIPT') {
+    if (node.tagName === 'SCRIPT') {
         eval(node.innerText);
     }
     node.childNodes.forEach((element) => evalScripts(element));
@@ -22,7 +22,7 @@ function HtmlItem(props) {
         evalScripts(ref.current);
     });
     return (
-        <div style={styles.text} ref={ref} dangerouslySetInnerHTML={{__html: props.option.html}}></div>
+        <div style={styles.text} ref={ref} dangerouslySetInnerHTML={{ __html: props.option.html }}></div>
     );
 }
 

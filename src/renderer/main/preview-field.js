@@ -36,11 +36,11 @@ function PreviewField(props) {
     const preview = result && result.preview;
     return preview ? (
         <div style={styles.preview} ref={ref}>
-            { React.createElement(preview_types[preview.type], { onLoad: onLoad, preview: preview, config: props.config }) }
+            { React.createElement(preview_types[preview.type], { onLoad: onLoad, preview: preview, config: props.config })}
         </div>
     ) : (
-        <div style={styles.preview_none}></div>
-    );
+            <div style={styles.preview_none}></div>
+        );
 }
 
 export default PreviewField;

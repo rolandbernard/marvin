@@ -6,18 +6,18 @@ import fetch from 'node-fetch';
 let last_search = null;
 
 let languages = {
-    'en': [ 'English', 'Inglese', 'Englisch' ],
-    'hi': [ 'Hindi' ],
-    'es': [ 'Spanish', 'Spagnolo', 'Spanisch' ],
-    'fr': [ 'French', 'Francese', 'Französisch' ],
-    'ja': [ 'Japanese', 'Giapponese', 'Japanisch' ],
-    'ru': [ 'Russian', 'Russo', 'Russisch' ],
-    'de': [ 'German', 'Tedesco', 'Deutsch' ],
-    'it': [ 'Italian', 'Italiano', 'Italienisch' ],
-    'ko': [ 'Korean' ],
-    'pt-BR': [ 'Portuguese', 'Portugiesisch', 'Portoghese' ],
-    'ar': [ 'Arabic' ],
-    'tr': [ 'Turkish' ],
+    'en': ['English', 'Inglese', 'Englisch'],
+    'hi': ['Hindi'],
+    'es': ['Spanish', 'Spagnolo', 'Spanisch'],
+    'fr': ['French', 'Francese', 'Französisch'],
+    'ja': ['Japanese', 'Giapponese', 'Japanisch'],
+    'ru': ['Russian', 'Russo', 'Russisch'],
+    'de': ['German', 'Tedesco', 'Deutsch'],
+    'it': ['Italian', 'Italiano', 'Italienisch'],
+    'ko': ['Korean'],
+    'pt-BR': ['Portuguese', 'Portugiesisch', 'Portoghese'],
+    'ar': ['Arabic'],
+    'tr': ['Turkish'],
 };
 
 const DictionaryModule = {

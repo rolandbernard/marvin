@@ -1,5 +1,4 @@
 
-import { TurnedInRounded } from '@material-ui/icons';
 import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
@@ -68,12 +67,12 @@ async function toggleMain(op) {
     if (main_window && !main_window.isDestroyed()) {
         main_window.webContents.send('update-config', config);
         main_window.webContents.send('reset');
-        if ((op === undefined || !op ) && main_window.isVisible()) {
+        if ((op === undefined || !op) && main_window.isVisible()) {
             await new Promise(res => setTimeout(() => res(), 50));
             main_window.hide();
-        } else if ((op === undefined || op ) && !main_window.isVisible()) {
+        } else if ((op === undefined || op) && !main_window.isVisible()) {
             main_window.show();
-            if(config.general.recenter_on_show) {
+            if (config.general.recenter_on_show) {
                 main_window.center();
             }
             main_window.focus();
@@ -101,7 +100,7 @@ async function startApp() {
         const original_option = new Map();
         ipcMain.on('search-options', (msg, query) => {
             clearTimeout(last_loading);
-            last_loading = setTimeout(() => msg.sender.send('update-options', null), config.general.debounce_time + 100);            
+            last_loading = setTimeout(() => msg.sender.send('update-options', null), config.general.debounce_time + 100);
             searchQuery(query, (results) => {
                 clearTimeout(last_loading);
                 original_option.clear();
@@ -124,12 +123,12 @@ async function startApp() {
         ipcMain.on('execute-option', (_, option) => {
             if (option && option.executable) {
                 const key = JSON.stringify(option);
-                if(original_option.has(key)) {
+                if (original_option.has(key)) {
                     executeOption(original_option.get(key));
                 } else {
                     executeOption(option);
                 }
-                if(!option.stay_open) {
+                if (!option.stay_open) {
                     toggleMain(false);
                 }
             }
@@ -143,7 +142,7 @@ async function startApp() {
                     } else {
                         new_config.general.global_shortcut = config.general.global_shortcut;
                     }
-                } catch(e) {
+                } catch (e) {
                     new_config.general.global_shortcut = config.general.global_shortcut;
                 }
             }

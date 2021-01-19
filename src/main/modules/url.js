@@ -14,7 +14,7 @@ function isValidUrl(str) {
 }
 
 function completeUrl(str) {
-    if(str.startsWith('https://') || str.startsWith('http://')) {
+    if (str.startsWith('https://') || str.startsWith('http://')) {
         return str;
     } else {
         return 'http://' + str;

@@ -30,7 +30,7 @@ class App extends React.Component {
         ipcRenderer.on('reset', (_) => {
             this.setState({ results: [], selected: 0 });
         });
-    } 
+    }
 
     handle_key_down(e) {
         if (e.key === 'ArrowUp' && this.state.results && this.state.results.length > 0) {
@@ -100,4 +100,3 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
-

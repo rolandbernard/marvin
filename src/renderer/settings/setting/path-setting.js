@@ -15,7 +15,7 @@ const styles = {
 function isValidPath(input) {
     try {
         return path.parse(input).root === '/';
-    } catch(e) {
+    } catch (e) {
         return false;
     }
 }
@@ -23,7 +23,7 @@ function isValidPath(input) {
 function PathSetting(props) {
     const [error, setError] = useState(null);
     const onUpdate = (e) => {
-        if(isValidPath(e.target.value)) {
+        if (isValidPath(e.target.value)) {
             props.onUpdate(e.target.value);
             setError(null);
         } else {
