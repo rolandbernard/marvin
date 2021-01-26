@@ -20,6 +20,7 @@ function recursiveBookmarkSearch(bookmarks) {
             return [{
                 title: bookmarks.title,
                 url: bookmarks.uri,
+                icon: bookmarks.iconuri,
             }];
         } else {
             let ret = [];
@@ -115,6 +116,7 @@ const BookmarksModule = {
         const bookmark_match = stringMatchQuality(query, getTranslation(config, 'bookmarks'));
         return bookmarks.map((bookmark) => ({
             type: 'icon_list_item',
+            uri_icon: bookmark.icon,
             material_icon: 'bookmark',
             primary: bookmark.title,
             secondary: getTranslation(config, 'open_in_browser') + ': ' + bookmark.url,
