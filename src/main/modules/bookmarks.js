@@ -40,38 +40,31 @@ async function getChromiumBookmarks() {
     return ret;
 }
 
-let midori_bookmark_cache = null;
-
 async function getMidoriBookmarks() {
-    if (midori_bookmark_cache) {
-        return midori_bookmark_cache;
-    } else {
-        const files = [
-            join(app.getPath('home'), '.config/midori/bookmarks.db'),
-        ].filter((file) => existsSync(file));
-        return (await Promise.all(files.map((file) => {
-            return new Promise((res) => {
-                const db = new Database(file, OPEN_READONLY, (err) => {
-                    if (err) {
-                        res([]);
-                    } else {
-                        db.all(`
-                        Select title, uri url
-                            From bookmarks;
-                    `, (err, rows) => {
-                            if (err) {
-                                return res([]);
-                            } else {
-                                midori_bookmark_cache = rows;
-                                return res(midori_bookmark_cache);
-                            }
-                        });
-                    }
-                    db.close();
-                });
+    const files = [
+        join(app.getPath('home'), '.config/midori/bookmarks.db'),
+    ].filter((file) => existsSync(file));
+    return (await Promise.all(files.map((file) => {
+        return new Promise((res) => {
+            const db = new Database(file, OPEN_READONLY, (err) => {
+                if (err) {
+                    res([]);
+                } else {
+                    db.all(`
+                    Select title, uri url
+                        From bookmarks;
+                `, (err, rows) => {
+                        if (err) {
+                            return res([]);
+                        } else {
+                            return res(rows);
+                        }
+                    });
+                }
+                db.close();
             });
-        }))).flat();
-    }
+        });
+    }))).flat();
 }
 
 let firefox_bookmark_cache = null;
@@ -115,7 +108,6 @@ const BookmarksModule = {
     init: async () => {
         // TODO: Find another solution
         getFirefoxBookmarks(); // Cache for future use (Database will most likely be locked)
-        getMidoriBookmarks();
     },
     valid: (query) => {
         return query.trim().length >= 1;
@@ -124,7 +116,7 @@ const BookmarksModule = {
         const bookmarks = [
             ...(await getChromiumBookmarks()),
             ...(await getMidoriBookmarks()),
-            ...(await getFirefoxBookmarks())
+            // ...(await getFirefoxBookmarks())
         ];
         const bookmark_match = stringMatchQuality(query, getTranslation(config, 'bookmarks'));
         return bookmarks.map((bookmark) => ({
