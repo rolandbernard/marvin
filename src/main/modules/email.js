@@ -4,14 +4,14 @@ import { exec } from 'child_process';
 import { getTranslation } from "../../common/local/locale";
 
 function isValidEmail(str) {
-    let pattern = new RegExp('^(mailto:)?' + 
+    let pattern = new RegExp('^(mailto:)?' +
         '[^@]+@' +
         '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}$', 'i');
     return !!pattern.test(str);
 }
 
 function completeEmail(str) {
-    if(str.startsWith('mailto:')) {
+    if (str.startsWith('mailto:')) {
         return str;
     } else {
         return 'mailto:' + str;

@@ -36,13 +36,13 @@ export let config_default = {
         folders: {
             active: true,
             prefix: '',
-            directories: [ "/", app.getPath('home') ],
+            directories: ["/", app.getPath('home')],
             file_preview: false,
         },
         html: {
             active: false,
             prefix: '',
-            entries: [ ],
+            entries: [],
         },
         calculator: {
             active: true,
@@ -52,8 +52,8 @@ export let config_default = {
         linux_applications: {
             active: true,
             prefix: '',
-            directories: [ "/usr/share/applications/", path.join(app.getPath('home'), '.local/share/applications/') ],
-            refresh_interval_min: 30, 
+            directories: ["/usr/share/applications/", path.join(app.getPath('home'), '.local/share/applications/')],
+            refresh_interval_min: 30,
         },
         url: {
             active: true,
@@ -70,7 +70,7 @@ export let config_default = {
         shortcuts: {
             active: false,
             prefix: '',
-            shortcuts: [ ],
+            shortcuts: [],
         },
         command: {
             active: true,
@@ -80,7 +80,7 @@ export let config_default = {
         scripts: {
             active: false,
             prefix: '',
-            entries: [ ],
+            entries: [],
         },
         clipboard: {
             active: false,
@@ -138,13 +138,13 @@ export let config_default = {
         alias: {
             active: false,
             prefix: '',
-            aliases: [ ],
+            aliases: [],
             prefix_text: true,
         },
         currency_converter: {
             active: false,
             prefix: '',
-            refresh_interval_min: 60, 
+            refresh_interval_min: 60,
             quality: 1.0,
         },
         dictionary: {

@@ -7,7 +7,7 @@ import { exec } from "child_process";
 import { app } from "electron";
 
 function generateFilePreview(path) {
-    if(extname(path).match(/\.(pdf)/i)) {
+    if (extname(path).match(/\.(pdf)/i)) {
         return {
             type: 'embed',
             url: format({
@@ -16,7 +16,7 @@ function generateFilePreview(path) {
                 slashes: true,
             }),
         };
-    } else if(extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
+    } else if (extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
         return {
             type: 'image',
             url: format({
@@ -25,7 +25,7 @@ function generateFilePreview(path) {
                 slashes: true,
             }),
         };
-    } else if(extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
+    } else if (extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
         return {
             type: 'video',
             url: format({
@@ -34,7 +34,7 @@ function generateFilePreview(path) {
                 slashes: true,
             }),
         };
-    } else if(extname(path).match(/\.(mp3|wav|mpeg)/i)) {
+    } else if (extname(path).match(/\.(mp3|wav|mpeg)/i)) {
         return {
             type: 'audio',
             url: format({
@@ -55,7 +55,7 @@ const LocateModule = {
     search: (query) => {
         return new Promise((resolve) => {
             exec(`locate -i -e -b ${query}`, async (_, stdout, __) => {
-                if(stdout) {
+                if (stdout) {
                     resolve(await Promise.all(stdout.split('\n').map((file) => {
                         return new Promise(async (resolve) => {
                             let option = {

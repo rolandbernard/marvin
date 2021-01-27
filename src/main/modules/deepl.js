@@ -11,22 +11,22 @@ let cancel_last = null;
 let last_lang = null;
 
 let languages = {
-    'en-US': [ 'English', 'Inglese', 'Englisch' ],
-    'fr-FR': [ 'French', 'Francese', 'Französisch' ],
-    'es-ES': [ 'Spanish', 'Spagnolo', 'Spanisch' ],
-    'pt-PT': [ 'Portuguese', 'Portugiesisch', 'Portoghese' ],
-    'it-IT': [ 'Italian', 'Italiano', 'Italienisch' ],
-    'nl-NL': [ 'Dutch', 'Olandese', 'Niederländisch' ],
-    'pl-PL': [ 'Polish', 'Polacco', 'Polnisch' ],
-    'de-DE': [ 'German', 'Tedesco', 'Deutsch' ],
-    'ru-RU': [ 'Russian', 'Russo', 'Russisch' ],
-    'ja-JA': [ 'Japanese', 'Giapponese', 'Japanisch' ],
-    'zh-ZH': [ 'Chinese', 'Cinese', 'Chinesisch' ],
+    'en-US': ['English', 'Inglese', 'Englisch'],
+    'fr-FR': ['French', 'Francese', 'Französisch'],
+    'es-ES': ['Spanish', 'Spagnolo', 'Spanisch'],
+    'pt-PT': ['Portuguese', 'Portugiesisch', 'Portoghese'],
+    'it-IT': ['Italian', 'Italiano', 'Italienisch'],
+    'nl-NL': ['Dutch', 'Olandese', 'Niederländisch'],
+    'pl-PL': ['Polish', 'Polacco', 'Polnisch'],
+    'de-DE': ['German', 'Tedesco', 'Deutsch'],
+    'ru-RU': ['Russian', 'Russo', 'Russisch'],
+    'ja-JA': ['Japanese', 'Giapponese', 'Japanisch'],
+    'zh-ZH': ['Chinese', 'Cinese', 'Chinesisch'],
 };
 
 const DeeplModule = {
     init: async () => {
-        if(config.modules.deepl.active) {
+        if (config.modules.deepl.active) {
             window = new BrowserWindow({
                 show: false,
                 width: 1000,
@@ -55,15 +55,15 @@ const DeeplModule = {
         }
     },
     update: async (old_config) => {
-        if(old_config.modules.deepl.active && !config.modules.deepl.active) {
+        if (old_config.modules.deepl.active && !config.modules.deepl.active) {
             await DeeplModule.deinit();
         }
-        if(!old_config.modules.deepl.active && config.modules.deepl.active) {
+        if (!old_config.modules.deepl.active && config.modules.deepl.active) {
             await DeeplModule.init();
         }
     },
     deinit: async () => {
-        if(window) {
+        if (window) {
             window.destroy();
         }
     },

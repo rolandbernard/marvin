@@ -53,7 +53,6 @@ class InputField extends React.Component {
                 color: this.props.config && this.props.config.theme.accent_color,
             }
         };
-
         return (
             <TextField
                 id="input-field"

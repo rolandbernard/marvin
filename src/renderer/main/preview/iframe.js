@@ -18,7 +18,7 @@ function IFramePreview(props) {
     const onLoad = () => {
         ref.current.style.width = '50%';
         ref.current.style.height = '100%';
-        if(props.onLoad) {
+        if (props.onLoad) {
             props.onLoad('0%');
         }
     };

@@ -14,7 +14,7 @@ const styles = {
 function QualitySetting(props) {
     const [error, setError] = useState(null);
     const onUpdate = (e) => {
-        if(e.target.value.length > 0 && parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 1) {
+        if (e.target.value.length > 0 && parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 1) {
             props.onUpdate(parseFloat(e.target.value));
             setError(null);
         } else {

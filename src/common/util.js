@@ -1,6 +1,6 @@
 
 export function stringMatchQuality(text, pattern) {
-    if(typeof text === "string" && typeof pattern === "string") {
+    if (typeof text === "string" && typeof pattern === "string") {
         const text_upper = text.toUpperCase();
         const pattern_upper = pattern.toUpperCase();
         if (text_upper === pattern_upper) {
@@ -24,7 +24,6 @@ function isObject(item) {
 export function mergeDeep(target, ...sources) {
     if (!sources.length) return target;
     const source = sources.shift();
-
     if (isObject(target) && isObject(source)) {
         for (const key in source) {
             if (isObject(source[key])) {
@@ -35,6 +34,5 @@ export function mergeDeep(target, ...sources) {
             }
         }
     }
-
     return mergeDeep(target, ...sources);
 }

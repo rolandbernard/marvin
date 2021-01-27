@@ -8,7 +8,7 @@ import { app } from "electron";
 import { exec } from "child_process";
 
 function generateFilePreview(path) {
-    if(extname(path).match(/\.(pdf)/i)) {
+    if (extname(path).match(/\.(pdf)/i)) {
         return {
             type: 'embed',
             url: format({
@@ -17,7 +17,7 @@ function generateFilePreview(path) {
                 slashes: true,
             }),
         };
-    } else if(extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
+    } else if (extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
         return {
             type: 'image',
             url: format({
@@ -26,7 +26,7 @@ function generateFilePreview(path) {
                 slashes: true,
             }),
         };
-    } else if(extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
+    } else if (extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
         return {
             type: 'video',
             url: format({
@@ -35,7 +35,7 @@ function generateFilePreview(path) {
                 slashes: true,
             }),
         };
-    } else if(extname(path).match(/\.(mp3|wav|mpeg)/i)) {
+    } else if (extname(path).match(/\.(mp3|wav|mpeg)/i)) {
         return {
             type: 'audio',
             url: format({
@@ -58,11 +58,11 @@ const FoldersModule = {
             try {
                 return await new Promise((resolve) => {
                     exists(directory, (exist) => {
-                        if(exist) {
-                            let query_dir = query[query.length-1] === '/' ? query : path.dirname(query);
-                            let dir = query[query.length-1] === '/' ? path.join(directory, query) : path.dirname(path.join(directory, query));
+                        if (exist) {
+                            let query_dir = query[query.length - 1] === '/' ? query : path.dirname(query);
+                            let dir = query[query.length - 1] === '/' ? path.join(directory, query) : path.dirname(path.join(directory, query));
                             exists(dir, (exist) => {
-                                if(exist) {
+                                if (exist) {
                                     readdir(dir, async (_, files) => {
                                         resolve(await Promise.all(files.map((file) => new Promise((resolve) => {
                                             stat(path.join(dir, file), async (_, stats) => {
@@ -75,7 +75,7 @@ const FoldersModule = {
                                                     secondary: path.join(dir, file),
                                                     executable: true,
                                                     complete: path.join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
-                                                    quality: query[query.length-1] === '/' ? 0.5 : stringMatchQuality(path.basename(query), file),
+                                                    quality: query[query.length - 1] === '/' ? 0.5 : stringMatchQuality(path.basename(query), file),
                                                     file: path.join(dir, file),
                                                     preview: config.modules.folders.file_preview && generateFilePreview(path.join(dir, file)),
                                                 };

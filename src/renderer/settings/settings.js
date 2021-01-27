@@ -42,7 +42,7 @@ class App extends React.Component {
                     button key={def.name}
                     selected={this.state.selected && this.state.selected.def === def}
                     onClick={() => this.selectPage({ def: def, config: config && config[def.name] })}
-                  >
+                >
                     <ListItemIcon>{
                         def.icon
                             ? <Icon>{def.icon}</Icon>

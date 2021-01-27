@@ -39,63 +39,63 @@ function ArraySetting(props) {
                 <tbody>
                     {props.option && props.option.map((option, index) => (
                         !(props.def instanceof Array) ?
-                        <tr style={styles.tr} key={index}>
-                            <td style={styles.name}>{getTranslation(props.config, props.def.name)}</td>
-                            <td style={styles.value}>
-                                {React.createElement(setting_types[props.def.type], {
-                                    option: option,
-                                    def: props.base,
-                                    onUpdate: (value) => {
-                                        if(props.option) {
-                                            props.option[index] = value;
+                            <tr style={styles.tr} key={index}>
+                                <td style={styles.name}>{getTranslation(props.config, props.def.name)}</td>
+                                <td style={styles.value}>
+                                    {React.createElement(setting_types[props.def.type], {
+                                        option: option,
+                                        def: props.base,
+                                        onUpdate: (value) => {
+                                            if (props.option) {
+                                                props.option[index] = value;
+                                                props.onUpdate(props.option);
+                                            }
+                                        },
+                                        config: props.config,
+                                    })}
+                                </td>
+                                <td style={styles.button}>
+                                    <IconButton onClick={() => {
+                                        if (props.option) {
+                                            props.option.splice(index, 1);
                                             props.onUpdate(props.option);
                                         }
-                                    },
-                                    config: props.config,
-                                })}
-                            </td>
-                            <td style={styles.button}>
-                                <IconButton onClick={() => {
-                                    if(props.option) {
-                                        props.option.splice(index, 1);
-                                        props.onUpdate(props.option);
-                                    }
-                                }}><DeleteIcon></DeleteIcon></IconButton>
-                            </td>
-                        </tr> :
-                        <tr key={index}><td style={styles.value} colSpan="2">
-                            <table style={styles.table}>
-                                <tbody>
-                                    {props.def.map((def) => (
-                                        <tr style={styles.tr} key={def.name}>
-                                            {def.type !== 'array' && <td style={styles.name}>{getTranslation(props.config, def.name)}</td>}
-                                            <td style={styles.value} colSpan={def.type === 'array' ? 2 : 1}>
-                                                {def.type === 'array' && <div style={styles.array_name}>{getTranslation(props.config, def.name)}</div>}
-                                                {React.createElement(setting_types[def.type], {
-                                                    option: props.option && props.option[index][def.name],
-                                                    def: def.base,
-                                                    definition: def,
-                                                    onUpdate: (value) => {
-                                                        if (props.option) {
-                                                            props.option[index][def.name] = value;
-                                                            props.onUpdate(props.option);
-                                                        }
-                                                    },
-                                                    config: props.config,
-                                                })}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </td><td style={styles.button}>
-                            <IconButton onClick={() => {
-                                if (props.option) {
-                                    props.option.splice(index, 1);
-                                    props.onUpdate(props.option);
-                                }
-                            }}><DeleteIcon></DeleteIcon></IconButton>
-                        </td></tr>
+                                    }}><DeleteIcon></DeleteIcon></IconButton>
+                                </td>
+                            </tr> :
+                            <tr key={index}><td style={styles.value} colSpan="2">
+                                <table style={styles.table}>
+                                    <tbody>
+                                        {props.def.map((def) => (
+                                            <tr style={styles.tr} key={def.name}>
+                                                {def.type !== 'array' && <td style={styles.name}>{getTranslation(props.config, def.name)}</td>}
+                                                <td style={styles.value} colSpan={def.type === 'array' ? 2 : 1}>
+                                                    {def.type === 'array' && <div style={styles.array_name}>{getTranslation(props.config, def.name)}</div>}
+                                                    {React.createElement(setting_types[def.type], {
+                                                        option: props.option && props.option[index][def.name],
+                                                        def: def.base,
+                                                        definition: def,
+                                                        onUpdate: (value) => {
+                                                            if (props.option) {
+                                                                props.option[index][def.name] = value;
+                                                                props.onUpdate(props.option);
+                                                            }
+                                                        },
+                                                        config: props.config,
+                                                    })}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </td><td style={styles.button}>
+                                    <IconButton onClick={() => {
+                                        if (props.option) {
+                                            props.option.splice(index, 1);
+                                            props.onUpdate(props.option);
+                                        }
+                                    }}><DeleteIcon></DeleteIcon></IconButton>
+                                </td></tr>
                     ))}
                     <tr><td></td><td></td><td style={styles.button}>
                         <IconButton onClick={() => {

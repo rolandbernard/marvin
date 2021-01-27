@@ -22,7 +22,7 @@ class OutputList extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.selected.current) {
+        if (this.selected.current) {
             this.selected.current.scrollIntoView({ behavior: this.props.config.general.smooth_scrolling ? 'smooth' : 'instant', block: 'center' });
         }
     }
@@ -62,18 +62,18 @@ class OutputList extends React.Component {
                 <ul style={styles.list}>
                     {
                         this.props.results
-                        ? this.props.results.map((option, index) => (
-                            <li
-                                key={index}
-                                style={
-                                    index === this.props.selected
-                                        ? { ...styles.result, ...styles.selected }
-                                        : styles.result
-                                }
-                                ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
-                            >{ React.createElement(display_types[option.type], { option: option, config: this.props.config }) }</li>
-                        ))
-                        : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
+                            ? this.props.results.map((option, index) => (
+                                <li
+                                    key={index}
+                                    style={
+                                        index === this.props.selected
+                                            ? { ...styles.result, ...styles.selected }
+                                            : styles.result
+                                    }
+                                    ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
+                                >{React.createElement(display_types[option.type], { option: option, config: this.props.config })}</li>
+                            ))
+                            : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
                     }
                 </ul>
             </div>

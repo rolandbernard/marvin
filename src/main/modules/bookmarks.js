@@ -7,18 +7,25 @@ import { Database, OPEN_READONLY } from 'sqlite3';
 import { readFileSync, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { app } from 'electron';
+import { decompressBlock } from 'lz4js';
 
-function recursiveChromiumBookmarkSearch(bookmarks) {
+function recursiveBookmarkSearch(bookmarks) {
     if (bookmarks instanceof Object) {
         if (bookmarks.type === 'url') {
             return [{
                 title: bookmarks.name,
                 url: bookmarks.url,
             }];
+        } else if (bookmarks.type === 'text/x-moz-place') {
+            return [{
+                title: bookmarks.title,
+                url: bookmarks.uri,
+                icon: bookmarks.iconuri,
+            }];
         } else {
             let ret = [];
             Object.values(bookmarks).forEach((child) => {
-                ret = ret.concat(recursiveChromiumBookmarkSearch(child));
+                ret = ret.concat(recursiveBookmarkSearch(child));
             });
             return ret;
         }
@@ -35,88 +42,68 @@ async function getChromiumBookmarks() {
     let ret = []
     for (const file of files) {
         const bookmarks = JSON.parse(readFileSync(file, { encoding: 'utf8' }));
-        ret = ret.concat(recursiveChromiumBookmarkSearch(bookmarks));
+        ret = ret.concat(recursiveBookmarkSearch(bookmarks));
     }
     return ret;
 }
 
-let midori_bookmark_cache = null;
-
 async function getMidoriBookmarks() {
-    if (midori_bookmark_cache) {
-        return midori_bookmark_cache;
-    } else {
-        const files = [
-            join(app.getPath('home'), '.config/midori/bookmarks.db'),
-        ].filter((file) => existsSync(file));
-        return (await Promise.all(files.map((file) => {
-            return new Promise((res) => {
-                const db = new Database(file, OPEN_READONLY, (err) => {
-                    if (err) {
-                        res([]);
-                    } else {
-                        db.all(`
-                        Select title, uri url
-                            From bookmarks;
-                    `, (err, rows) => {
-                            if (err) {
-                                return res([]);
-                            } else {
-                                midori_bookmark_cache = rows;
-                                return res(midori_bookmark_cache);
-                            }
-                        });
-                    }
-                    db.close();
-                });
+    const files = [
+        join(app.getPath('home'), '.config/midori/bookmarks.db'),
+    ].filter((file) => existsSync(file));
+    return (await Promise.all(files.map((file) => {
+        return new Promise((res) => {
+            const db = new Database(file, OPEN_READONLY, (err) => {
+                if (err) {
+                    res([]);
+                } else {
+                    db.all(`
+                    Select title, uri url
+                        From bookmarks;
+                `, (err, rows) => {
+                        if (err) {
+                            return res([]);
+                        } else {
+                            return res(rows);
+                        }
+                    });
+                }
+                db.close();
             });
-        }))).flat();
-    }
+        });
+    }))).flat();
 }
 
-let firefox_bookmark_cache = null;
-
 async function getFirefoxBookmarks() {
-    if (firefox_bookmark_cache) {
-        return firefox_bookmark_cache;
-    } else {
-        const firefox_dir = join(app.getPath('home'), '.mozilla/firefox');
+    const firefox_dir = join(app.getPath('home'), '.mozilla/firefox');
+    if (existsSync(firefox_dir)) {
         const files = readdirSync(firefox_dir)
             .filter((file) => file.endsWith('.default'))
-            .map((file) => join(firefox_dir, file, 'places.sqlite'))
-            .filter((file) => existsSync(file));
+            .map((file) => join(firefox_dir, file, 'bookmarkbackups'))
+            .filter((file) => existsSync(file))
+            .flatMap((folder) => {
+                const files = readdirSync(folder);
+                if (files.length > 0) {
+                    return join(folder, files.sort().pop())
+                } else {
+                    return null;
+                }
+            }).filter((file) => file);
         return (await Promise.all(files.map((file) => {
             return new Promise((res) => {
-                const db = new Database(file, OPEN_READONLY, (err) => {
-                    if (err) {
-                        res([]);
-                    } else {
-                        db.all(`
-                            Select bm.title, pl.url
-                                From moz_bookmarks bm
-                                Join moz_places pl On (bm.fk = pl.id);
-                        `, (err, rows) => {
-                            if (err) {
-                                return res([]);
-                            } else {
-                                firefox_bookmark_cache = rows;
-                                return res(firefox_bookmark_cache);
-                            }
-                        });
-                    }
-                    db.close();
-                });
+                const data = readFileSync(file);
+                const decompressed = Buffer.alloc(data.readUInt32LE(8));
+                decompressBlock(data, decompressed, 12, data.length - 12, 0);
+                const bookmarks = JSON.parse(decompressed.toString());
+                res(recursiveBookmarkSearch(bookmarks));
             });
         }))).flat();
+    } else {
+        return [];
     }
 }
 
 const BookmarksModule = {
-    init: async () => {
-        // TODO: Find another solution
-        getFirefoxBookmarks(); // Cache for future use (Database will most likely be locked)
-        getMidoriBookmarks();
-    },
     valid: (query) => {
         return query.trim().length >= 1;
     },
@@ -129,6 +116,7 @@ const BookmarksModule = {
         const bookmark_match = stringMatchQuality(query, getTranslation(config, 'bookmarks'));
         return bookmarks.map((bookmark) => ({
             type: 'icon_list_item',
+            uri_icon: bookmark.icon,
             material_icon: 'bookmark',
             primary: bookmark.title,
             secondary: getTranslation(config, 'open_in_browser') + ': ' + bookmark.url,

@@ -1,6 +1,5 @@
 
 import React, { createRef, useEffect } from 'react';
-import { render } from 'react-dom';
 
 const styles = {
     wrap: {
@@ -17,7 +16,7 @@ const styles = {
 function EmbedPreview(props) {
     const ref = createRef();
     const onLoad = () => {
-        if(props.onLoad) {
+        if (props.onLoad) {
             props.onLoad('0%');
         }
     };
