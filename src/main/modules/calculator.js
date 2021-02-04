@@ -11,7 +11,7 @@ const CalculatorModule = {
     },
     search: async (query) => {
         const ret = [];
-        if (config.modules.calculator.backend === 'mathjs') {
+        if (config.modules.calculator.backend.includes('mathjs')) {
             try {
                 ret.push({
                     type: 'icon_list_item',
@@ -43,7 +43,7 @@ const CalculatorModule = {
                 });
             } catch (e) { }
         }
-        if (config.modules.calculator.backend === 'algebrite') {
+        if (config.modules.calculator.backend.includes('algebrite')) {
             try {
                 ret.push({
                     type: 'icon_list_item',
