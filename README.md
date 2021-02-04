@@ -35,7 +35,7 @@ This module allows you to create custom HTML entries.
 ![screenshot](assets/html.png)
 
 #### Calculator
-This module allows you to do calculations using mathjs.
+This module allows you to do calculations using Math.js or Algebrite.
 
 ![screenshot](assets/calculator.png)
 
