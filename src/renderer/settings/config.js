@@ -62,6 +62,7 @@ const config_definition = [
                     { name: 'active', type: 'boolean' },
                     { name: 'prefix', type: 'text' },
                     { name: 'quality', type: 'quality' },
+                    { name: 'backend', type: 'select', options: [ 'mathjs', 'algebrite' ] },
                 ], type: 'page', description: 'calculator_description'
             },
             {

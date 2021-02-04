@@ -48,6 +48,7 @@ export let config_default = {
             active: true,
             prefix: '',
             quality: 1.0,
+            backend: 'mathjs',
         },
         linux_applications: {
             active: true,
