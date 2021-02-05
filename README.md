@@ -16,6 +16,13 @@ $ sudo cp ./dist/Marvin-*.AppImage /usr/bin/marvin
 ## Features
 With the global shortcut (Super+D by default, but can be changed) you can open the main program.
 
+### Settings
+The settings can be opened by searching for 'Settings' (or 'Einstellungen'/'Impostazioni') in
+the main window. The settings include general settings, theme settings and settings specific
+to certain modules.
+
+![screenshot](assets/settings.png)
+
 ### Themes
 There are currently no predefined themes, but it is possible to configure most of the colors and
 some other parameters in the settings under the 'Theme' tab.
