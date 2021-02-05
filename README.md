@@ -15,9 +15,15 @@ $ sudo cp ./dist/Marvin-*.AppImage /usr/bin/marvin
 
 ## Features
 With the global shortcut (Super+D by default, but can be changed) you can open the main program.
-The program uses different modules to provide different functionalities.
+
+### Themes
+There are currently no predefined themes, but it is possible to configure most of the colors and
+some other parameters in the settings under the 'Theme' tab.
+
+![screenshots](assets/theme.png)
 
 ### Modules
+The program uses different modules to provide different functionalities.
 
 #### Linux system
 This module will give you access to some fundamental linux system operations. (Reboot, Shutdown)
