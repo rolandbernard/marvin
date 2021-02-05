@@ -10,10 +10,10 @@ let applications = [];
 let icons = {};
 let icon_index = null;
 
-const application_cache_filename = 'applications.json';
+const APPLICATION_CACHE_FILENAME = 'applications.json';
 
 function loadApplicationCache() {
-    const cache_path = path.join(app.getPath('userData'), application_cache_filename);
+    const cache_path = path.join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
     if (existsSync(cache_path)) {
         try {
             applications = JSON.parse(readFileSync(cache_path, { encoding: 'utf8' }));
@@ -23,7 +23,7 @@ function loadApplicationCache() {
 }
 
 function updateCache() {
-    const cache_path = path.join(app.getPath('userData'), application_cache_filename);
+    const cache_path = path.join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
     writeFileSync(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
 }
 

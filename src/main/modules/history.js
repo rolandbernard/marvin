@@ -7,10 +7,10 @@ import path from 'path';
 
 let execute_history = [];
 
-const history_filename = 'history.json';
+const HISTORY_FILENAME = 'history.json';
 
 function loadHistory() {
-    const history_path = path.join(app.getPath('userData'), history_filename);
+    const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
     if (existsSync(history_path)) {
         try {
             execute_history = JSON.parse(readFileSync(history_path, { encoding: 'utf8' }));
@@ -20,7 +20,7 @@ function loadHistory() {
 }
 
 function updateHistory() {
-    const history_path = path.join(app.getPath('userData'), history_filename);
+    const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
     writeFileSync(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
 }
 

@@ -8,10 +8,10 @@ import path from 'path';
 
 let clipboard_history = [];
 
-const clipboard_filename = 'clipboard.json';
+const CLIPBOARD_FILENAME = 'clipboard.json';
 
 function loadClipboard() {
-    const clipboard_path = path.join(app.getPath('userData'), clipboard_filename);
+    const clipboard_path = path.join(app.getPath('userData'), CLIPBOARD_FILENAME);
     if (existsSync(clipboard_path)) {
         try {
             clipboard_history = JSON.parse(readFileSync(clipboard_path, { encoding: 'utf8' }));
@@ -21,7 +21,7 @@ function loadClipboard() {
 }
 
 function updateClipboard() {
-    const clipboard_path = path.join(app.getPath('userData'), clipboard_filename);
+    const clipboard_path = path.join(app.getPath('userData'), CLIPBOARD_FILENAME);
     writeFileSync(clipboard_path, JSON.stringify(clipboard_history), { encoding: 'utf8' });
 }
 

@@ -4,7 +4,7 @@ import { app } from "electron";
 import path from 'path';
 import { mergeDeep } from '../common/util';
 
-export let config_default = {
+export const CONFIG_DEFAULT = {
     version: app.getVersion(),
     general: {
         global_shortcut: 'Super+D',
@@ -167,12 +167,12 @@ export let config_default = {
     },
 };
 
-export let config = config_default;
+export let config = CONFIG_DEFAULT;
 
-const config_filename = 'marvin.json';
+const CONFIG_FILENAME = 'marvin.json';
 
 export function loadConfig() {
-    const config_path = path.join(app.getPath('userData'), config_filename);
+    const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
     if (existsSync(config_path)) {
         try {
             config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
@@ -183,7 +183,7 @@ export function loadConfig() {
 }
 
 export function updateConfig(new_config) {
-    const config_path = path.join(app.getPath('userData'), config_filename);
+    const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
     config = mergeDeep(config, new_config);
     writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { getTranslation } from '../../../common/local/locale';
-import setting_types from './setting-types';
+import SETTING_TYPES from './setting-types';
 import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
@@ -42,7 +42,7 @@ function ArraySetting(props) {
                             <tr style={styles.tr} key={index}>
                                 <td style={styles.name}>{getTranslation(props.config, props.def.name)}</td>
                                 <td style={styles.value}>
-                                    {React.createElement(setting_types[props.def.type], {
+                                    {React.createElement(SETTING_TYPES[props.def.type], {
                                         option: option,
                                         def: props.base,
                                         onUpdate: (value) => {
@@ -71,7 +71,7 @@ function ArraySetting(props) {
                                                 {def.type !== 'array' && <td style={styles.name}>{getTranslation(props.config, def.name)}</td>}
                                                 <td style={styles.value} colSpan={def.type === 'array' ? 2 : 1}>
                                                     {def.type === 'array' && <div style={styles.array_name}>{getTranslation(props.config, def.name)}</div>}
-                                                    {React.createElement(setting_types[def.type], {
+                                                    {React.createElement(SETTING_TYPES[def.type], {
                                                         option: props.option && props.option[index][def.name],
                                                         def: def.base,
                                                         definition: def,

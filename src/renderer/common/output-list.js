@@ -8,7 +8,7 @@ import HtmlItem from './display/html-item';
 import IconText from './display/icon-text';
 import './output-list.css';
 
-const display_types = {
+const DISPLAY_TYPES = {
     simple_text: SimpleText,
     icon_list_item: IconListItem,
     html: HtmlItem,
@@ -71,7 +71,7 @@ class OutputList extends React.Component {
                                             : styles.result
                                     }
                                     ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
-                                >{React.createElement(display_types[option.type], { option: option, config: this.props.config })}</li>
+                                >{React.createElement(DISPLAY_TYPES[option.type], { option: option, config: this.props.config })}</li>
                             ))
                             : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
                     }

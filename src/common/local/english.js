@@ -1,5 +1,5 @@
 
-const translation_english = {
+const TRANSLATION_ENGLISH = {
     general: 'General',
     global_shortcut: 'Global shortcut',
     language: 'Language',
@@ -134,4 +134,4 @@ const translation_english = {
     open_new_email: 'Open new email',
 };
 
-export default translation_english;
+export default TRANSLATION_ENGLISH;

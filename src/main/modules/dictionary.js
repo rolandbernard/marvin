@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 
 let last_search = null;
 
-let languages = {
+const LANGUAGES = {
     'en': ['English', 'Inglese', 'Englisch'],
     'hi': ['Hindi'],
     'es': ['Spanish', 'Spagnolo', 'Spanisch'],
@@ -29,7 +29,7 @@ const DictionaryModule = {
         const to = query.toLowerCase().lastIndexOf(' in ');
         if (to > 0) {
             const lang_part = query.substr(to + 4).toLowerCase().trim();
-            const lang_id = Object.keys(languages).find((l) => l.toLowerCase() === lang_part || languages[l].find((n) => n.toLowerCase() === lang_part));
+            const lang_id = Object.keys(LANGUAGES).find((l) => l.toLowerCase() === lang_part || LANGUAGES[l].find((n) => n.toLowerCase() === lang_part));
             if (lang_id) {
                 query = query.substr(0, to).trim();
                 lang = lang_id;

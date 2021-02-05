@@ -7,7 +7,7 @@ import IFramePreview from './preview/iframe';
 import ImagePreview from './preview/image';
 import VideoPreview from './preview/video';
 
-const preview_types = {
+const PREVIEW_TYPES = {
     iframe: IFramePreview,
     color: ColorPreview,
     image: ImagePreview,
@@ -36,7 +36,7 @@ function PreviewField(props) {
     const preview = result && result.preview;
     return preview ? (
         <div style={styles.preview} ref={ref}>
-            { React.createElement(preview_types[preview.type], { onLoad: onLoad, preview: preview, config: props.config })}
+            { React.createElement(PREVIEW_TYPES[preview.type], { onLoad: onLoad, preview: preview, config: props.config })}
         </div>
     ) : (
             <div style={styles.preview_none}></div>
