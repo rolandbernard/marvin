@@ -30,8 +30,8 @@ function createMainWindow() {
         frame: false,
         show: false,
         transparent: true,
-        width: config.general.width,
-        height: config.general.max_height,
+        width: config.general.width + 20,
+        height: config.general.max_height + 20,
         alwaysOnTop: true,
         icon: path.join(__static, 'logo.png'),
     });

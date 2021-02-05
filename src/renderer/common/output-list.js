@@ -30,6 +30,7 @@ class OutputList extends React.Component {
     render() {
         const styles = {
             root: {
+                zIndex: 1000,
                 width: '100%',
                 flex: '1 1 auto',
                 overflow: 'auto',
@@ -43,6 +44,7 @@ class OutputList extends React.Component {
                 color: this.props.config && this.props.config.theme.text_color_output,
             },
             selected: {
+                color: this.props.config && this.props.config.theme.select_text_color,
                 background: this.props.config && this.props.config.theme.select_color,
             },
             loading: {
@@ -50,7 +52,7 @@ class OutputList extends React.Component {
                 height: '2rem',
                 margin: '0.5rem auto',
                 display: 'block',
-                color: this.props.config && this.props.config.theme.accent_color,
+                color: this.props.config && this.props.config.theme.accent_color_output,
             },
             loading_wrap: {
                 height: '3rem',

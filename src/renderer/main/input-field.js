@@ -40,6 +40,8 @@ class InputField extends React.Component {
                 color: this.props.config && this.props.config.theme.text_color_input,
                 // backdropFilter: this.props.config && `blur(${this.props.config.theme.background_blur_input}px)`,
                 borderRadius: this.props.config && `${this.props.config.theme.border_radius}px ${this.props.config.theme.border_radius}px 0 0`,
+                zIndex: 10000,
+                boxShadow: this.props.config && `1px 2px 7px -2px ${this.props.config.theme.shadow_color_input}`,
             },
             text_field: {
                 margin: 0,
@@ -50,7 +52,7 @@ class InputField extends React.Component {
                 height: '2rem',
                 marginRight: '0.25rem',
                 marginLeft: '0.5rem',
-                color: this.props.config && this.props.config.theme.accent_color,
+                color: this.props.config && this.props.config.theme.accent_color_input,
             }
         };
         return (

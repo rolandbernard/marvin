@@ -21,11 +21,15 @@ const CONFIG_DEFINITION = [
             { name: 'background_color_output', type: 'color' },
             { name: 'text_color_input', type: 'color' },
             { name: 'text_color_output', type: 'color' },
-            { name: 'accent_color', type: 'color' },
+            { name: 'accent_color_input', type: 'color' },
+            { name: 'accent_color_output', type: 'color' },
             { name: 'select_color', type: 'color' },
+            { name: 'select_text_color', type: 'color' },
             { name: 'border_radius', type: 'size' },
             // { name: 'background_blur_input', type: 'size' },
             // { name: 'background_blur_output', type: 'size' },
+            { name: 'shadow_color_input', type: 'color' },
+            { name: 'shadow_color_output', type: 'color' },
         ], type: 'page'
     },
     {

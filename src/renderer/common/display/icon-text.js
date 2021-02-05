@@ -15,7 +15,7 @@ function IconText(props) {
             paddingRight: '0.25rem',
         },
         avatar: {
-            color: props.config && props.config.theme.accent_color,
+            color: props.config && props.config.theme.accent_color_output,
             background: 'transparent',
         },
         text: {

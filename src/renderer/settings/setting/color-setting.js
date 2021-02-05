@@ -33,7 +33,13 @@ function ColorSetting(props) {
                 deferred
                 value={props.option}
                 palette={PALETTE}
-                onChange={(e) => props.onUpdate('#' + e.hex)}
+                onChange={(e) => {
+                    if (e.hex) {
+                        props.onUpdate('#' + e.hex);
+                    } else {
+                        props.onUpdate(e.toString());
+                    }
+                }}
             ></ColorPicker>
         </div>
     );

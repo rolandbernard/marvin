@@ -22,11 +22,15 @@ export const CONFIG_DEFAULT = {
         background_color_output: 'black',
         text_color_input: 'white',
         text_color_output: 'white',
-        accent_color: 'white',
+        accent_color_input: 'white',
+        accent_color_output: 'white',
         select_color: 'grey',
+        select_text_color: 'white',
         border_radius: 0,
         background_blur_input: 0,
         background_blur_output: 0,
+        shadow_color_input: '#00000000',
+        shadow_color_output: '#00000000',
     },
     modules: {
         linux_system: {
