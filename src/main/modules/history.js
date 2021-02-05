@@ -38,7 +38,7 @@ const HistoryModule = {
             return execute_history.map((option) => ({
                 ...option,
                 quality: config.modules.history.quality
-            }));
+            })).sort((a, b) => b.history_frequency - a.history_frequency);
         } else {
             return execute_history.map((option, i) => {
                 let quality = Math.max(
@@ -49,14 +49,19 @@ const HistoryModule = {
                 );
                 return {
                     ...option,
-                    quality: Math.min(1.0, quality + quality / (i + 1))
+                    quality: Math.min(1.0, quality + quality / (i + 1)),
                 };
-            });
+            }).sort((a, b) => b.history_frequency - a.history_frequency);
         }
     },
     globalExecute: async (option) => {
         if (config.modules.history.active) {
             let existing = new Set();
+            execute_history.forEach((option) => {
+                // Making old information less important
+                option.history_frequency *= 0.99;
+            });
+            option.history_frequency = 1 + (option.history_frequency || 0);
             execute_history = [option].concat(execute_history).filter((el) => {
                 let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");
                 if (!existing.has(value)) {
