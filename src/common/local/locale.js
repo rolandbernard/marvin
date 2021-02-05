@@ -22,3 +22,9 @@ export function getTranslation(config, text) {
         return TRANSLATIONS['en'][text] || text;
     }
 }
+
+export function getAllTranslation(text) {
+    return Object.keys(SUPPORTED_LANGUAGES)
+        .map((lang) => TRANSLATIONS[lang][text])
+        .filter((trans) => trans);
+}

@@ -2,7 +2,7 @@
 import { stringMatchQuality } from "../../common/util";
 import { config } from "../config";
 import { exec } from 'child_process';
-import { getTranslation } from "../../common/local/locale";
+import { getAllTranslation, getTranslation } from "../../common/local/locale";
 import { Database, OPEN_READONLY } from 'sqlite3';
 import { readFileSync, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
@@ -113,7 +113,9 @@ const BookmarksModule = {
             ...(await getMidoriBookmarks()),
             ...(await getFirefoxBookmarks())
         ];
-        const bookmark_match = stringMatchQuality(query, getTranslation(config, 'bookmarks'));
+        const bookmark_match = Math.max(...(
+            getAllTranslation('bookmarks').map((trans) => stringMatchQuality(query, trans))
+        ));
         return bookmarks.map((bookmark) => ({
             type: 'icon_list_item',
             uri_icon: bookmark.icon,

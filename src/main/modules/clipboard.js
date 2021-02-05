@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { clipboard, app } from 'electron';
 import { config } from '../config';
 import { stringMatchQuality } from '../../common/util';
-import { getTranslation } from '../../common/local/locale';
+import { getAllTranslation } from '../../common/local/locale';
 import path from 'path';
 
 let clipboard_history = [];
@@ -51,7 +51,9 @@ const ClipboardModule = {
         return query.trim().length > 0;
     },
     search: async (query) => {
-        const clipboard_match = stringMatchQuality(query, getTranslation(config, 'clipboard'));
+        const clipboard_match = Math.max(...(
+            getAllTranslation('clipboard').map((trans) => stringMatchQuality(query, trans))
+        ));
         return clipboard_history.map((text) => ({
             type: 'icon_text',
             material_icon: 'assignment',
