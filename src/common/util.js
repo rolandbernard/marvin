@@ -11,7 +11,6 @@ export function stringMatchQuality(query, text, regex) {
             return 0.0;
         }
     } else {
-        console.log(query, text, regex);
         return 0.0;
     }
 }
