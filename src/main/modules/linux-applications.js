@@ -29,8 +29,18 @@ function updateCache() {
 
 function getProp(object, name, fallback) {
     return (object[name] instanceof Object)
-        ? (object[name][config.general.language] || object[name]['default'])
+        ? (object[name][config.general.language] || object[name]['default'] || object[name]['en'])
         : (object[name] || fallback);
+}
+
+function getProps(object, name, fallback) {
+    if (object[name] instanceof Object) {
+        return Object.values(object[name]);
+    } else if (object[name]) {
+        return [object[name]];
+    } else {
+        return [];
+    }
 }
 
 function getIconTheme() {
@@ -249,7 +259,14 @@ const LinuxApplicationModule = {
     search: async (query) => {
         return applications.map((app) => {
             const name = getProp(app.desktop, 'Name', app.application.replace('.desktop', ''));
-            const desc = getProp(app.desktop, 'Comment', '');
+            const app_match = Math.max(
+                ...(getProps(app.desktop, 'Name').map((prop) => stringMatchQuality(query, prop))),
+                ...(getProps(app.desktop, 'Comment').map((prop) => 0.75 * stringMatchQuality(query, prop))),
+                ...(getProps(app.desktop, 'Keywords').map((prop) => 0.75 * stringMatchQuality(query, prop))),
+                ...(getProps(app.desktop, 'Categories').map((prop) => 0.75 * stringMatchQuality(query, prop))),
+                ...(getProps(app.desktop, '.desktop').map((prop) => 0.75 * stringMatchQuality(query, prop))),
+                ...(getProps(app.desktop, 'GenericName').map((prop) => 0.75 * stringMatchQuality(query, prop))),
+            );
             const icon = app.desktop.icon;
             return Object.values(app).filter((value) => value instanceof Object).map((value) => ({
                 type: 'icon_list_item',
@@ -257,13 +274,11 @@ const LinuxApplicationModule = {
                 primary: getProp(value, 'Name', name),
                 secondary: getProp(value, 'Comment', name),
                 executable: true,
-                quality: Math.max(stringMatchQuality(query, name),
-                    0.75 * stringMatchQuality(query, desc),
-                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'Keywords', '')),
-                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'Categories', '')),
-                    0.75 * stringMatchQuality(query, app.application.replace('.desktop', '')),
-                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', '')),
-                    0.25 * stringMatchQuality(query, getProp(value, 'Name', name))),
+                quality: Math.max(
+                    app_match,
+                    ...(getProps(value, 'Name').map((prop) => 0.75 * stringMatchQuality(query, prop))),
+                    ...(getProps(value, 'Comment').map((prop) => 0.25 * stringMatchQuality(query, prop)))
+                ),
                 app: value,
             }));
         }).flat();
