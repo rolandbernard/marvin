@@ -107,14 +107,14 @@ const BookmarksModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         const bookmarks = [
             ...(await getChromiumBookmarks()),
             ...(await getMidoriBookmarks()),
             ...(await getFirefoxBookmarks())
         ];
         const bookmark_match = Math.max(...(
-            getAllTranslation('bookmarks').map((trans) => stringMatchQuality(query, trans))
+            getAllTranslation('bookmarks').map((trans) => stringMatchQuality(query, trans, regex))
         ));
         return bookmarks.map((bookmark) => ({
             type: 'icon_list_item',
@@ -124,8 +124,8 @@ const BookmarksModule = {
             secondary: getTranslation(config, 'open_in_browser') + ': ' + bookmark.url,
             executable: true,
             quality: Math.max(
-                stringMatchQuality(query, bookmark.title),
-                stringMatchQuality(query, bookmark.title),
+                stringMatchQuality(query, bookmark.title, regex),
+                stringMatchQuality(query, bookmark.title, regex),
                 bookmark_match
             ),
             url: bookmark.url,

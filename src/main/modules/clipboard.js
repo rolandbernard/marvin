@@ -50,16 +50,16 @@ const ClipboardModule = {
     valid: (query) => {
         return query.trim().length > 0;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         const clipboard_match = Math.max(...(
-            getAllTranslation('clipboard').map((trans) => stringMatchQuality(query, trans))
+            getAllTranslation('clipboard').map((trans) => stringMatchQuality(query, trans, regex))
         ));
         return clipboard_history.map((text) => ({
             type: 'icon_text',
             material_icon: 'assignment',
             text: text,
             executable: true,
-            quality: 0.75 * Math.max(stringMatchQuality(query, text), clipboard_match),
+            quality: 0.75 * Math.max(stringMatchQuality(query, text, regex), clipboard_match),
         }));
     },
     execute: async (option) => {

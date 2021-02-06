@@ -33,7 +33,7 @@ const HistoryModule = {
     valid: (query) => {
         return query.trim().length == 0 || config.modules.history.searchable;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         if (query === "") {
             return execute_history.map((option) => ({
                 ...option,
@@ -42,10 +42,10 @@ const HistoryModule = {
         } else {
             return execute_history.map((option, i) => {
                 let quality = Math.max(
-                    stringMatchQuality(query, option.primary),
-                    stringMatchQuality(query, option.text),
-                    stringMatchQuality(query, option.html),
-                    stringMatchQuality(query, option.secondary)
+                    stringMatchQuality(query, option.primary, regex),
+                    stringMatchQuality(query, option.text, regex),
+                    stringMatchQuality(query, option.html, regex),
+                    stringMatchQuality(query, option.secondary, regex)
                 );
                 return {
                     ...option,

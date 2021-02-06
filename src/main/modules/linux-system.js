@@ -8,7 +8,7 @@ const LinuxSystemModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         return [
             {
                 type: 'icon_list_item',
@@ -16,7 +16,7 @@ const LinuxSystemModule = {
                 primary: getTranslation(config, 'shutdown'),
                 secondary: null,
                 executable: true,
-                quality: stringMatchQuality(query, getTranslation(config, 'shutdown')),
+                quality: stringMatchQuality(query, getTranslation(config, 'shutdown'), regex),
                 command: 'shutdown now',
             },
             {
@@ -25,7 +25,7 @@ const LinuxSystemModule = {
                 primary: getTranslation(config, 'reboot'),
                 secondary: null,
                 executable: true,
-                quality: stringMatchQuality(query, getTranslation(config, 'reboot')),
+                quality: stringMatchQuality(query, getTranslation(config, 'reboot'), regex),
                 command: 'reboot',
             },
         ];

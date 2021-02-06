@@ -51,9 +51,9 @@ const SettingsModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         const settings_match = Math.max(...(
-            getAllTranslation('settings').map((trans) => stringMatchQuality(query, trans))
+            getAllTranslation('settings').map((trans) => stringMatchQuality(query, trans, regex))
         ));
         return [{
             type: 'icon_list_item',

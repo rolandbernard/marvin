@@ -1,13 +1,17 @@
 
-export function stringMatchQuality(query, text) {
-    let regex = query;
-    if (typeof query === "string" && typeof text === "string") {
-        regex = generateSearchRegex(query);
-    }
-    const match = text.match(regex);
-    if (match) {
-        return (query.length / text.length) * 1 / (1 + (match[0].length - query.length));
+export function stringMatchQuality(query, text, regex) {
+    if (typeof query === 'string' && typeof text === 'string') {
+        if (!regex) {
+            regex = generateSearchRegex(query);
+        }
+        const match = text.match(regex);
+        if (match) {
+            return (query.length / text.length) * 1 / (1 + (match[0].length - query.length));
+        } else {
+            return 0.0;
+        }
     } else {
+        console.log(query, text, regex);
         return 0.0;
     }
 }

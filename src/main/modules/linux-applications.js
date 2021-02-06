@@ -256,16 +256,16 @@ const LinuxApplicationModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         return applications.map((app) => {
             const name = getProp(app.desktop, 'Name', app.application.replace('.desktop', ''));
             const app_match = Math.max(
-                ...(getProps(app.desktop, 'Name').map((prop) => stringMatchQuality(query, prop))),
-                ...(getProps(app.desktop, 'Comment').map((prop) => 0.75 * stringMatchQuality(query, prop))),
-                ...(getProps(app.desktop, 'Keywords').map((prop) => 0.75 * stringMatchQuality(query, prop))),
-                ...(getProps(app.desktop, 'Categories').map((prop) => 0.75 * stringMatchQuality(query, prop))),
-                ...(getProps(app.desktop, '.desktop').map((prop) => 0.75 * stringMatchQuality(query, prop))),
-                ...(getProps(app.desktop, 'GenericName').map((prop) => 0.75 * stringMatchQuality(query, prop))),
+                ...(getProps(app.desktop, 'Name').map((prop) => stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'Comment').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'Keywords').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'Categories').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, '.desktop').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'GenericName').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
             );
             const icon = app.desktop.icon;
             return Object.values(app).filter((value) => value instanceof Object).map((value) => ({
@@ -276,8 +276,8 @@ const LinuxApplicationModule = {
                 executable: true,
                 quality: Math.max(
                     app_match,
-                    ...(getProps(value, 'Name').map((prop) => 0.75 * stringMatchQuality(query, prop))),
-                    ...(getProps(value, 'Comment').map((prop) => 0.25 * stringMatchQuality(query, prop)))
+                    ...(getProps(value, 'Name').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                    ...(getProps(value, 'Comment').map((prop) => 0.25 * stringMatchQuality(query, prop, regex)))
                 ),
                 app: value,
             }));

@@ -6,7 +6,7 @@ const LinuxWindowsModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: (query) => {
+    search: (query, regex) => {
         return new Promise((resolve) => {
             exec('wmctrl -x -l', async (_, stdout, __) => {
                 if (stdout) {
@@ -18,7 +18,10 @@ const LinuxWindowsModule = {
                             primary: line.slice(4).join(' '),
                             secondary: line[2],
                             executable: true,
-                            quality: Math.max(stringMatchQuality(query, line.slice(4).join(' ')), stringMatchQuality(query, line[2])),
+                            quality: Math.max(
+                                stringMatchQuality(query, line.slice(4).join(' '), regex),
+                                stringMatchQuality(query, line[2], regex)
+                            ),
                             id: line[0],
                         })));
                 } else {

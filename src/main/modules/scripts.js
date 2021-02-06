@@ -8,14 +8,14 @@ const ScriptsModule = {
     valid: () => {
         return true;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         return config.modules.scripts.entries.map((entry) => ({
             type: 'icon_list_item',
             material_icon: 'account_tree',
             primary: entry.name,
             secondary: entry.script.replace(/\n/g, '; '),
             executable: true,
-            quality: query.length >= 1 ? stringMatchQuality(query, entry.name) : entry.default_quality,
+            quality: query.length >= 1 ? stringMatchQuality(query, entry.name, regex) : entry.default_quality,
             script: entry.script,
         }));
     },

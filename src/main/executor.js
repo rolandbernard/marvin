@@ -25,6 +25,7 @@ import CurrencyConverterModule from "./modules/currency-converter";
 import DictionaryModule from "./modules/dictionary";
 import BookmarksModule from "./modules/bookmarks";
 import EmailModule from "./modules/email";
+import { generateSearchRegex } from "../common/util";
 
 const MODULES = {
     settings: SettingsModule,
@@ -83,6 +84,7 @@ export function searchQuery(query, callback) {
                 to_eval = Object.keys(MODULES).filter((id) => config.modules[id]
                     ? config.modules[id].active && !config.modules[id].prefix : true);
             }
+            const query_regex = generateSearchRegex(query);
             await Promise.all(
                 to_eval.filter((id) => (
                     config.modules[id]?.prefix ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim()) : MODULES[id].valid(query)
@@ -90,7 +92,12 @@ export function searchQuery(query, callback) {
                     .map((id) => {
                         return new Promise(async (resolv) => {
                             try {
-                                let result = (await MODULES[id].search(config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query));
+                                let result = (await MODULES[id].search(
+                                    config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query,
+                                    config.modules[id]?.prefix
+                                        ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
+                                        : query_regex
+                                ));
                                 await lock.acquire('results', () => {
                                     if (exec_id === begin_id) {
                                         let existing = new Set();

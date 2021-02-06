@@ -6,11 +6,11 @@ const HtmlModule = {
     valid: () => {
         return true;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         return config.modules.html.entries.map((entry) => ({
             type: 'html',
             html: entry.html,
-            quality: query.length >= 1 ? stringMatchQuality(query, entry.name) : entry.default_quality,
+            quality: query.length >= 1 ? stringMatchQuality(query, entry.name, regex) : entry.default_quality,
         }));
     },
 }
