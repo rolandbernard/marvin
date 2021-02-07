@@ -1,11 +1,11 @@
 
-import { supported_languages } from '../../common/local/locale';
+import { SUPPORTED_LANGUAGES } from '../../common/local/locale';
 
-const config_definition = [
+const CONFIG_DEFINITION = [
     {
         name: 'general', icon: 'settings', options: [
             { name: 'global_shortcut', type: 'shortcut' },
-            { name: 'language', type: 'select', options: Object.keys(supported_languages) },
+            { name: 'language', type: 'select', options: Object.keys(SUPPORTED_LANGUAGES) },
             { name: 'debounce_time', type: 'size' },
             { name: 'width', type: 'size' },
             { name: 'max_height', type: 'size' },
@@ -21,11 +21,15 @@ const config_definition = [
             { name: 'background_color_output', type: 'color' },
             { name: 'text_color_input', type: 'color' },
             { name: 'text_color_output', type: 'color' },
-            { name: 'accent_color', type: 'color' },
+            { name: 'accent_color_input', type: 'color' },
+            { name: 'accent_color_output', type: 'color' },
             { name: 'select_color', type: 'color' },
+            { name: 'select_text_color', type: 'color' },
             { name: 'border_radius', type: 'size' },
             // { name: 'background_blur_input', type: 'size' },
             // { name: 'background_blur_output', type: 'size' },
+            { name: 'shadow_color_input', type: 'color' },
+            { name: 'shadow_color_output', type: 'color' },
         ], type: 'page'
     },
     {
@@ -62,6 +66,7 @@ const config_definition = [
                     { name: 'active', type: 'boolean' },
                     { name: 'prefix', type: 'text' },
                     { name: 'quality', type: 'quality' },
+                    { name: 'backend', type: 'select', options: [ 'mathjs', 'algebrite', 'mathjs_algebrite' ] },
                 ], type: 'page', description: 'calculator_description'
             },
             {
@@ -235,4 +240,4 @@ const config_definition = [
     }
 ];
 
-export default config_definition;
+export default CONFIG_DEFINITION;

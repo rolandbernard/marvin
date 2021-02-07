@@ -11,7 +11,7 @@ import FiberManualRecord from '@material-ui/icons/FiberManualRecord';
 import FiberManualRecordOutlined from '@material-ui/icons/FiberManualRecordOutlined';
 
 import Logo from './logo.svg';
-import config_definition from './config';
+import CONFIG_DEFINITION from './config';
 import { getTranslation } from '../../common/local/locale';
 import SettingsPage from './settings-page';
 
@@ -26,7 +26,7 @@ class App extends React.Component {
         ipcRenderer.on('update-config', (_, config) => {
             this.setState({
                 config: config,
-                selected: this.state.selected || { def: config_definition[0], config: config[config_definition[0].name] }
+                selected: this.state.selected || { def: CONFIG_DEFINITION[0], config: config[CONFIG_DEFINITION[0].name] }
             });
         });
     }
@@ -122,7 +122,7 @@ class App extends React.Component {
                     <div style={styles.version}>v{this.state.config && this.state.config.version}</div>
                     <Divider />
                     <List>
-                        {this.renderConfigDrawerContent(config_definition, this.state.config)}
+                        {this.renderConfigDrawerContent(CONFIG_DEFINITION, this.state.config)}
                     </List>
                 </Drawer>
                 <div style={styles.settings}>

@@ -1,20 +1,52 @@
 
-export function stringMatchQuality(text, pattern) {
-    if (typeof text === "string" && typeof pattern === "string") {
-        const text_upper = text.toUpperCase();
-        const pattern_upper = pattern.toUpperCase();
-        if (text_upper === pattern_upper) {
-            return (text === pattern ? 1.0 : 0.9);
-        } else if (pattern_upper.startsWith(text_upper)) {
-            return 0.7 + 0.2 * (text_upper.length / pattern_upper.length);
-        } else if (pattern_upper.includes(text_upper)) {
-            return 0.5 + 0.4 * (text_upper.length / pattern_upper.length);
+export function stringMatchQuality(query, text, regex) {
+    if (typeof query === 'string' && typeof text === 'string') {
+        if (!regex) {
+            regex = generateSearchRegex(query);
+        }
+        const match = text.match(regex);
+        if (match) {
+            const starts_with = text.toLowerCase().startsWith(match[0].toLowerCase());
+            if (query.length === match[0].length) {
+                if (starts_with) {
+                    // starts with
+                    return 0.9 + 0.1 * (query.length / text.length);
+                } else {
+                    // includes
+                    return 0.8 + 0.1 * (query.length / text.length);
+                }
+            } else {
+                if (starts_with) {
+                    // starts with similar
+                    return 0.1 + 0.6 * (query.length / match[0].length) + 0.1 * (query.length / text.length);
+                } else {
+                    // includes similar
+                    return 0.7 * (query.length / match[0].length) + 0.1 * (query.length / text.length);
+                }
+            }
         } else {
-            return 0;
+            return 0.0;
         }
     } else {
-        return 0;
+        return 0.0;
     }
+}
+
+export function generateSearchRegex(query) {
+    return new RegExp(
+        query.split('').map((ch) => {
+            // Escape special regex characters
+            if ([
+                '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
+                '^', '$', '?', '|',
+            ].includes(ch)) {
+                return '\\' + ch;
+            } else {
+                return ch;
+            }
+        }).join('.*?'),
+        'i'
+    );
 }
 
 function isObject(item) {

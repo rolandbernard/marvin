@@ -1,5 +1,5 @@
 
-const translation_english = {
+const TRANSLATION_ENGLISH = {
     general: 'General',
     global_shortcut: 'Global shortcut',
     language: 'Language',
@@ -11,16 +11,20 @@ const translation_english = {
     smooth_scrolling: 'Smooth scrolling',
     recenter_on_show: 'Recenter when opening the main window',
 
-    theme: 'Color theme',
+    theme: 'Theme',
     background_color_input: 'Background color (Input)',
     background_color_output: 'Background color (Output)',
     text_color_input: 'Text color (Input)',
     text_color_output: 'Text color (Output)',
-    accent_color: 'Accent color',
+    accent_color_input: 'Accent color (Input)',
+    accent_color_output: 'Accent color (Output)',
     select_color: 'Selection color',
+    select_text_color: 'Selection text color',
     border_radius: 'Border radius [px]',
     background_blur_input: 'Background blur (Input) [px]',
     background_blur_output: 'Background blur (Output) [px]',
+    shadow_color_input: 'Shadow color (Input)',
+    shadow_color_output: 'Shadow color (Output)',
 
     modules: 'Modules',
     active: 'Active',
@@ -53,6 +57,9 @@ const translation_english = {
     calculator_description: 'This module allows you to do calculations using mathjs',
     simplified: 'simplified',
     rationalized: 'rationalized',
+    mathjs: 'Math.js',
+    algebrite: 'Algebrite',
+    mathjs_algebrite: 'Math.js + Algebrite',
 
     linux_applications: 'Linux applications',
     linux_applications_description: 'This module allows you to start applications on linux',
@@ -131,4 +138,4 @@ const translation_english = {
     open_new_email: 'Open new email',
 };
 
-export default translation_english;
+export default TRANSLATION_ENGLISH;

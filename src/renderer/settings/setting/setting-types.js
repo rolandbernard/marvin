@@ -11,7 +11,7 @@ import TextSetting from './text-setting';
 import CodeSetting from './code-setting';
 import OptionSetting from './option-setting';
 
-const setting_types = {
+const SETTING_TYPES = {
     boolean: BooleanSetting,
     color: ColorSetting,
     select: SelectSetting,
@@ -25,4 +25,4 @@ const setting_types = {
     option: OptionSetting,
 };
 
-export default setting_types;
+export default SETTING_TYPES;

@@ -7,10 +7,10 @@ import path from 'path';
 
 let execute_history = [];
 
-const history_filename = 'history.json';
+const HISTORY_FILENAME = 'history.json';
 
 function loadHistory() {
-    const history_path = path.join(app.getPath('userData'), history_filename);
+    const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
     if (existsSync(history_path)) {
         try {
             execute_history = JSON.parse(readFileSync(history_path, { encoding: 'utf8' }));
@@ -20,7 +20,7 @@ function loadHistory() {
 }
 
 function updateHistory() {
-    const history_path = path.join(app.getPath('userData'), history_filename);
+    const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
     writeFileSync(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
 }
 
@@ -33,30 +33,35 @@ const HistoryModule = {
     valid: (query) => {
         return query.trim().length == 0 || config.modules.history.searchable;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         if (query === "") {
             return execute_history.map((option) => ({
                 ...option,
                 quality: config.modules.history.quality
-            }));
+            })).sort((a, b) => b.history_frequency - a.history_frequency);
         } else {
             return execute_history.map((option, i) => {
                 let quality = Math.max(
-                    stringMatchQuality(query, option.primary),
-                    stringMatchQuality(query, option.text),
-                    stringMatchQuality(query, option.html),
-                    stringMatchQuality(query, option.secondary)
+                    stringMatchQuality(query, option.primary, regex),
+                    stringMatchQuality(query, option.text, regex),
+                    stringMatchQuality(query, option.html, regex),
+                    stringMatchQuality(query, option.secondary, regex)
                 );
                 return {
                     ...option,
-                    quality: Math.min(1.0, quality + quality / (i + 1))
+                    quality: Math.min(1.0, quality + quality / (i + 1)),
                 };
-            });
+            }).sort((a, b) => b.history_frequency - a.history_frequency);
         }
     },
     globalExecute: async (option) => {
         if (config.modules.history.active) {
             let existing = new Set();
+            execute_history.forEach((option) => {
+                // Making old information less important
+                option.history_frequency *= 0.99;
+            });
+            option.history_frequency = 1 + (option.history_frequency || 0);
             execute_history = [option].concat(execute_history).filter((el) => {
                 let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");
                 if (!existing.has(value)) {

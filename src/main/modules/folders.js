@@ -1,5 +1,5 @@
 
-import { stringMatchQuality } from "../../common/util";
+import { generateSearchRegex, stringMatchQuality } from "../../common/util";
 import { config } from "../config";
 import { stat, exists, readdir } from "fs";
 import path, { extname } from 'path';
@@ -55,6 +55,8 @@ const FoldersModule = {
     },
     search: async (query) => {
         return (await Promise.all(config.modules.folders.directories.map(async (directory) => {
+            const base_query = path.basename(query);
+            const regex = generateSearchRegex(base_query);
             try {
                 return await new Promise((resolve) => {
                     exists(directory, (exist) => {
@@ -75,7 +77,7 @@ const FoldersModule = {
                                                     secondary: path.join(dir, file),
                                                     executable: true,
                                                     complete: path.join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
-                                                    quality: query[query.length - 1] === '/' ? 0.5 : stringMatchQuality(path.basename(query), file),
+                                                    quality: query[query.length - 1] === '/' ? 0.5 : stringMatchQuality(base_query, file, regex),
                                                     file: path.join(dir, file),
                                                     preview: config.modules.folders.file_preview && generateFilePreview(path.join(dir, file)),
                                                 };

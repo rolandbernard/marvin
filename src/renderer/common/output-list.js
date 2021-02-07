@@ -8,7 +8,7 @@ import HtmlItem from './display/html-item';
 import IconText from './display/icon-text';
 import './output-list.css';
 
-const display_types = {
+const DISPLAY_TYPES = {
     simple_text: SimpleText,
     icon_list_item: IconListItem,
     html: HtmlItem,
@@ -30,6 +30,7 @@ class OutputList extends React.Component {
     render() {
         const styles = {
             root: {
+                zIndex: 1000,
                 width: '100%',
                 flex: '1 1 auto',
                 overflow: 'auto',
@@ -43,6 +44,7 @@ class OutputList extends React.Component {
                 color: this.props.config && this.props.config.theme.text_color_output,
             },
             selected: {
+                color: this.props.config && this.props.config.theme.select_text_color,
                 background: this.props.config && this.props.config.theme.select_color,
             },
             loading: {
@@ -50,7 +52,7 @@ class OutputList extends React.Component {
                 height: '2rem',
                 margin: '0.5rem auto',
                 display: 'block',
-                color: this.props.config && this.props.config.theme.accent_color,
+                color: this.props.config && this.props.config.theme.accent_color_output,
             },
             loading_wrap: {
                 height: '3rem',
@@ -71,7 +73,7 @@ class OutputList extends React.Component {
                                             : styles.result
                                     }
                                     ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
-                                >{React.createElement(display_types[option.type], { option: option, config: this.props.config })}</li>
+                                >{React.createElement(DISPLAY_TYPES[option.type], { option: option, config: this.props.config })}</li>
                             ))
                             : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
                     }

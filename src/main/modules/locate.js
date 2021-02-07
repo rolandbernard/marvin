@@ -1,5 +1,5 @@
 
-import { stringMatchQuality } from "../../common/util";
+import { generateSearchRegex, stringMatchQuality } from "../../common/util";
 import { config } from "../config";
 import path, { extname } from 'path';
 import { format } from 'url';
@@ -54,6 +54,8 @@ const LocateModule = {
     },
     search: (query) => {
         return new Promise((resolve) => {
+            const base_query = path.basename(query);
+            const regex = generateSearchRegex(base_query);
             exec(`locate -i -e -b ${query}`, async (_, stdout, __) => {
                 if (stdout) {
                     resolve(await Promise.all(stdout.split('\n').map((file) => {
@@ -64,7 +66,7 @@ const LocateModule = {
                                 primary: path.basename(file),
                                 secondary: file,
                                 executable: true,
-                                quality: query[query.length - 1] === '/' ? 0.25 : 0.5 * stringMatchQuality(path.basename(query), path.basename(file)),
+                                quality: query[query.length - 1] === '/' ? 0.25 : 0.5 * stringMatchQuality(base_query, path.basename(file), regex),
                                 file: file,
                                 preview: config.modules.locate.file_preview && generateFilePreview(file),
                             };

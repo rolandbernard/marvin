@@ -54,17 +54,24 @@ class App extends React.Component {
         const styles = {
             root: {
                 width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            },
+            content: {
+                width: 'calc(100% - 20px)',
+                height: 'calc(100% - 20px)',
                 display: 'flex',
                 flexFlow: 'column',
-                overflow: 'hidden',
-                height: '100%',
+                overflow: 'visuble',
             },
             output_area: {
                 flex: '1 1 auto',
                 width: '100%',
                 height: '0',
                 position: 'relative',
-                overflow: 'hidden',
+                overflow: 'visuble',
             },
             output: {
                 display: 'flex',
@@ -75,6 +82,7 @@ class App extends React.Component {
                 overflow: 'hidden',
                 // backdropFilter: this.state.config && `blur(${this.state.config.theme.background_blur_input}px)`,
                 borderRadius: this.state.config && `0 0 ${this.state.config.theme.border_radius}px ${this.state.config.theme.border_radius}px`,
+                boxShadow: this.state.config && `1px 2px 7px -2px ${this.state.config.theme.shadow_color_output}`,
             },
             list: {
                 flex: '1 1 auto',
@@ -85,13 +93,15 @@ class App extends React.Component {
 
         return (
             <div style={styles.root} onKeyDown={(e) => this.handle_key_down(e)}>
-                <InputField config={this.state.config} inputRef={this.input}></InputField>
-                <div style={styles.output_area}>
-                    <div style={styles.output}>
-                        <div style={styles.list}>
-                            <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
+                <div style={styles.content} >
+                    <InputField config={this.state.config} inputRef={this.input}></InputField>
+                    <div style={styles.output_area}>
+                        <div style={styles.output}>
+                            <div style={styles.list}>
+                                <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
+                            </div>
+                            <PreviewField config={this.state.config} result={this.state.results && this.state.results[this.state.selected]}></PreviewField>
                         </div>
-                        <PreviewField config={this.state.config} result={this.state.results && this.state.results[this.state.selected]}></PreviewField>
                     </div>
                 </div>
             </div>

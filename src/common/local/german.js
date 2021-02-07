@@ -1,5 +1,5 @@
 
-const translation_german = {
+const TRANSLATION_GERMAN = {
     general: 'Allgemein',
     global_shortcut: 'Globaler Shortcut',
     language: 'Sprache',
@@ -11,16 +11,20 @@ const translation_german = {
     smooth_scrolling: 'Flüssiges Scrollen',
     recenter_on_show: 'Zentrieren des Fensters beim Öffnen',
 
-    theme: 'Farbschema',
+    theme: 'Theme',
     background_color_input: 'Hintergundfarbe (Eingabe)',
     background_color_output: 'Hintergundfarbe (Ausgabe)',
     text_color_input: 'Textfarbe (Eingabe)',
     text_color_output: 'Textfarbe (Ausgabe)',
-    accent_color: 'Akzentfarbe',
-    select_color: 'Auswahlfarbe',
+    accent_color_input: 'Akzentfarbe (Eingabe)',
+    accent_color_output: 'Akzentfarbe (Ausgabe)',
+    select_color: 'Auswahl Hintergrundfarbe',
+    select_text_color: 'Auswahl Textfarbe',
     border_radius: 'Randradius [px]',
     background_blur_input: 'Hintergrundunschärfe (Eingabe) [px]',
     background_blur_output: 'Hintergrundunschärfe (Ausgabe) [px]',
+    shadow_color_input: 'Schattenfarbe (Eingabe)',
+    shadow_color_output: 'Schattenfarbe (Ausgabe)',
 
     modules: 'Module',
     active: 'Aktiv',
@@ -131,4 +135,4 @@ const translation_german = {
     open_new_email: 'Neue E-Mail öffnen',
 };
 
-export default translation_german;
+export default TRANSLATION_GERMAN;

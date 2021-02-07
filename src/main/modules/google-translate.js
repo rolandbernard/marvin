@@ -10,7 +10,7 @@ let window = null;
 let cancel_last = null;
 let last_lang = null;
 
-let languages = {
+const LANGUAGES = {
     'it': ['Italian'],
     'de': ['German'],
     'en': ['English'],
@@ -178,7 +178,7 @@ const GoogleTranslateModule = {
                 return false;
             } else {
                 const lang = query.substr(to + 4).toLowerCase().trim();
-                return query.substr(0, to).trim().length >= 1 && Object.values(languages).find((l) => l.find((n) => n.toLowerCase() === lang));
+                return query.substr(0, to).trim().length >= 1 && Object.values(LANGUAGES).find((l) => l.find((n) => n.toLowerCase() === lang));
             }
         } else {
             return false;
@@ -192,7 +192,7 @@ const GoogleTranslateModule = {
         try {
             const to = query.toLowerCase().lastIndexOf(' to ');
             const lang_name = query.substr(to + 4).toLowerCase().trim();
-            const lang = Object.keys(languages).find((l) => languages[l].find((n) => n.toLowerCase() === lang_name));
+            const lang = Object.keys(LANGUAGES).find((l) => LANGUAGES[l].find((n) => n.toLowerCase() === lang_name));
             const text = query.substr(0, to).trim();
             await page.click('#source');
             if (stop) {

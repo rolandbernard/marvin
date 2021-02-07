@@ -4,7 +4,7 @@ import { config } from '../config';
 import { BrowserWindow } from "electron";
 import { format as formatUrl } from 'url';
 import path from 'path';
-import { getTranslation } from "../../common/local/locale";
+import { getTranslation, getAllTranslation } from "../../common/local/locale";
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -51,14 +51,17 @@ const SettingsModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
+        const settings_match = Math.max(...(
+            getAllTranslation('settings').map((trans) => stringMatchQuality(query, trans, regex))
+        ));
         return [{
             type: 'icon_list_item',
             material_icon: 'settings',
             primary: getTranslation(config, 'settings'),
             secondary: null,
             executable: true,
-            quality: stringMatchQuality(query, getTranslation(config, 'settings')),
+            quality: settings_match,
         }];
     },
     execute: async (option) => {

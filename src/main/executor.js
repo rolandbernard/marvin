@@ -25,8 +25,9 @@ import CurrencyConverterModule from "./modules/currency-converter";
 import DictionaryModule from "./modules/dictionary";
 import BookmarksModule from "./modules/bookmarks";
 import EmailModule from "./modules/email";
+import { generateSearchRegex } from "../common/util";
 
-const modules = {
+const MODULES = {
     settings: SettingsModule,
     linux_system: LinuxSystemModule,
     folders: FoldersModule,
@@ -54,15 +55,15 @@ const modules = {
 };
 
 export function initModules() {
-    return Promise.all(Object.values(modules).map((module) => module.init && module.init()));
+    return Promise.all(Object.values(MODULES).map((module) => module.init && module.init()));
 }
 
 export function updateModules(old_config) {
-    return Promise.all(Object.values(modules).map((module) => module.update && module.update(old_config)));
+    return Promise.all(Object.values(MODULES).map((module) => module.update && module.update(old_config)));
 }
 
 export function deinitModules() {
-    return Promise.all(Object.values(modules).map((module) => module.deinit && module.deinit()));
+    return Promise.all(Object.values(MODULES).map((module) => module.deinit && module.deinit()));
 }
 
 let last_query_timeout = null;
@@ -77,20 +78,26 @@ export function searchQuery(query, callback) {
             query = query.trim();
             let results = [];
             let lock = new AsyncLock();
-            let to_eval = Object.keys(modules).filter((id) => config.modules[id]?.prefix
+            let to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
                 ? config.modules[id].active && query.startsWith(config.modules[id].prefix) : false);
             if (to_eval.length === 0) {
-                to_eval = Object.keys(modules).filter((id) => config.modules[id]
+                to_eval = Object.keys(MODULES).filter((id) => config.modules[id]
                     ? config.modules[id].active && !config.modules[id].prefix : true);
             }
+            const query_regex = generateSearchRegex(query);
             await Promise.all(
                 to_eval.filter((id) => (
-                    config.modules[id]?.prefix ? modules[id].valid(query.replace(config.modules[id].prefix, '').trim()) : modules[id].valid(query)
+                    config.modules[id]?.prefix ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim()) : MODULES[id].valid(query)
                 ))
                     .map((id) => {
                         return new Promise(async (resolv) => {
                             try {
-                                let result = (await modules[id].search(config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query));
+                                let result = (await MODULES[id].search(
+                                    config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query,
+                                    config.modules[id]?.prefix
+                                        ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
+                                        : query_regex
+                                ));
                                 await lock.acquire('results', () => {
                                     if (exec_id === begin_id) {
                                         let existing = new Set();
@@ -132,6 +139,6 @@ export function searchQuery(query, callback) {
 }
 
 export function executeOption(option) {
-    Object.values(modules).forEach((module) => module.globalExecute && module.globalExecute(option));
-    return modules[option.module].execute(option);
+    Object.values(MODULES).forEach((module) => module.globalExecute && module.globalExecute(option));
+    return MODULES[option.module].execute(option);
 }

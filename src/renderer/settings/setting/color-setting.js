@@ -2,7 +2,7 @@
 import React from 'react';
 import { ColorPicker } from 'material-ui-color';
 
-const palette = {
+const PALETTE = {
     red: 'red',
     blue: 'blue',
     green: 'green',
@@ -32,8 +32,14 @@ function ColorSetting(props) {
             <ColorPicker
                 deferred
                 value={props.option}
-                palette={palette}
-                onChange={(e) => props.onUpdate('#' + e.hex)}
+                palette={PALETTE}
+                onChange={(e) => {
+                    if (e.hex) {
+                        props.onUpdate('#' + e.hex);
+                    } else {
+                        props.onUpdate(e.toString());
+                    }
+                }}
             ></ColorPicker>
         </div>
     );

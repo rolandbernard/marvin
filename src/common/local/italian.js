@@ -1,5 +1,5 @@
 
-const translation_italian = {
+const TRANSLATION_ITALIAN = {
     general: 'Generale',
     global_shortcut: 'Shortcut globale',
     language: 'Lingua',
@@ -11,16 +11,20 @@ const translation_italian = {
     smooth_scrolling: 'Scorrimento regolare',
     recenter_on_show: "Centrare la finestra dopo l'apertura",
 
-    theme: 'Combinazione di colori',
+    theme: 'Theme',
     background_color_input: 'Colore di sfondo (Input)',
     background_color_output: 'Colore di sfondo (Output)',
     text_color_input: 'Colore del testo (Input)',
     text_color_output: 'Colore del testo (Output)',
-    accent_color: 'Colore di accento',
+    accent_color_input: 'Colore di accento (Input)',
+    accent_color_output: 'Colore di accento (Output)',
     select_color: 'Colore di selezione',
+    select_text_color: 'Colore di sfondo selezionato',
     border_radius: 'Raggio di confine [px]',
     background_blur_input: 'Sfocatura di sfondo (Input) [px]',
     background_blur_output: 'Sfocatura di sfondo (Output) [px]',
+    shadow_color_input: 'Colore dell\'ombra (Input)',
+    shadow_color_output: 'Colore dell\'ombra (Output)',
 
     modules: 'Moduli',
     active: 'Attivo',
@@ -131,4 +135,4 @@ const translation_italian = {
     open_new_email: 'Apri una nuova e-mail',
 };
 
-export default translation_italian;
+export default TRANSLATION_ITALIAN;

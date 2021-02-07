@@ -3,7 +3,7 @@ import { clipboard } from 'electron';
 import { config } from '../config';
 import fetch from 'node-fetch';
 
-const currency_symbols = {
+const CURRENCY_SYMBOLS = {
     'USD': ['USD'],
     'EUR': ['EUR'],
     'JPY': ['JPY'],
@@ -44,7 +44,7 @@ function parseCurrencyQuery(query) {
     if (match) {
         const from = match[2].toUpperCase();
         const to = match[4].toUpperCase();
-        if (currency_symbols[from] && currency_symbols[to]) {
+        if (CURRENCY_SYMBOLS[from] && CURRENCY_SYMBOLS[to]) {
             return {
                 value: parseFloat(match[1]),
                 from: from,

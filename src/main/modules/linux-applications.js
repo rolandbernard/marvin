@@ -10,10 +10,10 @@ let applications = [];
 let icons = {};
 let icon_index = null;
 
-const application_cache_filename = 'applications.json';
+const APPLICATION_CACHE_FILENAME = 'applications.json';
 
 function loadApplicationCache() {
-    const cache_path = path.join(app.getPath('userData'), application_cache_filename);
+    const cache_path = path.join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
     if (existsSync(cache_path)) {
         try {
             applications = JSON.parse(readFileSync(cache_path, { encoding: 'utf8' }));
@@ -23,14 +23,24 @@ function loadApplicationCache() {
 }
 
 function updateCache() {
-    const cache_path = path.join(app.getPath('userData'), application_cache_filename);
+    const cache_path = path.join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
     writeFileSync(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
 }
 
 function getProp(object, name, fallback) {
     return (object[name] instanceof Object)
-        ? (object[name][config.general.language] || object[name]['default'])
+        ? (object[name][config.general.language] || object[name]['default'] || object[name]['en'])
         : (object[name] || fallback);
+}
+
+function getProps(object, name, fallback) {
+    if (object[name] instanceof Object) {
+        return Object.values(object[name]);
+    } else if (object[name]) {
+        return [object[name]];
+    } else {
+        return [];
+    }
 }
 
 function getIconTheme() {
@@ -246,10 +256,17 @@ const LinuxApplicationModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: async (query) => {
+    search: async (query, regex) => {
         return applications.map((app) => {
             const name = getProp(app.desktop, 'Name', app.application.replace('.desktop', ''));
-            const desc = getProp(app.desktop, 'Comment', '');
+            const app_match = Math.max(
+                ...(getProps(app.desktop, 'Name').map((prop) => stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'Comment').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'Keywords').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'Categories').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, '.desktop').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                ...(getProps(app.desktop, 'GenericName').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+            );
             const icon = app.desktop.icon;
             return Object.values(app).filter((value) => value instanceof Object).map((value) => ({
                 type: 'icon_list_item',
@@ -257,13 +274,11 @@ const LinuxApplicationModule = {
                 primary: getProp(value, 'Name', name),
                 secondary: getProp(value, 'Comment', name),
                 executable: true,
-                quality: Math.max(stringMatchQuality(query, name),
-                    0.75 * stringMatchQuality(query, desc),
-                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'Keywords', '')),
-                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'Categories', '')),
-                    0.75 * stringMatchQuality(query, app.application.replace('.desktop', '')),
-                    0.75 * stringMatchQuality(query, getProp(app.desktop, 'GenericName', '')),
-                    0.25 * stringMatchQuality(query, getProp(value, 'Name', name))),
+                quality: Math.max(
+                    app_match,
+                    ...(getProps(value, 'Name').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                    ...(getProps(value, 'Comment').map((prop) => 0.25 * stringMatchQuality(query, prop, regex)))
+                ),
                 app: value,
             }));
         }).flat();

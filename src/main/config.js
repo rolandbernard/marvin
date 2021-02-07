@@ -4,7 +4,7 @@ import { app } from "electron";
 import path from 'path';
 import { mergeDeep } from '../common/util';
 
-export let config_default = {
+export const CONFIG_DEFAULT = {
     version: app.getVersion(),
     general: {
         global_shortcut: 'Super+D',
@@ -22,11 +22,15 @@ export let config_default = {
         background_color_output: 'black',
         text_color_input: 'white',
         text_color_output: 'white',
-        accent_color: 'white',
+        accent_color_input: 'white',
+        accent_color_output: 'white',
         select_color: 'grey',
+        select_text_color: 'white',
         border_radius: 0,
         background_blur_input: 0,
         background_blur_output: 0,
+        shadow_color_input: '#00000000',
+        shadow_color_output: '#00000000',
     },
     modules: {
         linux_system: {
@@ -48,6 +52,7 @@ export let config_default = {
             active: true,
             prefix: '',
             quality: 1.0,
+            backend: 'mathjs',
         },
         linux_applications: {
             active: true,
@@ -166,12 +171,12 @@ export let config_default = {
     },
 };
 
-export let config = config_default;
+export let config = CONFIG_DEFAULT;
 
-const config_filename = 'marvin.json';
+const CONFIG_FILENAME = 'marvin.json';
 
 export function loadConfig() {
-    const config_path = path.join(app.getPath('userData'), config_filename);
+    const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
     if (existsSync(config_path)) {
         try {
             config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
@@ -182,7 +187,7 @@ export function loadConfig() {
 }
 
 export function updateConfig(new_config) {
-    const config_path = path.join(app.getPath('userData'), config_filename);
+    const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
     config = mergeDeep(config, new_config);
     writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }
