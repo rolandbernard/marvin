@@ -6,7 +6,24 @@ export function stringMatchQuality(query, text, regex) {
         }
         const match = text.match(regex);
         if (match) {
-            return (query.length / text.length) * 1 / (1 + (match[0].length - query.length));
+            const starts_with = text.toLowerCase().startsWith(match[0].toLowerCase());
+            if (query.length === match[0].length) {
+                if (starts_with) {
+                    // starts with
+                    return 0.9 + 0.1 * (query.length / text.length);
+                } else {
+                    // includes
+                    return 0.8 + 0.1 * (query.length / text.length);
+                }
+            } else {
+                if (starts_with) {
+                    // starts with similar
+                    return 0.1 + 0.6 * (query.length / match[0].length) + 0.1 * (query.length / text.length);
+                } else {
+                    // includes similar
+                    return 0.7 * (query.length / match[0].length) + 0.1 * (query.length / text.length);
+                }
+            }
         } else {
             return 0.0;
         }
@@ -16,7 +33,20 @@ export function stringMatchQuality(query, text, regex) {
 }
 
 export function generateSearchRegex(query) {
-    return new RegExp(query.split('').join('.*'), 'i');
+    return new RegExp(
+        query.split('').map((ch) => {
+            // Escape special regex characters
+            if ([
+                '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
+                '^', '$', '?', '|',
+            ].includes(ch)) {
+                return '\\' + ch;
+            } else {
+                return ch;
+            }
+        }).join('.*?'),
+        'i'
+    );
 }
 
 function isObject(item) {
