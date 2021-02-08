@@ -11,6 +11,7 @@ const TRANSLATION_GERMAN = {
     smooth_scrolling: 'Flüssiges Scrollen',
     recenter_on_show: 'Zentrieren des Fensters beim Öffnen',
     exclusive_module_prefix: 'Exklusiver Modulpräfix',
+    reset_config: 'Einstellingen zurücksetzen',
 
     theme: 'Theme',
     background_color_input: 'Hintergundfarbe (Eingabe)',
@@ -62,6 +63,7 @@ const TRANSLATION_GERMAN = {
     linux_applications: 'Linux Anwendungen',
     linux_applications_description: 'Mit diesem Modul können Sie Anwendungen unter Linux starten',
     refresh_interval_min: 'Aktualisierungsintervall [min]',
+    refresh_applications: 'Anwendungsliste aktualisieren',
 
     url: 'URL',
     url_description: 'Mit diesem Modul ist es möglich URLs zu öffnen',
@@ -90,6 +92,7 @@ const TRANSLATION_GERMAN = {
     clipboard_description: 'Mit diesem Modul kann auf den Verlauf der Zwischenablage zugegriffen werden',
     refresh_time: 'Aktualisierungsintervall',
     maximum_history: 'Maximale einträge',
+    clear_history: 'Verlauf löschen',
 
     deepl: 'Deepl',
     deepl_description: 'Mit diesem Modul können Sie Texte mithilfe von Deepl in einem headless Fenster übersetzen',

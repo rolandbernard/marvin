@@ -11,6 +11,7 @@ const TRANSLATION_ITALIAN = {
     smooth_scrolling: 'Scorrimento regolare',
     recenter_on_show: "Centrare la finestra dopo l'apertura",
     exclusive_module_prefix: 'Prefisso esclusivo dei moduli',
+    reset_config: 'Ripristinare le impostazioni',
 
     theme: 'Theme',
     background_color_input: 'Colore di sfondo (Input)',
@@ -62,6 +63,7 @@ const TRANSLATION_ITALIAN = {
     linux_applications: 'Applicazioni Linux',
     linux_applications_description: 'Questo modulo consente di avviare applicazioni su Linux',
     refresh_interval_min: 'Intervallo di aggiornamento [min]',
+    refresh_applications: 'Aggiornare l\'elenco delle applicazioni',
 
     url: 'URL modulo',
     url_description: 'Questo modulo ti consente di aprire gli URL',
@@ -90,6 +92,7 @@ const TRANSLATION_ITALIAN = {
     clipboard_description: 'Questo modulo ti consente di accedere alla cronologia degli appunti',
     refresh_time: 'Intervallo di aggiornamento',
     maximum_history: 'voci massime',
+    clear_history: 'Cancella la cronologia',
 
     deepl: 'Deepl',
     deepl_description: 'Questo modulo consente di tradurre testi utilizzando Deepl in una finestra headless',
