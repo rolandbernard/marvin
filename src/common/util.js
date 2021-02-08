@@ -6,22 +6,19 @@ export function stringMatchQuality(query, text, regex) {
         }
         const match = text.match(regex);
         if (match) {
-            const starts_with = text.toLowerCase().startsWith(match[0].toLowerCase());
-            if (query.length === match[0].length) {
+            const best_match = match.reduce((a, b) => a.length < b.length ? a : b);
+            const starts_with = text.toLowerCase().startsWith(best_match.toLowerCase());
+            if (query.length === best_match.length) {
                 if (starts_with) {
-                    // starts with
                     return 0.9 + 0.1 * (query.length / text.length);
                 } else {
-                    // includes
                     return 0.8 + 0.1 * (query.length / text.length);
                 }
             } else {
                 if (starts_with) {
-                    // starts with similar
-                    return 0.1 + 0.6 * (query.length / match[0].length) + 0.1 * (query.length / text.length);
+                    return 0.2 + 0.5 * (query.length / best_match.length) + 0.1 * (query.length / text.length);
                 } else {
-                    // includes similar
-                    return 0.7 * (query.length / match[0].length) + 0.1 * (query.length / text.length);
+                    return 0.1 + 0.6 * (query.length / best_match.length) + 0.1 * (query.length / text.length);
                 }
             }
         } else {
@@ -45,7 +42,7 @@ export function generateSearchRegex(query) {
                 return ch;
             }
         }).join('.*?'),
-        'i'
+        'ig'
     );
 }
 
