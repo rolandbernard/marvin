@@ -10,6 +10,7 @@ const TRANSLATION_ENGLISH = {
     incremental_results: 'Incremental results',
     smooth_scrolling: 'Smooth scrolling',
     recenter_on_show: 'Recenter when opening the main window',
+    exclusive_module_prefix: 'Exclusive module prefix',
 
     theme: 'Theme',
     background_color_input: 'Background color (Input)',

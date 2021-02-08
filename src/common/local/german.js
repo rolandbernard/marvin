@@ -10,6 +10,7 @@ const TRANSLATION_GERMAN = {
     incremental_results: 'Inkrementelle Ergebnisse',
     smooth_scrolling: 'Flüssiges Scrollen',
     recenter_on_show: 'Zentrieren des Fensters beim Öffnen',
+    exclusive_module_prefix: 'Exklusiver Modulpräfix',
 
     theme: 'Theme',
     background_color_input: 'Hintergundfarbe (Eingabe)',

@@ -10,6 +10,7 @@ const TRANSLATION_ITALIAN = {
     incremental_results: 'Risultati incrementali',
     smooth_scrolling: 'Scorrimento regolare',
     recenter_on_show: "Centrare la finestra dopo l'apertura",
+    exclusive_module_prefix: 'Prefisso esclusivo dei moduli',
 
     theme: 'Theme',
     background_color_input: 'Colore di sfondo (Input)',
