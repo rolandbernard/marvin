@@ -10,6 +10,7 @@ import PathSetting from './path-setting';
 import TextSetting from './text-setting';
 import CodeSetting from './code-setting';
 import OptionSetting from './option-setting';
+import ButtonSetting from './button-setting';
 
 const SETTING_TYPES = {
     boolean: BooleanSetting,
@@ -23,6 +24,7 @@ const SETTING_TYPES = {
     text: TextSetting,
     code: CodeSetting,
     option: OptionSetting,
+    button: ButtonSetting,
 };
 
 export default SETTING_TYPES;
