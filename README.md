@@ -13,6 +13,7 @@ To install from source, you can execute the following commands.
 $ cd /tmp
 $ git clone https://github.com/rolandbernard/marvin
 $ cd marvin
+$ yarn install
 $ yarn dist
 $ sudo cp ./dist/Marvin-*.AppImage /usr/bin/marvin
 ```
