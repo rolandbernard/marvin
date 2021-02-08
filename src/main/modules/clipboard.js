@@ -1,6 +1,6 @@
 
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import { clipboard, app } from 'electron';
+import { clipboard, app, ipcMain } from 'electron';
 import { config } from '../config';
 import { stringMatchQuality } from '../../common/util';
 import { getAllTranslation } from '../../common/local/locale';
@@ -24,6 +24,11 @@ function updateClipboard() {
     const clipboard_path = path.join(app.getPath('userData'), CLIPBOARD_FILENAME);
     writeFileSync(clipboard_path, JSON.stringify(clipboard_history), { encoding: 'utf8' });
 }
+    
+ipcMain.on('reset-clipboard', (_) => {
+    clipboard_history = [];
+    updateClipboard();
+});
 
 let interval = null;
 

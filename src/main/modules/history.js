@@ -1,6 +1,6 @@
 
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import { config } from '../config';
 import { stringMatchQuality } from '../../common/util';
 import path from 'path';
@@ -23,6 +23,11 @@ function updateHistory() {
     const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
     writeFileSync(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
 }
+    
+ipcMain.on('reset-history', (_) => {
+    execute_history = [];
+    updateHistory();
+});
 
 const HistoryModule = {
     init: async () => {
