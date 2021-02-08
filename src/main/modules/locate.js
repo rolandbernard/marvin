@@ -52,11 +52,11 @@ const LocateModule = {
     valid: (query) => {
         return query.trim().length >= 1;
     },
-    search: (query) => {
+    search: (query, regex) => {
         return new Promise((resolve) => {
             const base_query = path.basename(query);
-            const regex = generateSearchRegex(base_query);
-            exec(`locate -i -e -b ${query}`, async (_, stdout, __) => {
+            const base_regex = generateSearchRegex(base_query);
+            exec(`locate -i -l ${config.modules.locate.search_limit} -e ${query}`, async (_, stdout, __) => {
                 if (stdout) {
                     resolve(await Promise.all(stdout.split('\n').map((file) => {
                         return new Promise(async (resolve) => {
@@ -66,7 +66,10 @@ const LocateModule = {
                                 primary: path.basename(file),
                                 secondary: file,
                                 executable: true,
-                                quality: query[query.length - 1] === '/' ? 0.25 : 0.5 * stringMatchQuality(base_query, path.basename(file), regex),
+                                quality: Math.max(
+                                    0.25 * stringMatchQuality(query, file, regex),
+                                    stringMatchQuality(base_query, path.basename(file), base_regex)
+                                ),
                                 file: file,
                                 preview: config.modules.locate.file_preview && generateFilePreview(file),
                             };
