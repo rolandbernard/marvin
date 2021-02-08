@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { TextField } from '@material-ui/core';
 import { getTranslation } from '../../../common/local/locale';
 import path from 'path';
@@ -22,7 +22,9 @@ function isValidPath(input) {
 
 function PathSetting(props) {
     const [error, setError] = useState(null);
+    const [value, setValue] = useState(null);
     const onUpdate = (e) => {
+        setValue(e.target.value);
         if (isValidPath(e.target.value)) {
             props.onUpdate(e.target.value);
             setError(null);
@@ -30,11 +32,17 @@ function PathSetting(props) {
             setError(getTranslation(props.config, 'path_error'));
         }
     };
+    const last_option = useRef(null);
+    if (last_option.current !== props.option) {
+        last_option.current = props.option;
+        setValue(props.option);
+        setError(null);
+    }
     return (
         <div>
             <TextField
+                value={value}
                 style={styles.text}
-                defaultValue={props.option}
                 variant="outlined"
                 onChange={onUpdate}
                 error={error !== null}

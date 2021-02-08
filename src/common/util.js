@@ -50,7 +50,7 @@ export function generateSearchRegex(query) {
 }
 
 function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
+    return (item && typeof item === 'object');
 }
 
 export function mergeDeep(target, ...sources) {
@@ -67,4 +67,22 @@ export function mergeDeep(target, ...sources) {
         }
     }
     return mergeDeep(target, ...sources);
+}
+
+export function cloneDeep(obj) {
+    if (obj instanceof Array) {
+        const ret = [];
+        for (const key in obj) {
+            ret[key] = cloneDeep(obj[key]);
+        }
+        return ret;
+    } else if (isObject(obj)) {
+        const ret = {};
+        for (const key in obj) {
+            ret[key] = cloneDeep(obj[key]);
+        }
+        return ret;
+    } else {
+        return obj;
+    }
 }
