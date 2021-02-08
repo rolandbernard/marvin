@@ -11,15 +11,6 @@ const styles = {
     input: {
         fontFamily: '"Roboto Mono", monospace',
         whiteSpace: 'pre',
-        paddingLeft: '1rem',
-    },
-    line_numbers: {
-        position: 'absolute',
-        display: 'flex',
-        flexFlow: 'column',
-        paddingTop: '19px',
-        paddingLeft: '0.75rem',
-        color: 'grey',
     },
 };
 
@@ -45,11 +36,6 @@ function CodeSetting(props) {
     };
     return (
         <div>
-            <div style={styles.line_numbers}>
-                {[...Array(line_count).keys()].map((i) => (
-                    <span key={i} className="ui-code-editor-linenumber">{i + 1}</span>
-                ))}
-            </div>
             <TextField
                 style={styles.text}
                 defaultValue={props.option}
