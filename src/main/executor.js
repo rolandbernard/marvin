@@ -78,8 +78,22 @@ export function searchQuery(query, callback) {
             query = query.trim();
             let results = [];
             let lock = new AsyncLock();
-            let to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
-                ? config.modules[id].active && query.startsWith(config.modules[id].prefix) : false);
+            let to_eval;
+            if (config.general.exclusive_module_prefix) {
+                let prefix = '';
+                for (const id of Object.keys(MODULES)) {
+                    if (config.modules[id]?.prefix && config.modules[id].active && query.startsWith(config.modules[id].prefix)) {
+                        if (config.modules[id].prefix.length > prefix.length) {
+                            prefix = config.modules[id].prefix;
+                        }
+                    }
+                }
+                to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
+                    ? config.modules[id].active && config.modules[id].prefix === prefix : false);
+            } else {
+                to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
+                    ? config.modules[id].active && query.startsWith(config.modules[id].prefix) : false);
+            }
             if (to_eval.length === 0) {
                 to_eval = Object.keys(MODULES).filter((id) => config.modules[id]
                     ? config.modules[id].active && !config.modules[id].prefix : true);

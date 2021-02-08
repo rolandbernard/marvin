@@ -16,6 +16,7 @@ export const CONFIG_DEFAULT = {
         incremental_results: true,
         smooth_scrolling: true,
         recenter_on_show: true,
+        exclusive_module_prefix: true,
     },
     theme: {
         background_color_input: 'black',

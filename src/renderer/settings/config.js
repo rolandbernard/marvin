@@ -13,6 +13,7 @@ const CONFIG_DEFINITION = [
             { name: 'incremental_results', type: 'boolean' },
             { name: 'smooth_scrolling', type: 'boolean' },
             { name: 'recenter_on_show', type: 'boolean' },
+            { name: 'exclusive_module_prefix', type: 'boolean' },
         ], type: 'page'
     },
     {
