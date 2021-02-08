@@ -77,7 +77,7 @@ const FoldersModule = {
                                                     secondary: path.join(dir, file),
                                                     executable: true,
                                                     complete: path.join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
-                                                    quality: query[query.length - 1] === '/' ? 0.5 : stringMatchQuality(base_query, file, regex),
+                                                    quality: stringMatchQuality(base_query, file, regex),
                                                     file: path.join(dir, file),
                                                     preview: config.modules.folders.file_preview && generateFilePreview(path.join(dir, file)),
                                                 };

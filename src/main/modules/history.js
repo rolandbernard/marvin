@@ -49,8 +49,8 @@ const HistoryModule = {
                 let quality = Math.max(
                     stringMatchQuality(query, option.primary, regex),
                     stringMatchQuality(query, option.text, regex),
-                    stringMatchQuality(query, option.html, regex),
-                    stringMatchQuality(query, option.secondary, regex)
+                    0.75 * stringMatchQuality(query, option.secondary, regex),
+                    0.5 * stringMatchQuality(query, option.html, regex)
                 );
                 return {
                     ...option,

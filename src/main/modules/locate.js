@@ -67,7 +67,7 @@ const LocateModule = {
                                 secondary: file,
                                 executable: true,
                                 quality: Math.max(
-                                    0.25 * stringMatchQuality(query, file, regex),
+                                    0.5 * stringMatchQuality(query, file, regex),
                                     stringMatchQuality(base_query, path.basename(file), base_regex)
                                 ),
                                 file: file,
