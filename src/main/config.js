@@ -9,11 +9,11 @@ export const CONFIG_DEFAULT = {
     general: {
         global_shortcut: 'Super+D',
         language: 'en',
-        debounce_time: 100,
+        debounce_time: 0,
         width: 600,
         max_height: 500,
         max_results: 200,
-        incremental_results: true,
+        incremental_results: false,
         smooth_scrolling: true,
         recenter_on_show: true,
         exclusive_module_prefix: true,
