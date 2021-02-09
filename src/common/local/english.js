@@ -10,6 +10,9 @@ const TRANSLATION_ENGLISH = {
     incremental_results: 'Incremental results',
     smooth_scrolling: 'Smooth scrolling',
     recenter_on_show: 'Recenter when opening the main window',
+    exclusive_module_prefix: 'Exclusive module prefix',
+    enhanced_search: 'Enhanced search',
+    reset_config: 'Reset to defaults',
 
     theme: 'Theme',
     background_color_input: 'Background color (Input)',
@@ -64,6 +67,7 @@ const TRANSLATION_ENGLISH = {
     linux_applications: 'Linux applications',
     linux_applications_description: 'This module allows you to start applications on linux',
     refresh_interval_min: 'Refresh interval [min]',
+    refresh_applications: 'Refresh applications',
 
     url: 'URL',
     url_description: 'This module allows you to open urls',
@@ -92,6 +96,7 @@ const TRANSLATION_ENGLISH = {
     clipboard_description: 'This module allows you to access your clipboard history',
     refresh_time: 'Refresh interval',
     maximum_history: 'Maximum history',
+    clear_history: 'Clear history',
 
     deepl: 'Deepl',
     deepl_description: 'This module allows you to translate text by using Deepl in a headless window',

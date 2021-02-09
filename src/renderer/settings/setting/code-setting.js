@@ -1,5 +1,5 @@
 
-import { createRef } from 'react';
+import { createRef, useRef, useState } from 'react';
 import React from 'react';
 import { TextField } from '@material-ui/core';
 
@@ -11,31 +11,22 @@ const styles = {
     input: {
         fontFamily: '"Roboto Mono", monospace',
         whiteSpace: 'pre',
-        paddingLeft: '1rem',
-    },
-    line_numbers: {
-        position: 'absolute',
-        display: 'flex',
-        flexFlow: 'column',
-        paddingTop: '19px',
-        paddingLeft: '0.75rem',
-        color: 'grey',
     },
 };
 
 function CodeSetting(props) {
     const input = createRef();
-    let value = props.option;
-    const line_count = value ? value.split('\n').length : 1;
+    const line_count = props.option ? props.option.split('\n').length : 1;
+    const [value, setValue] = useState(null);
     const onUpdate = (e) => {
+        setValue(e.target.value);
         props.onUpdate(e.target.value);
     };
     const onKeyDown = (e) => {
-        value = e.target.value;
         if (e.key === "Tab") {
             let sel_start_pos = e.currentTarget.selectionStart;
             let sel_end_pos = e.currentTarget.selectionEnd;
-            let new_value = value.substring(0, sel_start_pos) + "    " + value.substring(sel_end_pos);
+            let new_value = e.target.value.substring(0, sel_start_pos) + "    " + e.target.value.substring(sel_end_pos);
             e.preventDefault();
             input.current.value = new_value;
             input.current.selectionStart = sel_start_pos + 4;
@@ -43,16 +34,16 @@ function CodeSetting(props) {
             onUpdate(e);
         }
     };
+    const last_option = useRef(null);
+    if (last_option.current !== props.option) {
+        last_option.current = props.option;
+        setValue(props.option);
+    }
     return (
         <div>
-            <div style={styles.line_numbers}>
-                {[...Array(line_count).keys()].map((i) => (
-                    <span key={i} className="ui-code-editor-linenumber">{i + 1}</span>
-                ))}
-            </div>
             <TextField
+                value={value}
                 style={styles.text}
-                defaultValue={props.option}
                 rowsMax={7}
                 variant="outlined"
                 multiline

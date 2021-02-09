@@ -1,8 +1,8 @@
 
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import { config } from '../config';
-import { stringMatchQuality } from '../../common/util';
+import { stringMatchQuality } from '../search';
 import path from 'path';
 
 let execute_history = [];
@@ -23,6 +23,11 @@ function updateHistory() {
     const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
     writeFileSync(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
 }
+    
+ipcMain.on('reset-history', (_) => {
+    execute_history = [];
+    updateHistory();
+});
 
 const HistoryModule = {
     init: async () => {
@@ -44,8 +49,8 @@ const HistoryModule = {
                 let quality = Math.max(
                     stringMatchQuality(query, option.primary, regex),
                     stringMatchQuality(query, option.text, regex),
-                    stringMatchQuality(query, option.html, regex),
-                    stringMatchQuality(query, option.secondary, regex)
+                    0.75 * stringMatchQuality(query, option.secondary, regex),
+                    0.5 * stringMatchQuality(query, option.html, regex)
                 );
                 return {
                     ...option,

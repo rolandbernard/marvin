@@ -13,6 +13,9 @@ const CONFIG_DEFINITION = [
             { name: 'incremental_results', type: 'boolean' },
             { name: 'smooth_scrolling', type: 'boolean' },
             { name: 'recenter_on_show', type: 'boolean' },
+            { name: 'exclusive_module_prefix', type: 'boolean' },
+            { name: 'enhanced_search', type: 'boolean' },
+            { name: 'reset_config', type: 'button', action: 'reset-config' },
         ], type: 'page'
     },
     {
@@ -66,7 +69,7 @@ const CONFIG_DEFINITION = [
                     { name: 'active', type: 'boolean' },
                     { name: 'prefix', type: 'text' },
                     { name: 'quality', type: 'quality' },
-                    { name: 'backend', type: 'select', options: [ 'mathjs', 'algebrite', 'mathjs_algebrite' ] },
+                    { name: 'backend', type: 'select', options: ['mathjs', 'algebrite', 'mathjs_algebrite'] },
                 ], type: 'page', description: 'calculator_description'
             },
             {
@@ -75,6 +78,7 @@ const CONFIG_DEFINITION = [
                     { name: 'prefix', type: 'text' },
                     { name: 'directories', type: 'array', base: { name: 'path', type: 'path' }, default: '/' },
                     { name: 'refresh_interval_min', type: 'size' },
+                    { name: 'refresh_applications', type: 'button', action: 'update-applications' },
                 ], type: 'page', description: 'linux_applications_description'
             },
             {
@@ -131,6 +135,7 @@ const CONFIG_DEFINITION = [
                     { name: 'prefix', type: 'text' },
                     { name: 'refresh_time', type: 'size' },
                     { name: 'maximum_history', type: 'size' },
+                    { name: 'clear_history', type: 'button', action: 'reset-clipboard' },
                 ], type: 'page', description: 'clipboard_description'
             },
             {
@@ -169,6 +174,7 @@ const CONFIG_DEFINITION = [
                     { name: 'prefix', type: 'text' },
                     { name: 'quality', type: 'quality' },
                     { name: 'maximum_history', type: 'size' },
+                    { name: 'clear_history', type: 'button', action: 'reset-history' },
                 ], type: 'page', description: 'history_description'
             },
             {

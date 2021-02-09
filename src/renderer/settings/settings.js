@@ -26,7 +26,7 @@ class App extends React.Component {
         ipcRenderer.on('update-config', (_, config) => {
             this.setState({
                 config: config,
-                selected: this.state.selected || { def: CONFIG_DEFINITION[0], config: config[CONFIG_DEFINITION[0].name] }
+                selected: { def: CONFIG_DEFINITION[0], config: config[CONFIG_DEFINITION[0].name] }
             });
         });
     }

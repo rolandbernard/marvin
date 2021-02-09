@@ -1,5 +1,5 @@
 
-import { generateSearchRegex, stringMatchQuality } from "../../common/util";
+import { generateSearchRegex, stringMatchQuality } from "../search";
 import { config } from "../config";
 import { stat, exists, readdir } from "fs";
 import path, { extname } from 'path';
@@ -77,7 +77,7 @@ const FoldersModule = {
                                                     secondary: path.join(dir, file),
                                                     executable: true,
                                                     complete: path.join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
-                                                    quality: query[query.length - 1] === '/' ? 0.5 : stringMatchQuality(base_query, file, regex),
+                                                    quality: stringMatchQuality(base_query, file, regex),
                                                     file: path.join(dir, file),
                                                     preview: config.modules.folders.file_preview && generateFilePreview(path.join(dir, file)),
                                                 };

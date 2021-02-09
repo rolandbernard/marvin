@@ -2,20 +2,22 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { app } from "electron";
 import path from 'path';
-import { mergeDeep } from '../common/util';
+import { mergeDeep, cloneDeep } from '../common/util';
 
 export const CONFIG_DEFAULT = {
     version: app.getVersion(),
     general: {
         global_shortcut: 'Super+D',
         language: 'en',
-        debounce_time: 100,
+        debounce_time: 0,
         width: 600,
         max_height: 500,
         max_results: 200,
-        incremental_results: true,
+        incremental_results: false,
         smooth_scrolling: true,
         recenter_on_show: true,
+        exclusive_module_prefix: true,
+        enhanced_search: true,
     },
     theme: {
         background_color_input: 'black',
@@ -179,7 +181,7 @@ export function loadConfig() {
     const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
     if (existsSync(config_path)) {
         try {
-            config = mergeDeep(config, JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
+            config = mergeDeep(cloneDeep(config), JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
         } catch (e) { }
     }
     config.version = app.getVersion();
@@ -188,6 +190,6 @@ export function loadConfig() {
 
 export function updateConfig(new_config) {
     const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
-    config = mergeDeep(config, new_config);
+    config = mergeDeep(cloneDeep(config), new_config);
     writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }

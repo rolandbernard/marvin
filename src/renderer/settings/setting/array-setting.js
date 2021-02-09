@@ -44,7 +44,8 @@ function ArraySetting(props) {
                                 <td style={styles.value}>
                                     {React.createElement(SETTING_TYPES[props.def.type], {
                                         option: option,
-                                        def: props.base,
+                                        def: props.def.base,
+                                        definition: props.def,
                                         onUpdate: (value) => {
                                             if (props.option) {
                                                 props.option[index] = value;

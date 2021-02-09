@@ -2,7 +2,7 @@
 import { config } from '../config';
 import { getTranslation } from '../../common/local/locale';
 import { exec } from "child_process";
-import { stringMatchQuality } from '../../common/util';
+import { stringMatchQuality } from '../search';
 
 const ScriptsModule = {
     valid: () => {

@@ -1,5 +1,5 @@
 
-import { stringMatchQuality } from "../../common/util";
+import { stringMatchQuality } from "../search";
 import { config } from "../config";
 
 const AliasModule = {

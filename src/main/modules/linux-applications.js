@@ -1,10 +1,10 @@
 
 import { config } from "../config";
 import { readdir, readFile, exists, writeFileSync, existsSync, readFileSync } from "fs";
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import path, { join } from 'path';
 import { exec } from "child_process";
-import { stringMatchQuality } from "../../common/util";
+import { stringMatchQuality } from '../search';
 
 let applications = [];
 let icons = {};
@@ -235,6 +235,10 @@ async function loadApplications() {
     })));
     updateCache();
 }
+    
+ipcMain.on('update-applications', (_) => {
+    loadApplications();
+});
 
 let update_interval = null;
 
