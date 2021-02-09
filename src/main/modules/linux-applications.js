@@ -4,7 +4,7 @@ import { readdir, readFile, exists, writeFileSync, existsSync, readFileSync } fr
 import { app, ipcMain } from 'electron';
 import path, { join } from 'path';
 import { exec } from "child_process";
-import { stringMatchQuality } from "../../common/util";
+import { stringMatchQuality } from '../search';
 
 let applications = [];
 let icons = {};

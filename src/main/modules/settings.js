@@ -1,5 +1,5 @@
 
-import { stringMatchQuality } from "../../common/util";
+import { stringMatchQuality } from '../search';
 import { BrowserWindow, ipcMain } from "electron";
 import { format as formatUrl } from 'url';
 import path from 'path';

@@ -1,5 +1,5 @@
 
-import { generateSearchRegex, stringMatchQuality } from "../../common/util";
+import { generateSearchRegex, stringMatchQuality } from "../search";
 import { config } from "../config";
 import path, { extname } from 'path';
 import { format } from 'url';

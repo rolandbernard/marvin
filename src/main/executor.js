@@ -25,7 +25,7 @@ import CurrencyConverterModule from "./modules/currency-converter";
 import DictionaryModule from "./modules/dictionary";
 import BookmarksModule from "./modules/bookmarks";
 import EmailModule from "./modules/email";
-import { generateSearchRegex } from "../common/util";
+import { generateSearchRegex } from "./search";
 
 const MODULES = {
     settings: SettingsModule,

@@ -2,7 +2,7 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { clipboard, app, ipcMain } from 'electron';
 import { config } from '../config';
-import { stringMatchQuality } from '../../common/util';
+import { stringMatchQuality } from "../search";
 import { getAllTranslation } from '../../common/local/locale';
 import path from 'path';
 

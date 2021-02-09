@@ -2,7 +2,7 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { app, ipcMain } from 'electron';
 import { config } from '../config';
-import { stringMatchQuality } from '../../common/util';
+import { stringMatchQuality } from '../search';
 import path from 'path';
 
 let execute_history = [];
