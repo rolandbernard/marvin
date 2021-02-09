@@ -11,6 +11,7 @@ const TRANSLATION_GERMAN = {
     smooth_scrolling: 'Flüssiges Scrollen',
     recenter_on_show: 'Zentrieren des Fensters beim Öffnen',
     exclusive_module_prefix: 'Exklusiver Modulpräfix',
+    enhanced_search: 'Verbesserte Suche',
     reset_config: 'Einstellingen zurücksetzen',
 
     theme: 'Theme',

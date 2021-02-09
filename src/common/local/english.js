@@ -11,6 +11,7 @@ const TRANSLATION_ENGLISH = {
     smooth_scrolling: 'Smooth scrolling',
     recenter_on_show: 'Recenter when opening the main window',
     exclusive_module_prefix: 'Exclusive module prefix',
+    enhanced_search: 'Enhanced search',
     reset_config: 'Reset to defaults',
 
     theme: 'Theme',

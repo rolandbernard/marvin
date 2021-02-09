@@ -17,6 +17,7 @@ export const CONFIG_DEFAULT = {
         smooth_scrolling: true,
         recenter_on_show: true,
         exclusive_module_prefix: true,
+        enhanced_search: true,
     },
     theme: {
         background_color_input: 'black',

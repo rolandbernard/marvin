@@ -14,6 +14,7 @@ const CONFIG_DEFINITION = [
             { name: 'smooth_scrolling', type: 'boolean' },
             { name: 'recenter_on_show', type: 'boolean' },
             { name: 'exclusive_module_prefix', type: 'boolean' },
+            { name: 'enhanced_search', type: 'boolean' },
             { name: 'reset_config', type: 'button', action: 'reset-config' },
         ], type: 'page'
     },

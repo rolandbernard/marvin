@@ -11,6 +11,7 @@ const TRANSLATION_ITALIAN = {
     smooth_scrolling: 'Scorrimento regolare',
     recenter_on_show: "Centrare la finestra dopo l'apertura",
     exclusive_module_prefix: 'Prefisso esclusivo dei moduli',
+    enhanced_search: 'Ricerca avanzata',
     reset_config: 'Ripristinare le impostazioni',
 
     theme: 'Theme',

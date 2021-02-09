@@ -1,4 +1,6 @@
 
+import { config } from './config';
+
 export function stringMatchQuality(query, text, regex) {
     if (typeof query === 'string' && typeof text === 'string') {
         if (!regex) {
@@ -30,18 +32,35 @@ export function stringMatchQuality(query, text, regex) {
 }
 
 export function generateSearchRegex(query) {
-    return new RegExp(
-        query.split('').map((ch) => {
-            // Escape special regex characters
-            if ([
-                '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
-                '^', '$', '?', '|',
-            ].includes(ch)) {
-                return '\\' + ch;
-            } else {
-                return ch;
-            }
-        }).join('.*?'),
-        'ig'
-    );
+    if (config.general.enhanced_search) {
+        return new RegExp(
+            query.split('').map((ch) => {
+                // Escape special regex characters
+                if ([
+                    '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
+                    '^', '$', '?', '|',
+                ].includes(ch)) {
+                    return '\\' + ch;
+                } else {
+                    return ch;
+                }
+            }).join('.*?'),
+            'ig'
+        );
+    } else {
+        return new RegExp(
+            query.split('').map((ch) => {
+                // Escape special regex characters
+                if ([
+                    '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
+                    '^', '$', '?', '|',
+                ].includes(ch)) {
+                    return '\\' + ch;
+                } else {
+                    return ch;
+                }
+            }).join(''),
+            'i'
+        );
+    }
 }
