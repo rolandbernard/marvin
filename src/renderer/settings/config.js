@@ -15,7 +15,7 @@ const CONFIG_DEFINITION = [
             { name: 'recenter_on_show', type: 'boolean' },
             { name: 'exclusive_module_prefix', type: 'boolean' },
             { name: 'enhanced_search', type: 'boolean' },
-            { name: 'reset_config', type: 'button', action: 'reset-config' },
+            { name: 'reset_config', type: 'button', warning: true, action: 'reset-config' },
         ], type: 'page'
     },
     {
@@ -135,7 +135,7 @@ const CONFIG_DEFINITION = [
                     { name: 'prefix', type: 'text' },
                     { name: 'refresh_time', type: 'size' },
                     { name: 'maximum_history', type: 'size' },
-                    { name: 'clear_history', type: 'button', action: 'reset-clipboard' },
+                    { name: 'clear_history', type: 'button', warning: true, action: 'reset-clipboard' },
                 ], type: 'page', description: 'clipboard_description'
             },
             {
@@ -174,7 +174,7 @@ const CONFIG_DEFINITION = [
                     { name: 'prefix', type: 'text' },
                     { name: 'quality', type: 'quality' },
                     { name: 'maximum_history', type: 'size' },
-                    { name: 'clear_history', type: 'button', action: 'reset-history' },
+                    { name: 'clear_history', type: 'button', warning: true, action: 'reset-history' },
                 ], type: 'page', description: 'history_description'
             },
             {
