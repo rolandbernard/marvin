@@ -122,6 +122,7 @@ export const CONFIG_DEFAULT = {
             prefix: '',
             quality: 0.1,
             maximum_history: 1000,
+            sort_by_frequency: false,
         },
         color: {
             active: false,
