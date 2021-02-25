@@ -15,7 +15,6 @@ import ScriptsModule from "./modules/scripts";
 import ClipboardModule from "./modules/clipboard";
 import DeeplModule from "./modules/deepl";
 import LinuxWindowsModule from "./modules/linux-windows";
-import GoogleTranslateModule from "./modules/google-translate";
 import DuckduckgoModule from "./modules/duckduckgo";
 import HistoryModule from "./modules/history";
 import ColorModule from "./modules/color";
@@ -42,7 +41,6 @@ const MODULES = {
     clipboard: ClipboardModule,
     deepl: DeeplModule,
     linux_windows: LinuxWindowsModule,
-    google_translate: GoogleTranslateModule,
     duckduckgo: DuckduckgoModule,
     history: HistoryModule,
     color: ColorModule,

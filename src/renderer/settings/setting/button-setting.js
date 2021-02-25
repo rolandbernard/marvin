@@ -12,7 +12,9 @@ const styles = {
 
 function ButtonSetting(props) {
     const onClick = () => {
-        ipcRenderer.send(props.definition.action);
+        if (!props.definition.warning || confirm(getTranslation(props.config, props.definition.name))) {
+            ipcRenderer.send(props.definition.action);
+        }
     };
     return (
         <div style={styles.input}>

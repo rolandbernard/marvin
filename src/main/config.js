@@ -104,11 +104,6 @@ export const CONFIG_DEFAULT = {
             active: false,
             prefix: '',
         },
-        google_translate: {
-            active: false,
-            prefix: '',
-            quality: 1.0,
-        },
         duckduckgo: {
             active: false,
             prefix: '',
@@ -122,6 +117,7 @@ export const CONFIG_DEFAULT = {
             prefix: '',
             quality: 0.1,
             maximum_history: 1000,
+            sort_by_frequency: false,
         },
         color: {
             active: false,

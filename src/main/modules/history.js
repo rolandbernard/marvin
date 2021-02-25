@@ -43,7 +43,7 @@ const HistoryModule = {
             return execute_history.map((option) => ({
                 ...option,
                 quality: config.modules.history.quality
-            })).sort((a, b) => b.history_frequency - a.history_frequency);
+            })).sort((a, b) => config.modules.history.sort_by_frequency ? b.history_frequency - a.history_frequency : 0);
         } else {
             return execute_history.map((option, i) => {
                 let quality = Math.max(
@@ -56,7 +56,7 @@ const HistoryModule = {
                     ...option,
                     quality: Math.min(1.0, quality + quality / (i + 1)),
                 };
-            }).sort((a, b) => b.history_frequency - a.history_frequency);
+            }).sort((a, b) => config.modules.history.sort_by_frequency ? b.history_frequency - a.history_frequency : 0);
         }
     },
     globalExecute: async (option) => {
