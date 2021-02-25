@@ -104,11 +104,6 @@ export const CONFIG_DEFAULT = {
             active: false,
             prefix: '',
         },
-        google_translate: {
-            active: false,
-            prefix: '',
-            quality: 1.0,
-        },
         duckduckgo: {
             active: false,
             prefix: '',

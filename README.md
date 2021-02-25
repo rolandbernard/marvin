@@ -94,7 +94,8 @@ This module allows you to find open windows.
 ![screenshot](assets/linux_windows.png)
 
 #### Google Translate
-This module allows you to translate text by using Google Translate in a headless window.
+This module was removed with version 0.0.19 because google changed their website
+and the module no longer works. It might be added back in a future release.
 
 ![screenshot](assets/google_translate.png)
 

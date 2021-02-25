@@ -152,13 +152,6 @@ const CONFIG_DEFINITION = [
                 ], type: 'page', description: 'linux_windows_description'
             },
             {
-                name: 'google_translate', active: 'active', options: [
-                    { name: 'active', type: 'boolean' },
-                    { name: 'prefix', type: 'text' },
-                    { name: 'quality', type: 'quality' },
-                ], type: 'page', description: 'google_translate_description'
-            },
-            {
                 name: 'duckduckgo', active: 'active', options: [
                     { name: 'active', type: 'boolean' },
                     { name: 'prefix', type: 'text' },
