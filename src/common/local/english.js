@@ -113,6 +113,7 @@ const TRANSLATION_ENGLISH = {
     history: 'History',
     history_description: 'This module allows you to execute recent options again',
     searchable: 'Searchable',
+    sort_by_frequency: 'Sort by frequency',
 
     color: 'Color',
     color_description: 'This module allows you to convert colors between hex/rgb/hsl',
