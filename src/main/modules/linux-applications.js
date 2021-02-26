@@ -280,7 +280,7 @@ const LinuxApplicationModule = {
                 executable: true,
                 quality: Math.max(
                     app_match,
-                    ...(getProps(value, 'Name').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                    ...(getProps(value, 'Name').map((prop) => 0.5 * stringMatchQuality(query, prop, regex))),
                     ...(getProps(value, 'Comment').map((prop) => 0.25 * stringMatchQuality(query, prop, regex)))
                 ),
                 app: value,
