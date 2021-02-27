@@ -86,6 +86,12 @@ export function openSettingsWindow() {
 }
 
 const SettingsModule = {
+    init: async () => {
+        createSettingsWindow();
+    },
+    deinit: async () => {
+        destroySettingsWindow();
+    },
     valid: (query) => {
         return query.trim().length >= 1;
     },
