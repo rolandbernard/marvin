@@ -4,7 +4,8 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { config } from '../config';
 import { executeOption, searchQuery } from '../executor';
-import { getTranslation } from '../../common/local/locale';
+import { getTranslation, getAllTranslation } from '../../common/local/locale';
+import { stringMatchQuality } from '../search';
 import { openSettingsWindow } from './settings';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
