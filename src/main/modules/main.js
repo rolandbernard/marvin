@@ -135,6 +135,12 @@ const MainModule = {
         tray = new Tray(path.join(__static, 'logo.png'));
         tray.setToolTip('Marvin');
         const context_menu = Menu.buildFromTemplate([
+            {
+                label: getTranslation(config, 'open'),
+                type: 'normal',
+                click: () => toggleMain(true),
+                accelerator: config.general.global_shortcut
+            },
             { label: getTranslation(config, 'settings'), type: 'normal', click: openSettingsWindow },
             { label: getTranslation(config, 'quit'), type: 'normal', click: app.quit.bind(app) },
         ]);
@@ -147,6 +153,12 @@ const MainModule = {
     },
     update: async () => {
         const context_menu = Menu.buildFromTemplate([
+            {
+                label: getTranslation(config, 'open'),
+                type: 'normal',
+                click: () => toggleMain(true),
+                accelerator: config.general.global_shortcut
+            },
             { label: getTranslation(config, 'settings'), type: 'normal', click: openSettingsWindow },
             { label: getTranslation(config, 'quit'), type: 'normal', click: app.quit.bind(app) },
         ]);

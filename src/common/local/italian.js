@@ -33,6 +33,7 @@ const TRANSLATION_ITALIAN = {
     active: 'Attivo',
     settings: 'Impostazioni',
     quit: 'Chiudi',
+    open: 'Aprire',
 
     quality_error: 'Il valore deve essere compreso tra 0,0 e 1,0',
     size_error: 'Il valore deve essere un numero intero maggiore di 0',
