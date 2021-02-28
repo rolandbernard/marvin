@@ -1,11 +1,16 @@
 
-import { BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import { config } from './config';
-import { executeOption, searchQuery } from './executor';
+import { config } from '../config';
+import { executeOption, searchQuery } from '../executor';
+import { getTranslation, getAllTranslation } from '../../common/local/locale';
+import { stringMatchQuality } from '../search';
+import { openSettingsWindow } from './settings';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+let tray;
 
 let main_window;
 
@@ -123,3 +128,65 @@ export async function toggleMain(op) {
         }
     }
 }
+
+const MainModule = {
+    init: async () => {
+        createMainWindow();
+        tray = new Tray(path.join(__static, 'logo.png'));
+        tray.setToolTip('Marvin');
+        const context_menu = Menu.buildFromTemplate([
+            {
+                label: getTranslation(config, 'open'),
+                type: 'normal',
+                click: () => toggleMain(true),
+                accelerator: config.general.global_shortcut
+            },
+            { label: getTranslation(config, 'settings'), type: 'normal', click: openSettingsWindow },
+            { label: getTranslation(config, 'quit'), type: 'normal', click: app.quit.bind(app) },
+        ]);
+        tray.setContextMenu(context_menu);
+        const ret = globalShortcut.register(config.general.global_shortcut, toggleMain);
+        if (!ret) {
+            console.error('Failed to register a global shortcut');
+        }
+    },
+    update: async () => {
+        const context_menu = Menu.buildFromTemplate([
+            {
+                label: getTranslation(config, 'open'),
+                type: 'normal',
+                click: () => toggleMain(true),
+                accelerator: config.general.global_shortcut
+            },
+            { label: getTranslation(config, 'settings'), type: 'normal', click: openSettingsWindow },
+            { label: getTranslation(config, 'quit'), type: 'normal', click: app.quit.bind(app) },
+        ]);
+        tray.setContextMenu(context_menu);
+    },
+    deinit: async () => {
+        globalShortcut.unregisterAll();
+        destroyMainWindow();
+    },
+    valid: (query) => {
+        return query.trim().length >= 1;
+    },
+    search: async (query, regex) => {
+        const quit_match = Math.max(...(
+            getAllTranslation('quit').map((trans) => stringMatchQuality(query, trans, regex))
+        ));
+        return [{
+            type: 'icon_list_item',
+            material_icon: 'exit_to_app',
+            primary: getTranslation(config, 'quit'),
+            secondary: null,
+            executable: true,
+            quality: quit_match,
+        }];
+    },
+    execute: async (_) => {
+        app.quit();
+    },
+}
+
+export default MainModule;
+

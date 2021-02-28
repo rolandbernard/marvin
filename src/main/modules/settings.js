@@ -79,7 +79,19 @@ export function destroySettingsWindow() {
     }
 }
 
+export function openSettingsWindow() {
+    settings_window.webContents.send('update-config', config);
+    settings_window.show();
+    settings_window.focus();
+}
+
 const SettingsModule = {
+    init: async () => {
+        createSettingsWindow();
+    },
+    deinit: async () => {
+        destroySettingsWindow();
+    },
     valid: (query) => {
         return query.trim().length >= 1;
     },
@@ -96,10 +108,8 @@ const SettingsModule = {
             quality: settings_match,
         }];
     },
-    execute: async (option) => {
-        settings_window.webContents.send('update-config', config);
-        settings_window.show();
-        settings_window.focus();
+    execute: async (_) => {
+        openSettingsWindow();
     },
 }
 

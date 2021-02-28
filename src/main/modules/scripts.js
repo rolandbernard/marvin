@@ -1,6 +1,5 @@
 
 import { config } from '../config';
-import { getTranslation } from '../../common/local/locale';
 import { exec } from "child_process";
 import { stringMatchQuality } from '../search';
 

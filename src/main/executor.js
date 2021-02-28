@@ -1,5 +1,6 @@
 
 import { config } from "./config";
+import MainModule from "./modules/main";
 import SettingsModule from "./modules/settings";
 import LinuxSystemModule from './modules/linux-system';
 import AsyncLock from "async-lock";
@@ -27,6 +28,7 @@ import EmailModule from "./modules/email";
 import { generateSearchRegex } from "./search";
 
 const MODULES = {
+    main: MainModule,
     settings: SettingsModule,
     linux_system: LinuxSystemModule,
     folders: FoldersModule,

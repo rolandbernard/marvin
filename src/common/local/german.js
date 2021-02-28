@@ -32,6 +32,8 @@ const TRANSLATION_GERMAN = {
     modules: 'Module',
     active: 'Aktiv',
     settings: 'Einstellungen',
+    quit: 'Beenden',
+    open: 'Öffnen',
 
     quality_error: 'Der Wert muss zwischen 0,0 und 1,0 liegen',
     size_error: 'Der Wert muss eine Ganzzahl größer als 0 sein',
