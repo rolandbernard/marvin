@@ -148,7 +148,6 @@ const MainModule = {
         const ret = globalShortcut.register(config.general.global_shortcut, toggleMain);
         if (!ret) {
             console.error('Failed to register a global shortcut');
-            app.quit();
         }
     },
     update: async () => {
