@@ -191,7 +191,13 @@ async function loadApplications() {
                                         entry = null;
                                     }
                                 } else if (entry) {
-                                    let option = line.split('=').map((value) => value.trim());
+                                    let option;
+                                    if (line.includes('=')) {
+                                        const split = line.indexOf('=');
+                                        option = [ line.substr(0, split).trim(), line.substr(split + 1).trim() ];
+                                    } else {
+                                        option = [ line.trim() ];
+                                    }
                                     if (option[0].endsWith(']')) {
                                         let index = option[0].split('[');
                                         index[1] = index[1].replace(']', '');
