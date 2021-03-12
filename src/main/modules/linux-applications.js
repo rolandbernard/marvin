@@ -33,11 +33,11 @@ function getProp(object, name, fallback) {
         : (object[name] || fallback);
 }
 
-function getProps(object, name, fallback) {
+function getProps(object, name) {
     if (object[name] instanceof Object) {
-        return Object.values(object[name]);
+        return Object.keys(object[name]).map(key => [object[name][key], key.toLowerCase()]);
     } else if (object[name]) {
-        return [object[name]];
+        return [ [object[name], ''] ];
     } else {
         return [];
     }
@@ -252,6 +252,14 @@ async function loadApplications() {
     })));
     updateCache();
 }
+
+function getQualityForProp(object, prop, text, regex, scale) {
+    return Math.max(...(getProps(object, prop)
+        .map(([value, lang]) =>
+            scale * (lang === 'default' || lang.includes(config.general.language) ? 1 : 0.5) * stringMatchQuality(text, value, regex)
+        )
+    ));
+}
     
 ipcMain.on('update-applications', (_) => {
     loadApplications();
@@ -278,15 +286,16 @@ const LinuxApplicationModule = {
         return query.trim().length >= 1;
     },
     search: async (query, regex) => {
+        const language = config.general.language;
         return applications.map((app) => {
             const name = getProp(app.desktop, 'Name', app.application.replace('.desktop', ''));
             const app_match = Math.max(
-                ...(getProps(app.desktop, 'Name').map((prop) => stringMatchQuality(query, prop, regex))),
-                ...(getProps(app.desktop, 'Comment').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
-                ...(getProps(app.desktop, 'Keywords').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
-                ...(getProps(app.desktop, 'Categories').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
-                ...(getProps(app.desktop, '.desktop').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
-                ...(getProps(app.desktop, 'GenericName').map((prop) => 0.75 * stringMatchQuality(query, prop, regex))),
+                getQualityForProp(app.desktop, 'Name', query, regex, 1),
+                getQualityForProp(app.desktop, 'Keywords', query, regex, 0.5),
+                getQualityForProp(app.desktop, 'Categories', query, regex, 0.5),
+                getQualityForProp(app.desktop, 'Comment', query, regex, 0.5),
+                getQualityForProp(app.desktop, 'GenericName', query, regex, 0.5),
+                getQualityForProp(app.desktop, '.desktop', query, regex, 0.5),
             );
             const icon = app.desktop.icon;
             return Object.values(app).filter((value) => value instanceof Object).map((value) => ({
@@ -297,8 +306,8 @@ const LinuxApplicationModule = {
                 executable: true,
                 quality: Math.max(
                     app_match,
-                    ...(getProps(value, 'Name').map((prop) => 0.5 * stringMatchQuality(query, prop, regex))),
-                    ...(getProps(value, 'Comment').map((prop) => 0.25 * stringMatchQuality(query, prop, regex)))
+                    getQualityForProp(value, 'Name', query, regex, 0.5),
+                    getQualityForProp(value, 'Comment', query, regex, 0.25),
                 ),
                 app: value,
             }));
