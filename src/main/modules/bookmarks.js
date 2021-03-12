@@ -108,13 +108,14 @@ const BookmarksModule = {
         return query.trim().length >= 1;
     },
     search: async (query, regex) => {
+        const language = config.general.language;
         const bookmarks = [
             ...(await getChromiumBookmarks()),
             ...(await getMidoriBookmarks()),
             ...(await getFirefoxBookmarks())
         ];
         const bookmark_match = Math.max(...(
-            getAllTranslation('bookmarks').map((trans) => stringMatchQuality(query, trans, regex))
+            getAllTranslation('bookmarks').map(([trans, lang]) => (lang === language ? 1 : 0.5) * stringMatchQuality(query, trans, regex))
         ));
         return bookmarks.map((bookmark) => ({
             type: 'icon_list_item',

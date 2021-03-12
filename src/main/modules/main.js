@@ -171,8 +171,9 @@ const MainModule = {
         return query.trim().length >= 1;
     },
     search: async (query, regex) => {
+        const language = config.general.language;
         const quit_match = Math.max(...(
-            getAllTranslation('quit').map((trans) => stringMatchQuality(query, trans, regex))
+            getAllTranslation('quit').map(([trans, lang]) => (lang === language ? 1 : 0.5) * stringMatchQuality(query, trans, regex))
         ));
         return [{
             type: 'icon_list_item',

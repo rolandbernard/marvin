@@ -56,8 +56,9 @@ const ClipboardModule = {
         return query.trim().length > 0;
     },
     search: async (query, regex) => {
+        const language = config.general.language;
         const clipboard_match = Math.max(...(
-            getAllTranslation('clipboard').map((trans) => stringMatchQuality(query, trans, regex))
+            getAllTranslation('clipboard').map(([trans, lang]) => (lang === language ? 1 : 0.5) * stringMatchQuality(query, trans, regex))
         ));
         return clipboard_history.map((text) => ({
             type: 'icon_text',

@@ -25,6 +25,6 @@ export function getTranslation(config, text) {
 
 export function getAllTranslation(text) {
     return Object.keys(SUPPORTED_LANGUAGES)
-        .map((lang) => TRANSLATIONS[lang][text])
-        .filter((trans) => trans);
+        .map((lang) => [TRANSLATIONS[lang][text], lang])
+        .filter(([trans, _]) => trans);
 }

@@ -28,6 +28,9 @@ const DeeplModule = {
     init: async () => {
         if (config.modules.deepl.active) {
             window = new BrowserWindow({
+                webPreferences: {
+                    contextIsolation: false,
+                },
                 show: false,
                 width: 1000,
                 height: 1000,
