@@ -1,6 +1,6 @@
 
 import { app } from 'electron';
-import { loadConfig, config } from './config';
+import { loadConfig } from './config';
 import { initModules, deinitModules } from './executor';
 
 app.commandLine.appendSwitch("disable-gpu"); // Transparancy will not work without this
