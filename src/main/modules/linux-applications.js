@@ -1,8 +1,8 @@
 
 import { config } from "../config";
-import { readdir, readFile, exists, writeFileSync, existsSync, readFileSync } from "fs";
+import { readdir, readFile, writeFileSync, existsSync, readFileSync, stat } from "fs";
 import { app, ipcMain } from 'electron';
-import path, { join } from 'path';
+import path from 'path';
 import { exec } from "child_process";
 import { stringMatchQuality } from '../search';
 
@@ -123,28 +123,37 @@ function createIconIndex(theme, fallback_theme) {
 }
 
 function findIconPath(name) {
-    return new Promise((resolve) => {
-        exists(name, (exist) => {
-            if (exist) {
-                resolve(name);
-            } else {
-                const possible = [
-                    `${name}`,
-                    `${name}.svg`,
-                    `${name}.png`,
-                    `${name.toLowerCase()}`,
-                    `${name.toLowerCase()}.svg`,
-                    `${name.toLowerCase()}.png`
-                ];
-                for (let file of possible) {
-                    if (icon_index[file]) {
-                        resolve(icon_index[file]);
-                        return;
-                    }
+    return new Promise(async (resolve) => {
+        if (name) {
+            const possible = [
+                `${name}.svg`,
+                `${name}.png`,
+                `${name}.jpg`,
+                `${name}.jpeg`,
+                `${name.toLowerCase()}.svg`,
+                `${name.toLowerCase()}.png`,
+                `${name.toLowerCase()}.jpg`,
+                `${name.toLowerCase()}.jpeg`,
+                `${name.toLowerCase()}`,
+                `${name}`,
+            ];
+            for (const file of possible) {
+                const stats = await new Promise((res) => {
+                    stat(file, (_, stats) => {
+                        res(stats);
+                    });
+                });
+                if (stats?.isFile()) {
+                    resolve(file);
+                    return;
+                } else if (icon_index[file]) {
+                    resolve(icon_index[file]);
+                    return;
                 }
-                resolve(null);
             }
-        });
+        }
+        resolve(null);
+        return;
     });
 }
 
@@ -155,6 +164,8 @@ function pathToDataUrl(path) {
                 const mime_endings = {
                     '__default__': 'text/plain',
                     '.png': 'image/png',
+                    '.jpg': 'image/jpeg',
+                    '.jpeg': 'image/jpeg',
                     '.svg': 'image/svg+xml',
                 };
                 let mime = mime_endings[Object.keys(mime_endings).find((ending) => path.endsWith(ending)) || '__default__'];
