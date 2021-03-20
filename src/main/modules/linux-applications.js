@@ -1,9 +1,11 @@
 
-import { config } from "../config";
 import { readdir, readFile, writeFileSync, existsSync, readFileSync, stat } from "fs";
 import { app, ipcMain } from 'electron';
 import path from 'path';
 import { exec } from "child_process";
+import { format as formatUrl } from 'url';
+
+import { config } from "../config";
 import { stringMatchQuality } from '../search';
 
 let applications = [];
@@ -157,23 +159,13 @@ function findIconPath(name) {
     });
 }
 
-function pathToDataUrl(path) {
+function pathToUrl(path) {
     return new Promise((resolve) => {
-        readFile(path, (_, data) => {
-            if (data) {
-                const mime_endings = {
-                    '__default__': 'text/plain',
-                    '.png': 'image/png',
-                    '.jpg': 'image/jpeg',
-                    '.jpeg': 'image/jpeg',
-                    '.svg': 'image/svg+xml',
-                };
-                let mime = mime_endings[Object.keys(mime_endings).find((ending) => path.endsWith(ending)) || '__default__'];
-                resolve(`data:${mime};base64,${Buffer.from(data).toString('base64')}`);
-            } else {
-                resolve(null);
-            }
-        });
+        resolve(formatUrl({
+            pathname: path,
+            protocol: 'file',
+            slashes: true
+        }));
     });
 }
 
@@ -243,7 +235,7 @@ async function loadApplications() {
             if (getProp(value, 'Icon') && !icons[getProp(value, 'Icon')]) {
                 const path = await findIconPath(getProp(value, 'Icon'), theme, fallback_theme);
                 if (path) {
-                    icons[getProp(value, 'Icon')] = await pathToDataUrl(path);
+                    icons[getProp(value, 'Icon')] = await pathToUrl(path);
                 }
             }
             value.icon = icons[getProp(value, 'Icon')];
