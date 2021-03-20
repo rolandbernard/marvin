@@ -17,7 +17,7 @@ let main_window;
 let last_loading = null;
 let last_query = null;
 
-const MAX_TRANSFER_LEN = 1000;
+const MAX_TRANSFER_LEN = 200;
 
 const original_option = new Map();
 

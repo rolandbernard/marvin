@@ -39,7 +39,7 @@ function getProps(object, name) {
     if (object[name] instanceof Object) {
         return Object.keys(object[name]).map(key => [object[name][key], key.toLowerCase()]);
     } else if (object[name]) {
-        return [ [object[name], ''] ];
+        return [ [object[name], 'default'] ];
     } else {
         return [];
     }
@@ -246,9 +246,9 @@ async function loadApplications() {
 }
 
 function getQualityForProp(object, prop, text, regex, scale) {
-    return Math.max(...(getProps(object, prop)
+    return Math.max(0, ...(getProps(object, prop)
         .map(([value, lang]) =>
-            scale * (lang === 'default' || lang.includes(config.general.language) ? 1 : 0.5) * stringMatchQuality(text, value, regex)
+            scale * (lang === 'default' || lang.toLowerCase().includes(config.general.language) ? 1 : 0.5) * stringMatchQuality(text, value, regex)
         )
     ));
 }
@@ -278,7 +278,6 @@ const LinuxApplicationModule = {
         return query.trim().length >= 1;
     },
     search: async (query, regex) => {
-        const language = config.general.language;
         return applications.map((app) => {
             const name = getProp(app.desktop, 'Name', app.application.replace('.desktop', ''));
             const app_match = Math.max(
