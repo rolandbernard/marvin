@@ -24,7 +24,7 @@ const original_option = new Map();
 function handleQuery(query, sender) {
     if (query !== last_query) {
         clearTimeout(last_loading);
-        last_loading = setTimeout(() => msg.sender.send('update-options', null), config.general.debounce_time + 100);
+        last_loading = setTimeout(() => sender.send('update-options', null), config.general.debounce_time + 100);
         searchQuery(query, (results) => {
             clearTimeout(last_loading);
             original_option.clear();
