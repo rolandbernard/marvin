@@ -1,6 +1,6 @@
 {
     "name": "marvin",
-    "version": "0.0.21",
+    "version": "0.0.22",
     "license": "MIT",
     "scripts": {
         "dev": "electron-webpack dev",
