@@ -1,16 +1,16 @@
 
-#listbox::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 0.25rem;
 }
 
-#listbox::-webkit-scrollbar-track,
-#listbox::-webkit-scrollbar-track-piece,
-#listbox::-webkit-resizer,
-#listbox::-webkit-scrollbar-corner,
-#listbox::-webkit-scrollbar-button {
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track-piece,
+*::-webkit-resizer,
+*::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-button {
     display: none;
 }
 
-#listbox::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background: lightgrey;
 }

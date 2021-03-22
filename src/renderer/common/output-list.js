@@ -32,6 +32,7 @@ class OutputList extends React.Component {
             root: {
                 zIndex: 1000,
                 width: '100%',
+                height: '100%',
                 flex: '1 1 auto',
                 overflow: 'auto',
                 background: this.props.config && this.props.config.theme.background_color_output,
