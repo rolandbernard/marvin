@@ -34,7 +34,7 @@ class OutputList extends React.Component {
                 width: '100%',
                 height: '100%',
                 flex: '1 1 auto',
-                overflow: 'auto',
+                overflow: 'overlay',
                 background: this.props.config && this.props.config.theme.background_color_output,
             },
             list: {
