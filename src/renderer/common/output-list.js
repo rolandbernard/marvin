@@ -67,7 +67,7 @@ class OutputList extends React.Component {
                         this.props.results
                             ? this.props.results.map((option, index) => (
                                 <li
-                                    onMouseEnter={() => this.props.onHover && this.props.onHover(index)}
+                                    onMouseMove={() => this.props.onHover && this.props.onHover(index)}
                                     onClick={() => this.props.onExec && this.props.onExec(index)}
                                     key={index}
                                     style={

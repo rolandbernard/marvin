@@ -51,11 +51,13 @@ class App extends React.Component {
     }
 
     handleHover(index) {
-        this.setState({ selected: index });
+        if (index != this.state.selected) {
+            this.setState({ selected: index });
+        }
     }
 
     handleExec(index) {
-        this.setState({ selected: index });
+        this.handleHover(index);
         ipcRenderer.send('execute-option', this.state.results[index]);
     }
 
