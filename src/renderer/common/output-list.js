@@ -23,7 +23,7 @@ class OutputList extends React.Component {
 
     componentDidUpdate() {
         if (this.selected.current) {
-            this.selected.current.scrollIntoView({ behavior: this.props.config.general.smooth_scrolling ? 'smooth' : 'instant', block: 'center' });
+            this.selected.current.scrollIntoView({ behavior: this.props.config.general.smooth_scrolling ? 'smooth' : 'instant', block: 'nearest' });
         }
     }
 
@@ -67,6 +67,8 @@ class OutputList extends React.Component {
                         this.props.results
                             ? this.props.results.map((option, index) => (
                                 <li
+                                    onMouseEnter={() => this.props.onHover && this.props.onHover(index)}
+                                    onClick={() => this.props.onExec && this.props.onExec(index)}
                                     key={index}
                                     style={
                                         index === this.props.selected

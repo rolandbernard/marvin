@@ -32,7 +32,7 @@ class App extends React.Component {
         });
     }
 
-    handle_key_down(e) {
+    handleKeyDown(e) {
         if (e.key === 'ArrowUp' && this.state.results && this.state.results.length > 0) {
             this.setState({ selected: (this.state.results.length + this.state.selected - 1) % this.state.results.length });
             e.preventDefault();
@@ -48,6 +48,15 @@ class App extends React.Component {
             this.input.current.value = this.state.results[this.state.selected].complete;
             ipcRenderer.send('search-options', this.input.current.value);
         }
+    }
+
+    handleHover(index) {
+        this.setState({ selected: index });
+    }
+
+    handleExec(index) {
+        this.setState({ selected: index });
+        ipcRenderer.send('execute-option', this.state.results[index]);
     }
 
     render() {
@@ -92,13 +101,19 @@ class App extends React.Component {
         };
 
         return (
-            <div style={styles.root} onKeyDown={(e) => this.handle_key_down(e)}>
-                <div style={styles.content} >
+            <div style={styles.root} onKeyDown={(e) => this.handleKeyDown(e)}>
+                <div style={styles.content}>
                     <InputField config={this.state.config} inputRef={this.input}></InputField>
                     <div style={styles.output_area}>
                         <div style={styles.output}>
                             <div style={styles.list}>
-                                <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
+                                <OutputList
+                                    onHover={(e) => this.handleHover(e)}
+                                    onExec={(e) => this.handleExec(e)}
+                                    config={this.state.config}
+                                    selected={this.state.selected}
+                                    results={this.state.results}
+                                ></OutputList>
                             </div>
                             <PreviewField config={this.state.config} result={this.state.results && this.state.results[this.state.selected]}></PreviewField>
                         </div>
