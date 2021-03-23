@@ -27,7 +27,7 @@ const WebSearchModule = {
         });
     },
     execute: async (option) => {
-        exec(`xdg-open '${option.url}'`);
+        exec(`xdg-open '${option.url.replace(/\'/g, "'\\''")}'`);
     },
 }
 

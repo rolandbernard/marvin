@@ -94,7 +94,7 @@ const DuckduckgoModule = {
     },
     execute: async (option) => {
         if (option.url) {
-            exec(`xdg-open '${option.url}'`);
+            exec(`xdg-open '${option.url.replace(/\'/g, "'\\''")}'`);
         } else {
             clipboard.writeText(option.text);
         }
