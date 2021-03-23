@@ -18,6 +18,7 @@ class App extends React.Component {
             config: null,
             results: [],
             selected: 0,
+            center: true,
         };
         this.input = createRef();
 
@@ -34,10 +35,10 @@ class App extends React.Component {
 
     handleKeyDown(e) {
         if (e.key === 'ArrowUp' && this.state.results && this.state.results.length > 0) {
-            this.setState({ selected: (this.state.results.length + this.state.selected - 1) % this.state.results.length });
+            this.setState({ selected: (this.state.results.length + this.state.selected - 1) % this.state.results.length, center: true });
             e.preventDefault();
         } else if (e.key === 'ArrowDown' && this.state.results && this.state.results.length > 0) {
-            this.setState({ selected: (this.state.results.length + this.state.selected + 1) % this.state.results.length });
+            this.setState({ selected: (this.state.results.length + this.state.selected + 1) % this.state.results.length, center: true });
             e.preventDefault();
         } else if (e.key === 'Escape') {
             window.close();
@@ -52,7 +53,7 @@ class App extends React.Component {
 
     handleHover(index) {
         if (index != this.state.selected) {
-            this.setState({ selected: index });
+            this.setState({ selected: index, center: false });
         }
     }
 
@@ -115,6 +116,7 @@ class App extends React.Component {
                                     onExec={(e) => this.handleExec(e)}
                                     config={this.state.config}
                                     selected={this.state.selected}
+                                    center={this.state.center}
                                     results={this.state.results}
                                 ></OutputList>
                             </div>
