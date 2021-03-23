@@ -36,6 +36,7 @@ class OutputList extends React.Component {
                 flex: '1 1 auto',
                 overflow: 'overlay',
                 background: this.props.config && this.props.config.theme.background_color_output,
+                '--accent': this.props.config && this.props.config.theme.accent_color_output,
             },
             list: {
                 width: '100%',
@@ -61,7 +62,7 @@ class OutputList extends React.Component {
             },
         };
         return (
-            <div id="listbox" style={styles.root} >
+            <div class="listbox" style={styles.root} >
                 <ul style={styles.list}>
                     {
                         this.props.results
