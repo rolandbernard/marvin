@@ -1,4 +1,5 @@
 
+import { ipcRenderer } from 'electron';
 import React, { createRef } from 'react';
 import { CircularProgress } from '@material-ui/core';
 
@@ -30,6 +31,13 @@ class OutputList extends React.Component {
         }
     }
 
+    handleDragStart(event, option) {
+        event.preventDefault();
+        if (option && option.file) {
+            ipcRenderer.send('drag-start', option);
+        }
+    }
+
     render() {
         const styles = {
             root: {
@@ -50,6 +58,7 @@ class OutputList extends React.Component {
             selected: {
                 color: this.props.config && this.props.config.theme.select_text_color,
                 background: this.props.config && this.props.config.theme.select_color,
+                cursor: 'pointer',
             },
             loading: {
                 width: '2rem',
@@ -65,13 +74,15 @@ class OutputList extends React.Component {
         };
         return (
             <div class="listbox" style={styles.root} >
-                <ul style={styles.list}>
+                <div style={styles.list}>
                     {
                         this.props.results
                             ? this.props.results.map((option, index) => (
-                                <li
+                                <div
                                     onMouseMove={() => this.props.onHover && this.props.onHover(index)}
                                     onClick={() => this.props.onExec && this.props.onExec(index)}
+                                    onDragStart={(e) => this.handleDragStart(e, option)}
+                                    draggable={option.file ? true : false}
                                     key={index}
                                     style={
                                         index === this.props.selected
@@ -79,11 +90,11 @@ class OutputList extends React.Component {
                                             : styles.result
                                     }
                                     ref={index === (this.props.selected % this.props.results.length) ? this.selected : null}
-                                >{React.createElement(DISPLAY_TYPES[option.type], { option: option, config: this.props.config })}</li>
+                                >{React.createElement(DISPLAY_TYPES[option.type], { option: option, config: this.props.config })}</div>
                             ))
-                            : <li style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></li>
+                            : <div style={styles.loading_wrap}><CircularProgress style={styles.loading}></CircularProgress></div>
                     }
-                </ul>
+                </div>
             </div>
         )
     }

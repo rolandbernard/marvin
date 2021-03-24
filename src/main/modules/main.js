@@ -112,6 +112,12 @@ export function createMainWindow() {
             }
         }
     });
+    ipcMain.on('drag-start', async (event, option) => {
+        event.sender.startDrag({
+            file: option.file,
+            icon: (await app.getFileIcon(option.file)),
+        })
+    })
 }
 
 export function destroyMainWindow() {
