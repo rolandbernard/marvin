@@ -18,6 +18,7 @@ class App extends React.Component {
             config: null,
             results: [],
             selected: 0,
+            center: true,
         };
         this.input = createRef();
 
@@ -32,12 +33,12 @@ class App extends React.Component {
         });
     }
 
-    handle_key_down(e) {
+    handleKeyDown(e) {
         if (e.key === 'ArrowUp' && this.state.results && this.state.results.length > 0) {
-            this.setState({ selected: (this.state.results.length + this.state.selected - 1) % this.state.results.length });
+            this.setState({ selected: (this.state.results.length + this.state.selected - 1) % this.state.results.length, center: true });
             e.preventDefault();
         } else if (e.key === 'ArrowDown' && this.state.results && this.state.results.length > 0) {
-            this.setState({ selected: (this.state.results.length + this.state.selected + 1) % this.state.results.length });
+            this.setState({ selected: (this.state.results.length + this.state.selected + 1) % this.state.results.length, center: true });
             e.preventDefault();
         } else if (e.key === 'Escape') {
             window.close();
@@ -48,6 +49,17 @@ class App extends React.Component {
             this.input.current.value = this.state.results[this.state.selected].complete;
             ipcRenderer.send('search-options', this.input.current.value);
         }
+    }
+
+    handleHover(index) {
+        if (index != this.state.selected) {
+            this.setState({ selected: index, center: false });
+        }
+    }
+
+    handleExec(index) {
+        this.handleHover(index);
+        ipcRenderer.send('execute-option', this.state.results[index]);
     }
 
     render() {
@@ -88,17 +100,25 @@ class App extends React.Component {
                 flex: '1 1 auto',
                 width: '100%',
                 overflow: 'hidden',
+                display: 'flex',
             }
         };
 
         return (
-            <div style={styles.root} onKeyDown={(e) => this.handle_key_down(e)}>
-                <div style={styles.content} >
+            <div style={styles.root} onKeyDown={(e) => this.handleKeyDown(e)}>
+                <div style={styles.content}>
                     <InputField config={this.state.config} inputRef={this.input}></InputField>
                     <div style={styles.output_area}>
                         <div style={styles.output}>
                             <div style={styles.list}>
-                                <OutputList config={this.state.config} selected={this.state.selected} results={this.state.results}></OutputList>
+                                <OutputList
+                                    onHover={(e) => this.handleHover(e)}
+                                    onExec={(e) => this.handleExec(e)}
+                                    config={this.state.config}
+                                    selected={this.state.selected}
+                                    center={this.state.center}
+                                    results={this.state.results}
+                                ></OutputList>
                             </div>
                             <PreviewField config={this.state.config} result={this.state.results && this.state.results[this.state.selected]}></PreviewField>
                         </div>

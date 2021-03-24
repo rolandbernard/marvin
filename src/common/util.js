@@ -1,6 +1,6 @@
 
 function isObject(item) {
-    return (item && typeof item === 'object');
+    return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
 export function mergeDeep(target, ...sources) {

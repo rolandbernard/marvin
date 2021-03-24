@@ -19,6 +19,7 @@ const PREVIEW_TYPES = {
 const styles = {
     preview: {
         flex: '0 0 auto',
+        zIndex: 10000,
     },
     preview_none: {
         display: 'none',
@@ -39,8 +40,8 @@ function PreviewField(props) {
             { React.createElement(PREVIEW_TYPES[preview.type], { onLoad: onLoad, preview: preview, config: props.config })}
         </div>
     ) : (
-            <div style={styles.preview_none}></div>
-        );
+        <div style={styles.preview_none}></div>
+    );
 }
 
 export default PreviewField;

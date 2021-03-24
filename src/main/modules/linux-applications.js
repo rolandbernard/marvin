@@ -31,7 +31,7 @@ function updateCache() {
 
 function getProp(object, name, fallback) {
     return (object[name] instanceof Object)
-        ? (object[name][config.general.language] || object[name]['default'] || object[name]['en'])
+        ? (object[name][config.general.language] || object[name]['default'] || object[name]['en'] || fallback)
         : (object[name] || fallback);
 }
 

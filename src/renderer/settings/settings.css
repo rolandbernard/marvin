@@ -13,3 +13,20 @@ html, body, * {
     height: 100%;
     overflow: hidden;
 }
+
+*::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track-piece,
+*::-webkit-resizer,
+*::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-button {
+    display: none;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: lightgrey;
+}
+

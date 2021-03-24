@@ -85,12 +85,13 @@ class App extends React.Component {
             },
             settings: {
                 flex: '1 1 70%',
-                overflow: 'auto',
+                overflow: 'overlay',
             },
             paper: {
                 width: '100%',
                 position: 'relative',
                 whiteSpace: 'nowrap',
+                overflow: 'overlay',
                 // background: this.state.config && this.state.config.theme.background_color,
                 // color: this.state.config && this.state.config.theme.text_color,
             },

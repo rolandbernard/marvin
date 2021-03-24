@@ -98,7 +98,7 @@ const FoldersModule = {
         }))).filter((a) => a).flat();
     },
     execute: async (option) => {
-        exec(`xdg-open ${option.file}`);
+        exec(`xdg-open '${option.file.replace(/\'/g, "'\\''")}'`);
     },
 }
 

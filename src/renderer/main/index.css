@@ -4,7 +4,6 @@ html, body, * {
     padding: 0;
     box-sizing: border-box;
     user-select: none;
-    -webkit-user-drag: none;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 

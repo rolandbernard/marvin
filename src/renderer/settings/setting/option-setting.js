@@ -46,6 +46,7 @@ ipcRenderer.on('update-options', (_, options) => {
 function OptionSetting(props) {
     const [options, setOptions] = useState([]);
     const [selected, setSelected] = useState(0);
+    const [center, setCenter] = useState(true);
     const [value, setValue] = useState('');
     const onUpdate = (event) => {
         setValue(event.target.value);
@@ -54,9 +55,11 @@ function OptionSetting(props) {
     const onKeyDown = (event) => {
         if (event.key === 'ArrowUp' && options && options.length > 0) {
             setSelected((options.length + selected - 1) % options.length);
+            setCenter(true);
             event.preventDefault();
         } else if (event.key === 'ArrowDown' && options && options.length > 0) {
             setSelected((options.length + selected + 1) % options.length);
+            setCenter(true);
             event.preventDefault();
         } else if (event.key === 'Escape') {
             setValue('');
@@ -80,6 +83,18 @@ function OptionSetting(props) {
         globalSetOptions = null;
         globalSetSelected = null;
     };
+    const onHover = (index) => {
+        if (index != selected) {
+            setSelected(index);
+            setCenter(false);
+        }
+    };
+    const onExec = (index) => {
+        onHover(index);
+        props.onUpdate(options[selected]);
+        setValue('');
+        setOptions([]);
+    };
     return (
         <div>
             <TextField
@@ -94,7 +109,14 @@ function OptionSetting(props) {
             ></TextField>
             <div style={styles.list_wrap}>
                 <div style={styles.list}>
-                    <OutputList config={props.config} selected={selected} results={options}></OutputList>
+                    <OutputList
+                        onHover={onHover}
+                        onExec={onExec}
+                        config={props.config}
+                        selected={selected}
+                        center={center}
+                        results={options}
+                    ></OutputList>
                 </div>
             </div>
         </div>

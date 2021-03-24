@@ -28,8 +28,8 @@ function handleQuery(query, sender) {
         searchQuery(query, (results) => {
             clearTimeout(last_loading);
             original_option.clear();
-            sender.send('update-options', results.map((opt) => {
-                const new_opt = { ...opt };
+            sender.send('update-options', results.map((opt, id) => {
+                const new_opt = { ...opt, id: id };
                 if (new_opt.text?.length > MAX_TRANSFER_LEN) {
                     new_opt.text = new_opt.text.substr(0, MAX_TRANSFER_LEN) + '...';
                 }
@@ -39,7 +39,7 @@ function handleQuery(query, sender) {
                 if (new_opt.secondary?.length > MAX_TRANSFER_LEN) {
                     new_opt.secondary = new_opt.secondary.substr(0, MAX_TRANSFER_LEN) + '...';
                 }
-                original_option.set(JSON.stringify(new_opt), opt);
+                original_option.set(id, opt);
                 return new_opt;
             }));
         });
@@ -101,7 +101,7 @@ export function createMainWindow() {
     });
     ipcMain.on('execute-option', (_, option) => {
         if (option && option.executable) {
-            const key = JSON.stringify(option);
+            const key = option.id;
             if (original_option.has(key)) {
                 executeOption(original_option.get(key));
             } else {
@@ -112,6 +112,12 @@ export function createMainWindow() {
             }
         }
     });
+    ipcMain.on('drag-start', async (event, option) => {
+        event.sender.startDrag({
+            file: option.file,
+            icon: (await app.getFileIcon(option.file)),
+        })
+    })
 }
 
 export function destroyMainWindow() {

@@ -15,6 +15,7 @@ class InputField extends React.Component {
     constructor(props) {
         super(props);
         window.onfocus = refocus;
+        window.onkeydown = refocus;
 
         ipcRenderer.on('reset', (_) => {
             const text_field = document.getElementById('input-field');
@@ -73,7 +74,6 @@ class InputField extends React.Component {
                 }}
                 inputRef={this.props.inputRef}
                 style={styles.text_field}
-                onBlur={refocus}
                 onChange={(e) => this.handleUpdate(e)}
             />
         );
