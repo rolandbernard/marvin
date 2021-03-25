@@ -97,18 +97,18 @@ export function searchQuery(query, callback) {
                     ? config.modules[id].active && !config.modules[id].prefix : true);
             }
             const query_regex = generateSearchRegex(query);
-            await Promise.all(
-                to_eval.filter((id) => (
-                    config.modules[id]?.prefix ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim()) : MODULES[id].valid(query)
-                ))
-                    .map((id) => {
-                        return new Promise(async (resolv) => {
+            try {
+                await Promise.all(
+                    to_eval.filter((id) => (
+                        config.modules[id]?.prefix ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim()) : MODULES[id].valid(query)
+                    )).map((id) => {
+                        return new Promise(async (resolv, reject) => {
                             try {
                                 let result = (await MODULES[id].search(
                                     config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query,
                                     config.modules[id]?.prefix
-                                        ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
-                                        : query_regex
+                                    ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
+                                    : query_regex
                                 ));
                                 if (exec_id === begin_id) {
                                     let existing = new Set();
@@ -131,6 +131,7 @@ export function searchQuery(query, callback) {
                                     }
                                 } else {
                                     resolve();
+                                    reject();
                                 }
                             } catch (e) {
                                 console.error(e);
@@ -139,7 +140,8 @@ export function searchQuery(query, callback) {
                             }
                         });
                     })
-            );
+                );
+            } catch (e) { }
             if (exec_id === begin_id) {
                 callback(results);
             }
