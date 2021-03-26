@@ -45,37 +45,43 @@ const HistoryModule = {
                 quality: config.modules.history.quality
             })).sort((a, b) => config.modules.history.sort_by_frequency ? b.history_frequency - a.history_frequency : 0);
         } else {
-            return execute_history.map((option, i) => {
+            return execute_history.map((option) => {
                 let quality = Math.max(
                     stringMatchQuality(query, option.primary, regex),
                     stringMatchQuality(query, option.text, regex),
                     0.75 * stringMatchQuality(query, option.secondary, regex),
                     0.5 * stringMatchQuality(query, option.html, regex)
-                );
+                ) * (config.modules.history.weight_by_frequency ? (2 * Math.atan(option.history_frequency)) : 1);
                 return {
                     ...option,
-                    quality: Math.min(1.0, quality + quality / (i + 1)),
+                    quality: Math.min(1.0, quality),
                 };
             }).sort((a, b) => config.modules.history.sort_by_frequency ? b.history_frequency - a.history_frequency : 0);
         }
     },
     globalExecute: async (option) => {
+        function getOptionKey(el) {
+            return (el.type || "")
+                + "---" + (el.text || "")
+                + "---" + (el.primary || "")
+                + "---" + (el.secondary || "")
+                + "---" + (el.html || "");
+        }
         if (config.modules.history.active) {
-            let existing = new Set();
-            execute_history.forEach((option) => {
-                // Making old information less important
-                option.history_frequency *= 0.99;
-            });
-            option.history_frequency = 1 + (option.history_frequency || 0);
-            execute_history = [option].concat(execute_history).filter((el) => {
-                let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");
-                if (!existing.has(value)) {
-                    existing.add(value);
-                    return true;
+            let key = getOptionKey(option);
+            let old_frequency = 0;
+            for (let i = 0; i < execute_history.length;) {
+                if (key === getOptionKey(execute_history[i])) {
+                    old_frequency = execute_history[i].history_frequency;
+                    execute_history.splice(i, 1);
                 } else {
-                    return false;
+                    execute_history[i].history_frequency *= 0.99;
+                    i++;
                 }
-            }).slice(0, config.modules.history.maximum_history);
+            }
+            option.history_frequency = old_frequency + 1;
+            execute_history.unshift(option);
+            execute_history.splice(config.modules.history.maximum_history);
             updateHistory();
         }
     },

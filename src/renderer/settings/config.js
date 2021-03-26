@@ -168,6 +168,7 @@ const CONFIG_DEFINITION = [
                     { name: 'quality', type: 'quality' },
                     { name: 'maximum_history', type: 'size' },
                     { name: 'sort_by_frequency', type: 'boolean' },
+                    { name: 'weight_by_frequency', type: 'boolean' },
                     { name: 'clear_history', type: 'button', warning: true, action: 'reset-history' },
                 ], type: 'page', description: 'history_description'
             },

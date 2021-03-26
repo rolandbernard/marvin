@@ -118,6 +118,7 @@ export const CONFIG_DEFAULT = {
             quality: 0.1,
             maximum_history: 1000,
             sort_by_frequency: false,
+            weight_by_frequency: false,
         },
         color: {
             active: false,
