@@ -116,6 +116,7 @@ const TRANSLATION_ENGLISH = {
     history_description: 'This module allows you to execute recent options again',
     searchable: 'Searchable',
     sort_by_frequency: 'Sort by frequency',
+    weight_by_frequency: 'Weighted by frequency',
 
     color: 'Color',
     color_description: 'This module allows you to convert colors between hex/rgb/hsl',
