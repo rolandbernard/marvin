@@ -23,11 +23,8 @@ class OutputList extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.selected.current) {
-            this.selected.current.scrollIntoView({
-                behavior: this.props.config.general.smooth_scrolling ? 'smooth' : 'instant',
-                block: this.props.center ? 'center' : 'nearest'
-            });
+        if (this.selected.current && this.props.center) {
+            this.selected.current.scrollIntoView({ behavior: this.props.config.general.smooth_scrolling ? 'smooth' : 'instant', block: 'center' });
         }
     }
 

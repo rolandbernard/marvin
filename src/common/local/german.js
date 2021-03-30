@@ -113,6 +113,7 @@ const TRANSLATION_GERMAN = {
     history_description: 'Dieses Modul erlaub es Optionen erneut auszuführen',
     searchable: 'Durchsuchbar',
     sort_by_frequency: 'Sortieren nach Häufigkeit',
+    weight_by_frequency: 'Gewichtet nach Häufigkeit',
 
     color: 'Farben',
     color_description: 'Mit diesem Modul ist es möglich Farben zwischen hex/rgb/hsl unzuwandeln',

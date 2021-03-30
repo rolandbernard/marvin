@@ -42,7 +42,7 @@ const TRANSLATION_ENGLISH = {
     quality: 'Priority',
 
     linux_system: 'Linux system',
-    linux_system_description: 'This module will provide some fundamantal linux system commands',
+    linux_system_description: 'This module will provide some fundamental linux system commands',
     reboot: 'Reboot',
     shutdown: 'Shutdown',
 
@@ -116,18 +116,19 @@ const TRANSLATION_ENGLISH = {
     history_description: 'This module allows you to execute recent options again',
     searchable: 'Searchable',
     sort_by_frequency: 'Sort by frequency',
+    weight_by_frequency: 'Weighted by frequency',
 
     color: 'Color',
     color_description: 'This module allows you to convert colors between hex/rgb/hsl',
     color_preview: 'Color preview',
 
     web_search: 'Web search',
-    web_search_description: 'This module allows you to quicky do a web search',
+    web_search_description: 'This module allows you to quickly do a web search',
     patterns: 'Patterns',
     url_pattern: 'URL',
 
     alias: 'Alias',
-    alias_description: 'This module allows you to add an alias for a certail option, that allows you to search it under a different name',
+    alias_description: 'This module allows you to add an alias for a certain option, that allows you to search it under a different name',
     aliases: 'Aliases',
     option: 'Option',
     prefix_text: 'Add name as prefix',

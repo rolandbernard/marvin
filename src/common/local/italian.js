@@ -113,6 +113,7 @@ const TRANSLATION_ITALIAN = {
     history_description: 'Questo modulo consente di eseguire nuovamente le opzioni',
     searchable: 'Cercabile',
     sort_by_frequency: 'Ordina per frequenza',
+    weight_by_frequency: 'Ponderato secondo la frequenza',
 
     color: 'Colori',
     color_description: 'Questo modulo ti consente di convertite colori tra hex/rgb/hsl',

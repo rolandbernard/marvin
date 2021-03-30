@@ -3,7 +3,6 @@ import { config } from "./config";
 import MainModule from "./modules/main";
 import SettingsModule from "./modules/settings";
 import LinuxSystemModule from './modules/linux-system';
-import AsyncLock from "async-lock";
 import FoldersModule from "./modules/folders";
 import HtmlModule from "./modules/html";
 import CalculatorModule from "./modules/calculator";
@@ -77,7 +76,6 @@ export function searchQuery(query, callback) {
         last_query_timeout = setTimeout(async () => {
             query = query.trim();
             let results = [];
-            let lock = new AsyncLock();
             let to_eval;
             if (config.general.exclusive_module_prefix) {
                 let prefix = '';
@@ -99,43 +97,42 @@ export function searchQuery(query, callback) {
                     ? config.modules[id].active && !config.modules[id].prefix : true);
             }
             const query_regex = generateSearchRegex(query);
-            await Promise.all(
-                to_eval.filter((id) => (
-                    config.modules[id]?.prefix ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim()) : MODULES[id].valid(query)
-                ))
-                    .map((id) => {
-                        return new Promise(async (resolv) => {
+            try {
+                await Promise.all(
+                    to_eval.filter((id) => (
+                        config.modules[id]?.prefix ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim()) : MODULES[id].valid(query)
+                    )).map((id) => {
+                        return new Promise(async (resolv, reject) => {
                             try {
                                 let result = (await MODULES[id].search(
                                     config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query,
                                     config.modules[id]?.prefix
-                                        ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
-                                        : query_regex
+                                    ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
+                                    : query_regex
                                 ));
-                                await lock.acquire('results', () => {
-                                    if (exec_id === begin_id) {
-                                        let existing = new Set();
-                                        results = results
-                                            .concat(result.map((option) => ({ module: id, ...option })))
-                                            .filter((option) => option.quality > 0)
-                                            .sort((a, b) => b.quality - a.quality)
-                                            .filter((el) => {
-                                                let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");
-                                                if (!existing.has(value)) {
-                                                    existing.add(value);
-                                                    return true;
-                                                } else {
-                                                    return false;
-                                                }
-                                            })
-                                            .slice(0, config.general.max_results)
-                                        if (config.general.incremental_results && results.length > 0) {
-                                            callback(results);
-                                        }
-                                    } else {
-                                        resolve();
+                                if (exec_id === begin_id) {
+                                    let existing = new Set();
+                                    results = results
+                                        .concat(result.map((option) => ({ module: id, ...option })))
+                                        .filter((option) => option.quality > 0)
+                                        .sort((a, b) => b.quality - a.quality)
+                                        .filter((el) => {
+                                            let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");
+                                            if (!existing.has(value)) {
+                                                existing.add(value);
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        })
+                                        .slice(0, config.general.max_results)
+                                    if (config.general.incremental_results && results.length > 0) {
+                                        callback(results);
                                     }
-                                });
+                                } else {
+                                    resolve();
+                                    reject();
+                                }
                             } catch (e) {
                                 console.error(e);
                             } finally {
@@ -143,7 +140,8 @@ export function searchQuery(query, callback) {
                             }
                         });
                     })
-            );
+                );
+            } catch (e) { }
             if (exec_id === begin_id) {
                 callback(results);
             }
