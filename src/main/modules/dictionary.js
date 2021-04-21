@@ -45,31 +45,45 @@ const DictionaryModule = {
                             resolve(data.map((word) => {
                                 return word.meanings.map((meaning) => {
                                     return meaning.definitions.map((definition) => {
-                                        let primary = '[' + meaning.partOfSpeech + ']';
                                         if (definition.synonyms) {
-                                            primary += ' - ' + definition.synonyms.join(', ');
-                                        } else if (word.phonetics && !phon) {
-                                            primary += ' (' + word.phonetics.map((pho) => pho.text).join(', ') + ')';
-                                            phon = true;
+                                            return definition.synonyms.map((synonym) => {
+                                                let primary = '[' + meaning.partOfSpeech + '] - ' + synonym;
+                                                let secondary = definition.definition;
+                                                return {
+                                                    type: 'icon_list_item',
+                                                    material_icon: 'library_books',
+                                                    primary: primary,
+                                                    secondary: secondary,
+                                                    executable: true,
+                                                    quality: config.modules.dictionary.quality,
+                                                    text: synonym,
+                                                }
+                                            });
+                                        } else {
+                                            let primary = '[' + meaning.partOfSpeech + ']';
+                                            if (word.phonetics && !phon) {
+                                                primary += ' (' + word.phonetics.map((pho) => pho.text).join(', ') + ')';
+                                                phon = true;
+                                            }
+                                            let secondary = definition.definition;
+                                            return [{
+                                                type: 'icon_list_item',
+                                                material_icon: 'library_books',
+                                                primary: primary,
+                                                secondary: secondary,
+                                                executable: true,
+                                                quality: config.modules.dictionary.quality,
+                                                text: secondary,
+                                            }];
                                         }
-                                        let secondary = definition.definition;
-                                        return {
-                                            type: 'icon_list_item',
-                                            material_icon: 'library_books',
-                                            primary: primary,
-                                            secondary: secondary,
-                                            executable: true,
-                                            quality: config.modules.dictionary.quality,
-                                            text: secondary,
-                                        }
-                                    });
+                                    }).flat();
                                 }).flat();
                             }).flat());
                         } else {
                             resolve([]);
                         }
-                    }).catch((e) => { });
-                }).catch((e) => { });
+                    }).catch(() => { resolve([]) });
+                }).catch(() => { resolve([]) });
             }, config.modules.dictionary.debounce_time)
         });
     },
