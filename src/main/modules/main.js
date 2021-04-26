@@ -14,36 +14,45 @@ let tray;
 
 let main_window;
 
-let last_loading = null;
-let last_query = null;
+const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will be croped to this length.
 
-const MAX_TRANSFER_LEN = 200;
-
+// This stores the original_options because we only send croped text fields.
+// (Fixes a performance issue when the clipboard contains a very long text)
 const original_option = new Map();
 
-function handleQuery(query, sender) {
-    if (query !== last_query) {
-        clearTimeout(last_loading);
-        last_loading = setTimeout(() => sender.send('update-options', null), config.general.debounce_time + 100);
-        searchQuery(query, (results) => {
-            clearTimeout(last_loading);
-            original_option.clear();
-            sender.send('update-options', results.map((opt, id) => {
-                const new_opt = { ...opt, id: id };
-                if (new_opt.text?.length > MAX_TRANSFER_LEN) {
-                    new_opt.text = new_opt.text.substr(0, MAX_TRANSFER_LEN) + '...';
-                }
-                if (new_opt.primary?.length > MAX_TRANSFER_LEN) {
-                    new_opt.primary = new_opt.primary.substr(0, MAX_TRANSFER_LEN) + '...';
-                }
-                if (new_opt.secondary?.length > MAX_TRANSFER_LEN) {
-                    new_opt.secondary = new_opt.secondary.substr(0, MAX_TRANSFER_LEN) + '...';
-                }
-                original_option.set(id, opt);
-                return new_opt;
-            }));
-        });
+// This variable is used to ensure that if a earlier query finishes after a later query, it will not
+// actualty sen the results to the renderer.
+let execution_count = 0;
+
+function sendUpdatedOptions(id, sender, results) {
+    if (id === execution_count) {
+        original_option.clear();
+        sender.send('update-options', results.map((opt, id) => {
+            const new_opt = { ...opt, id: id };
+            if (new_opt.text?.length > MAX_TRANSFER_LEN) {
+                new_opt.text = new_opt.text.substr(0, MAX_TRANSFER_LEN) + '...';
+            }
+            if (new_opt.primary?.length > MAX_TRANSFER_LEN) {
+                new_opt.primary = new_opt.primary.substr(0, MAX_TRANSFER_LEN) + '...';
+            }
+            if (new_opt.secondary?.length > MAX_TRANSFER_LEN) {
+                new_opt.secondary = new_opt.secondary.substr(0, MAX_TRANSFER_LEN) + '...';
+            }
+            original_option.set(id, opt);
+            return new_opt;
+        }));
     }
+}
+
+async function handleQuery(query, sender) {
+    execution_count++;
+    const begin_count = execution_count;
+    const results = await searchQuery(query,
+        config.general.incremental_results
+            ? (results) => sendUpdatedOptions(begin_count, sender, results)
+            : null
+    );
+    sendUpdatedOptions(begin_count, sender, results);
 }
 
 export function createMainWindow() {
@@ -131,10 +140,12 @@ export async function toggleMain(op) {
         main_window.webContents.send('update-config', config);
         main_window.webContents.send('reset');
         if ((op === undefined || !op) && main_window.isVisible()) {
+            // Give the renderer time to hide the results. Otherwise the old results will be visible
+            // for the first frame when showing the window for the next query.
             await new Promise(res => setTimeout(() => res(), 50));
             main_window.hide();
         } else if ((op === undefined || op) && !main_window.isVisible()) {
-            handleQuery('', main_window);
+            handleQuery('', main_window); // Initially fill with an empty query result
             main_window.show();
             if (config.general.recenter_on_show) {
                 main_window.center();
