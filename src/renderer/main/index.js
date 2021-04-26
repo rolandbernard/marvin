@@ -23,7 +23,11 @@ class App extends React.Component {
         this.input = createRef();
 
         ipcRenderer.on('update-options', (_, options) => {
-            this.setState({ results: options, selected: 0 });
+            clearTimeout(this.last_results);
+            this.last_results = setTimeout(() => {
+                clearTimeout(this.last_loading);
+                this.setState({ results: options, selected: 0 });
+            }, this.state.config ? this.state.config.general.incremental_result_debounce : 20);
         });
         ipcRenderer.on('update-config', (_, config) => {
             this.setState({ config: config });
@@ -31,6 +35,18 @@ class App extends React.Component {
         ipcRenderer.on('reset', (_) => {
             this.setState({ results: [], selected: 0 });
         });
+    }
+
+    sendQueryRequest() {
+        clearTimeout(this.last_query);
+        this.last_query = setTimeout(() => {
+            const query = this.input.current.value;
+            ipcRenderer.send('search-options', query);
+        }, this.state.config ? this.state.config.general.debounce_time : 20);
+        clearTimeout(this.last_loading);
+        this.last_loading = setTimeout(() => {
+            this.setState({ results: null, selected: 0 });
+        }, 200);
     }
 
     handleKeyDown(e) {
@@ -44,10 +60,9 @@ class App extends React.Component {
             window.close();
         } else if (e.key === 'Enter' && this.state.results && this.state.results.length > 0) {
             ipcRenderer.send('execute-option', this.state.results[this.state.selected]);
-        } else if (e.key === 'Tab' && this.state.results && this.state.results.length > 0
-            && this.state.results[this.state.selected].complete) {
+        } else if (e.key === 'Tab' && this.state.results && this.state.results.length > 0 && this.state.results[this.state.selected].complete) {
             this.input.current.value = this.state.results[this.state.selected].complete;
-            ipcRenderer.send('search-options', this.input.current.value);
+            this.sendQueryRequest();
         }
     }
 
@@ -107,7 +122,11 @@ class App extends React.Component {
         return (
             <div style={styles.root} onKeyDown={(e) => this.handleKeyDown(e)}>
                 <div style={styles.content}>
-                    <InputField config={this.state.config} inputRef={this.input}></InputField>
+                    <InputField
+                        config={this.state.config}
+                        inputRef={this.input}
+                        onChange={() => this.sendQueryRequest()}
+                    ></InputField>
                     <div style={styles.output_area}>
                         <div style={styles.output}>
                             <div style={styles.list}>

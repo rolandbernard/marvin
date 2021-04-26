@@ -65,92 +65,88 @@ export function deinitModules() {
     return Promise.all(Object.values(MODULES).map((module) => module.deinit && module.deinit()));
 }
 
-let last_query_timeout = null;
-let exec_id = 0;
-
-export function searchQuery(query, callback) {
-    return new Promise((resolve) => {
-        exec_id++;
-        const begin_id = exec_id;
-        clearTimeout(last_query_timeout);
-        last_query_timeout = setTimeout(async () => {
-            query = query.trim();
-            let results = [];
-            let to_eval;
-            if (config.general.exclusive_module_prefix) {
-                let prefix = '';
-                for (const id of Object.keys(MODULES)) {
-                    if (config.modules[id]?.prefix && config.modules[id].active && query.startsWith(config.modules[id].prefix)) {
-                        if (config.modules[id].prefix.length > prefix.length) {
-                            prefix = config.modules[id].prefix;
-                        }
-                    }
+/// Checks whether there exists a prefix that applies to this query. If one exists only return
+/// modules that fit that prefix, otherwise, return all modules that don't require a prefix.
+function findPossibleModules(query) {
+    let to_eval;
+    if (config.general.exclusive_module_prefix) {
+        let prefix = '';
+        for (const id of Object.keys(MODULES)) {
+            if (config.modules[id]?.prefix && config.modules[id].active && query.startsWith(config.modules[id].prefix)) {
+                if (config.modules[id].prefix.length > prefix.length) {
+                    prefix = config.modules[id].prefix;
                 }
-                to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
-                    ? config.modules[id].active && config.modules[id].prefix === prefix : false);
+            }
+        }
+        to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
+            ? config.modules[id].active && config.modules[id].prefix === prefix : false);
+    } else {
+        to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
+            ? config.modules[id].active && query.startsWith(config.modules[id].prefix) : false);
+    }
+    if (to_eval.length === 0) {
+        to_eval = Object.keys(MODULES).filter((id) => config.modules[id]
+            ? config.modules[id].active && !config.modules[id].prefix : true);
+    }
+    return to_eval;
+}
+
+async function searchQueryInModule(id, query, query_regex) {
+    try {
+        return (await MODULES[id].search(
+            config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query,
+            config.modules[id]?.prefix
+                ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
+                : query_regex
+        )).map((option) => ({ module: id, ...option }));
+    } catch (e) {
+        console.error(e);
+        return [];
+    }
+}
+
+function filterAndSortQueryResults(results) {
+    const existing = new Set();
+    return results
+        .filter((option) => option.quality > 0)
+        .sort((a, b) => b.quality - a.quality)
+        .filter((el) => {
+            let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");
+            if (!existing.has(value)) {
+                existing.add(value);
+                return true;
             } else {
-                to_eval = Object.keys(MODULES).filter((id) => config.modules[id]?.prefix
-                    ? config.modules[id].active && query.startsWith(config.modules[id].prefix) : false);
+                return false;
             }
-            if (to_eval.length === 0) {
-                to_eval = Object.keys(MODULES).filter((id) => config.modules[id]
-                    ? config.modules[id].active && !config.modules[id].prefix : true);
-            }
-            const query_regex = generateSearchRegex(query);
-            try {
-                await Promise.all(
-                    to_eval.filter((id) => (
-                        config.modules[id]?.prefix ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim()) : MODULES[id].valid(query)
-                    )).map((id) => {
-                        return new Promise(async (resolv, reject) => {
-                            try {
-                                let result = (await MODULES[id].search(
-                                    config.modules[id]?.prefix ? query.replace(config.modules[id].prefix, '').trim() : query,
-                                    config.modules[id]?.prefix
-                                    ? generateSearchRegex(query.replace(config.modules[id].prefix, '').trim())
-                                    : query_regex
-                                ));
-                                if (exec_id === begin_id) {
-                                    let existing = new Set();
-                                    results = results
-                                        .concat(result.map((option) => ({ module: id, ...option })))
-                                        .filter((option) => option.quality > 0)
-                                        .sort((a, b) => b.quality - a.quality)
-                                        .filter((el) => {
-                                            let value = (el.type || "") + (el.text || "") + (el.primary || "") + (el.secondary || "") + (el.html || "");
-                                            if (!existing.has(value)) {
-                                                existing.add(value);
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        })
-                                        .slice(0, config.general.max_results)
-                                    if (config.general.incremental_results && results.length > 0) {
-                                        callback(results);
-                                    }
-                                } else {
-                                    resolve();
-                                    reject();
-                                }
-                            } catch (e) {
-                                console.error(e);
-                            } finally {
-                                resolv();
-                            }
-                        });
-                    })
-                );
-            } catch (e) { }
-            if (exec_id === begin_id) {
+        })
+        .slice(0, config.general.max_results);
+}
+
+export async function searchQuery(query, callback) {
+    query = query.trim();
+    let results = [];
+    const modules = findPossibleModules(query);
+    const query_regex = generateSearchRegex(query);
+    const valid_modules = modules.filter(id => (
+        config.modules[id]?.prefix
+            ? MODULES[id].valid(query.replace(config.modules[id].prefix, '').trim())
+            : MODULES[id].valid(query)
+    ));
+    await Promise.all(
+        valid_modules.map(async id => {
+            const result = await searchQueryInModule(id, query, query_regex);
+            results.push(...result);
+            if (callback) {
+                results = filterAndSortQueryResults(results);
                 callback(results);
             }
-            resolve();
-        }, config.general.debounce_time);
-    });
+        })
+    );
+    return filterAndSortQueryResults(results);
 }
 
 export function executeOption(option) {
     Object.values(MODULES).forEach((module) => module.globalExecute && module.globalExecute(option));
     return MODULES[option.module].execute(option);
 }
+

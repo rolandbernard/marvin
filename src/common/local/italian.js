@@ -8,6 +8,7 @@ const TRANSLATION_ITALIAN = {
     max_height: 'Altezza massima [px]',
     max_results: 'Risultati massimi',
     incremental_results: 'Risultati incrementali',
+    incremental_result_debounce: 'Risultati incrementali debounce time [ms]',
     smooth_scrolling: 'Scorrimento regolare',
     recenter_on_show: "Centrare la finestra dopo l'apertura",
     exclusive_module_prefix: 'Prefisso esclusivo dei moduli',

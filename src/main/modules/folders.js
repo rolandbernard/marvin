@@ -94,7 +94,7 @@ const FoldersModule = {
                         }
                     });
                 });
-            } catch (e) { console.error(e) }
+            } catch (e) { resolve([]) }
         }))).filter((a) => a).flat();
     },
     execute: async (option) => {

@@ -11,6 +11,7 @@ const CONFIG_DEFINITION = [
             { name: 'max_height', type: 'size' },
             { name: 'max_results', type: 'size' },
             { name: 'incremental_results', type: 'boolean' },
+            { name: 'incremental_result_debounce', type: 'size' },
             { name: 'smooth_scrolling', type: 'boolean' },
             { name: 'recenter_on_show', type: 'boolean' },
             { name: 'exclusive_module_prefix', type: 'boolean' },

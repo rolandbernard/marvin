@@ -58,9 +58,9 @@ async function getMidoriBookmarks() {
                     res([]);
                 } else {
                     db.all(`
-                    Select title, uri url
-                        From bookmarks;
-                `, (err, rows) => {
+                        Select title, uri url
+                            From bookmarks;
+                    `, (err, rows) => {
                         if (err) {
                             return res([]);
                         } else {

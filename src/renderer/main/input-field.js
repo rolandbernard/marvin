@@ -22,12 +22,7 @@ class InputField extends React.Component {
             if (text_field) {
                 text_field.value = '';
             }
-            ipcRenderer.send('search-options', '');
         });
-    }
-
-    handleUpdate(e) {
-        ipcRenderer.send('search-options', e.target.value);
     }
 
     render() {
@@ -74,7 +69,7 @@ class InputField extends React.Component {
                 }}
                 inputRef={this.props.inputRef}
                 style={styles.text_field}
-                onChange={(e) => this.handleUpdate(e)}
+                onChange={this.props.onChange}
             />
         );
     }
