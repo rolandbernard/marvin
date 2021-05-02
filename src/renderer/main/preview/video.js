@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 
 const styles = {
     color_preview: {
-        width: '50%',
+        maxWidth: '50%',
+        maxHeight: '100%',
         position: 'absolute',
         right: 0,
         top: 0,
