@@ -1,9 +1,8 @@
 
 import { generateSearchRegex, stringMatchQuality } from "../search";
 import { config } from "../config";
-import { stat, exists, readdir } from "fs";
-import path, { extname } from 'path';
-import { format } from 'url';
+import { access, stat, readdir } from "fs/promises";
+import { extname, basename, dirname, join } from 'path';
 import { app } from "electron";
 import { exec } from "child_process";
 
@@ -11,38 +10,22 @@ function generateFilePreview(path) {
     if (extname(path).match(/\.(pdf)/i)) {
         return {
             type: 'embed',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${path}`,
         };
     } else if (extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
         return {
             type: 'image',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${path}`,
         };
     } else if (extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
         return {
             type: 'video',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${path}`,
         };
     } else if (extname(path).match(/\.(mp3|wav|mpeg)/i)) {
         return {
             type: 'audio',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${path}`,
         };
     } else {
         return null;
@@ -54,48 +37,34 @@ const FoldersModule = {
         return query.trim().length >= 1;
     },
     search: async (query) => {
+        const base_query = query[query.length - 1] === '/' ? '' : basename(query);
+        const query_dir = query[query.length - 1] === '/' ? query : dirname(query);
+        const regex = generateSearchRegex(base_query);
         return (await Promise.all(config.modules.folders.directories.map(async (directory) => {
-            const base_query = query[query.length - 1] === '/' ? '' : path.basename(query);
-            const query_dir = query[query.length - 1] === '/' ? query : path.dirname(query);
-            const regex = generateSearchRegex(base_query);
             try {
-                return await new Promise((resolve) => {
-                    exists(directory, (exist) => {
-                        if (exist) {
-                            const dir = query[query.length - 1] === '/' ? path.join(directory, query_dir) : path.join(directory, query_dir);
-                            exists(dir, (exist) => {
-                                if (exist) {
-                                    readdir(dir, async (_, files) => {
-                                        resolve(await Promise.all(files.map((file) => new Promise((resolve) => {
-                                            stat(path.join(dir, file), async (_, stats) => {
-                                                let option = stats && {
-                                                    type: 'icon_list_item',
-                                                    uri_icon: stats.isDirectory() ? null
-                                                        : (await app.getFileIcon(path.join(dir, file))).toDataURL(),
-                                                    material_icon: stats.isDirectory() ? 'folder' : null,
-                                                    primary: file,
-                                                    secondary: path.join(dir, file),
-                                                    executable: true,
-                                                    complete: path.join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
-                                                    quality: stringMatchQuality(base_query, file, regex),
-                                                    file: path.join(dir, file),
-                                                    preview: config.modules.folders.file_preview && generateFilePreview(path.join(dir, file)),
-                                                };
-                                                resolve(option);
-                                            });
-                                        }))));
-                                    });
-                                } else {
-                                    resolve([]);
-                                }
-                            });
-                        } else {
-                            resolve([]);
-                        }
-                    });
-                });
-            } catch (e) { resolve([]) }
-        }))).filter((a) => a).flat();
+                await access(directory);
+                const dir = join(directory, query_dir);
+                const files = await readdir(dir);
+                return (await Promise.all(files.map(async file => {
+                    const filepath = join(dir, file);
+                    const stats = await stat(filepath);
+                    return {
+                        type: 'icon_list_item',
+                        uri_icon: stats.isDirectory() ? null : (await app.getFileIcon(filepath)).toDataURL(),
+                        material_icon: stats.isDirectory() ? 'folder' : null,
+                        primary: file,
+                        secondary: filepath,
+                        executable: true,
+                        complete: join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
+                        quality: base_query ? stringMatchQuality(base_query, file, regex) : 0.01,
+                        file: join(dir, file),
+                        preview: config.modules.folders.file_preview && generateFilePreview(filepath),
+                    };
+                })));
+            } catch (e) {
+                return [];
+            }
+        }))).filter(a => a).flat();
     },
     execute: async (option) => {
         exec(`xdg-open '${option.file.replace(/\'/g, "'\\''")}'`);
