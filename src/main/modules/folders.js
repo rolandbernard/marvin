@@ -55,14 +55,14 @@ const FoldersModule = {
     },
     search: async (query) => {
         return (await Promise.all(config.modules.folders.directories.map(async (directory) => {
-            const base_query = path.basename(query);
+            const base_query = query[query.length - 1] === '/' ? '' : path.basename(query);
+            const query_dir = query[query.length - 1] === '/' ? query : path.dirname(query);
             const regex = generateSearchRegex(base_query);
             try {
                 return await new Promise((resolve) => {
                     exists(directory, (exist) => {
                         if (exist) {
-                            let query_dir = query[query.length - 1] === '/' ? query : path.dirname(query);
-                            let dir = query[query.length - 1] === '/' ? path.join(directory, query) : path.dirname(path.join(directory, query));
+                            const dir = query[query.length - 1] === '/' ? path.join(directory, query_dir) : path.join(directory, query_dir);
                             exists(dir, (exist) => {
                                 if (exist) {
                                     readdir(dir, async (_, files) => {
