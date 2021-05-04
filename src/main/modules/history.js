@@ -1,5 +1,5 @@
 
-import { existsSync, readFileSync, writeFileSync } from "fs";
+import { readFile, writeFile } from "fs/promises";
 import { app, ipcMain } from 'electron';
 import { config } from '../config';
 import { stringMatchQuality } from '../search';
@@ -9,30 +9,28 @@ let execute_history = [];
 
 const HISTORY_FILENAME = 'history.json';
 
-function loadHistory() {
+async function loadHistory() {
     const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
-    if (existsSync(history_path)) {
-        try {
-            execute_history = JSON.parse(readFileSync(history_path, { encoding: 'utf8' }));
-        } catch (e) { }
-    }
-    writeFileSync(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
+    try {
+        execute_history = JSON.parse(await readFile(history_path, { encoding: 'utf8' }));
+    } catch (e) { }
+    await writeFile(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
 }
 
-function updateHistory() {
+async function updateHistory() {
     const history_path = path.join(app.getPath('userData'), HISTORY_FILENAME);
-    writeFileSync(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
+    await writeFile(history_path, JSON.stringify(execute_history), { encoding: 'utf8' });
 }
     
-ipcMain.on('reset-history', (_) => {
+ipcMain.on('reset-history', async _ => {
     execute_history = [];
-    updateHistory();
+    await updateHistory();
 });
 
 const HistoryModule = {
     init: async () => {
         if (config.modules.history.active) {
-            loadHistory();
+            await loadHistory();
         }
     },
     valid: (query) => {
@@ -82,7 +80,7 @@ const HistoryModule = {
             option.history_frequency = old_frequency + 1;
             execute_history.unshift(option);
             execute_history.splice(config.modules.history.maximum_history);
-            updateHistory();
+            await updateHistory();
         }
     },
 }
