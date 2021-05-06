@@ -1,47 +1,30 @@
 
 import { generateSearchRegex, stringMatchQuality } from "../search";
 import { config } from "../config";
-import path, { extname } from 'path';
-import { format } from 'url';
+import { basename, extname } from 'path';
 import { exec } from "child_process";
 import { app } from "electron";
 
-function generateFilePreview(path) {
-    if (extname(path).match(/\.(pdf)/i)) {
+function generateFilePreview(filename) {
+    if (extname(filename).match(/\.(pdf)/i)) {
         return {
             type: 'embed',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${filename}`,
         };
-    } else if (extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
+    } else if (extname(filename).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
         return {
             type: 'image',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${filename}`,
         };
-    } else if (extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
+    } else if (extname(filename).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
         return {
             type: 'video',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${filename}`,
         };
-    } else if (extname(path).match(/\.(mp3|wav|mpeg)/i)) {
+    } else if (extname(filename).match(/\.(mp3|wav|mpeg)/i)) {
         return {
             type: 'audio',
-            url: format({
-                pathname: path,
-                protocol: 'file',
-                slashes: true,
-            }),
+            url: `file://${filename}`,
         };
     } else {
         return null;
@@ -54,27 +37,24 @@ const LocateModule = {
     },
     search: (query, regex) => {
         return new Promise((resolve) => {
-            const base_query = path.basename(query);
+            const base_query = basename(query);
             const base_regex = generateSearchRegex(base_query);
             exec(`locate -i -l ${config.modules.locate.search_limit} -e ${query}`, async (_, stdout, __) => {
                 if (stdout) {
-                    resolve(await Promise.all(stdout.split('\n').map((file) => {
-                        return new Promise(async (resolve) => {
-                            let option = {
-                                type: 'icon_list_item',
-                                uri_icon: (await app.getFileIcon(file)).toDataURL(),
-                                primary: path.basename(file),
-                                secondary: file,
-                                executable: true,
-                                quality: Math.max(
-                                    0.5 * stringMatchQuality(query, file, regex),
-                                    stringMatchQuality(base_query, path.basename(file), base_regex)
-                                ),
-                                file: file,
-                                preview: config.modules.locate.file_preview && generateFilePreview(file),
-                            };
-                            resolve(option);
-                        });
+                    const files = stdout.split('\n');
+                    const icons = await Promise.all(files.map(file => app.getFileIcon(file)));
+                    resolve(files.map((file, i) => ({
+                        type: 'icon_list_item',
+                        uri_icon: icons[i].toDataURL(),
+                        primary: basename(file),
+                        secondary: file,
+                        executable: true,
+                        quality: Math.max(
+                            0.5 * stringMatchQuality(query, file, regex),
+                            stringMatchQuality(base_query, basename(file), base_regex)
+                        ),
+                        file: file,
+                        preview: config.modules.locate.file_preview && generateFilePreview(file),
                     })));
                 } else {
                     resolve([]);

@@ -6,26 +6,26 @@ import { extname, basename, dirname, join } from 'path';
 import { app } from "electron";
 import { exec } from "child_process";
 
-function generateFilePreview(path) {
-    if (extname(path).match(/\.(pdf)/i)) {
+function generateFilePreview(filename) {
+    if (extname(filename).match(/\.(pdf)/i)) {
         return {
             type: 'embed',
-            url: `file://${path}`,
+            url: `file://${filename}`,
         };
-    } else if (extname(path).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
+    } else if (extname(filename).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
         return {
             type: 'image',
-            url: `file://${path}`,
+            url: `file://${filename}`,
         };
-    } else if (extname(path).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
+    } else if (extname(filename).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
         return {
             type: 'video',
-            url: `file://${path}`,
+            url: `file://${filename}`,
         };
-    } else if (extname(path).match(/\.(mp3|wav|mpeg)/i)) {
+    } else if (extname(filename).match(/\.(mp3|wav|mpeg)/i)) {
         return {
             type: 'audio',
-            url: `file://${path}`,
+            url: `file://${filename}`,
         };
     } else {
         return null;

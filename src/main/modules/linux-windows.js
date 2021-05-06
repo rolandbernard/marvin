@@ -8,7 +8,7 @@ const LinuxWindowsModule = {
     },
     search: (query, regex) => {
         return new Promise((resolve) => {
-            exec('wmctrl -x -l', async (_, stdout, __) => {
+            exec('wmctrl -x -l', (_, stdout, __) => {
                 if (stdout) {
                     resolve(stdout.split('\n').filter((line) => line)
                         .map((line) => line.split(' ').map((elm) => elm.trim()).filter((elm) => elm.length >= 1))

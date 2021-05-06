@@ -30,7 +30,7 @@ const ShortcutModule = {
             } catch (e) { }
         });
     },
-    valid: (query) => {
+    valid: (_) => {
         return false;
     },
 }

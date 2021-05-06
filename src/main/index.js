@@ -8,7 +8,7 @@ app.commandLine.appendSwitch("disable-gpu"); // Transparancy will not work witho
 async function startApp() {
     const got_single_instance_lock = app.requestSingleInstanceLock();
     if (got_single_instance_lock) {
-        loadConfig();
+        await loadConfig();
         await initModules();
     } else {
         console.error("Other instance is already running: quitting app.");
