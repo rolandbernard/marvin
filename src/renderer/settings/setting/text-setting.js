@@ -21,6 +21,9 @@ function TextSetting(props) {
         last_option.current = props.option;
         setValue(props.option);
     }
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div>
             <TextField
@@ -28,6 +31,7 @@ function TextSetting(props) {
                 style={styles.text}
                 variant="outlined"
                 onChange={onUpdate}
+                disabled={!enabled}
             ></TextField>
         </div>
     );

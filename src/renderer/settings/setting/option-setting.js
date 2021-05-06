@@ -95,6 +95,9 @@ function OptionSetting(props) {
         setValue('');
         setOptions([]);
     };
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div>
             <TextField
@@ -106,6 +109,7 @@ function OptionSetting(props) {
                 onKeyDown={onKeyDown}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                disabled={!enabled}
             ></TextField>
             <div style={styles.list_wrap}>
                 <div style={styles.list}>

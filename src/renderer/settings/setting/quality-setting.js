@@ -29,6 +29,9 @@ function QualitySetting(props) {
         setValue(props.option);
         setError(null);
     }
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div>
             <TextField
@@ -41,6 +44,7 @@ function QualitySetting(props) {
                 min={0}
                 max={1}
                 helperText={error}
+                disabled={!enabled}
             ></TextField>
         </div>
     );
