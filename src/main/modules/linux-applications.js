@@ -1,9 +1,8 @@
 
-import { readdir, readFile, writeFileSync, existsSync, readFileSync, stat } from "fs";
+import { readdir, writeFile, readFile, stat } from "fs/promises";
 import { app, ipcMain } from 'electron';
 import path from 'path';
 import { exec } from "child_process";
-import { format as formatUrl } from 'url';
 
 import { config } from "../config";
 import { stringMatchQuality } from '../search';
@@ -14,19 +13,17 @@ let icon_index = null;
 
 const APPLICATION_CACHE_FILENAME = 'applications.json';
 
-function loadApplicationCache() {
+async function loadApplicationCache() {
     const cache_path = path.join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
-    if (existsSync(cache_path)) {
-        try {
-            applications = JSON.parse(readFileSync(cache_path, { encoding: 'utf8' }));
-        } catch (e) { }
-    }
-    writeFileSync(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
+    try {
+        applications = JSON.parse(await readFile(cache_path, { encoding: 'utf8' }));
+    } catch (e) { }
+    await writeFile(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
 }
 
-function updateCache() {
+async function updateCache() {
     const cache_path = path.join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
-    writeFileSync(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
+    await writeFile(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
 }
 
 function getProp(object, name, fallback) {
@@ -45,204 +42,165 @@ function getProps(object, name) {
     }
 }
 
-function getIconTheme() {
+function promiseExec(command) {
     return new Promise((resolve) => {
-        exec(`gtk-query-settings gtk-icon-theme-name | awk -F: '{print $2; exit}' | head -c -2 | tail -c +3`, (_, stdout, __) => {
-            const theme = stdout && stdout.trim();
-            if (theme) {
-                resolve(theme);
-            } else {
-                resolve(null);
-            }
+        exec(command, (_err, stdout, _stderr) => {
+            resolve(stdout);
         });
     });
 }
 
-function getIconFallbackTheme() {
-    return new Promise((resolve) => {
-        exec(`gtk-query-settings gtk-fallback-icon-theme | awk -F: '{print $2; exit}' | head -c -2 | tail -c +3`, (_, stdout, __) => {
-            const theme = stdout && stdout.trim();
-            if (theme) {
-                resolve(theme);
-            } else {
-                resolve(null);
-            }
-        });
-    });
+async function getIconTheme() {
+    const theme = await promiseExec(`gtk-query-settings gtk-icon-theme-name | awk -F: '{print $2; exit}' | head -c -2 | tail -c +3`);
+    return theme && theme.trim();
 }
 
-function createIconIndex(theme, fallback_theme) {
+async function getIconFallbackTheme() {
+    const theme = await promiseExec(`gtk-query-settings gtk-fallback-icon-theme | awk -F: '{print $2; exit}' | head -c -2 | tail -c +3`);
+    return theme && theme.trim();
+}
+
+async function indexIconsFromPath(theme_path) {
+    const find_output = await promiseExec(`find -L ${theme_path} -type f`);
+    if (find_output) {
+        const files = find_output.split('\n');
+        for (const file of files) {
+            if (!icon_index[path.basename(file)]) {
+                icon_index[path.basename(file)] = file;
+            }
+            if (!icon_index[path.basename(file).toLowerCase()]) {
+                icon_index[path.basename(file).toLowerCase()] = file;
+            }
+        }
+    }
+}
+
+async function createIconIndex(theme, fallback_theme) {
     const icon_path = '/usr/share/icons';
     const icon_path_pixmaps = "/usr/share/pixmaps";
-    return new Promise((resolve) => {
-        if (icon_index) {
-            resolve();
-        } else {
-            icon_index = {};
-            exec(`find -L ${icon_path}/${theme}/ -type f`, { maxBuffer: 1024 * 1024 * 500 }, (_, stdout, __) => {
-                stdout.split('\n').forEach((value) => {
-                    if (!icon_index[path.basename(value)]) {
-                        icon_index[path.basename(value)] = value;
-                    }
-                    if (!icon_index[path.basename(value).toLowerCase()]) {
-                        icon_index[path.basename(value).toLowerCase()] = value;
-                    }
-                });
-                exec(`find -L ${icon_path}/${fallback_theme}/ -type f`, { maxBuffer: 1024 * 1024 * 500 }, (_, stdout, __) => {
-                    stdout.split('\n').forEach((value) => {
-                        if (!icon_index[path.basename(value)]) {
-                            icon_index[path.basename(value)] = value;
-                        }
-                        if (!icon_index[path.basename(value).toLowerCase()]) {
-                            icon_index[path.basename(value).toLowerCase()] = value;
-                        }
-                    });
-                    exec(`find -L ${icon_path}/ -type f`, { maxBuffer: 1024 * 1024 * 500 }, (_, stdout, __) => {
-                        stdout.split('\n').forEach((value) => {
-                            if (!icon_index[path.basename(value)]) {
-                                icon_index[path.basename(value)] = value;
-                            }
-                            if (!icon_index[path.basename(value).toLowerCase()]) {
-                                icon_index[path.basename(value).toLowerCase()] = value;
-                            }
-                        });
-                        exec(`find -L ${icon_path_pixmaps}/ -type f`, { maxBuffer: 1024 * 1024 * 500 }, (_, stdout, __) => {
-                            stdout.split('\n').forEach((value) => {
-                                if (!icon_index[path.basename(value)]) {
-                                    icon_index[path.basename(value)] = value;
-                                }
-                                if (!icon_index[path.basename(value).toLowerCase()]) {
-                                    icon_index[path.basename(value).toLowerCase()] = value;
-                                }
-                            });
-                            resolve();
-                        });
-                    });
-                });
-            });
-        }
-    });
+    if (!icon_index) {
+        icon_index = {};
+        await indexIconsFromPath(path.join(icon_path, theme));
+        await indexIconsFromPath(path.join(icon_path, fallback_theme));
+        await indexIconsFromPath(icon_path);
+        await indexIconsFromPath(icon_path_pixmaps);
+    }
 }
 
-function findIconPath(name) {
-    return new Promise(async (resolve) => {
-        if (name) {
-            const possible = [
-                `${name}.svg`,
-                `${name}.png`,
-                `${name}.jpg`,
-                `${name}.jpeg`,
-                `${name.toLowerCase()}.svg`,
-                `${name.toLowerCase()}.png`,
-                `${name.toLowerCase()}.jpg`,
-                `${name.toLowerCase()}.jpeg`,
-                `${name.toLowerCase()}`,
-                `${name}`,
-            ];
-            for (const file of possible) {
-                const stats = await new Promise((res) => {
-                    stat(file, (_, stats) => {
-                        res(stats);
-                    });
-                });
-                if (stats?.isFile()) {
-                    resolve(file);
-                    return;
-                } else if (icon_index[file]) {
-                    resolve(icon_index[file]);
-                    return;
+async function findIconPath(name) {
+    if (name) {
+        const possible = [
+            `${name}.svg`,
+            `${name}.png`,
+            `${name}.jpg`,
+            `${name}.jpeg`,
+            `${name.toLowerCase()}.svg`,
+            `${name.toLowerCase()}.png`,
+            `${name.toLowerCase()}.jpg`,
+            `${name.toLowerCase()}.jpeg`,
+            `${name.toLowerCase()}`,
+            `${name}`,
+        ];
+        for (const file of possible) {
+            try {
+                const stats = await stat(file);
+                if (stats.isFile()) {
+                    return file;
                 }
+            } catch (e) { /* Ignore errors */ }
+            if (icon_index[file]) {
+                return icon_index[file];
             }
         }
-        resolve(null);
-        return;
-    });
+    } else {
+        return null;
+    }
 }
 
 function pathToUrl(path) {
-    return new Promise((resolve) => {
-        resolve(formatUrl({
-            pathname: path,
-            protocol: 'file',
-            slashes: true
-        }));
-    });
+    return `file://${path}`;
+}
+
+function parseDesktopFile(data) {
+    const application = { };
+    const lines = data.split('\n').filter((line) => line).map((line) => line.trim()).filter((line) => !line.startsWith('#'));
+    let entry = null;
+    for (let line of lines) {
+        if (line[0] === '[') {
+            if (line.startsWith('[Desktop Entry')) {
+                entry = 'desktop';
+                application[entry] = {};
+            } else if (line.startsWith('[Desktop Action')) {
+                entry = line.substr(16).trim().replace(']', '');
+                application[entry] = {};
+            } else {
+                entry = null;
+            }
+        } else if (entry) {
+            let option;
+            if (line.includes('=')) {
+                const split = line.indexOf('=');
+                option = [ line.substr(0, split).trim(), line.substr(split + 1).trim() ];
+            } else {
+                option = [ line.trim() ];
+            }
+            if (option[0].endsWith(']')) {
+                let index = option[0].split('[');
+                index[1] = index[1].replace(']', '');
+                index = index.map((value) => value.trim());
+                if (!application[entry][index[0]]) {
+                    application[entry][index[0]] = {};
+                } else if (!(application[entry][index[0]] instanceof Object)) {
+                    application[entry][index[0]] = { 'default': application[entry][index[0]] };
+                }
+                application[entry][index[0]][index[1]] = option[1];
+            } else {
+                if (application[entry][option[0]] instanceof Object) {
+                    application[entry][option[0]]['default'] = option[1];
+                } else {
+                    application[entry][option[0]] = option[1];
+                }
+            }
+        }
+    }
+    return application;
 }
 
 async function loadApplications() {
     const theme = await getIconTheme();
     const fallback_theme = await getIconFallbackTheme();
     await createIconIndex(theme, fallback_theme);
-    applications = (await Promise.all((await Promise.all(config.modules.linux_applications.directories.map((directory) => new Promise((resolve) => {
-        readdir(directory, async (_, files) => {
-            resolve(files ? (await Promise.all(files.filter((file) => file.endsWith('.desktop')).map((file) => new Promise((resolve) => {
-                readFile(path.join(directory, file), { encoding: 'utf8' }, (_, data) => {
-                    if (data) {
-                        try {
-                            let ret = { application: file };
-                            const lines = data.split('\n').filter((line) => line).map((line) => line.trim()).filter((line) => !line.startsWith('#'));
-                            let entry = null;
-                            for (let line of lines) {
-                                if (line[0] === '[') {
-                                    if (line.startsWith('[Desktop Entry')) {
-                                        entry = 'desktop';
-                                        ret[entry] = {};
-                                    } else if (line.startsWith('[Desktop Action')) {
-                                        entry = line.substr(16).trim().replace(']', '');
-                                        ret[entry] = {};
-                                    } else {
-                                        entry = null;
-                                    }
-                                } else if (entry) {
-                                    let option;
-                                    if (line.includes('=')) {
-                                        const split = line.indexOf('=');
-                                        option = [ line.substr(0, split).trim(), line.substr(split + 1).trim() ];
-                                    } else {
-                                        option = [ line.trim() ];
-                                    }
-                                    if (option[0].endsWith(']')) {
-                                        let index = option[0].split('[');
-                                        index[1] = index[1].replace(']', '');
-                                        index = index.map((value) => value.trim());
-                                        if (!ret[entry][index[0]]) {
-                                            ret[entry][index[0]] = {};
-                                        } else if (!(ret[entry][index[0]] instanceof Object)) {
-                                            ret[entry][index[0]] = { 'default': ret[entry][index[0]] };
-                                        }
-                                        ret[entry][index[0]][index[1]] = option[1];
-                                    } else {
-                                        if (ret[entry][option[0]] instanceof Object) {
-                                            ret[entry][option[0]]['default'] = option[1];
-                                        } else {
-                                            ret[entry][option[0]] = option[1];
-                                        }
-                                    }
-                                }
-                            }
-                            resolve(ret);
-                        } catch (e) {
-                            resolve(null);
-                        }
-                    } else {
-                        resolve(null);
-                    }
-                });
-            })))).filter((entry) => entry) : []);
-        });
-    })))).flat().map(async (application) => {
-        await Promise.all(Object.values(application).filter((value) => value instanceof Object).map(async (value) => {
-            if (getProp(value, 'Icon') && !icons[getProp(value, 'Icon')]) {
-                const path = await findIconPath(getProp(value, 'Icon'), theme, fallback_theme);
-                if (path) {
-                    icons[getProp(value, 'Icon')] = await pathToUrl(path);
+    applications = [];
+    for (const directory of config.modules.linux_applications.directories) {
+        try {
+            const files = await readdir(directory);
+            for (const file of files) {
+                if (file.endsWith('.desktop')) {
+                    try {
+                        const data = await readFile(path.join(directory, file), { encoding: 'utf8' });
+                        const application = parseDesktopFile(data);
+                        application.application = file;
+                        applications.push(application);
+                    } catch(e) { /* Ignore errors */ }
                 }
             }
-            value.icon = icons[getProp(value, 'Icon')];
-        }));
-        return application;
-    })));
-    updateCache();
+        } catch(e) { /* Ignore errors */ }
+    }
+    for (const application of applications) {
+        for (const value of Object.values(application)) {
+            if (value instanceof Object) {
+                const icon = getProp(value, 'Icon');
+                if (icon && !icons[icon]) {
+                    const path = await findIconPath(icon, theme, fallback_theme);
+                    if (path) {
+                        icons[icon] = pathToUrl(path);
+                    }
+                }
+                value.icon = icons[icon];
+            }
+        }
+    }
+    await updateCache();
 }
 
 function getQualityForProp(object, prop, text, regex, scale) {
@@ -253,7 +211,7 @@ function getQualityForProp(object, prop, text, regex, scale) {
     ));
 }
     
-ipcMain.on('update-applications', (_) => {
+ipcMain.on('update-applications', () => {
     loadApplications();
 });
 
@@ -262,7 +220,7 @@ let update_interval = null;
 const LinuxApplicationModule = {
     init: async () => {
         if (config.modules.linux_applications.active) {
-            loadApplicationCache();
+            await loadApplicationCache();
             loadApplications();
             update_interval = setInterval(() => loadApplications(), 60 * 1000 * config.modules.linux_applications.refresh_interval_min);
         }

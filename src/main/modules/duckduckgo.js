@@ -87,8 +87,8 @@ const DuckduckgoModule = {
                                 url: data.FirstURL,
                             },
                         }))).filter((el) => el.text?.length >= 1 || (el.primary?.length >= 1 && el.secondary?.length >= 1)));
-                    }).catch((e) => { resolve([]) });
-                }).catch((e) => { resolve([]) });
+                    }).catch(() => { resolve([]) });
+                }).catch(() => { resolve([]) });
             }, config.modules.duckduckgo.debounce_time)
         });
     },

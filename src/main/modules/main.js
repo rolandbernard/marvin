@@ -1,7 +1,6 @@
 
 import { app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu } from 'electron';
 import * as path from 'path';
-import { format as formatUrl } from 'url';
 import { config } from '../config';
 import { executeOption, searchQuery } from '../executor';
 import { getTranslation, getAllTranslation } from '../../common/local/locale';
@@ -82,11 +81,7 @@ export function createMainWindow() {
     if (isDevelopment) {
         main_window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html`);
     } else {
-        main_window.loadURL(formatUrl({
-            pathname: path.join(__dirname, 'index.html'),
-            protocol: 'file',
-            slashes: true
-        }));
+        main_window.loadURL(`file://${path.join(__dirname, 'index.html')}`);
     }
 
     const hideWindow = (e) => {

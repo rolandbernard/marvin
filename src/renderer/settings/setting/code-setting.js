@@ -16,7 +16,6 @@ const styles = {
 
 function CodeSetting(props) {
     const input = createRef();
-    const line_count = props.option ? props.option.split('\n').length : 1;
     const [value, setValue] = useState(null);
     const onUpdate = (e) => {
         setValue(e.target.value);
@@ -39,6 +38,9 @@ function CodeSetting(props) {
         last_option.current = props.option;
         setValue(props.option);
     }
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div>
             <TextField
@@ -53,6 +55,7 @@ function CodeSetting(props) {
                     ref: input,
                     style: styles.input,
                 }}
+                disabled={!enabled}
             ></TextField>
         </div>
     );

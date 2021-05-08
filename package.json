@@ -1,6 +1,6 @@
 {
     "name": "marvin",
-    "version": "0.0.25",
+    "version": "0.0.26",
     "license": "MIT",
     "scripts": {
         "dev": "electron-webpack dev",
@@ -33,7 +33,7 @@
         "babel-loader": "^8.1.0",
         "css-loader": "^3.6.0",
         "electron": "^12.0.2",
-        "electron-builder": "^22.4.1",
+        "electron-builder": "=22.10.4",
         "electron-webpack": "^2.8.2",
         "file-loader": "^6.0.0",
         "style-loader": "^1.2.1",

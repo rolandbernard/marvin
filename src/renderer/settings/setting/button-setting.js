@@ -16,9 +16,17 @@ function ButtonSetting(props) {
             ipcRenderer.send(props.definition.action);
         }
     };
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div style={styles.input}>
-            <Button onClick={onClick} variant="outlined" size="large">
+            <Button
+                onClick={onClick}
+                variant="outlined"
+                size="large"
+                disabled={!enabled}
+            >
                 {getTranslation(props.config, props.definition.name)}
             </Button>
         </div>

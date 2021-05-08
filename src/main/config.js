@@ -1,5 +1,5 @@
 
-import { existsSync, readFileSync, writeFileSync } from "fs";
+import { readFile, writeFile } from "fs/promises";
 import { app } from "electron";
 import path from 'path';
 import { mergeDeep, cloneDeep } from '../common/util';
@@ -175,19 +175,17 @@ export let config = CONFIG_DEFAULT;
 
 const CONFIG_FILENAME = 'marvin.json';
 
-export function loadConfig() {
+export async function loadConfig() {
     const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
-    if (existsSync(config_path)) {
-        try {
-            config = mergeDeep(cloneDeep(config), JSON.parse(readFileSync(config_path, { encoding: 'utf8' })));
-        } catch (e) { }
-    }
+    try {
+        config = mergeDeep(cloneDeep(config), JSON.parse(await readFile(config_path, { encoding: 'utf8' })));
+    } catch (e) { /* Ignore errors? */ }
     config.version = app.getVersion();
-    writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
+    await writeFile(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }
 
-export function updateConfig(new_config) {
+export async function updateConfig(new_config) {
     const config_path = path.join(app.getPath('userData'), CONFIG_FILENAME);
     config = mergeDeep(cloneDeep(config), new_config);
-    writeFileSync(config_path, JSON.stringify(config), { encoding: 'utf8' });
+    await writeFile(config_path, JSON.stringify(config), { encoding: 'utf8' });
 }

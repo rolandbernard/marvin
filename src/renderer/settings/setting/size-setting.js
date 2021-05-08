@@ -29,6 +29,9 @@ function SizeSetting(props) {
         setValue(props.option);
         setError(null);
     }
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div>
             <TextField
@@ -40,6 +43,7 @@ function SizeSetting(props) {
                 error={error !== null}
                 min={0}
                 helperText={error}
+                disabled={!enabled}
             ></TextField>
         </div>
     );

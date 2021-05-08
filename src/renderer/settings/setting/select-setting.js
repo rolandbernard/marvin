@@ -16,9 +16,18 @@ function SelectSetting(props) {
     const onChange = (e) => {
         props.onUpdate(e.target.value);
     };
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div>
-            <Select style={styles.select} value={props.option || props.definition.options[0]} variant="outlined" onChange={onChange}>
+            <Select
+                style={styles.select}
+                value={props.option || props.definition.options[0]}
+                variant="outlined"
+                onChange={onChange}
+                disabled={!enabled}
+            >
                 {props.definition.options.map((option) => (
                     <MenuItem key={option} value={option}>{getTranslation(props.config, option)}</MenuItem>
                 ))}

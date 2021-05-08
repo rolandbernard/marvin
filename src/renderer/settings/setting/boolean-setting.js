@@ -11,9 +11,16 @@ const styles = {
 }
 
 function BooleanSetting(props) {
+    const enabled = !props.definition.enabled
+        || !props.config
+        || props.definition.enabled.split('.').reduce((prop, key) => prop[key], props.config);
     return (
         <div style={styles.input}>
-            <Switch checked={props.option} onChange={(e) => props.onUpdate(e.target.checked)}></Switch>
+            <Switch
+                checked={props.option}
+                onChange={(e) => props.onUpdate(e.target.checked)}
+                disabled={!enabled}
+            ></Switch>
         </div>
     );
 }
