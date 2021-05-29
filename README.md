@@ -5,17 +5,17 @@ This is a keystroke launcher for Linux. It is build using electron but it has no
 ## Installation
 ### Using a release AppImage
 Download the `Marvin-*.AppImage` file for the newest release here: https://github.com/rolandbernard/marvin/releases
-and copy it to a directory in your `PATH` variable (e.g. using `$ sudo cp Marvin-*.AppImage /usr/bin/marvin`).
+and copy it to a directory in your `PATH` variable (e.g. using `sudo cp Marvin-*.AppImage /usr/bin/marvin`).
 
 ### From source
-To install from source, you can execute the following commands.
+To install from source, you can execute the following commands:
 ```
-$ cd /tmp
-$ git clone https://github.com/rolandbernard/marvin
-$ cd marvin
-$ yarn install
-$ yarn dist
-$ sudo cp ./dist/Marvin-*.AppImage /usr/bin/marvin
+cd /tmp
+git clone https://github.com/rolandbernard/marvin
+cd marvin
+yarn install
+yarn dist
+sudo cp ./dist/Marvin-*.AppImage /usr/bin/marvin
 ```
 
 ## Features
