@@ -3,5 +3,6 @@ dist/
 node_modules/
 thumbs.db
 .idea/
+.vim/
 
 todo.md

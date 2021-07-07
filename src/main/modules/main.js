@@ -13,14 +13,14 @@ let tray;
 
 let main_window;
 
-const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will be croped to this length.
+const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will be cropped to this length.
 
-// This stores the original_options because we only send croped text fields.
+// This stores the original_options because we only send cropped text fields.
 // (Fixes a performance issue when the clipboard contains a very long text)
 const original_option = new Map();
 
 // This variable is used to ensure that if a earlier query finishes after a later query, it will not
-// actualty sen the results to the renderer.
+// actually sen the results to the renderer.
 let execution_count = 0;
 
 function sendUpdatedOptions(id, sender, results) {
@@ -90,9 +90,6 @@ export function createMainWindow() {
     };
 
     main_window.webContents.on('will-navigate', (e) => {
-        e.preventDefault();
-    });
-    main_window.webContents.on('new-window', (e) => {
         e.preventDefault();
     });
     main_window.on('close', hideWindow);

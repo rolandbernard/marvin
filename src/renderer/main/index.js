@@ -26,14 +26,14 @@ class App extends React.Component {
             clearTimeout(this.last_results);
             this.last_results = setTimeout(() => {
                 clearTimeout(this.last_loading);
-                this.setState({ results: options, selected: 0 });
+                this.setState({ results: options, selected: 0, center: true });
             }, this.state.config ? this.state.config.general.incremental_result_debounce : 20);
         });
         ipcRenderer.on('update-config', (_, config) => {
             this.setState({ config: config });
         });
         ipcRenderer.on('reset', (_) => {
-            this.setState({ results: [], selected: 0 });
+            this.setState({ results: [], selected: 0, center: true });
         });
     }
 
@@ -45,7 +45,7 @@ class App extends React.Component {
         }, this.state.config ? this.state.config.general.debounce_time : 20);
         clearTimeout(this.last_loading);
         this.last_loading = setTimeout(() => {
-            this.setState({ results: null, selected: 0 });
+            this.setState({ results: null, selected: 0, center: true });
         }, 200);
     }
 

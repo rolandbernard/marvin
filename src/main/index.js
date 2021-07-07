@@ -3,7 +3,7 @@ import { app } from 'electron';
 import { loadConfig } from './config';
 import { initModules, deinitModules } from './executor';
 
-app.commandLine.appendSwitch("disable-gpu"); // Transparancy will not work without this
+app.commandLine.appendSwitch("disable-gpu"); // Transparency will not work without this
 
 async function startApp() {
     const got_single_instance_lock = app.requestSingleInstanceLock();
