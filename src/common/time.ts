@@ -1,4 +1,5 @@
-import {match} from "./util";
+
+import { match } from "./util";
 
 export enum TimeUnit {
     MILLISECONDS = 'milliseconds',

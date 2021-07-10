@@ -1,11 +1,11 @@
 
-import { Config } from "common/config";
+import { GlobalConfig } from "common/config";
 
 export class Query {
     readonly text: string;
     readonly regex: RegExp;
 
-    constructor(config: Config, text: string) {
+    constructor(config: GlobalConfig, text: string) {
         this.text = text;
         if (config.general.enhanced_search) {
             this.regex = new RegExp(

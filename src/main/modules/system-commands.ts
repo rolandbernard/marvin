@@ -1,11 +1,12 @@
 
-import { Config, ModuleConfig } from "common/config";
+import { GlobalConfig, ModuleConfig } from "common/config";
 import { getTranslation } from "common/local/locale";
 import { Query } from "common/query";
 import { SimpleResult } from "common/result";
 import { match } from "common/util";
+import { Module, module } from "main/modules";
+
 import { Command, executeSystemCommands, getSystemCommands } from "main/executors/system-commands";
-import { Module } from "main/modules";
 
 class SystemCommandsResult extends SimpleResult {
     command: Command;
@@ -16,10 +17,11 @@ class SystemCommandsResult extends SimpleResult {
     }
 }
 
+@module('system-command')
 export class SystemCommandsModule implements Module<SystemCommandsResult> {
     readonly config = new ModuleConfig(true);
 
-    async search(config: Config, query: Query) {
+    async search(config: GlobalConfig, query: Query) {
         return getSystemCommands().map(command => new SystemCommandsResult(
             query.matchText(getTranslation(command, config)),
             match(command, {
@@ -31,7 +33,7 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
         ))
     }
 
-    async execute(_config: Config, result: SystemCommandsResult) {
+    async execute(_config: GlobalConfig, result: SystemCommandsResult) {
         executeSystemCommands(result.command);
     }
 }

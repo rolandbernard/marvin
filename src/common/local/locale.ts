@@ -3,7 +3,7 @@ import TRANSLATION_ENGLISH from 'common/local/english';
 import TRANSLATION_ITALIAN from 'common/local/italian';
 import TRANSLATION_GERMAN from 'common/local/german';
 
-import { Config } from 'common/config';
+import { GlobalConfig } from 'common/config';
 
 export enum Language {
     English = 'en',
@@ -25,7 +25,7 @@ const TRANSLATIONS = {
 
 export type Translation = typeof TRANSLATIONS[Language];
 
-export function getTranslation(text: keyof Translation, config?: Config) {
+export function getTranslation(text: keyof Translation, config?: GlobalConfig) {
     return TRANSLATIONS[config?.general.language ?? 'en'][text] ?? TRANSLATIONS['en'][text] ?? text;
 }
 

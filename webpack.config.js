@@ -1,6 +1,7 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const devtool = process.env.NODE_ENV === 'production' ? undefined : 'inline-source-map';
@@ -16,6 +17,9 @@ const commonConfig = {
     },
     resolve: {
         extensions: ['.ts', '.js'],
+        plugins: [
+            new TsconfigPathsPlugin(),
+        ],
     },
     mode,
     target: 'electron-renderer',

@@ -9,3 +9,7 @@ export function runMatch
     return match(value, mapping)();
 }
 
+export function importAll(context: __WebpackModuleApi.RequireContext) {
+    context.keys().forEach(context);
+}
+

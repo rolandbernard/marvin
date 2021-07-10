@@ -1,5 +1,6 @@
 
-export {}
+import { GlobalConfig } from "common/config";
+import { loadModules } from "main/modules";
 
-console.log('main.ts');
+console.log(new GlobalConfig(loadModules()));
 
