@@ -1,0 +1,17 @@
+
+directories:
+    output: build
+    buildResources: bundle
+
+files:
+    - bundle/**/*.js
+    - static/**/*
+
+linux:
+    icon: ./static/logo.png
+    target:
+        - AppImage
+    category: Utility
+    publish:
+        - github
+
