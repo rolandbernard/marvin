@@ -1,5 +1,5 @@
 
-import { ModuleId } from "main/modules";
+import { ModuleId } from 'common/module';
 
 export abstract class Preview { }
 

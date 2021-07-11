@@ -2,62 +2,35 @@
 import { app } from 'electron';
 
 import { Language } from 'common/local/locale';
-import { time, Time, TimeUnit } from 'common/time';
+import { time, TimeUnit } from 'common/time';
 import { Result } from 'common/result';
-import { ModuleId, Module } from 'main/modules';
+import { ModuleId, Module } from 'common/module';
+import { ConfigDescription, ConfigList, ConfigSelect, ConfigType } from 'common/config-desc';
 
-export type ConfigVersion = string;
-export type ConfigShortcut = string;
-export type ConfigColor = string;
-export type ConfigPath = string;
-
-export type ConfigSize = number;
-export type ConfigQuality = number;
-export type ConfigAmount = number;
-
-export enum ConfigPrimitiveKind {
-    STRING  = 'string',
-    BOOLEAN = 'boolean',
-    TIME    = 'time',
-    SIZE    = 'size',
-    AMOUNT  = 'amount',
-    CODE    = 'code',
-};
-
-export class ConfigPrimitiveArrayKind {
-    readonly base: ConfigPrimitiveKind;
-
-    constructor(base: ConfigPrimitiveKind) {
-        this.base = base;
-    }
-}
-
-export class ConfigArrayKind {
-    readonly value: Config;
-
-    constructor(value: Config) {
-        this.value = value;
-    }
-}
-
-type ConfigKind = ConfigPrimitiveKind | ConfigArrayKind | ConfigDefinition;
-
-export interface ConfigDefinition {
-    [key: string]: ConfigKind;
-}
+const def_meta_symbol = Symbol();
 
 export abstract class Config {
-    readonly definition: ConfigDefinition = {};
+    [def_meta_symbol]: ConfigList;
+
+    get definition() {
+        if (!this[def_meta_symbol]) {
+            this[def_meta_symbol] = {};
+        }
+        return this[def_meta_symbol];
+    }
 }
 
-export function configDef(type: ConfigKind) {
+export function config(type: ConfigDescription) {
     return (target: Config, prop: string) => {
         target.definition[prop] = type;
     }
 }
 
 export class ModuleConfig extends Config {
+    @config(ConfigType.BOOLEAN)
     active: boolean;
+
+    @config(ConfigType.TEXT)
     prefix: string;
 
     constructor(active?: boolean, prefix?: string) {
@@ -67,40 +40,93 @@ export class ModuleConfig extends Config {
     }
 };
 
-export class GlobalConfig {
+class GeneralConfig extends Config {
+    @config(ConfigType.SHORTCUT)
+    global_shortcut = 'Super+D';
+
+    @config(new ConfigSelect(Object.values(Language)))
+    language = Language.English;
+
+    @config(ConfigType.TIME)
+    debounce_time = time(20, TimeUnit.MILLISECONDS);
+
+    @config(ConfigType.SIZE)
+    width = 600;
+
+    @config(ConfigType.SIZE)
+    max_height = 500;
+
+    @config(ConfigType.AMOUNT)
+    max_results = 200;
+
+    @config(ConfigType.BOOLEAN)
+    incremental_results = false;
+
+    @config(ConfigType.TIME)
+    incremental_result_debounce = time(20, TimeUnit.MILLISECONDS);
+
+    @config(ConfigType.BOOLEAN)
+    smooth_scrolling = true;
+
+    @config(ConfigType.BOOLEAN)
+    recenter_on_show = true;
+
+    @config(ConfigType.BOOLEAN)
+    exclusive_module_prefix = true;
+
+    @config(ConfigType.BOOLEAN)
+    enhanced_search = true;
+}
+
+class ThemeConfig extends Config {
+    @config(ConfigType.COLOR)
+    background_color_input = 'black';
+
+    @config(ConfigType.COLOR)
+    background_color_output = 'black';
+
+    @config(ConfigType.COLOR)
+    text_color_input = 'white';
+
+    @config(ConfigType.COLOR)
+    text_color_output = 'white';
+
+    @config(ConfigType.COLOR)
+    accent_color_input = 'white';
+
+    @config(ConfigType.COLOR)
+    accent_color_output = 'white';
+
+    @config(ConfigType.COLOR)
+    select_color = 'grey';
+
+    @config(ConfigType.COLOR)
+    select_text_color = 'white';
+
+    @config(ConfigType.SIZE)
+    border_radius = 0;
+
+    @config(ConfigType.COLOR)
+    shadow_color_input = '#00000000';
+
+    @config(ConfigType.COLOR)
+    shadow_color_output = '#00000000';
+}
+
+export class GlobalConfig extends Config {
     version = app.getVersion();
-    general = new class GeneralConfig {
-        global_shortcut = 'Super+D';
-        language = Language.English;
-        debounce_time = time(20, TimeUnit.MILLISECONDS);
-        width: ConfigSize = 600;
-        max_height: ConfigSize = 500;
-        max_results: ConfigAmount = 200;
-        incremental_results = false;
-        incremental_result_debounce: Time = time(20, TimeUnit.MILLISECONDS);
-        smooth_scrolling = true;
-        recenter_on_show = true;
-        exclusive_module_prefix = true;
-        enhanced_search = true;
-    };
-    theme = new class ThemeConfig {
-        background_color_input: ConfigColor = 'black';
-        background_color_output: ConfigColor = 'black';
-        text_color_input: ConfigColor = 'white';
-        text_color_output: ConfigColor = 'white';
-        accent_color_input: ConfigColor = 'white';
-        accent_color_output: ConfigColor = 'white';
-        select_color: ConfigColor = 'grey';
-        select_text_color: ConfigColor = 'white';
-        border_radius: ConfigSize = 0;
-        background_blur_input: ConfigSize = 0;
-        background_blur_output: ConfigSize = 0;
-        shadow_color_input: ConfigColor = '#00000000';
-        shadow_color_output: ConfigColor = '#00000000';
-    };
+
+    @config(ConfigType.PAGE)
+    general = new GeneralConfig();
+
+    @config(ConfigType.PAGE)
+    theme = new ThemeConfig();
+
+    @config(ConfigType.PAGES)
     modules: Record<ModuleId, Module<Result>>;
 
     constructor(modules: Record<ModuleId, Module<Result>>) {
+        super();
         this.modules = Object.assign({},
             ...Object.keys(modules).sort()
                 .map(module => ({ module, config: modules[module].config }))

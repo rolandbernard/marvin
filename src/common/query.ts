@@ -1,5 +1,5 @@
 
-import { GlobalConfig } from "common/config";
+import { GlobalConfig } from 'common/config';
 
 export class Query {
     readonly text: string;

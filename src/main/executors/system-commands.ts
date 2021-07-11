@@ -1,6 +1,7 @@
 
-import { exec } from 'child_process';
 import { runMatch } from 'common/util';
+
+import { executeCommand } from 'main/executors/commands';
 
 export enum Command {
     SHUTDOWN = 'shutdown',
@@ -13,8 +14,8 @@ export function getSystemCommands(): Command[] {
 
 export function executeSystemCommands(command: Command) {
     runMatch(command, {
-        'shutdown': () => exec('shutdown now || systemctl poweroff'),
-        'reboot': () => exec('reboot || systemctl reboot'),
+        'shutdown': () => executeCommand('shutdown now || systemctl poweroff'),
+        'reboot': () => executeCommand('reboot || systemctl reboot'),
     });
 }
 

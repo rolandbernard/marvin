@@ -1,18 +1,21 @@
 
-import { GlobalConfig, ModuleConfig } from "common/config";
-import { getTranslation } from "common/local/locale";
-import { Query } from "common/query";
-import { SimpleResult } from "common/result";
-import { match } from "common/util";
-import { Module, module } from "main/modules";
+import { GlobalConfig, ModuleConfig } from 'common/config';
+import { getTranslation } from 'common/local/locale';
+import { Query } from 'common/query';
+import { SimpleResult } from 'common/result';
+import { match } from 'common/util';
+import { Module } from 'common/module';
 
-import { Command, executeSystemCommands, getSystemCommands } from "main/executors/system-commands";
+import { module } from 'main/modules';
+import { Command, executeSystemCommands, getSystemCommands } from 'main/executors/system-commands';
+
+const MODULE_ID = 'system_commands';
 
 class SystemCommandsResult extends SimpleResult {
     command: Command;
 
     constructor(quality: number, icon: string, primary: string, command: Command) {
-        super('system_commands', quality, icon, primary);
+        super(MODULE_ID, quality, icon, primary);
         this.command = command;
     }
 }
