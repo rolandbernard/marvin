@@ -114,7 +114,7 @@ class ThemeConfig extends Config {
 }
 
 export class GlobalConfig extends Config {
-    version = app.getVersion();
+    readonly version = app.getVersion();
 
     @config(ConfigType.PAGE)
     general = new GeneralConfig();

@@ -13,13 +13,11 @@ export function importAll(context: __WebpackModuleApi.RequireContext) {
     context.keys().forEach(context);
 }
 
-type Object = { [key: string]: unknown };
-
-function isObject(item: any): item is Object {
+function isObject(item: any) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
-export function mergeDeep(target: Object, ...sources: Object[]): Object {
+export function mergeDeep(target: any, ...sources: any[]): any {
     if (sources.length === 0) {
         return target;
     } else {
@@ -39,15 +37,15 @@ export function mergeDeep(target: Object, ...sources: Object[]): Object {
     }
 }
 
-export function cloneDeep(obj: unknown): unknown {
+export function cloneDeep<Type>(obj: Type): Type {
     if (obj instanceof Array) {
         const ret: unknown[] = [];
         for (const key in obj) {
             ret[key] = cloneDeep(obj[key]);
         }
-        return ret;
+        return ret as any;
     } else if (isObject(obj)) {
-        const ret: Object = {};
+        const ret: any = {};
         for (const key in obj) {
             ret[key] = cloneDeep(obj[key]);
         }
