@@ -7,7 +7,7 @@ import { match } from 'common/util';
 import { Module } from 'common/module';
 
 import { module } from 'main/modules';
-import { Command, executeSystemCommands, getSystemCommands } from 'main/executors/system-commands';
+import { Command, executeSystemCommands } from 'main/executors/system-commands';
 
 const MODULE_ID = 'system_commands';
 
@@ -20,12 +20,12 @@ class SystemCommandsResult extends SimpleResult {
     }
 }
 
-@module('system-command')
+@module(MODULE_ID)
 export class SystemCommandsModule implements Module<SystemCommandsResult> {
     readonly config = new ModuleConfig(true);
 
     async search(config: GlobalConfig, query: Query) {
-        return getSystemCommands().map(command => new SystemCommandsResult(
+        return Object.values(Command).map(command => new SystemCommandsResult(
             query.matchText(getTranslation(command, config)),
             match(command, {
                 'shutdown': 'power_settings_new',

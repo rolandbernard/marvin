@@ -6,6 +6,7 @@ import { ModuleId, Module } from 'common/module'
 import { importAll } from 'common/util';
 
 import { config } from 'main/config';
+import { Platform, getPlatform } from 'main/platform';
 
 export const modules: Record<ModuleId, Module<Result>> = { };
 
@@ -16,9 +17,15 @@ export function registerModule(key: ModuleId, module: Module<any>) {
     modules[key] = module;
 }
 
-export function module(id: ModuleId) {
-    return (moduleClass: Constructor<Module<any>>) => {
-        registerModule(id, new moduleClass());
+export function module(id: ModuleId, platform?: Platform | Platform[]) {
+    const pf = getPlatform();
+    if (!platform || platform === pf || platform.includes?.(pf)) {
+        return (moduleClass: Constructor<Module<any>>) => {
+            registerModule(id, new moduleClass());
+        };
+    } else {
+        // If this platform is not supported by the module, don't add the module
+        return () => {};
     }
 }
 

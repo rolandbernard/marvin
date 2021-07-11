@@ -22,7 +22,6 @@ const commonConfig = {
         ],
     },
     mode,
-    target: 'electron-renderer',
     node: false,
     devtool,
     externals: {

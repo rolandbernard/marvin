@@ -20,6 +20,7 @@ export abstract class Config {
     }
 }
 
+// Use this as a decorator to describe the config field
 export function config(type: ConfigDescription) {
     return (target: Config, prop: string) => {
         target.definition[prop] = type;

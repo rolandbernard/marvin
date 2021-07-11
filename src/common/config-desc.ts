@@ -1,6 +1,7 @@
 
 import { Config } from 'common/config';
 
+// The config field description is used to generate the settings page
 export type ConfigDescription = ConfigType | ConfigArray | ConfigSelect | ConfigButton;
 
 export enum ConfigType {
