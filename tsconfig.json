@@ -18,8 +18,11 @@
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "baseUrl": "src",
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "baseUrl": "./",
+        "paths" : {
+            "*" : ["src/*", "static/*"]
+        }
     },
     "include": [
         "src"

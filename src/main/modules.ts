@@ -5,7 +5,6 @@ import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module'
 import { importAll } from 'common/util';
 
-import { config } from 'main/config';
 import { Platform, getPlatform } from 'main/platform';
 
 export const modules: Record<ModuleId, Module<Result>> = { };
@@ -31,13 +30,19 @@ export function module(id: ModuleId, platform?: Platform | Platform[]) {
 
 export async function initModules() {
     for (const module of Object.values(modules)) {
-        await module.init?.(config);
+        await module.init?.();
+    }
+}
+
+export async function updateModules() {
+    for (const module of Object.values(modules)) {
+        await module.update?.();
     }
 }
 
 export async function deinitModules() {
     for (const module of Object.values(modules)) {
-        await module.deinit?.(config);
+        await module.deinit?.();
     }
 }
 

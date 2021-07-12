@@ -13,6 +13,10 @@ const commonConfig = {
                 test: /\.tsx?$/,
                 loader: 'ts-loader',
             },
+            {
+                test: /\.(svg|png|jpe?g|gif)$/i,
+                loader: 'file-loader',
+            },
         ],
     },
     resolve: {

@@ -17,7 +17,9 @@
     "scripts": {
         "bundle": "webpack --config webpack.config.js",
         "start": "electron . --remote-debugging-port=9223",
-        "package": "electron-builder --config electron-builder.yml --publish never"
+        "package": "electron-builder --config electron-builder.yml --publish never",
+        "debug": "npm run bundle && npm run start",
+        "build": "NODE_ENV=production npm run bundle && npm run package"
     },
     "dependencies": {
         "lit-element": "^2.5.1"
@@ -26,6 +28,7 @@
         "@types/webpack-env": "^1.16.2",
         "electron": "^13.1.6",
         "electron-builder": "^22.11.7",
+        "file-loader": "^6.2.0",
         "html-webpack-plugin": "^5.3.2",
         "ts-loader": "^9.2.3",
         "tsconfig-paths-webpack-plugin": "^3.5.1",
