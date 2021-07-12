@@ -11,17 +11,7 @@ declare module '*.svg' {
     export default src;
 }
 
-declare module '*.gif' {
-    const src: string;
-    export default src;
-}
-
-declare module '*.jpg' {
-    const src: string;
-    export default src;
-}
-
-declare module '*.jpeg' {
+declare module '*.woff2' {
     const src: string;
     export default src;
 }

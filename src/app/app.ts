@@ -7,6 +7,8 @@ import { GlobalConfig } from 'common/config';
 import 'app/input-field';
 import 'app/output-list';
 
+import 'index.css';
+
 @customElement('page-root')
 export class PageRoot extends LitElement {
 
@@ -28,6 +30,12 @@ export class PageRoot extends LitElement {
                 display: flex;
                 flex-direction: column;
             }
+            .input {
+                flex: 0 0 auto;
+            }
+            .output {
+                flex: 1 1 auto;
+            }
         `;
     }
 
@@ -42,7 +50,9 @@ export class PageRoot extends LitElement {
         return html`
             <div class="window">
                 <input-field class="input" .config="${this.config}"></input-field>
-                <output-list class="output" .config="${this.config}"></output-list>
+                <div class="output">
+                    <output-list .config="${this.config}"></output-list>
+                </div>
             <div>
         `;
     }

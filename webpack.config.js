@@ -14,8 +14,12 @@ const commonConfig = {
                 loader: 'ts-loader',
             },
             {
-                test: /\.(svg|png|jpe?g|gif)$/i,
+                test: /\.(woff2|svg|png|jpe?g|gif)$/i,
                 loader: 'file-loader',
+            },
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
             },
         ],
     },

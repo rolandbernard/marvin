@@ -12,7 +12,6 @@ import { module } from 'main/modules';
 import { isDevelopment } from 'main/platform';
 
 import Logo from 'logo.png';
-import Exit from 'icons/exit.svg';
 
 const MODULE_ID = 'main';
 
@@ -50,10 +49,10 @@ export class MainModule implements Module<SimpleResult> {
                 experimentalFeatures: true,
                 plugins: true,
             },
-            resizable: inDevelopment,
+            resizable: false,
             maximizable: false,
             minimizable: false,
-            movable: inDevelopment,
+            movable: false,
             skipTaskbar: true,
             center: true,
             frame: inDevelopment,
@@ -62,7 +61,7 @@ export class MainModule implements Module<SimpleResult> {
             alwaysOnTop: true,
             width: config.general.width + 20,
             height: config.general.max_height + 20,
-            icon: Logo,
+            icon: join(__dirname, Logo),
         });
 
         const hideWindow = (e: Event) => {
@@ -141,7 +140,7 @@ export class MainModule implements Module<SimpleResult> {
             kind: 'simple-result',
             module: MODULE_ID,
             quality: query.matchAny(getAllTranslations('quit'), getTranslation('quit', config)),
-            icon: `file://${join(__dirname, Exit)}`,
+            icon: { material: 'exit_to_app' },
             primary: getTranslation('quit', config),
         }];
     }

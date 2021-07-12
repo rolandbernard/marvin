@@ -1,6 +1,4 @@
 
-import { join } from 'path';
-
 import { ModuleConfig } from 'common/config';
 import { getTranslation } from 'common/local/locale';
 import { Query } from 'common/query';
@@ -11,9 +9,6 @@ import { Module } from 'common/module';
 import { config } from 'main/config';
 import { module } from 'main/modules';
 import { Command, executeSystemCommands } from 'main/executors/system-commands';
-
-import Replay from 'icons/replay.svg';
-import Power from 'icons/power.svg';
 
 const MODULE_ID = 'system_commands';
 
@@ -30,10 +25,12 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
             kind: 'simple-result',
             module: MODULE_ID,
             quality: query.matchText(getTranslation(command, config)),
-            icon: `file://${join(__dirname, match(command, {
-                'shutdown': Power,
-                'reboot': Replay,
-            }))}`,
+            icon: {
+                material: match(command, {
+                    'shutdown': 'power_settings_new',
+                    'reboot': 'replay',
+                })
+            },
             primary: getTranslation(command, config),
             command: command
         }));
