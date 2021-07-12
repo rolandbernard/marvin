@@ -17,32 +17,53 @@ export class InputField extends LitElement {
 
     static get styles() {
         return css`
-            :host {
-                height: 2.5rem;
+            .wrapper {
+                padding: 0.75rem;
                 display: flex;
                 flex-flow: row nowrap;
+                align-items: center;
+                justify-content: center;
             }
             .icon {
-                color: white;
+                flex: 0 0 auto;
+                font-size: 2rem;
+                margin-right: 0.5rem;
             }
             .input {
+                font-family: var(--font-family);
+                flex: 1 1 100%;
                 font-size: 1.5rem;
                 font-weight: 300;
                 appearance: none;
                 border: none;
                 outline: none;
+                background: none;
             }
         `;
     }
 
     render() {
-        const input = styleMap({
+        const icon = styleMap({
+            color: this.config?.theme.accent_color_input ?? '',
+        });
+        const wrapper = styleMap({
             background: this.config?.theme.background_color_input ?? '',
+        });
+        const input = styleMap({
             color: this.config?.theme.text_color_input ?? '',
         });
         return html`
-            <material-icon class="icon" name="search"></material-icon>
-            <input class="input" style="${input}"></input>
+            <div class="wrapper" style="${wrapper}">
+                <material-icon
+                    class="icon"
+                    name="search"
+                    style="${icon}"
+                ></material-icon>
+                <input
+                    class="input"
+                    style="${input}"
+                ></input>
+            </div>
         `;
     }
 }
