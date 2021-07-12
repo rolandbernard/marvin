@@ -2,15 +2,17 @@
 import { app, BrowserWindow, Event, Tray, Menu, globalShortcut } from 'electron';
 import { join } from 'path';
 
-import { getTranslation } from 'common/local/locale';
+import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
+import { Query } from 'common/query';
 
 import { config } from 'main/config';
 import { module } from 'main/modules';
 import { isDevelopment } from 'main/platform';
 
 import Logo from 'logo.png';
+import Exit from 'icons/exit.svg';
 
 const MODULE_ID = 'main';
 
@@ -39,6 +41,8 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     createWindow() {
+        const inDevelopment = isDevelopment();
+
         this.window = new BrowserWindow({
             webPreferences: {
                 nodeIntegration: true,
@@ -46,14 +50,14 @@ export class MainModule implements Module<SimpleResult> {
                 experimentalFeatures: true,
                 plugins: true,
             },
-            resizable: false,
+            resizable: inDevelopment,
             maximizable: false,
             minimizable: false,
-            movable: false,
+            movable: inDevelopment,
             skipTaskbar: true,
             center: true,
-            frame: isDevelopment(),
-            // show: false,
+            frame: inDevelopment,
+            show: false,
             transparent: true,
             alwaysOnTop: true,
             width: config.general.width + 20,
@@ -66,7 +70,7 @@ export class MainModule implements Module<SimpleResult> {
             this.hideWindow();
         };
         this.window.on('close', hideWindow);
-        if (!isDevelopment()) {
+        if (!inDevelopment) {
             this.window.on('blur', hideWindow);
         }
 
@@ -87,7 +91,7 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     showWindow() {
-        this.window?.webContents.send('show');
+        this.window?.webContents.send('show', config, config.getDescription());
         this.window?.show();
         if (config.general.recenter_on_show) {
             this.window?.center();
@@ -130,6 +134,21 @@ export class MainModule implements Module<SimpleResult> {
 
     async deinit() {
         this.destroyWindow();
+    }
+
+    async search(query: Query): Promise<SimpleResult[]> {
+        return [{
+            kind: 'simple-result',
+            module: MODULE_ID,
+            quality: query.matchAny(getAllTranslations('quit'), getTranslation('quit', config)),
+            icon: `file://${join(__dirname, Exit)}`,
+            primary: getTranslation('quit', config),
+        }];
+    }
+
+    async execute() {
+        // There is only one action: quit.
+        app.quit();
     }
 }
 

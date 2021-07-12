@@ -55,7 +55,7 @@ export function cloneDeep<Type>(obj: Type): Type {
     }
 }
 
-export function isInEnum<Type extends string>(type: { [k: string]: Type }, value: string): value is Type {
+export function isInEnum<Type extends string>(type: { [k: string]: Type }, value: any): value is Type {
     return Object.values<string>(type).includes(value);
 }
 

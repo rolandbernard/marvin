@@ -8,11 +8,13 @@ import { mergeDeep } from 'common/util';
 
 import { modules } from 'main/modules';
 
-export const config = new GlobalConfig(modules);
+export let config: GlobalConfig;
 
-const config_path = join(app.getPath('userData'), 'marvin.json');
+const config_path = join(app.getPath('userData'), 'new-marvin.json');
 
 export async function loadConfig() {
+    // Modules are already registered, create a default config for them
+    config = new GlobalConfig(modules);
     try {
         const old_config = JSON.parse(await readFile(config_path, { encoding: 'utf8' }));
         delete old_config.version;

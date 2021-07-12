@@ -1,4 +1,6 @@
 
+import { join } from 'path';
+
 import { ModuleConfig } from 'common/config';
 import { getTranslation } from 'common/local/locale';
 import { Query } from 'common/query';
@@ -10,31 +12,31 @@ import { config } from 'main/config';
 import { module } from 'main/modules';
 import { Command, executeSystemCommands } from 'main/executors/system-commands';
 
+import Replay from 'icons/replay.svg';
+import Power from 'icons/power.svg';
+
 const MODULE_ID = 'system_commands';
 
-class SystemCommandsResult extends SimpleResult {
+interface SystemCommandsResult extends SimpleResult {
     command: Command;
-
-    constructor(quality: number, icon: string, primary: string, command: Command) {
-        super(MODULE_ID, quality, icon, primary);
-        this.command = command;
-    }
 }
 
 @module(MODULE_ID)
 export class SystemCommandsModule implements Module<SystemCommandsResult> {
     readonly config = new ModuleConfig(true);
 
-    async search(query: Query) {
-        return Object.values(Command).map(command => new SystemCommandsResult(
-            query.matchText(getTranslation(command, config)),
-            match(command, {
-                'shutdown': 'power_settings_new',
-                'reboot': 'replay',
-            }),
-            getTranslation(command, config),
-            command
-        ))
+    async search(query: Query): Promise<SystemCommandsResult[]> {
+        return Object.values(Command).map(command => ({
+            kind: 'simple-result',
+            module: MODULE_ID,
+            quality: query.matchText(getTranslation(command, config)),
+            icon: `file://${join(__dirname, match(command, {
+                'shutdown': Power,
+                'reboot': Replay,
+            }))}`,
+            primary: getTranslation(command, config),
+            command: command
+        }));
     }
 
     async execute(result: SystemCommandsResult) {

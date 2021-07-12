@@ -5,25 +5,60 @@ import { Language } from 'common/local/locale';
 import { time, TimeUnit } from 'common/time';
 import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module';
-import { ConfigDescription, ConfigList, ConfigSelect, ConfigType } from 'common/config-desc';
+import { ConfigDescription, ConfigList, ConfigType } from 'common/config-desc';
 
-const def_meta_symbol = Symbol();
+const desc_meta = Symbol();
 
 export abstract class Config {
-    [def_meta_symbol]: ConfigList;
+    [desc_meta]: ConfigList;
 
-    get definition() {
-        if (!this[def_meta_symbol]) {
-            this[def_meta_symbol] = {};
+    get description(): ConfigList {
+        if (!this[desc_meta]) {
+            this[desc_meta] = {
+                kind: 'list',
+                values: {},
+            };
         }
-        return this[def_meta_symbol];
+        return this[desc_meta];
+    }
+
+    getDescription(): ConfigDescription {
+        const result: ConfigList = {
+            kind: 'list',
+            values: {},
+        };
+        for (const key in this.description.values) {
+            if (this.description.values[key] === ConfigType.PAGE) {
+                const transformed = (this as any)[key]?.getDescription?.();
+                if (transformed) {
+                    transformed.kind = 'page';
+                    result.values[key] = transformed;
+                }
+            } else if (this.description.values[key] === ConfigType.PAGES) {
+                const desc: ConfigList = {
+                    kind: 'subheader',
+                    values: {},
+                };
+                const pages = (this as any)[key];
+                for (const page in pages) {
+                    const transformed = pages[page]?.getDescription?.();
+                    if (transformed) {
+                        desc.values[page] = transformed;
+                    }
+                }
+                result.values[key] = desc;
+            } else {
+                result.values[key] = this.description.values[key];
+            }
+        }
+        return result;
     }
 }
 
 // Use this as a decorator to describe the config field
 export function config(type: ConfigDescription) {
     return (target: Config, prop: string) => {
-        target.definition[prop] = type;
+        target.description.values[prop] = type;
     }
 }
 
@@ -45,7 +80,7 @@ class GeneralConfig extends Config {
     @config(ConfigType.SHORTCUT)
     global_shortcut = 'Super+D';
 
-    @config(new ConfigSelect(Object.values(Language)))
+    @config({ kind: 'select', options: Object.values(Language) })
     language = Language.English;
 
     @config(ConfigType.TIME)
@@ -122,6 +157,8 @@ export class GlobalConfig extends Config {
 
     @config(ConfigType.PAGE)
     theme = new ThemeConfig();
+
+    @config(ConfigType.PAGES)
 
     @config(ConfigType.PAGES)
     modules: Record<ModuleId, Module<Result>>;

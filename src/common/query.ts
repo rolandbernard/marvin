@@ -62,5 +62,12 @@ export class Query {
             return 0.0;
         }
     }
+
+    matchAny(texts: string[], primary?: string): number {
+        return Math.max(
+            ...texts.map(text => this.matchText(text)),
+            this.matchText(primary ?? '')
+        );
+    }
 }
 

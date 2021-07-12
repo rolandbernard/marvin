@@ -28,6 +28,11 @@ export function module(id: ModuleId, platform?: Platform | Platform[]) {
     }
 }
 
+export function moduleForId<Type>(id: ModuleId): Type {
+    // Assert that the type is correct. This simplifies using this function.
+    return modules[id] as Type;
+}
+
 export async function initModules() {
     for (const module of Object.values(modules)) {
         await module.init?.();

@@ -25,13 +25,13 @@ const TRANSLATIONS = {
 
 export type Translation = typeof TRANSLATIONS[Language];
 
-export function getTranslation(text: keyof Translation, config?: GlobalConfig) {
+export function getTranslation(text: keyof Translation, config?: GlobalConfig): string {
     return TRANSLATIONS[config?.general.language ?? 'en'][text] ?? TRANSLATIONS['en'][text] ?? text;
 }
 
-export function getAllTranslations(text: keyof Translation) {
+export function getAllTranslations(text: keyof Translation): string[] {
     return Object.values(Language)
-        .map((lang) => [TRANSLATIONS[lang][text], lang])
-        .filter(([trans, _]) => trans);
+        .map((lang) => TRANSLATIONS[lang][text])
+        .filter(trans => trans);
 }
 

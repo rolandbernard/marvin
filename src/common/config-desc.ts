@@ -1,8 +1,8 @@
 
-import { Config } from 'common/config';
+import { Config } from "common/config";
 
 // The config field description is used to generate the settings page
-export type ConfigDescription = ConfigType | ConfigArray | ConfigSelect | ConfigButton;
+export type ConfigDescription = ConfigType | ConfigArray | ConfigSelect | ConfigButton | ConfigList;
 
 export enum ConfigType {
     BOOLEAN  = 'boolean',
@@ -22,38 +22,31 @@ export enum ConfigType {
 }
 
 export interface ConfigList {
-    [key: string]: ConfigDescription;
+    kind: 'list' | 'page' | 'subheader';
+    values: Record<string, ConfigDescription>;
 }
 
-export class ConfigArray {
-    readonly base: ConfigDescription | ConfigList;
-    readonly value: unknown;
-
-    constructor(value: unknown, base?: ConfigDescription) {
-        this.value = value;
-        if (value instanceof Config) {
-            this.base = value.definition;
-        } else if (base) {
-            this.base = base;
-        } else {
-            throw new Error('Config description is required for non config base values');
-        }
-    }
+export interface ConfigArray {
+    kind: 'array';
+    base: ConfigDescription;
+    value: any;
 }
 
-export class ConfigSelect {
-    readonly options: string[];
-
-    constructor(options: string[]) {
-        this.options = options;
-    }
+export function arrayConfig(value: Config): ConfigArray {
+    return {
+        kind: 'array',
+        base: value.getDescription(),
+        value: value,
+    };
 }
 
-export class ConfigButton {
-    readonly action: string;
+export interface ConfigSelect {
+    kind: 'select';
+    options: string[];
+}
 
-    constructor(action: string) {
-        this.action = action;
-    }
+export interface ConfigButton {
+    kind: 'button';
+    action: string;
 }
 
