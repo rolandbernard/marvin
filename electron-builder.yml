@@ -4,7 +4,7 @@ directories:
     buildResources: bundle
 
 files:
-    - bundle/**/*.js
+    - bundle/**/*
 
 linux:
     icon: ./static/logo.png
