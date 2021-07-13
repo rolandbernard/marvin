@@ -49,7 +49,7 @@ const mainConfig = {
 
 const rendererMainConfig = {
     ...commonConfig,
-    entry: path.join(__dirname, 'src', 'app', 'app.ts'),
+    entry: path.join(__dirname, 'src', 'renderer', 'main', 'app.ts'),
     output: {
         filename: 'app.js',
         path: path.join(__dirname, 'bundle'),
@@ -66,7 +66,7 @@ const rendererMainConfig = {
 
 const rendererSettingsConfig = {
     ...commonConfig,
-    entry: path.join(__dirname, 'src', 'settings', 'settings.ts'),
+    entry: path.join(__dirname, 'src', 'renderer', 'settings', 'settings.ts'),
     output: {
         filename: 'settings.js',
         path: path.join(__dirname, 'bundle'),
