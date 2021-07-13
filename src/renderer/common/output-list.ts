@@ -5,6 +5,7 @@ import { classMap } from 'lit-html/directives/class-map';
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';
 import { match } from 'common/util';
+import { Query } from 'common/query';
 
 import 'renderer/common/results/simple-result';
 import 'renderer/common/results/text-result';
@@ -24,6 +25,9 @@ export class OutputField extends LitElement {
 
     @property({ attribute: false })
     centered = true;
+
+    @property({ attribute: false })
+    query: string = '';
 
     @query('.selected')
     element?: HTMLElement;
@@ -66,6 +70,7 @@ export class OutputField extends LitElement {
     }
 
     render() {
+        const query = new Query(this.query, this.config?.general.enhanced_search ?? false);
         return html`
             ${this.results?.map((result, i) => {
                 const classes = classMap({
@@ -76,13 +81,28 @@ export class OutputField extends LitElement {
                         @mousemove="${() => this.onHover(result, i)}"
                         @click="${() => this.onClick(result, i)}"
                     >
-                        ${match<any>(result.kind, {
-                            'simple-result':
-                                html`<simple-result class="${classes}" .result="${result}"></simple-result>`,
-                            'text-result':
-                                html`<text-result class="${classes}" .result="${result}"></text-result>`,
-                            'html-result':
-                                html`<html-result class="${classes}" .result="${result}"></html-result>`,
+                        ${match(result.kind, {
+                            'simple-result': html`
+                                <simple-result
+                                    class="${classes}"
+                                    .result="${result}"
+                                    .query="${query}"
+                                ></simple-result>
+                            `,
+                            'text-result': html`
+                                <text-result
+                                    class="${classes}"
+                                    .result="${result}"
+                                    .query="${query}"
+                                ></text-result>
+                            `,
+                            'html-result': html`
+                                <html-result
+                                    class="${classes}"
+                                    .result="${result}"
+                                    .query="${query}"
+                                ></html-result>
+                            `,
                         })}
                     </div>
                 `

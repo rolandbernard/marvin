@@ -23,8 +23,8 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
     async search(query: Query): Promise<SystemCommandsResult[]> {
         if (query.text.length > 0) {
             return Object.values(Command).map(command => ({
-                kind: 'simple-result',
                 module: MODULE_ID,
+                kind: 'simple-result',
                 quality: query.matchText(getTranslation(command, config)),
                 icon: {
                     material: match(command, {

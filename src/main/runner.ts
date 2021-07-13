@@ -48,7 +48,7 @@ async function handleQuery(query: string, sender: WebContents) {
     execution_count++;
     const begin_count = execution_count;
     const results = await searchQuery(
-        new Query(config, query),
+        new Query(query, config.general.enhanced_search),
         config.general.incremental_results
             ? (results) => sendUpdatedOptions(begin_count, sender, results)
             : undefined

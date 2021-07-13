@@ -16,7 +16,7 @@ export function executeSystemCommands(command: Command) {
     });
 }
 
-export function executeSystemCommandsLinux(command: Command) {
+function executeSystemCommandsLinux(command: Command) {
     runMatch(command, {
         'shutdown': () => executeCommand('shutdown now || systemctl poweroff'),
         'reboot': () => executeCommand('reboot || systemctl reboot'),

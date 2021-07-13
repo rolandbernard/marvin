@@ -46,7 +46,7 @@ function findPossibleModules(query: Query): ModuleId[] {
 
 async function searchQueryInModule(id: ModuleId, query: Query): Promise<Result[]> {
     try {
-        query = query.withoutPrefix(config, config.modules[id]?.prefix ?? '');
+        query = query.withoutPrefix(config.modules[id]?.prefix ?? '');
         return (await modules[id].search?.(query)) ?? [];
     } catch (e) {
         return [];

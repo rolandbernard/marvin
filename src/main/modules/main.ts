@@ -138,8 +138,8 @@ export class MainModule implements Module<SimpleResult> {
     async search(query: Query): Promise<SimpleResult[]> {
         if (query.text.length > 0) {
             return [{
-                kind: 'simple-result',
                 module: MODULE_ID,
+                kind: 'simple-result',
                 quality: query.matchAny(getAllTranslations('quit'), getTranslation('quit', config)),
                 icon: { material: 'exit_to_app' },
                 primary: getTranslation('quit', config),

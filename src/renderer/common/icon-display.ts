@@ -34,16 +34,19 @@ export class IconDisplay extends LitElement {
                 font-size: 1.5rem;
                 user-select: none;
             }
-            .image {
+            .icon {
                 width: 1.75rem;
                 height: 1.75rem;
-            }
-            .icon {
                 flex: 0 0 auto;
             }
             .fallback {
                 font-family: var(--font-family);
                 font-weight: 300;
+                width: 1.75rem;
+                height: 1.75rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         `;
     }
@@ -52,7 +55,7 @@ export class IconDisplay extends LitElement {
         if (this.icon?.url && !this.error) {
             return html`
                 <img
-                    class="image"
+                    class="icon image"
                     src="${this.icon.url}"
                     @error="${this.onError}"
                 />
@@ -60,13 +63,13 @@ export class IconDisplay extends LitElement {
         } else if (this.icon?.material) {
             return html`
                 <material-icon
-                    class="icon"
+                    class="icon material"
                     name="${this.icon.material}"
                 ></material-icon>
             `;
         } else {
             return html`
-                <div class="fallback">${this.fallback}</div>
+                <div class="icon fallback">${this.fallback}</div>
             `;
         }
     }

@@ -20,10 +20,14 @@ export function executeCommand(command: string, mode = CommandMode.SIMPLE) {
     });
 }
 
-export function executeCommandLinux(command: string, mode = CommandMode.SIMPLE) {
+export function escapeForTerminal(text: string) {
+    return `'${text.replace(/\'/g, "'\\''")}'`;
+}
+
+function executeCommandLinux(command: string, mode = CommandMode.SIMPLE) {
     return runMatch(mode, {
-        'terminal': () => execAsync(`xterm -e '${command.replace(/\'/g, "'\\''")}'`),
-        'shell': () => execAsync(`sh <<< '${command.replace(/\'/g, "'\\''")}'`),
+        'terminal': () => execAsync(`xterm -e ${escapeForTerminal(command)}`),
+        'shell': () => execAsync(`sh <<< ${escapeForTerminal(command)}`),
         'simple': () => execAsync(command),
     });
 }

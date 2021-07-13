@@ -1,13 +1,13 @@
 
-import { GlobalConfig } from 'common/config';
-
 export class Query {
+    readonly advanced: boolean;
     readonly text: string;
     readonly regex: RegExp;
 
-    constructor(config: GlobalConfig, text: string) {
+    constructor(text: string, advanced: boolean) {
+        this.advanced = advanced;
         this.text = text.trim();
-        if (config.general.enhanced_search) {
+        if (this.advanced) {
             this.regex = new RegExp(
                 this.text.split('').map((ch) => {
                     // Escape special regex characters
@@ -19,30 +19,30 @@ export class Query {
                     } else {
                         return ch;
                     }
-                }).join('.*?'),
+                }).map(ch => `(${ch})`).join('(.*?)'),
                 'ig'
             );
         } else {
             this.regex = new RegExp(
-                this.text.split('').map((ch) => {
+                `(${this.text.split('').map((ch) => {
                     // Escape special regex characters
                     if ([
                         '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
-                    '^', '$', '?', '|',
+                        '^', '$', '?', '|',
                     ].includes(ch)) {
                         return '\\' + ch;
                     } else {
                         return ch;
                     }
-                }).join(''),
+                }).join('')})`,
                 'i'
             );
         }
     }
 
-    withoutPrefix(config: GlobalConfig, prefix: string) {
+    withoutPrefix(prefix: string) {
         if (this.text.startsWith(prefix)) {
-            return new Query(config, this.text.replace(prefix, ''));
+            return new Query(this.text.replace(prefix, ''), this.advanced);
         } else {
             return this;
         }
@@ -68,6 +68,23 @@ export class Query {
             }
         } else {
             return 0.0;
+        }
+    }
+
+    matchGroups(text: string): string[] {
+        const match = text.match(this.regex);
+        if (match) {
+            const best_match = match.reduce((a, b) => a.length < b.length ? a : b);
+            if (best_match.length !== 0) {
+                const groups = this.regex.exec(best_match)!;
+                groups[0] = text.substr(0, text.indexOf(best_match));
+                groups.push(text.substr(text.indexOf(best_match) + best_match.length));
+                return groups;
+            } else {
+                return [ text ];
+            }
+        } else {
+            return [ text ];
         }
     }
 

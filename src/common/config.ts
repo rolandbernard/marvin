@@ -80,7 +80,7 @@ export class ModuleConfig extends Config {
 
 class GeneralConfig extends Config {
     @configKind('shortcut')
-    global_shortcut = 'Super+D';
+    global_shortcut = 'Alt+Space';
 
     @config({ kind: 'select', options: Object.values(Language) })
     language = Language.English;

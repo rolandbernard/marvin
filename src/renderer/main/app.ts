@@ -85,6 +85,7 @@ export class PageRoot extends QueryExecutor {
                         .results="${this.results}"
                         .selected="${this.selected}"
                         .centered="${this.centered}"
+                        .query="${this.query}"
                         @hover="${this.onHover}"
                         @click="${this.onExecute}"
                     ></output-list>

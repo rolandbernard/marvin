@@ -6,7 +6,7 @@ interface BasePreview {
 }
 
 export interface FilePreview extends BasePreview {
-    kind: 'file-preview';
+    kind: 'embed-preview' | 'image-preview' | 'video-preview' | 'audio-preview';
     file: string;
 }
 
@@ -38,14 +38,14 @@ export type Icon = {
 
 export interface SimpleResult extends BaseResult {
     kind: 'simple-result';
-    icon: Icon;
+    icon?: Icon;
     primary: string;
     secondary?: string;
 }
 
 export interface TextResult extends BaseResult {
     kind: 'text-result';
-    icon: Icon;
+    icon?: Icon;
     text: string;
 }
 
