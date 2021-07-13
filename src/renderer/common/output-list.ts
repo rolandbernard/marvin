@@ -37,9 +37,15 @@ export class OutputField extends LitElement {
         }
     }
 
-    onHover(index: number) {
+    onHover(result: Result, index: number) {
         this.dispatchEvent(new CustomEvent('hover', {
-            detail: { index }
+            detail: { index, result }
+        }));
+    }
+
+    onClick(result: Result, index: number) {
+        this.dispatchEvent(new CustomEvent('click', {
+            detail: { index, result }
         }));
     }
 
@@ -54,6 +60,7 @@ export class OutputField extends LitElement {
             .selected {
                 background: var(--output-selection-background);
                 color: var(--output-selection-text-color);
+                cursor: pointer;
             }
         `;
     }
@@ -62,10 +69,13 @@ export class OutputField extends LitElement {
         return html`
             ${this.results?.map((result, i) => {
                 const classes = classMap({
-                    selected: i === this.selected,
+                    'selected': i === this.selected,
                 });
                 return html`
-                    <div @mousemove="${() => this.onHover(i)}">
+                    <div
+                        @mousemove="${() => this.onHover(result, i)}"
+                        @click="${() => this.onClick(result, i)}"
+                    >
                         ${match<any>(result.kind, {
                             'simple-result':
                                 html`<simple-result class="${classes}" .result="${result}"></simple-result>`,

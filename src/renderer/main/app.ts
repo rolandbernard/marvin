@@ -36,6 +36,10 @@ export class PageRoot extends QueryExecutor {
         this.selected = e.detail.index;
     }
 
+    onExecute(e: CustomEvent) {
+        this.executeResult(e.detail.result);
+    }
+
     static get styles() {
         return css`
             :host {
@@ -80,6 +84,7 @@ export class PageRoot extends QueryExecutor {
                         .selected="${this.selected}"
                         .centered="${this.centered}"
                         @hover="${this.onHover}"
+                        @click="${this.onExecute}"
                     ></output-list>
                 </div>
             <div>
