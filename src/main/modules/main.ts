@@ -1,5 +1,5 @@
 
-import { app, BrowserWindow, Event, Tray, Menu, globalShortcut } from 'electron';
+import { app, BrowserWindow, Event, Tray, Menu, globalShortcut, ipcMain } from 'electron';
 import { join } from 'path';
 
 import { getAllTranslations, getTranslation } from 'common/local/locale';
@@ -75,6 +75,10 @@ export class MainModule implements Module<SimpleResult> {
 
         this.window.webContents.on('will-navigate', (e) => {
             e.preventDefault();
+        });
+
+        ipcMain.on('close-main', () => {
+            this.hideWindow();
         });
 
         this.window.loadURL(`file://${join(__dirname, 'app.html')}`);

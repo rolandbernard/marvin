@@ -1,7 +1,7 @@
 
 import { runMatch } from 'common/util';
 
-import { executeCommand } from 'main/executors/commands';
+import { executeCommand } from 'main/adapters/commands';
 import { getPlatform } from 'main/platform';
 
 export enum Command {

@@ -13,6 +13,7 @@ export interface Module<ModuleResult extends Result> {
     search?: (query: Query) => Promise<ModuleResult[]>;
     valid?: (result: ModuleResult) => Promise<boolean>;
     execute?: (result: ModuleResult) => Promise<void>;
+    executeAny?: (result: Result) => Promise<void>;
 }
 
 export type ModuleId = string;

@@ -161,7 +161,7 @@ export class GlobalConfig extends Config {
     @config(ConfigType.PAGES)
 
     @config(ConfigType.PAGES)
-    modules: Record<ModuleId, Module<Result>>;
+    modules: Record<ModuleId, ModuleConfig | undefined>;
 
     constructor(modules: Record<ModuleId, Module<Result>>) {
         super();

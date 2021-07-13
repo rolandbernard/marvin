@@ -1,13 +1,31 @@
 
 import { ModuleId } from 'common/module';
 
-export abstract class Preview { }
+export interface Preview {
+    kind: string;
+}
+
+export interface FilePreview extends Preview {
+    kind: 'file-preview';
+    file: string;
+}
+
+export interface ColorPreview extends Preview {
+    kind: 'color-preview';
+    color: string;
+}
+
+export interface IFramePreview extends Preview {
+    kind: 'iframe-preview';
+    url: string;
+}
 
 export interface Result {
     kind: string;
     module: ModuleId;
     quality: number;
     preview?: Preview;
+    file?: string;
 }
 
 export type Icon = {

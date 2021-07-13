@@ -8,7 +8,7 @@ import { Module } from 'common/module';
 
 import { config } from 'main/config';
 import { module } from 'main/modules';
-import { Command, executeSystemCommands } from 'main/executors/system-commands';
+import { Command, executeSystemCommands } from 'main/adapters/system-commands';
 
 const MODULE_ID = 'system_commands';
 

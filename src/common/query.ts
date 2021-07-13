@@ -6,10 +6,10 @@ export class Query {
     readonly regex: RegExp;
 
     constructor(config: GlobalConfig, text: string) {
-        this.text = text;
+        this.text = text.trim();
         if (config.general.enhanced_search) {
             this.regex = new RegExp(
-                text.split('').map((ch) => {
+                this.text.split('').map((ch) => {
                     // Escape special regex characters
                     if ([
                         '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
@@ -24,7 +24,7 @@ export class Query {
             );
         } else {
             this.regex = new RegExp(
-                text.split('').map((ch) => {
+                this.text.split('').map((ch) => {
                     // Escape special regex characters
                     if ([
                         '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
@@ -37,6 +37,14 @@ export class Query {
                 }).join(''),
                 'i'
             );
+        }
+    }
+
+    withoutPrefix(config: GlobalConfig, prefix: string) {
+        if (this.text.startsWith(prefix)) {
+            return new Query(config, this.text.replace(prefix, ''));
+        } else {
+            return this;
         }
     }
 

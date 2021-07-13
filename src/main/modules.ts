@@ -28,7 +28,7 @@ export function module(id: ModuleId, platform?: Platform | Platform[]) {
     }
 }
 
-export function moduleForId<Type>(id: ModuleId): Type {
+export function moduleForId<Type extends Module<any>>(id: ModuleId): Type {
     // Assert that the type is correct. This simplifies using this function.
     return modules[id] as Type;
 }
