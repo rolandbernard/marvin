@@ -1,42 +1,35 @@
 
+import { customElement, html, css } from 'lit-element';
 import { ipcRenderer } from 'electron';
-import { customElement, html, css, LitElement, property } from 'lit-element';
 
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';
 
 import { getConfigStyles } from 'renderer/common/theme';
+import { QueryExecutor } from 'renderer/common/executor';
+
+import 'renderer/common/output-list';
 
 import 'renderer/main/input-field';
-import 'renderer/main/output-list';
 
-import 'renderer/common/index.css';
+import 'renderer/styles/index.css';
 
 @customElement('page-root')
-export class PageRoot extends LitElement {
-
-    @property({ attribute: false })
-    config?: GlobalConfig;
-
-    @property({ attribute: false })
-    query: string = '';
-
-    @property({ attribute: false })
-    results: Result[] = [];
+export class PageRoot extends QueryExecutor {
 
     constructor() {
         super();
         ipcRenderer.on('show', (_msg, config: GlobalConfig) => {
             this.config = config;
         });
-        ipcRenderer.on('query-result', (_msg, results: Result[]) => {
-            this.results = results;
+        ipcRenderer.on('hide', () => {
+            this.query = '';
+            ipcRenderer.send('query', this.query);
         });
     }
 
-    onQueryChange(e: CustomEvent) {
-        this.query = e.detail.value;
-        ipcRenderer.send('query', this.query);
+    executeResult(result: Result) {
+        
     }
 
     static get styles() {
@@ -73,7 +66,12 @@ export class PageRoot extends LitElement {
                     @change="${this.onQueryChange}"
                 ></input-field>
                 <div class="output">
-                    <output-list .config="${this.config}"></output-list>
+                    <output-list
+                        .config="${this.config}"
+                        .results="${this.results}"
+                        .selected="${this.selected}"
+                        .centered="${this.centered}"
+                    ></output-list>
                 </div>
             <div>
         `;

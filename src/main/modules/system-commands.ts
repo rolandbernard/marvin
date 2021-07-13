@@ -21,19 +21,23 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
     readonly config = new ModuleConfig(true);
 
     async search(query: Query): Promise<SystemCommandsResult[]> {
-        return Object.values(Command).map(command => ({
-            kind: 'simple-result',
-            module: MODULE_ID,
-            quality: query.matchText(getTranslation(command, config)),
-            icon: {
-                material: match(command, {
-                    'shutdown': 'power_settings_new',
-                    'reboot': 'replay',
-                })
-            },
-            primary: getTranslation(command, config),
-            command: command
-        }));
+        if (query.text.length > 0) {
+            return Object.values(Command).map(command => ({
+                kind: 'simple-result',
+                module: MODULE_ID,
+                quality: query.matchText(getTranslation(command, config)),
+                icon: {
+                    material: match(command, {
+                        'shutdown': 'power_settings_new',
+                        'reboot': 'replay',
+                    })
+                },
+                primary: getTranslation(command, config),
+                command: command
+            }));
+        } else {
+            return [];
+        }
     }
 
     async execute(result: SystemCommandsResult) {

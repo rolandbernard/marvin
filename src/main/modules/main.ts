@@ -140,13 +140,17 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     async search(query: Query): Promise<SimpleResult[]> {
-        return [{
-            kind: 'simple-result',
-            module: MODULE_ID,
-            quality: query.matchAny(getAllTranslations('quit'), getTranslation('quit', config)),
-            icon: { material: 'exit_to_app' },
-            primary: getTranslation('quit', config),
-        }];
+        if (query.text.length > 0) {
+            return [{
+                kind: 'simple-result',
+                module: MODULE_ID,
+                quality: query.matchAny(getAllTranslations('quit'), getTranslation('quit', config)),
+                icon: { material: 'exit_to_app' },
+                primary: getTranslation('quit', config),
+            }];
+        } else {
+            return [];
+        }
     }
 
     async execute() {

@@ -32,6 +32,7 @@ export class IconDisplay extends LitElement {
                 align-items: center;
                 justify-content: center;
                 font-size: 1.5rem;
+                user-select: none;
             }
             .image {
                 width: 1.75rem;
@@ -39,7 +40,6 @@ export class IconDisplay extends LitElement {
             }
             .icon {
                 flex: 0 0 auto;
-                margin-right: 0.5rem;
             }
             .fallback {
                 font-family: var(--font-family);

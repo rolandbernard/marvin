@@ -1,5 +1,5 @@
 
-import 'renderer/common/index.css';
+import 'renderer/styles/index.css';
 
 console.log('settings.ts');
 

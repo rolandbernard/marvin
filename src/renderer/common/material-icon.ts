@@ -26,6 +26,7 @@ export class MaterialIcon extends LitElement {
                 direction: ltr;
                 text-rendering: optimizeLegibility;
                 display: inline-block;
+                user-select: none;
             }
         `;
     }

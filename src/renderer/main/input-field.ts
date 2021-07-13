@@ -25,12 +25,12 @@ export class InputField extends LitElement {
     static get styles() {
         return css`
             .wrapper {
-                padding: 0.75rem;
+                padding: 0.85rem;
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: center;
                 justify-content: center;
-                background: var(--input-background-color);
+                background: var(--input-background);
             }
             .icon {
                 flex: 0 0 auto;

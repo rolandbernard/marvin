@@ -21,8 +21,11 @@ function findPossibleModules(query: Query): ModuleId[] {
         }
         to_eval = Object.keys(modules)
             .filter((id) =>
-                config.modules[id]
-                && config.modules[id]!.active && config.modules[id]!.prefix === prefix
+                prefix === ''
+                || (
+                    config.modules[id]
+                    && config.modules[id]!.active && config.modules[id]!.prefix === prefix
+                )
             );
     } else {
         to_eval = Object.keys(modules)
@@ -88,6 +91,6 @@ export async function executeResult(result: Result) {
         Object.values(modules)
             .map(module => module.executeAny?.(result))
     );
-    await moduleForId(result.module).execute?.(result);
+    await moduleForId(result.module)?.execute?.(result);
 }
 

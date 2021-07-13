@@ -5,6 +5,8 @@ import { loadConfig } from 'main/config';
 import { initModules, deinitModules } from 'main/modules';
 import { getPlatform, isDevelopment, Platform } from 'main/platform';
 
+import 'main/runner';
+
 async function startApp() {
     if (getPlatform() === Platform.UNSUPPORTED) {
         console.error("This platform is not supported! Some features will not work.");

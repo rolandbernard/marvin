@@ -4,6 +4,8 @@ import { css, customElement, html, LitElement, property } from 'lit-element';
 import { GlobalConfig } from 'common/config';
 import { SimpleResult } from 'common/result';
 
+import 'renderer/common/icon-display';
+
 @customElement('simple-result')
 export class SimpleResultComponent extends LitElement {
 
@@ -20,12 +22,15 @@ export class SimpleResultComponent extends LitElement {
                 flex-flow: row nowrap;
                 align-items: center;
                 justify-content: center;
-                background: var(--input-background-color);
-                padding: 0.75rem;
+                background: var(--output-background);
+                padding: 0.85rem;
+                color: var(--output-text-color);
+                user-select: none;
             }
             .icon {
                 flex: 0 0 auto;
                 color: var(--output-accent-color);
+                margin-right: 0.75rem;
             }
             .text {
                 flex: 1 1 auto;
@@ -37,7 +42,7 @@ export class SimpleResultComponent extends LitElement {
                 font-weight: 400;
             }
             .primary {
-                font-size: 1rem;
+                font-size: 1.25rem;
             }
             .secondary {
                 font-size: 0.85rem;
