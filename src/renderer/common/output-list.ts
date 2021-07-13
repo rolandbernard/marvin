@@ -37,6 +37,12 @@ export class OutputField extends LitElement {
         }
     }
 
+    onHover(index: number) {
+        this.dispatchEvent(new CustomEvent('hover', {
+            detail: { index }
+        }));
+    }
+
     static get styles() {
         return css`
             :host {
@@ -44,6 +50,10 @@ export class OutputField extends LitElement {
                 flex-flow: column;
                 align-items: stretch;
                 background: var(--output-background);
+            }
+            .selected {
+                background: var(--output-selection-background);
+                color: var(--output-selection-text-color);
             }
         `;
     }
@@ -54,17 +64,18 @@ export class OutputField extends LitElement {
                 const classes = classMap({
                     selected: i === this.selected,
                 });
-                return match<any>(result.kind, {
-                    'simple-result': html`
-                        <simple-result class="${classes}" .result="${result}"></simple-result>
-                    `,
-                    'text-result': html`
-                        <text-result class="${classes}" .result="${result}"></text-result>
-                    `,
-                    'html-result': html`
-                        <html-result class="${classes}" .result="${result}"></html-result>
-                    `,
-                })
+                return html`
+                    <div @mousemove="${() => this.onHover(i)}">
+                        ${match<any>(result.kind, {
+                            'simple-result':
+                                html`<simple-result class="${classes}" .result="${result}"></simple-result>`,
+                            'text-result':
+                                html`<text-result class="${classes}" .result="${result}"></text-result>`,
+                            'html-result':
+                                html`<html-result class="${classes}" .result="${result}"></html-result>`,
+                        })}
+                    </div>
+                `
             })}
         `;
     }

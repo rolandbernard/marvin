@@ -63,7 +63,7 @@ export class InputField extends LitElement {
                 ></material-icon>
                 <input
                     class="input"
-                    value="${this.text}"
+                    .value="${this.text}"
                     @input="${this.onChange}"
                 ></input>
             </div>

@@ -26,6 +26,7 @@ export interface Result {
     quality: number;
     preview?: Preview;
     file?: string;
+    autocomplete?: string;
 }
 
 export type Icon = {

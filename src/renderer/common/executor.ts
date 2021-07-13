@@ -39,8 +39,7 @@ export abstract class QueryExecutor extends LitElement {
         });
     }
 
-    onQueryChange(e: CustomEvent) {
-        this.query = e.detail.value;
+    sendQueryRequest() {
         clearTimeout(this.query_timeout!);
         this.query_timeout = setTimeout(() => {
             ipcRenderer.send('query', this.query);
@@ -49,6 +48,39 @@ export abstract class QueryExecutor extends LitElement {
         this.loading_timeout = setTimeout(() => {
             this.results = undefined;
         }, 200);
+    }
+
+    onQueryChange(e: CustomEvent) {
+        this.query = e.detail.value;
+        this.sendQueryRequest();
+    }
+
+    onKeyDown(e: KeyboardEvent) {
+        const length = this.results?.length || 1;
+        const selected = this.results?.[this.selected];
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            this.selected = (this.selected + length - 1) % length;
+            this.centered = true;
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            this.selected = (this.selected + length + 1) % length;
+            this.centered = true;
+        } else if (e.key === 'Escape') {
+            window.close();
+            e.preventDefault();
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (selected) {
+                this.executeResult(selected);
+            }
+        } else if (e.key === 'Tab') {
+            e.preventDefault();
+            if (selected?.autocomplete) {
+                this.query = selected.autocomplete;
+                this.sendQueryRequest();
+            }
+        }
     }
 
     abstract executeResult(result: Result): unknown;

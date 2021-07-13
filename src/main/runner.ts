@@ -17,11 +17,16 @@ const original_option: Result[] = [];
 // actually sen the results to the renderer.
 let execution_count = 0;
 
+interface RunnerResult extends Result {
+    id: number;
+    [key: string]: any;
+}
+
 function sendUpdatedOptions(id: number, sender: WebContents, results: Result[]) {
     if (id === execution_count) {
         original_option.length = 0;
         sender.send('query-result', results.map((opt, id) => {
-            const reduced_option: any = { ...opt, id: id };
+            const reduced_option: RunnerResult = { ...opt, id: id };
             if (reduced_option.text?.length > MAX_TRANSFER_LEN) {
                 reduced_option.text = reduced_option.text.substr(0, MAX_TRANSFER_LEN) + '...';
             }
@@ -49,18 +54,16 @@ async function handleQuery(query: string, sender: WebContents) {
     sendUpdatedOptions(begin_count, sender, results);
 }
 
-ipcMain.on('query', (msg, query) => {
+ipcMain.on('query', (msg, query: string) => {
     handleQuery(query, msg.sender);
 });
 
-ipcMain.on('execute', (_, option) => {
-    if (option && option.executable) {
-        const key = option.id;
-        if (key in original_option) {
-            executeResult(original_option[key]);
-        } else {
-            executeResult(option);
-        }
+ipcMain.on('execute', (_, result: RunnerResult) => {
+    const key = result.id;
+    if (key in original_option) {
+        executeResult(original_option[key]);
+    } else {
+        executeResult(result);
     }
 });
 

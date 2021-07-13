@@ -24,12 +24,16 @@ export class PageRoot extends QueryExecutor {
         });
         ipcRenderer.on('hide', () => {
             this.query = '';
-            ipcRenderer.send('query', this.query);
+            ipcRenderer.send('query', '');
         });
     }
 
     executeResult(result: Result) {
-        
+        ipcRenderer.send('execute', result);
+    }
+
+    onHover(e: CustomEvent) {
+        this.selected = e.detail.index;
     }
 
     static get styles() {
@@ -58,7 +62,11 @@ export class PageRoot extends QueryExecutor {
 
     render() {
         return html`
-            <div class="window" style="${getConfigStyles(this.config)}">
+            <div
+                class="window"
+                style="${getConfigStyles(this.config)}"
+                @keydown="${this.onKeyDown}"
+            >
                 <input-field
                     class="input"
                     .text="${this.query}"
@@ -71,6 +79,7 @@ export class PageRoot extends QueryExecutor {
                         .results="${this.results}"
                         .selected="${this.selected}"
                         .centered="${this.centered}"
+                        @hover="${this.onHover}"
                     ></output-list>
                 </div>
             <div>
