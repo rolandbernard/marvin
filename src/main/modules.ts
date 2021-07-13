@@ -3,9 +3,9 @@ import { Constructor } from 'lit-element';
 
 import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module'
+import { Translatable } from 'common/local/locale';
 import { importAll } from 'common/util';
-
-import { Platform, getPlatform } from 'main/platform';
+import { Platform, getPlatform } from 'common/platform';
 
 export const modules: Record<ModuleId, Module<Result>> = { };
 
@@ -16,7 +16,7 @@ export function registerModule(key: ModuleId, module: Module<any>) {
     modules[key] = module;
 }
 
-export function module(id: ModuleId, platform?: Platform | Platform[]) {
+export function module(id: Translatable, platform?: Platform | Platform[]) {
     const pf = getPlatform();
     if (!platform || platform === pf || platform.includes?.(pf)) {
         return (moduleClass: Constructor<Module<any>>) => {

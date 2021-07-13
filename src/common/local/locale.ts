@@ -25,7 +25,9 @@ const TRANSLATIONS = {
 
 export type Translation = typeof TRANSLATIONS[Language];
 
-export function getTranslation(text: keyof Translation, config?: GlobalConfig): string {
+export type Translatable = keyof Translation;
+
+export function getTranslation(text: Translatable, config?: GlobalConfig): string {
     return TRANSLATIONS[config?.general.language ?? 'en'][text] ?? TRANSLATIONS['en'][text] ?? text;
 }
 

@@ -9,7 +9,7 @@ import { Query } from 'common/query';
 
 import { config } from 'main/config';
 import { module } from 'main/modules';
-import { isDevelopment } from 'main/platform';
+import { isDevelopment } from 'common/platform';
 
 import Logo from 'logo.png';
 
@@ -18,7 +18,7 @@ const MODULE_ID = 'main';
 // Transparency will not work without this
 app.commandLine.appendSwitch("disable-gpu");
 
-@module(MODULE_ID)
+@module(MODULE_ID as any) // This module has no config => needs no translation
 export class MainModule implements Module<SimpleResult> {
     tray?: Tray;
     window?: BrowserWindow;

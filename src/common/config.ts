@@ -1,72 +1,74 @@
 
 import { app } from 'electron';
 
-import { Language } from 'common/local/locale';
+import { Language, Translatable } from 'common/local/locale';
 import { time, TimeUnit } from 'common/time';
 import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module';
-import { ConfigDescription, ConfigList, ConfigType } from 'common/config-desc';
+import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-desc';
 
 const desc_meta = Symbol();
 
 export abstract class Config {
-    [desc_meta]: ConfigList;
+    [desc_meta]: ObjectConfig;
 
-    get description(): ConfigList {
+    get description(): ObjectConfig {
         if (!this[desc_meta]) {
             this[desc_meta] = {
-                kind: 'list',
-                values: {},
+                kind: 'object',
+                options: [],
             };
         }
         return this[desc_meta];
     }
 
-    getDescription(): ConfigDescription {
-        const result: ConfigList = {
-            kind: 'list',
-            values: {},
-        };
-        for (const key in this.description.values) {
-            if (this.description.values[key] === ConfigType.PAGE) {
-                const transformed = (this as any)[key]?.getDescription?.();
-                if (transformed) {
-                    transformed.kind = 'page';
-                    result.values[key] = transformed;
-                }
-            } else if (this.description.values[key] === ConfigType.PAGES) {
-                const desc: ConfigList = {
-                    kind: 'subheader',
-                    values: {},
-                };
-                const pages = (this as any)[key];
+    getDescription(): ObjectConfig {
+        for (const entry of this.description.options!) {
+            if (entry.kind === 'page' || entry.kind === 'object') {
+                const transformed: ObjectConfig = (this as any)[entry.name!].getDescription();
+                entry.options = transformed?.options;
+            } else if (entry.kind === 'pages') {
+                entry.options = [];
+                const pages = (this as any)[entry.name!];
                 for (const page in pages) {
-                    const transformed = pages[page]?.getDescription?.();
-                    if (transformed) {
-                        desc.values[page] = transformed;
-                    }
+                    const transformed: ObjectConfig = pages[page].getDescription();
+                    transformed.name = page as Translatable;
+                    transformed.kind = 'page';
+                    entry.options.push(transformed);
                 }
-                result.values[key] = desc;
-            } else {
-                result.values[key] = this.description.values[key];
+            } else if (entry.kind === 'array') {
+                if (entry.default instanceof Config) {
+                    entry.base = entry.default.getDescription();
+                }
             }
         }
-        return result;
+        return this.description;
     }
 }
 
-// Use this as a decorator to describe the config field
-export function config(type: ConfigDescription) {
-    return (target: Config, prop: string) => {
-        target.description.values[prop] = type;
+export function config(details: ConfigDescription) {
+    return (target: Config, prop: Translatable) => {
+        target.description.options!.push({
+            name: prop,
+            ...details,
+        });
+    }
+}
+
+export function configKind(details: (SimpleConfig | ObjectConfig)['kind']) {
+    return (target: Config, prop: Translatable) => {
+        target.description.options!.push({
+            kind: details,
+            name: prop,
+        });
     }
 }
 
 export class ModuleConfig extends Config {
-    @config(ConfigType.BOOLEAN)
+    @configKind('boolean')
     active: boolean;
 
-    @config(ConfigType.TEXT)
+    @configKind('text')
     prefix: string;
 
     constructor(active?: boolean, prefix?: string) {
@@ -77,97 +79,105 @@ export class ModuleConfig extends Config {
 };
 
 class GeneralConfig extends Config {
-    @config(ConfigType.SHORTCUT)
+    @configKind('shortcut')
     global_shortcut = 'Super+D';
 
     @config({ kind: 'select', options: Object.values(Language) })
     language = Language.English;
 
-    @config(ConfigType.TIME)
+    @configKind('time')
     debounce_time = time(20, TimeUnit.MILLISECONDS);
 
-    @config(ConfigType.SIZE)
+    @configKind('size')
     width = 600;
 
-    @config(ConfigType.SIZE)
+    @configKind('size')
     max_height = 500;
 
-    @config(ConfigType.AMOUNT)
+    @configKind('amount')
     max_results = 200;
 
-    @config(ConfigType.BOOLEAN)
+    @configKind('boolean')
     incremental_results = false;
 
-    @config(ConfigType.TIME)
+    @config({ kind: 'time', enabled: 'general.incremental_results' })
     incremental_result_debounce = time(20, TimeUnit.MILLISECONDS);
 
-    @config(ConfigType.BOOLEAN)
+    @configKind('boolean')
     smooth_scrolling = true;
 
-    @config(ConfigType.BOOLEAN)
+    @configKind('boolean')
     recenter_on_show = true;
 
-    @config(ConfigType.BOOLEAN)
+    @configKind('boolean')
     exclusive_module_prefix = true;
 
-    @config(ConfigType.BOOLEAN)
+    @configKind('boolean')
     enhanced_search = true;
 }
 
-class ThemeConfig extends Config {
-    @config(ConfigType.COLOR)
-    background_color_input = 'black';
+class InputThemeConfig extends Config {
+    @configKind('color')
+    background_color = 'black';
 
-    @config(ConfigType.COLOR)
-    background_color_output = 'black';
+    @configKind('color')
+    text_color = 'white';
 
-    @config(ConfigType.COLOR)
-    text_color_input = 'white';
+    @configKind('color')
+    accent_color = 'white';
 
-    @config(ConfigType.COLOR)
-    text_color_output = 'white';
+    @configKind('color')
+    shadow_color = '#00000000';
+}
 
-    @config(ConfigType.COLOR)
-    accent_color_input = 'white';
+class OutputThemeConfig extends Config {
+    @configKind('color')
+    background_color = 'black';
 
-    @config(ConfigType.COLOR)
-    accent_color_output = 'white';
+    @configKind('color')
+    text_color = 'white';
 
-    @config(ConfigType.COLOR)
+    @configKind('color')
+    accent_color = 'white';
+
+    @configKind('color')
     select_color = 'grey';
 
-    @config(ConfigType.COLOR)
+    @configKind('color')
     select_text_color = 'white';
 
-    @config(ConfigType.SIZE)
+    @configKind('color')
+    shadow_color = '#00000000';
+}
+
+class ThemeConfig extends Config {
+    @configKind('size')
     border_radius = 0;
 
-    @config(ConfigType.COLOR)
-    shadow_color_input = '#00000000';
+    @configKind('object')
+    input = new InputThemeConfig();
 
-    @config(ConfigType.COLOR)
-    shadow_color_output = '#00000000';
+    @configKind('object')
+    output = new OutputThemeConfig();
 }
 
 export class GlobalConfig extends Config {
     readonly version = app.getVersion();
 
-    @config(ConfigType.PAGE)
+    @configKind('page')
     general = new GeneralConfig();
 
-    @config(ConfigType.PAGE)
+    @configKind('page')
     theme = new ThemeConfig();
 
-    @config(ConfigType.PAGES)
-
-    @config(ConfigType.PAGES)
+    @configKind('pages')
     modules: Record<ModuleId, ModuleConfig | undefined>;
 
     constructor(modules: Record<ModuleId, Module<Result>>) {
         super();
         this.modules = Object.assign({},
             ...Object.keys(modules).sort()
-                .map(module => ({ module, config: modules[module].config }))
+                .map(module => ({ module, config: modules[module as Translatable].config }))
                 .filter(({ config }) => config)
                 .map(({ module, config }) => ({
                     [module]: config,

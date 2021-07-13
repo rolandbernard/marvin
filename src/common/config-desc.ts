@@ -1,52 +1,41 @@
 
-import { Config } from "common/config";
+import { Translatable } from 'common/local/locale';
+import { Platform } from 'common/platform';
 
-// The config field description is used to generate the settings page
-export type ConfigDescription = ConfigType | ConfigArray | ConfigSelect | ConfigButton | ConfigList;
-
-export enum ConfigType {
-    BOOLEAN  = 'boolean',
-    CODE     = 'code',
-    COLOR    = 'color',
-    OPTION   = 'option',
-    PATH     = 'path',
-    QUALITY  = 'quality',
-    SHORTCUT = 'shortcut',
-    SIZE     = 'size',
-    TEXT     = 'text',
-    TIME     = 'time',
-    AMOUNT   = 'amount',
-
-    PAGE     = 'page',
-    PAGES    = 'page-list',
+interface BaseConfig {
+    kind: string;
+    name?: Translatable;
+    enabled?: string;
+    icon?: string;
+    tooltip?: string;
+    platform?: Platform | Platform[];
 }
 
-export interface ConfigList {
-    kind: 'list' | 'page' | 'subheader';
-    values: Record<string, ConfigDescription>;
+export interface SimpleConfig extends BaseConfig {
+    kind: 'boolean' | 'code' | 'color' | 'result' | 'path' | 'quality'
+        | 'shortcut' | 'size' | 'text' | 'time' | 'amount';
 }
 
-export interface ConfigArray {
+export interface ObjectConfig extends BaseConfig {
+    kind: 'object' | 'page' | 'pages';
+    options?: ConfigDescription[];
+}
+
+export interface ArrayConfig extends BaseConfig {
     kind: 'array';
-    base: ConfigDescription;
-    value: any;
+    base?: ConfigDescription;
+    default: any;
 }
 
-export function arrayConfig(value: Config): ConfigArray {
-    return {
-        kind: 'array',
-        base: value.getDescription(),
-        value: value,
-    };
-}
-
-export interface ConfigSelect {
+export interface SelectConfig extends BaseConfig {
     kind: 'select';
     options: string[];
 }
 
-export interface ConfigButton {
+export interface ButtonConfig extends BaseConfig {
     kind: 'button';
     action: string;
 }
+
+export type ConfigDescription = SimpleConfig | ObjectConfig | ArrayConfig | SelectConfig | ButtonConfig;
 

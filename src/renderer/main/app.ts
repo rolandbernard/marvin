@@ -19,8 +19,10 @@ export class PageRoot extends QueryExecutor {
 
     constructor() {
         super();
-        ipcRenderer.on('show', (_msg, config: GlobalConfig) => {
+        ipcRenderer.on('show', (_msg, config: GlobalConfig, dec: any) => {
             this.config = config;
+            console.log(config);
+            console.log(dec);
         });
         ipcRenderer.on('hide', () => {
             this.query = '';

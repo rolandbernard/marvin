@@ -3,7 +3,7 @@ import { promisify } from 'util';
 import { exec } from 'child_process';
 
 import { runMatch } from 'common/util';
-import { getPlatform } from 'main/platform';
+import { getPlatform } from 'common/platform';
 
 const execAsync = promisify(exec);
 

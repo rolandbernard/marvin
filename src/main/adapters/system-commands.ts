@@ -1,8 +1,8 @@
 
 import { runMatch } from 'common/util';
+import { getPlatform } from 'common/platform';
 
 import { executeCommand } from 'main/adapters/commands';
-import { getPlatform } from 'main/platform';
 
 export enum Command {
     SHUTDOWN = 'shutdown',

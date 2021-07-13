@@ -1,9 +1,10 @@
 
 import { app } from 'electron';
 
+import { getPlatform, isDevelopment, Platform } from 'common/platform';
+
 import { loadConfig } from 'main/config';
 import { initModules, deinitModules } from 'main/modules';
-import { getPlatform, isDevelopment, Platform } from 'main/platform';
 
 import 'main/runner';
 
