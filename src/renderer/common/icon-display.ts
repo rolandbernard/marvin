@@ -35,15 +35,13 @@ export class IconDisplay extends LitElement {
                 user-select: none;
             }
             .icon {
-                width: 1.75rem;
-                height: 1.75rem;
+                width: 2rem;
+                height: 2rem;
                 flex: 0 0 auto;
             }
             .fallback {
                 font-family: var(--font-family);
                 font-weight: 300;
-                width: 1.75rem;
-                height: 1.75rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;

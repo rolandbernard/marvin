@@ -19,10 +19,8 @@ export class PageRoot extends QueryExecutor {
 
     constructor() {
         super();
-        ipcRenderer.on('show', (_msg, config: GlobalConfig, dec: any) => {
+        ipcRenderer.on('show', (_msg, config: GlobalConfig) => {
             this.config = config;
-            console.log(config);
-            console.log(dec);
         });
         ipcRenderer.on('hide', () => {
             this.query = '';
@@ -34,12 +32,8 @@ export class PageRoot extends QueryExecutor {
         ipcRenderer.send('execute', result);
     }
 
-    onHover(e: CustomEvent) {
-        this.selected = e.detail.index;
-    }
-
-    onExecute(e: CustomEvent) {
-        this.executeResult(e.detail.result);
+    onDrag(e: CustomEvent) {
+        ipcRenderer.send('drag', e.detail.result);
     }
 
     static get styles() {
@@ -62,6 +56,20 @@ export class PageRoot extends QueryExecutor {
             }
             .output {
                 flex: 1 1 auto;
+                overflow-y: overlay;
+            }
+            .output::-webkit-scrollbar {
+                width: 0.2rem;
+            }
+            .output::-webkit-scrollbar-track,
+            .output::-webkit-scrollbar-track-piece,
+            .output::-webkit-resizer,
+            .output::-webkit-scrollbar-corner,
+            .output::-webkit-scrollbar-button {
+                display: none;
+            }
+            .output::-webkit-scrollbar-thumb {
+                background: var(--output-accent-color);
             }
         `;
     }
@@ -76,6 +84,7 @@ export class PageRoot extends QueryExecutor {
                 <input-field
                     class="input"
                     .text="${this.query}"
+                    .prediction="${this.selectedResult()?.autocomplete ?? ''}"
                     .config="${this.config}"
                     @change="${this.onQueryChange}"
                 ></input-field>
@@ -87,7 +96,8 @@ export class PageRoot extends QueryExecutor {
                         .centered="${this.centered}"
                         .query="${this.query}"
                         @hover="${this.onHover}"
-                        @click="${this.onExecute}"
+                        @execute="${this.onExecute}"
+                        @drag="${this.onDrag}"
                     ></output-list>
                 </div>
             <div>

@@ -14,6 +14,9 @@ export class InputField extends LitElement {
     @property({ attribute: false })
     text: string = '';
 
+    @property({ attribute: false })
+    prediction: string = '';
+
     onChange(event: Event) {
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
@@ -38,34 +41,58 @@ export class InputField extends LitElement {
                 margin-right: 0.5rem;
                 color: var(--input-accent-color);
             }
-            .input {
-                font-family: var(--font-family);
+            .field {
                 flex: 1 1 100%;
+                position: relative;
+            }
+            .input, .prediction {
+                font-family: var(--font-family);
                 font-size: 1.5rem;
                 font-weight: 300;
+                color: var(--input-text-color);
+            }
+            .input {
+                width: 100%;
                 appearance: none;
                 border: none;
                 outline: none;
                 background: none;
                 padding: 0;
                 margin: 0;
-                color: var(--input-text-color);
+            }
+            .prediction {
+                pointer-events: none;
+                position: absolute;
+                display: inline;
+                opacity: 0.25;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
             }
         `;
     }
 
     render() {
+        const prediction = this.prediction.startsWith(this.text)
+            ? html`<div class="prediction">${this.prediction}</div>`
+            : undefined;
         return html`
             <div class="wrapper">
                 <material-icon
                     class="icon"
                     name="search"
                 ></material-icon>
-                <input
-                    class="input"
-                    .value="${this.text}"
-                    @input="${this.onChange}"
-                ></input>
+                <div class="field">
+                    ${prediction}
+                    <input
+                        class="input"
+                        spellcheck="false"
+                        autocomplete="off"
+                        .value="${this.text}"
+                        @input="${this.onChange}"
+                    ></input>
+                </div>
             </div>
         `;
     }

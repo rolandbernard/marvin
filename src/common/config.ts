@@ -141,7 +141,7 @@ class OutputThemeConfig extends Config {
     accent_color = 'white';
 
     @configKind('color')
-    select_color = 'grey';
+    select_color = '#303030';
 
     @configKind('color')
     select_text_color = 'white';

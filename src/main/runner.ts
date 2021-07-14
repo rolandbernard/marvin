@@ -34,7 +34,7 @@ function sendUpdatedOptions(id: number, sender: WebContents, results: Result[]) 
                 if (reduced_option.primary?.length > MAX_TRANSFER_LEN) {
                     reduced_option.primary = reduced_option.primary.substr(0, MAX_TRANSFER_LEN) + '...';
                 }
-                if (reduced_option.secondary?.length ?? 0 > MAX_TRANSFER_LEN) {
+                if ((reduced_option.secondary?.length ?? 0) > MAX_TRANSFER_LEN) {
                     reduced_option.secondary = reduced_option.secondary?.substr(0, MAX_TRANSFER_LEN) + '...';
                 }
             }
@@ -69,7 +69,7 @@ ipcMain.on('execute', (_, result: RunnerResult) => {
     }
 });
 
-ipcMain.on('drag-start', async (event, option: Result) => {
+ipcMain.on('drag', async (event, option: Result) => {
     if (option.file) {
         event.sender.startDrag({
             file: option.file,

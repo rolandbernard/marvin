@@ -41,14 +41,21 @@ export class OutputField extends LitElement {
         }
     }
 
-    onHover(result: Result, index: number) {
+    onMouseMove(result: Result, index: number) {
         this.dispatchEvent(new CustomEvent('hover', {
             detail: { index, result }
         }));
     }
 
     onClick(result: Result, index: number) {
-        this.dispatchEvent(new CustomEvent('click', {
+        this.dispatchEvent(new CustomEvent('execute', {
+            detail: { index, result }
+        }));
+    }
+
+    onDragStart(e: DragEvent, result: Result, index: number) {
+        e.preventDefault();
+        this.dispatchEvent(new CustomEvent('drag', {
             detail: { index, result }
         }));
     }
@@ -78,8 +85,10 @@ export class OutputField extends LitElement {
                 });
                 return html`
                     <div
-                        @mousemove="${() => this.onHover(result, i)}"
+                        @mousemove="${() => this.onMouseMove(result, i)}"
                         @click="${() => this.onClick(result, i)}"
+                        @dragstart="${(e: DragEvent) => this.onDragStart(e, result, i)}"
+                        draggable="${result.file ? 'true' : 'false'}"
                     >
                         ${match(result.kind, {
                             'simple-result': html`

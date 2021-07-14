@@ -39,6 +39,10 @@ export abstract class QueryExecutor extends LitElement {
         });
     }
 
+    selectedResult(): Result | undefined {
+        return this.results?.[this.selected];
+    }
+
     sendQueryRequest() {
         clearTimeout(this.query_timeout!);
         this.query_timeout = setTimeout(() => {
@@ -55,9 +59,19 @@ export abstract class QueryExecutor extends LitElement {
         this.sendQueryRequest();
     }
 
+    onHover(e: CustomEvent) {
+        this.selected = e.detail.index;
+        this.centered = false;
+    }
+
+    onExecute(e: CustomEvent) {
+        console.log(e);
+        this.executeResult(e.detail.result);
+    }
+
     onKeyDown(e: KeyboardEvent) {
         const length = this.results?.length || 1;
-        const selected = this.results?.[this.selected];
+        const selected = this.selectedResult();;
         if (e.key === 'ArrowUp') {
             e.preventDefault();
             this.selected = (this.selected + length - 1) % length;

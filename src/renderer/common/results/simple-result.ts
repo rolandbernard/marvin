@@ -28,14 +28,14 @@ export class SimpleResultComponent extends LitElement {
                 align-items: center;
                 justify-content: center;
                 background: var(--output-background);
-                padding: 0.85rem;
                 color: var(--output-text-color);
                 user-select: none;
+                padding: 0.5rem;
             }
             .icon {
                 flex: 0 0 auto;
                 color: var(--output-accent-color);
-                margin-right: 0.75rem;
+                margin-right: 0.5rem;
             }
             .text {
                 flex: 1 1 auto;
@@ -44,13 +44,27 @@ export class SimpleResultComponent extends LitElement {
                 align-items: flex-start;
                 justify-content: center;
                 font-family: var(--font-family);
-                font-weight: 400;
             }
             .primary {
                 font-size: 1.25rem;
+                font-weight: 400;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding-bottom: 0.125rem;
+            }
+            .primary strong {
+                font-weight: 600;
             }
             .secondary {
-                font-size: 0.85rem;
+                font-size: 0.75rem;
+                font-weight: 300;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .secondary strong {
+                font-weight: 500;
             }
         `;
     }

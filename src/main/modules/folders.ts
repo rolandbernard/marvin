@@ -1,6 +1,7 @@
 
 import { app } from 'electron';
-import { extname, dirname } from 'path';
+import { readdir, stat } from 'fs/promises';
+import { extname, dirname, join, basename, sep, relative } from 'path';
 
 import { config, configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
@@ -63,14 +64,33 @@ export class FoldersModule implements Module<FoldersResult> {
         if (query.text.length > 0) {
             return (await Promise.all(this.config.directories.map(async directory => {
                 try {
-                    // const dir = join(directory, dirname(query.text));
-                    return {
-                        module: MODULE_ID,
-                        kind: 'simple-result',
-                        quality: 1,
-                        primary: 'tets',
-                        file: 'test',
-                    } as FoldersResult;
+                    const parent = join(directory, dirname(query.text));
+                    const self = join(directory, query.text);
+                    const files = [
+                        ...(await readdir(parent).catch(() => [])).map(file => join(parent, file)),
+                        ...(await readdir(self).catch(() => [])).map(file => join(self, file)),
+                    ];
+                    return (await Promise.all(files.map(async file => {
+                        try {
+                            const stats = await stat(file);
+                            return [{
+                                module: MODULE_ID,
+                                kind: 'simple-result',
+                                icon: {
+                                    url: stats.isDirectory() ? undefined : (await app.getFileIcon(file)).toDataURL(),
+                                    material: stats.isDirectory() ? 'folder' : 'insert_drive_file',
+                                },
+                                primary: basename(file),
+                                secondary: file,
+                                quality: query.matchText(file),
+                                autocomplete: relative(directory, file) + (stats.isDirectory() ? sep : ''),
+                                file: file,
+                                preview: this.config.file_preview ? generateFilePreview(file) : undefined,
+                            } as FoldersResult];
+                        } catch (e) {
+                            return [];
+                        }
+                    }))).flat();
                 } catch (e) {
                     return [];
                 }
