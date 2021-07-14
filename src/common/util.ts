@@ -59,3 +59,25 @@ export function isInEnum<Type extends string>(type: { [k: string]: Type }, value
     return Object.values<string>(type).includes(value);
 }
 
+export function copyCase(text: string, template: string): string {
+    if (text.length < template.length) {
+        return copyCase(text, template.substr(0, text.length));
+    } else if (text.toLowerCase().startsWith(template.toLowerCase())) {
+        const change = [...text.substr(0, template.length)];
+        return change.map((ch, i) => {
+            const temp = template.charAt(i);
+            if (temp.toUpperCase() !== temp.toLowerCase()) {
+                if (temp.toUpperCase() === temp) {
+                    return ch.toUpperCase();
+                } else {
+                    return ch.toLowerCase();
+                }
+            } else {
+                return ch;
+            }
+        }).join('') + text.substr(template.length);
+    } else {
+        return text;
+    }
+}
+

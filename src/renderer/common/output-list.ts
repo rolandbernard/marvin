@@ -73,6 +73,9 @@ export class OutputField extends LitElement {
                 color: var(--output-selection-text-color);
                 cursor: pointer;
             }
+            .result {
+                min-height: 2.75rem;
+            }
         `;
     }
 
@@ -81,6 +84,7 @@ export class OutputField extends LitElement {
         return html`
             ${this.results?.map((result, i) => {
                 const classes = classMap({
+                    'result': true,
                     'selected': i === this.selected,
                 });
                 return html`

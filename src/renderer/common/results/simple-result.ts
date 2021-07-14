@@ -5,8 +5,9 @@ import { GlobalConfig } from 'common/config';
 import { SimpleResult } from 'common/result';
 import { Query } from 'common/query';
 
+import { highlightTextUsingMatch } from 'renderer/common/highlighter';
+
 import 'renderer/common/icon-display';
-import {highlightTextUsingMatch} from '../highliter';
 
 @customElement('simple-result')
 export class SimpleResultComponent extends LitElement {

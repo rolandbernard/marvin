@@ -35,6 +35,7 @@ export interface SelectConfig extends BaseConfig {
 export interface ButtonConfig extends BaseConfig {
     kind: 'button';
     action: string;
+    confirm: boolean;
 }
 
 export type ConfigDescription = SimpleConfig | ObjectConfig | ArrayConfig | SelectConfig | ButtonConfig;

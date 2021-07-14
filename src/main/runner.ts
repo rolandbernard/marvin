@@ -3,9 +3,11 @@ import { app, ipcMain, WebContents } from 'electron';
 
 import { Result } from 'common/result';
 import { Query } from 'common/query';
+import { GlobalConfig } from 'common/config';
 
 import { executeResult, searchQuery } from 'main/executor';
-import { config } from 'main/config';
+import { config, resetConfig, updateConfig } from 'main/config';
+import { updateModules } from 'main/modules';
 
 const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will be cropped to this length.
 
@@ -60,7 +62,7 @@ ipcMain.on('query', (msg, query: string) => {
     handleQuery(query, msg.sender);
 });
 
-ipcMain.on('execute', (_, result: RunnerResult) => {
+ipcMain.on('execute', (_msg, result: RunnerResult) => {
     const key = result.id;
     if (key in original_option) {
         executeResult(original_option[key]);
@@ -76,5 +78,16 @@ ipcMain.on('drag', async (event, option: Result) => {
             icon: (await app.getFileIcon(option.file)),
         })
     }
+});
+
+ipcMain.on('update-config', async (_msg, new_config: GlobalConfig) => {
+    await updateConfig(new_config);
+    await updateModules();
+});
+
+ipcMain.on('reset-config', async (msg) => {
+    await resetConfig();
+    await updateModules();
+    msg.sender.send('show', config, config.getDescription());
 });
 

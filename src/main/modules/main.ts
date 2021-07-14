@@ -6,10 +6,12 @@ import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { Query } from 'common/query';
+import { isDevelopment } from 'common/platform';
+import { copyCase } from 'common/util';
 
 import { config } from 'main/config';
-import { module } from 'main/modules';
-import { isDevelopment } from 'common/platform';
+import { module, moduleForId } from 'main/modules';
+import { SettingsModule } from 'main/modules/settings';
 
 import Logo from 'logo.png';
 
@@ -33,10 +35,14 @@ export class MainModule implements Module<SimpleResult> {
                 click: this.showWindow.bind(this),
                 accelerator: config.general.global_shortcut
             },
-            { label: getTranslation('settings', config), type: 'normal', click: () => {/* TODO */} },
+            { label: getTranslation('settings', config), type: 'normal', click: this.openSettings.bind(this) },
             { label: getTranslation('quit', config), type: 'normal', click: app.quit.bind(app) },
         ]);
         this.tray.setContextMenu(context_menu);
+    }
+
+    openSettings() {
+        moduleForId<SettingsModule>('settings')?.showWindow();
     }
 
     createWindow() {
@@ -106,10 +112,6 @@ export class MainModule implements Module<SimpleResult> {
         }
     }
 
-    destroyWindow() {
-        this.window?.destroy();
-    }
-
     registerShortcut() {
         const ret = globalShortcut.register(config.general.global_shortcut, this.toggleWindow.bind(this));
         if (!ret) {
@@ -132,17 +134,20 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     async deinit() {
-        this.destroyWindow();
+        this.window?.destroy();
+        this.tray?.destroy();
     }
 
     async search(query: Query): Promise<SimpleResult[]> {
         if (query.text.length > 0) {
+            const name = getTranslation('quit', config);
             return [{
                 module: MODULE_ID,
                 kind: 'simple-result',
-                quality: query.matchAny(getAllTranslations('quit'), getTranslation('quit', config)),
+                quality: query.matchAny(getAllTranslations('quit'), name),
                 icon: { material: 'exit_to_app' },
-                primary: getTranslation('quit', config),
+                primary: name,
+                autocomplete: copyCase(name, query.text),
             }];
         } else {
             return [];

@@ -25,6 +25,11 @@ export async function loadConfig() {
     await updateConfig();
 }
 
+export async function resetConfig() {
+    config = new GlobalConfig(modules);
+    await updateConfig();
+}
+
 export async function updateConfig(new_config?: GlobalConfig) {
     if (new_config) {
         mergeDeep(config, new_config);

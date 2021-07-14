@@ -3,7 +3,7 @@ import { ModuleConfig } from 'common/config';
 import { getTranslation } from 'common/local/locale';
 import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
-import { match } from 'common/util';
+import { copyCase, match } from 'common/util';
 import { Module } from 'common/module';
 
 import { config } from 'main/config';
@@ -22,19 +22,23 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
 
     async search(query: Query): Promise<SystemCommandsResult[]> {
         if (query.text.length > 0) {
-            return Object.values(Command).map(command => ({
-                module: MODULE_ID,
-                kind: 'simple-result',
-                quality: query.matchText(getTranslation(command, config)),
-                icon: {
-                    material: match(command, {
-                        'shutdown': 'power_settings_new',
-                        'reboot': 'replay',
-                    })
-                },
-                primary: getTranslation(command, config),
-                command: command
-            }));
+            return Object.values(Command).map(command => {
+                const name = getTranslation(command, config);
+                return {
+                    module: MODULE_ID,
+                    kind: 'simple-result',
+                    quality: query.matchText(name),
+                    icon: {
+                        material: match(command, {
+                            'shutdown': 'power_settings_new',
+                            'reboot': 'replay',
+                        })
+                    },
+                    primary: name,
+                    autocomplete: copyCase(name, query.text),
+                    command: command,
+                };
+            });
         } else {
             return [];
         }

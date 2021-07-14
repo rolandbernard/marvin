@@ -95,31 +95,6 @@ export class FoldersModule implements Module<FoldersResult> {
                     return [];
                 }
             }))).flat();
-            // return (await Promise.all(config.modules.folders.directories.map(async (directory) => {
-            //     try {
-            //         await access(directory);
-            //         const dir = join(directory, query_dir);
-            //         const files = await readdir(dir);
-            //         return (await Promise.all(files.map(async file => {
-            //             const filepath = join(dir, file);
-            //             const stats = await stat(filepath);
-            //             return {
-            //                 type: 'icon_list_item',
-            //                 uri_icon: stats.isDirectory() ? null : (await app.getFileIcon(filepath)).toDataURL(),
-            //                 material_icon: stats.isDirectory() ? 'folder' : null,
-            //                 primary: file,
-            //                 secondary: filepath,
-            //                 executable: true,
-            //                 complete: join(query_dir, file) + (stats.isDirectory() ? '/' : ''),
-            //                 quality: base_query ? stringMatchQuality(base_query, file, regex) : 0.01,
-            //                 file: join(dir, file),
-            //                 preview: config.modules.folders.file_preview && generateFilePreview(filepath),
-            //             };
-            //         })));
-            //     } catch (e) {
-            //         return [];
-            //     }
-            // }))).filter(a => a).flat();
         } else {
             return [];
         }
