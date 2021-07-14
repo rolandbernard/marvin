@@ -4,6 +4,9 @@
     --font-family-mono: 'IBM Plex Mono';
 
     --box-shadow-position: 1px 2px 7px -2px;
+    --min-element-height: 2.5rem;
+    --scrollbar-width: 0.2rem;
+    --prediction-opacity: 0.25;
 }
 
 html, body {

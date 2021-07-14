@@ -9,9 +9,7 @@ import { getConfigStyles } from 'renderer/common/theme';
 import { QueryExecutor } from 'renderer/common/executor';
 
 import 'renderer/common/output-list';
-
 import 'renderer/main/input-field';
-
 import 'renderer/styles/index.css';
 
 @customElement('page-root')
@@ -30,6 +28,7 @@ export class PageRoot extends QueryExecutor {
 
     executeResult(result: Result) {
         ipcRenderer.send('execute', result);
+        window.close();
     }
 
     onDrag(e: CustomEvent) {
@@ -53,13 +52,18 @@ export class PageRoot extends QueryExecutor {
             }
             .input {
                 flex: 0 0 auto;
+                min-height: var(--min-element-height);
+                box-shadow: var(--box-shadow-position) var(--input-shadow-color);
+            }
+            .output-list {
+                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
             }
             .output {
                 flex: 1 1 auto;
                 overflow-y: overlay;
             }
             .output::-webkit-scrollbar {
-                width: 0.2rem;
+                width: var(--scrollbar-width);
             }
             .output::-webkit-scrollbar-track,
             .output::-webkit-scrollbar-track-piece,
@@ -90,6 +94,7 @@ export class PageRoot extends QueryExecutor {
                 ></input-field>
                 <div class="output">
                     <output-list
+                        class="output-list"
                         .config="${this.config}"
                         .results="${this.results}"
                         .selected="${this.selected}"

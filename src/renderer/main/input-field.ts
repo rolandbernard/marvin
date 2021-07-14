@@ -64,7 +64,7 @@ export class InputField extends LitElement {
                 pointer-events: none;
                 position: absolute;
                 display: inline;
-                opacity: 0.25;
+                opacity: var(--prediction-opacity);
                 top: 0;
                 left: 0;
                 bottom: 0;

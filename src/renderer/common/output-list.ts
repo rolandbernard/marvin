@@ -74,7 +74,7 @@ export class OutputField extends LitElement {
                 cursor: pointer;
             }
             .result {
-                min-height: 2.75rem;
+                min-height: var(--min-element-height);
             }
         `;
     }
