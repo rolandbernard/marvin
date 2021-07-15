@@ -7,6 +7,7 @@ import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module';
 import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-desc';
 import { cloneDeep } from 'common/util';
+import { getPlatform } from 'common/platform';
 
 const desc_meta = Symbol();
 
@@ -127,13 +128,13 @@ class GeneralConfig extends Config {
 
 class InputThemeConfig extends Config {
     @configKind('color')
-    background_color = 'black';
+    background_color = '#000000';
 
     @configKind('color')
-    text_color = 'white';
+    text_color = '#ffffff';
 
     @configKind('color')
-    accent_color = 'white';
+    accent_color = '#ffffff';
 
     @configKind('color')
     shadow_color = '#00000000';
@@ -141,22 +142,42 @@ class InputThemeConfig extends Config {
 
 class OutputThemeConfig extends Config {
     @configKind('color')
-    background_color = 'black';
+    background_color = '#000000';
 
     @configKind('color')
-    text_color = 'white';
+    text_color = '#ffffff';
 
     @configKind('color')
-    accent_color = 'white';
+    accent_color = '#ffffff';
 
     @configKind('color')
     select_color = '#303030';
 
     @configKind('color')
-    select_text_color = 'white';
+    select_text_color = '#ffffff';
 
     @configKind('color')
     shadow_color = '#00000000';
+}
+
+class SettingsThemeConfig extends Config {
+    @configKind('color')
+    background_color = '#ffffff';
+
+    @configKind('color')
+    text_color = '#000000';
+
+    @configKind('color')
+    accent_color = '#000000';
+
+    @configKind('color')
+    select_color = '#00000015';
+
+    @configKind('color')
+    select_text_color = '#000000';
+
+    @configKind('color')
+    shadow_color = '#00000080';
 }
 
 class ThemeConfig extends Config {
@@ -168,15 +189,19 @@ class ThemeConfig extends Config {
 
     @configKind('object')
     output = new OutputThemeConfig();
+
+    @configKind('object')
+    settings = new SettingsThemeConfig();
 }
 
 export class GlobalConfig extends Config {
     readonly version = app.getVersion();
+    readonly platform = getPlatform();
 
-    @configKind('page')
+    @config({ kind: 'page', icon: 'settings' })
     general = new GeneralConfig();
 
-    @configKind('page')
+    @config({ kind: 'page', icon: 'palette' })
     theme = new ThemeConfig();
 
     @configKind('pages')

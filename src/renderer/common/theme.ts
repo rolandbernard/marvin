@@ -2,10 +2,14 @@
 import { styleMap } from 'lit-html/directives/style-map';
 
 import { GlobalConfig } from 'common/config';
+import { parseColor, multiplyColor, colorAsHex } from 'common/color';
 
 // Get the style map for custom properties for the given config
 export function getConfigStyles(config?: GlobalConfig) {
     return styleMap({
+        // General
+        '--border-radius': config?.theme.border_radius.toString() ?? '0',
+
         // Input field
         '--input-background': config?.theme.input.background_color ?? 'black',
         '--input-text-color': config?.theme.input.text_color ?? 'white',
@@ -20,8 +24,16 @@ export function getConfigStyles(config?: GlobalConfig) {
         '--output-selection-background': config?.theme.output.select_color ?? 'grey',
         '--output-selection-text-color': config?.theme.output.select_text_color ?? 'white',
 
-        // General
-        '--border-radius': config?.theme.border_radius.toString() ?? '0',
+        // Settings field
+        '--settings-background': config?.theme.settings.background_color ?? 'white',
+        '--settings-text-color': config?.theme.settings.text_color ?? 'black',
+        '--settings-accent-color': config?.theme.settings.accent_color ?? 'black',
+        '--settings-shadow-color': config?.theme.settings.shadow_color ?? '#00000080',
+        '--settings-hover-background': colorAsHex(
+            multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.select_color ?? '#00000080'))
+        ),
+        '--settings-selection-background': config?.theme.settings.select_color ?? 'grey',
+        '--settings-selection-text-color': config?.theme.settings.select_text_color ?? 'black',
     });
 }
 

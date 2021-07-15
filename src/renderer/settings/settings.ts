@@ -6,10 +6,16 @@ import { ipcRenderer } from 'electron';
 import { GlobalConfig } from 'common/config';
 import { ObjectConfig } from 'common/config-desc';
 import { getTranslation } from 'common/local/locale';
+import { indexObject } from 'common/util';
 
 import { getConfigStyles } from 'renderer/common/theme';
 
 import 'renderer/styles/index.css';
+
+import 'renderer/common/material-icon';
+import 'renderer/settings/settings-page';
+
+import Logo from 'logo.png';
 
 @customElement('page-root')
 export class PageRoot extends LitElement {
@@ -52,9 +58,9 @@ export class PageRoot extends LitElement {
         function findSomePage(desc: ObjectConfig, selection: string[] = []): string[] | undefined {
             const any = desc.options?.find(entry => entry.kind === 'page' || entry.kind === 'pages');
             if (any?.kind === 'page') {
-                return [ ...selection, any.name! ];
+                return selection.concat(any.name!);
             } else if (any?.kind === 'pages') {
-                return findSomePage(any, [ ...selection, any.name! ]);
+                return findSomePage(any, selection.concat(any.name!));
             }
         }
         if (this.desc && !this.getSelectedPage()) {
@@ -62,21 +68,36 @@ export class PageRoot extends LitElement {
         }
     }
 
+    selectPage(index: string[]) {
+        this.selected = index;
+    }
+
     buildConfigTabs() {
         const findConfigTabs =
             (desc: ObjectConfig, index: string[] = []):
             (TemplateResult | undefined)[] | undefined => {
             return desc.options?.map(entry => {
-                const entry_index = [ ...index, entry.name! ];
-                const classes = classMap({
-                    'tab': true,
-                    'selected': entry_index.join('.') === this.selected!.join('.'),
-                });
+                const entry_index = index.concat(entry.name!);
                 const name = getTranslation(entry.name!, this.config);
                 if (entry.kind === 'page') {
+                    const active = indexObject(this.config, this.selected)?.active;
+                    const classes = classMap({
+                        'tab': true,
+                        'selected': entry_index.join('.') === this.selected!.join('.'),
+                        'active': active,
+                    });
                     return html`
-                        <div class="${classes}">
-                            ${name}
+                        <div
+                            class="${classes}"
+                            @click="${() => this.selectPage(entry_index)}"
+                        >
+                            <material-icon
+                                class="icon"
+                                name="${entry.icon ?? (active ? 'fiber_manual_record' : '')}"
+                            ></material-icon>
+                            <span>
+                                ${name}
+                            </span>
                         </div>
                     `;
                 } else if (entry.kind === 'pages') {
@@ -96,9 +117,76 @@ export class PageRoot extends LitElement {
 
     static get styles() {
         return css`
-            :host, .window {
+            :host {
                 width: 100%;
                 height: 100%;
+            }
+            .window {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-flow: row nowrap;
+                background: var(--settings-background);
+                color: var(--settings-text-color);
+                font-family: var(--font-family);
+            }
+            .tab-drawer {
+                flex: 0 0 auto;
+                user-select: none;
+            }
+            .page {
+                flex: 1 1 auto;
+            }
+            .header {
+                display: flex;
+                flex-flow: column;
+                align-items: flex-start;
+                justify-content: center;
+                padding: 2rem 1rem;
+            }
+            .logo-title {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: flex-start;
+                pointer-event: none;
+            }
+            .version {
+                font-size: 0.75rem;
+                padding-top: 0.5rem;
+                opacity: 0.75;
+                font-weight: 600;
+            }
+            .logo {
+                width: 3rem;
+                height: 3rem;
+            }
+            .title {
+                font-size: 2rem;
+                font-weight: 600;
+                padding-left: 1rem;
+            }
+            .tab {
+                cursor: pointer;
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+                transition-duration: 0.3s;
+                transition-property: background, color; 
+                border-radius: 0 50rem 50rem 0;
+            }
+            .tab:hover {
+                background: var(--settings-hover-background);
+            }
+            .tab.selected {
+                background: var(--settings-selection-background);
+                color: var(--settings-selection-text-color);
+            }
+            .subheader {
+                font-size: 0.75rem;
+                padding: 0.25rem 1.5rem;
+                padding-top: 0.5rem;
+                opacity: 0.75;
+                font-weight: 600;
             }
         `;
     }
@@ -111,11 +199,21 @@ export class PageRoot extends LitElement {
             >
                 <div class="tab-drawer">
                     <div class="header">
+                        <div class="logo-title">
+                            <img class="logo" src=${Logo} />
+                            <div class="title">Settings</div>
+                        </div>
+                        <div class="version">
+                            v${this.config?.version}
+                            ${this.config?.platform}
+                        </div>
                     </div>
                     ${this.buildConfigTabs()}
                 </div>
-                <settings-page></settings-page>
-            <div>
+                <settings-page
+                    class="page"
+                ></settings-page>
+            </div>
         `;
     }
 }

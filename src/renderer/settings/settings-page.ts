@@ -11,7 +11,10 @@ export class SettingsPage extends LitElement {
     config?: GlobalConfig;
 
     @property({ attribute: false })
-    desc?: ObjectConfig;
+    page?: ObjectConfig;
+
+    @property({ attribute: false })
+    index?: string[];
 
     static get styles() {
         return css`

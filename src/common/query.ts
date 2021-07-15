@@ -51,7 +51,7 @@ export class Query {
     matchText(text: string): number {
         const match = text.match(this.regex);
         if (match) {
-            const best_match = match.reduce((a, b) => a.length < b.length ? a : b);
+            const best_match = match.reduce((a, b) => a.length <= b.length ? a : b);
             const starts_with = text.toLowerCase().startsWith(best_match.toLowerCase());
             if (this.text.length === best_match.length) {
                 if (starts_with) {
@@ -74,7 +74,7 @@ export class Query {
     matchGroups(text: string): string[] {
         const match = text.match(this.regex);
         if (match) {
-            const best_match = match.reduce((a, b) => a.length < b.length ? a : b);
+            const best_match = match.reduce((a, b) => a.length <= b.length ? a : b);
             if (best_match.length !== 0) {
                 const groups = this.regex.exec(best_match)!;
                 groups[0] = text.substr(0, text.indexOf(best_match));
