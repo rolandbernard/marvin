@@ -135,6 +135,21 @@ export class PageRoot extends LitElement {
             .tab-drawer {
                 flex: 0 0 auto;
                 user-select: none;
+                direction: rtl;
+                overflow-y: overlay;
+            }
+            .tab-drawer::-webkit-scrollbar {
+                width: var(--scrollbar-width);
+            }
+            .tab-drawer::-webkit-scrollbar-track,
+            .tab-drawer::-webkit-scrollbar-track-piece,
+            .tab-drawer::-webkit-resizer,
+            .tab-drawer::-webkit-scrollbar-corner,
+            .tab-drawer::-webkit-scrollbar-button {
+                display: none;
+            }
+            .tab-drawer::-webkit-scrollbar-thumb {
+                background: var(--settings-accent-color);
             }
             .page {
                 flex: 1 1 auto;
@@ -147,11 +162,12 @@ export class PageRoot extends LitElement {
                 padding: 2rem 1rem;
             }
             .logo-title {
+                direction: ltr;
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: center;
                 justify-content: flex-start;
-                pointer-event: none;
+                pointer-events: none;
             }
             .version {
                 font-size: 0.75rem;
@@ -169,6 +185,7 @@ export class PageRoot extends LitElement {
                 padding-left: 1rem;
             }
             .tab {
+                direction: ltr;
                 cursor: pointer;
                 font-size: 1rem;
                 padding: 0.8rem 1rem;
@@ -202,10 +219,11 @@ export class PageRoot extends LitElement {
                 text-shadow: 0 0 0.25rem var(--settings-active-color);
             }
             .subheader {
+                direction: ltr;
                 font-size: 0.75rem;
-                padding: 0.25rem 1.5rem;
+                padding: 0.25rem 1rem;
                 padding-top: 0.5rem;
-                opacity: 0.5;
+                opacity: 0.75;
                 font-weight: 600;
             }
         `;
@@ -232,6 +250,9 @@ export class PageRoot extends LitElement {
                 </div>
                 <settings-page
                     class="page"
+                    .config="${this.config}"
+                    .page="${this.getSelectedPage()}"
+                    .index="${this.selected}"
                 ></settings-page>
             </div>
         `;

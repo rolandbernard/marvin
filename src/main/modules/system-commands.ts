@@ -18,7 +18,7 @@ interface SystemCommandsResult extends SimpleResult {
 
 @module(MODULE_ID)
 export class SystemCommandsModule implements Module<SystemCommandsResult> {
-    readonly config = new ModuleConfig();
+    readonly config = new ModuleConfig(true);
 
     async search(query: Query): Promise<SystemCommandsResult[]> {
         if (query.text.length > 0) {
