@@ -22,6 +22,7 @@ const TRANSLATION_ITALIAN = {
     shadow_color: 'Colore dell\'ombra',
     select_color: 'Colore di selezione',
     select_text_color: 'Colore di sfondo selezionato',
+    active_color: 'Colore attivo',
     border_radius: 'Raggio di confine',
     input: 'Campo di input',
     output: 'Area dei risultati',

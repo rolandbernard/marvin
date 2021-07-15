@@ -34,6 +34,10 @@ export function getConfigStyles(config?: GlobalConfig) {
         ),
         '--settings-selection-background': config?.theme.settings.select_color ?? 'grey',
         '--settings-selection-text-color': config?.theme.settings.select_text_color ?? 'black',
+        '--settings-active-color': config?.theme.settings.active_color ?? 'green',
+        '--settings-inactive-color': colorAsHex(
+            multiplyColor([1, 1, 1, 0.1], parseColor(config?.theme.settings.text_color ?? '#00000000'))
+        ),
     });
 }
 

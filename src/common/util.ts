@@ -85,7 +85,7 @@ export function indexObject(object: any, index: string[] = []): any {
     if (index.length === 0) {
         return object;
     } else if (index[0] in object) {
-        return indexObject(object[index[0]], index.slice(0));
+        return indexObject(object[index[0]], index.slice(1));
     }
 }
 

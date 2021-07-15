@@ -177,6 +177,9 @@ class SettingsThemeConfig extends Config {
     select_text_color = '#000000';
 
     @configKind('color')
+    active_color = '#539b26';
+
+    @configKind('color')
     shadow_color = '#00000080';
 }
 

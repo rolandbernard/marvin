@@ -80,11 +80,13 @@ export class PageRoot extends LitElement {
                 const entry_index = index.concat(entry.name!);
                 const name = getTranslation(entry.name!, this.config);
                 if (entry.kind === 'page') {
-                    const active = indexObject(this.config, this.selected)?.active;
+                    const active = indexObject(this.config, entry_index)?.active;
+                    const activatable = active !== undefined;
                     const classes = classMap({
                         'tab': true,
                         'selected': entry_index.join('.') === this.selected!.join('.'),
                         'active': active,
+                        'activatable': activatable,
                     });
                     return html`
                         <div
@@ -93,7 +95,7 @@ export class PageRoot extends LitElement {
                         >
                             <material-icon
                                 class="icon"
-                                name="${entry.icon ?? (active ? 'fiber_manual_record' : '')}"
+                                name="${entry.icon ?? (activatable ? 'fiber_manual_record' : '')}"
                             ></material-icon>
                             <span>
                                 ${name}
@@ -154,7 +156,7 @@ export class PageRoot extends LitElement {
             .version {
                 font-size: 0.75rem;
                 padding-top: 0.5rem;
-                opacity: 0.75;
+                opacity: 0.5;
                 font-weight: 600;
             }
             .logo {
@@ -173,6 +175,10 @@ export class PageRoot extends LitElement {
                 transition-duration: 0.3s;
                 transition-property: background, color; 
                 border-radius: 0 50rem 50rem 0;
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: flex-start;
             }
             .tab:hover {
                 background: var(--settings-hover-background);
@@ -181,11 +187,25 @@ export class PageRoot extends LitElement {
                 background: var(--settings-selection-background);
                 color: var(--settings-selection-text-color);
             }
+            .tab .icon {
+                flex: 0 0 auto;
+                font-size: 1.5rem;
+                width: 2.5rem;
+                color: var(--settings-accent-color);
+                justify-content: flex-start;
+            }
+            .tab.activatable .icon {
+                color: var(--settings-inactive-color);
+            }
+            .tab.activatable.active .icon {
+                color: var(--settings-active-color);
+                text-shadow: 0 0 0.25rem var(--settings-active-color);
+            }
             .subheader {
                 font-size: 0.75rem;
                 padding: 0.25rem 1.5rem;
                 padding-top: 0.5rem;
-                opacity: 0.75;
+                opacity: 0.5;
                 font-weight: 600;
             }
         `;

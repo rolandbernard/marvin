@@ -22,6 +22,7 @@ const TRANSLATION_GERMAN = {
     shadow_color: 'Schattenfarbe',
     select_color: 'Auswahl Hintergrundfarbe',
     select_text_color: 'Auswahl Textfarbe',
+    active_color: 'Aktive Farbe',
     border_radius: 'Randradius',
     input: 'Eingabefeld',
     output: 'Ergebnisbereich',

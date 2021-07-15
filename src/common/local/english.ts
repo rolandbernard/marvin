@@ -22,6 +22,7 @@ const TRANSLATION_ENGLISH = {
     shadow_color: 'Shadow color',
     select_color: 'Selection color',
     select_text_color: 'Selection text color',
+    active_color: 'Active color',
     border_radius: 'Border radius',
     input: 'Input field',
     output: 'Result area',
