@@ -6,24 +6,37 @@ import { time, TimeUnit } from 'common/time';
 import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module';
 import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-desc';
+import { cloneDeep } from 'common/util';
 
 const desc_meta = Symbol();
 
 export abstract class Config {
-    [desc_meta]: ObjectConfig;
+    static [desc_meta] = new WeakMap<Config, ConfigDescription[]>();
 
-    get description(): ObjectConfig {
-        if (!this[desc_meta]) {
-            this[desc_meta] = {
-                kind: 'object',
-                options: [],
-            };
+    copyFromPrototype() {
+        if (!Config[desc_meta].has(this)) {
+            Config[desc_meta].set(this, []);
+            const super_desc = Config[desc_meta].get(Object.getPrototypeOf(this));
+            super_desc?.forEach(this.addConfigField.bind(this));
         }
-        return this[desc_meta];
+    }
+
+    constructor() {
+        this.copyFromPrototype();
+    }
+
+    addConfigField(desc: ConfigDescription) {
+        // This will be called by a decorator, so the constructor will not have run yet.
+        this.copyFromPrototype();
+        Config[desc_meta].get(this)?.push(desc);
     }
 
     getDescription(): ObjectConfig {
-        for (const entry of this.description.options!) {
+        const description = {
+            kind: 'object' as 'object',
+            options: cloneDeep(Config[desc_meta].get(this)) ?? [],
+        };
+        for (const entry of description.options) {
             if (entry.kind === 'page' || entry.kind === 'object') {
                 const transformed: ObjectConfig = (this as any)[entry.name!].getDescription();
                 entry.options = transformed?.options;
@@ -36,19 +49,20 @@ export abstract class Config {
                     transformed.kind = 'page';
                     entry.options.push(transformed);
                 }
+                entry.options.sort((a, b) => a.name!.localeCompare(b.name!));
             } else if (entry.kind === 'array') {
                 if (entry.default instanceof Config) {
                     entry.base = entry.default.getDescription();
                 }
             }
         }
-        return this.description;
+        return description;
     }
 }
 
 export function config(details: ConfigDescription) {
     return (target: Config, prop: Translatable) => {
-        target.description.options!.push({
+        target.addConfigField({
             name: prop,
             ...details,
         });
@@ -56,12 +70,7 @@ export function config(details: ConfigDescription) {
 }
 
 export function configKind(details: (SimpleConfig | ObjectConfig)['kind']) {
-    return (target: Config, prop: Translatable) => {
-        target.description.options!.push({
-            kind: details,
-            name: prop,
-        });
-    }
+    return config({ kind: details });
 }
 
 export class ModuleConfig extends Config {
@@ -100,7 +109,7 @@ class GeneralConfig extends Config {
     @configKind('boolean')
     incremental_results = false;
 
-    @config({ kind: 'time', enabled: 'general.incremental_results' })
+    @config({ kind: 'time', enabled: ['general', 'incremental_results'] })
     incremental_result_debounce = time(20, TimeUnit.MILLISECONDS);
 
     @configKind('boolean')

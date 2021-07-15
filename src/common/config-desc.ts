@@ -5,7 +5,7 @@ import { Platform } from 'common/platform';
 interface BaseConfig {
     kind: string;
     name?: Translatable;
-    enabled?: string;
+    enabled?: string[];
     icon?: string;
     tooltip?: string;
     platform?: Platform | Platform[];
