@@ -3,7 +3,9 @@ import { css, customElement, html, LitElement, property } from "lit-element";
 
 import { GlobalConfig } from "common/config";
 import { SimpleConfig } from "common/config-desc";
-import { DeepIndex } from "common/util";
+import { DeepIndex, indexObject } from "common/util";
+
+import 'renderer/settings/text-field';
 
 @customElement('shortcut-setting')
 export class ShortcutSetting extends LitElement {
@@ -17,14 +19,22 @@ export class ShortcutSetting extends LitElement {
     @property({ attribute: false })
     index?: DeepIndex;
 
+    validateShortcut() {
+    }
+
     static get styles() {
         return css`
+            :host {
+                width: 100%;
+            }
         `;
     }
 
     render() {
         return html`
-            <input></input>
+            <text-field
+                .value="${indexObject(this.config, this.index)}"
+            ></text-field>
         `;
     }
 }

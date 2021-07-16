@@ -9,6 +9,8 @@
     --prediction-opacity: 0.25;
 
     --settings-border-radius: 1rem;
+    --settings-input-border-radius: 0.2rem;
+    --settings-error-color: red;
 }
 
 html, body {

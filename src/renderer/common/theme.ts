@@ -38,6 +38,12 @@ export function getConfigStyles(config?: GlobalConfig) {
         '--settings-inactive-color': colorAsHex(
             multiplyColor([1, 1, 1, 0.1], parseColor(config?.theme.settings.text_color ?? '#00000000'))
         ),
+        '--settings-border-color': colorAsHex(
+            multiplyColor([1, 1, 1, 0.2], parseColor(config?.theme.settings.text_color ?? '#00000000'))
+        ),
+        '--settings-border-hover-color': colorAsHex(
+            multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.text_color ?? '#00000000'))
+        ),
     });
 }
 

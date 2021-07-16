@@ -45,6 +45,7 @@ export class SettingsPage extends LitElement {
                 margin: 1rem;
                 width: calc(100% - 2rem);
                 min-height: calc(100% - 2rem);
+                padding: 0 1rem;
             }
             .table {
                 width: 100%;
@@ -53,12 +54,13 @@ export class SettingsPage extends LitElement {
                 font-family: var(--font-family);
             }
             .name {
+                padding: 0.8rem 0;
                 text-align: left;
-                padding: 0.8rem 1rem;
+                white-space: nowrap;
             }
             .setting {
+                width: 100%;
                 text-align: right;
-                padding: 0.8rem 1rem;
             }
         `;
     }
