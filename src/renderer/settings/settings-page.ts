@@ -46,6 +46,7 @@ export class SettingsPage extends LitElement {
                 width: calc(100% - 2rem);
                 min-height: calc(100% - 2rem);
                 padding: 0 1rem;
+                box-sizing: border-box;
             }
             .table {
                 width: 100%;
@@ -69,7 +70,11 @@ export class SettingsPage extends LitElement {
         return html`
             <div class="page">
                 <table class="table">
-                    ${this.page?.options?.map(option => html`
+                    ${this.page?.options?.filter(option =>
+                            !option.platform
+                            || option.platform === this.config?.platform
+                            || option.platform.includes?.(this.config?.platform!)
+                        ).map(option => html`
                         <tr class="row">
                             <td class="name">${getTranslation(option.name!, this.config)}</td>
                             <td class="setting">

@@ -1,11 +1,12 @@
 
 import { Translatable } from 'common/local/locale';
 import { Platform } from 'common/platform';
+import { DeepIndex } from 'common/util';
 
 interface BaseConfig {
     kind: string;
     name?: Translatable;
-    enabled?: string[];
+    enabled?: DeepIndex;
     icon?: string;
     tooltip?: string;
     platform?: Platform | Platform[];

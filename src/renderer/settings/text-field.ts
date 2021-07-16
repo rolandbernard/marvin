@@ -80,11 +80,12 @@ export class TextField extends LitElement {
                 flex: 0 0 auto;
             }
             .error {
-                height: 1em;
+                height: 0.65rem;
                 font-size: 0.65rem;
                 font-family: var(--font-family);
                 color: var(--settings-error-color);
-                padding: 0.25rem 0.5rem;
+                padding-top: 0.25rem;
+                padding-left: 0.5rem;
                 text-align: left;
             }
         `;
