@@ -81,7 +81,9 @@ export function copyCase(text: string, template: string): string {
     }
 }
 
-export function indexObject(object: any, index: string[] = []): any {
+export type DeepIndex = (string | number)[];
+
+export function indexObject(object: any, index: DeepIndex = []): any {
     if (index.length === 0) {
         return object;
     } else if (index[0] in object) {

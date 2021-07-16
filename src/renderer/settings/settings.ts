@@ -6,7 +6,7 @@ import { ipcRenderer } from 'electron';
 import { GlobalConfig } from 'common/config';
 import { ObjectConfig } from 'common/config-desc';
 import { getTranslation } from 'common/local/locale';
-import { indexObject } from 'common/util';
+import { DeepIndex, indexObject } from 'common/util';
 
 import { getConfigStyles } from 'renderer/common/theme';
 
@@ -27,7 +27,7 @@ export class PageRoot extends LitElement {
     desc?: ObjectConfig;
 
     @property({ attribute: false })
-    selected?: string[];
+    selected?: DeepIndex;
 
     constructor() {
         super();
@@ -39,7 +39,7 @@ export class PageRoot extends LitElement {
     }
 
     getSelectedPage(): ObjectConfig | undefined {
-        function indexWith(desc: ObjectConfig, list: string[]): ObjectConfig | undefined {
+        function indexWith(desc: ObjectConfig, list: DeepIndex): ObjectConfig | undefined {
             if (list.length === 0) {
                 return desc;
             } else {
@@ -55,7 +55,7 @@ export class PageRoot extends LitElement {
     }
 
     selectSomePage() {
-        function findSomePage(desc: ObjectConfig, selection: string[] = []): string[] | undefined {
+        function findSomePage(desc: ObjectConfig, selection: DeepIndex = []): DeepIndex | undefined {
             const any = desc.options?.find(entry => entry.kind === 'page' || entry.kind === 'pages');
             if (any?.kind === 'page') {
                 return selection.concat(any.name!);
@@ -68,13 +68,13 @@ export class PageRoot extends LitElement {
         }
     }
 
-    selectPage(index: string[]) {
+    selectPage(index: DeepIndex) {
         this.selected = index;
     }
 
     buildConfigTabs() {
         const findConfigTabs =
-            (desc: ObjectConfig, index: string[] = []):
+            (desc: ObjectConfig, index: DeepIndex = []):
             (TemplateResult | undefined)[] | undefined => {
             return desc.options?.map(entry => {
                 const entry_index = index.concat(entry.name!);
@@ -115,6 +115,10 @@ export class PageRoot extends LitElement {
         if (this.desc && this.selected) {
             return findConfigTabs(this.desc);
         }
+    }
+
+    onUpdate() {
+        ipcRenderer.send('update-config', this.config);
     }
 
     static get styles() {
@@ -253,6 +257,7 @@ export class PageRoot extends LitElement {
                     .config="${this.config}"
                     .page="${this.getSelectedPage()}"
                     .index="${this.selected}"
+                    @update="${this.onUpdate}"
                 ></settings-page>
             </div>
         `;
