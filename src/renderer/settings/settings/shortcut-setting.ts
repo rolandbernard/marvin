@@ -44,6 +44,7 @@ export class ShortcutSetting extends LitElement {
             <text-field
                 .value="${indexObject(this.config, this.index)}"
                 .validation="${this.validateShortcut}"
+                .tooltip="${getTranslation('shortcut_error', this.config)}"
             ></text-field>
         `;
     }

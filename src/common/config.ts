@@ -63,10 +63,16 @@ export abstract class Config {
 
 export function config(details: ConfigDescription) {
     return (target: Config, prop: Translatable) => {
-        target.addConfigField({
-            name: prop,
-            ...details,
-        });
+        if (
+            !details.platform
+            || details.platform === getPlatform()
+            || details.platform.includes?.(getPlatform())
+        ) {
+            target.addConfigField({
+                name: prop,
+                ...details,
+            });
+        }
     }
 }
 
@@ -110,7 +116,7 @@ class GeneralConfig extends Config {
     @configKind('boolean')
     incremental_results = false;
 
-    @config({ kind: 'time', enabled: ['general', 'incremental_results'] })
+    @config({ kind: 'time', disabled: { index: ['general', 'incremental_results'], compare: false } })
     incremental_result_debounce = time(20, TimeUnit.MILLISECONDS);
 
     @configKind('boolean')

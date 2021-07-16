@@ -6,9 +6,11 @@ import { DeepIndex } from 'common/util';
 interface BaseConfig {
     kind: string;
     name?: Translatable;
-    enabled?: DeepIndex;
+    disabled?: {
+        index: DeepIndex;
+        compare: boolean;
+    }
     icon?: string;
-    tooltip?: string;
     platform?: Platform | Platform[];
 }
 

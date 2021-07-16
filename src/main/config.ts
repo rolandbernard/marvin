@@ -17,7 +17,9 @@ export async function loadConfig() {
     config = new GlobalConfig(modules);
     try {
         const old_config = JSON.parse(await readFile(config_path, { encoding: 'utf8' }));
+        // The version and platform must not be overwritten!
         delete old_config.version;
+        delete old_config.platform;
         mergeDeep(config, old_config);
     } catch (e) {
         // Ignore errors, keep default config
