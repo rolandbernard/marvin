@@ -1,6 +1,6 @@
 {
     "name": "marvin",
-    "version": "0.0.27",
+    "version": "0.1.0-dev",
     "description": "This is a keystroke launcher for Linux",
     "repository": "https://github.com/rolandbernard/marvin/",
     "author": "Roland Bernard",
