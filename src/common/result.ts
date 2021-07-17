@@ -25,6 +25,7 @@ export type Preview = FilePreview | ColorPreview | IFramePreview;
 interface BaseResult {
     kind: string;
     module: ModuleId;
+    query: string;
     quality: number;
     preview?: Preview;
     file?: string;

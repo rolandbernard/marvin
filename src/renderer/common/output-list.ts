@@ -26,9 +26,6 @@ export class OutputField extends LitElement {
     @property({ attribute: false })
     centered = true;
 
-    @property({ attribute: false })
-    query: string = '';
-
     @query('.selected')
     element?: HTMLElement;
 
@@ -84,7 +81,6 @@ export class OutputField extends LitElement {
     }
 
     render() {
-        const query = new Query(this.query, this.config?.general.enhanced_search ?? false);
         return html`
             ${this.results?.map((result, i) => {
                 const classes = classMap({
@@ -103,21 +99,18 @@ export class OutputField extends LitElement {
                                 <simple-result
                                     class="${classes}"
                                     .result="${result}"
-                                    .query="${query}"
                                 ></simple-result>
                             `,
                             'text-result': html`
                                 <text-result
                                     class="${classes}"
                                     .result="${result}"
-                                    .query="${query}"
                                 ></text-result>
                             `,
                             'html-result': html`
                                 <html-result
                                     class="${classes}"
                                     .result="${result}"
-                                    .query="${query}"
                                 ></html-result>
                             `,
                         })}

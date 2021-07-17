@@ -63,10 +63,11 @@ export class SettingsPage extends LitElement {
     static get styles() {
         return css`
             :host {
-                overflow-y: overlay;
+                overflow: overlay;
             }
             :host::-webkit-scrollbar {
                 width: var(--scrollbar-width);
+                height: var(--scrollbar-width);
             }
             :host::-webkit-scrollbar-track,
             :host::-webkit-scrollbar-track-piece,
@@ -83,7 +84,8 @@ export class SettingsPage extends LitElement {
                 border-radius: var(--settings-border-radius);
                 background: var(--settings-background);
                 margin: 1rem;
-                width: calc(100% - 2rem);
+                width: fit-content;
+                min-width: calc(100% - 2rem);
                 min-height: calc(100% - 2rem);
                 padding: 0.25rem 1rem;
                 box-sizing: border-box;
@@ -96,13 +98,14 @@ export class SettingsPage extends LitElement {
                 font-family: var(--font-family);
             }
             .name {
+                width: 30%;
                 padding: 0.8rem 0;
-                padding-right: 0.25rem;
+                padding-right: 0.8rem;
                 text-align: left;
                 white-space: nowrap;
             }
             .setting {
-                width: 100%;
+                width: 70%;
                 text-align: right;
                 padding: 0.75rem 0;
             }

@@ -8,10 +8,10 @@ const TRANSLATION_ENGLISH = {
     max_height: 'Maximum height',
     max_results: 'Maximum results',
     incremental_results: 'Incremental results',
-    incremental_result_debounce: 'Incremental result debounce time',
+    incremental_result_debounce: 'Result delay time',
     smooth_scrolling: 'Smooth scrolling',
-    recenter_on_show: 'Recenter when opening the main window',
-    exclusive_module_prefix: 'Exclusive module prefix',
+    recenter_on_show: 'Recenter window',
+    exclusive_module_prefix: 'Exclusive prefix',
     enhanced_search: 'Enhanced search',
     reset_config: 'Reset to defaults',
 

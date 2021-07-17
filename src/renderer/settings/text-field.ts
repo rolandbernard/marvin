@@ -69,6 +69,7 @@ export class TextField extends LitElement {
                 background: none;
                 border: none;
                 outline: none;
+                width: 100%;
             }
             .disabled .input {
                 color: var(--settings-border-color);

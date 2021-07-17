@@ -75,6 +75,7 @@ export class SettingsModule implements Module<SimpleResult> {
             return [{
                 module: MODULE_ID,
                 kind: 'simple-result',
+                query: query.text,
                 quality: query.matchAny(getAllTranslations('settings'), name),
                 icon: { material: 'settings' },
                 primary: name,

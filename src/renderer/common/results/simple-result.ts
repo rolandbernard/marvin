@@ -18,9 +18,6 @@ export class SimpleResultComponent extends LitElement {
     @property({ attribute: false })
     result?: SimpleResult;
 
-    @property({ attribute: false })
-    query?: Query;
-
     static get styles() {
         return css`
             :host {
@@ -69,6 +66,7 @@ export class SimpleResultComponent extends LitElement {
     }
 
     render() {
+        const query = new Query(this.result?.query ?? '', this.config?.general?.enhanced_search ?? false);
         return html`
             <icon-display
                 class="icon"
@@ -77,10 +75,10 @@ export class SimpleResultComponent extends LitElement {
             ></icon-display>
             <div class="text">
                 <div class="primary">
-                    ${highlightTextUsingMatch(this.result?.primary, this.query)}
+                    ${highlightTextUsingMatch(this.result?.primary, query)}
                 </div>
                 <div class="secondary">
-                    ${highlightTextUsingMatch(this.result?.secondary, this.query)}
+                    ${highlightTextUsingMatch(this.result?.secondary, query)}
                 </div>
             </div>
         `;

@@ -135,11 +135,27 @@ export class PageRoot extends LitElement {
                 background: var(--settings-background);
                 color: var(--settings-text-color);
                 font-family: var(--font-family);
+                overflow: overlay;
+            }
+            .window::-webkit-scrollbar {
+                width: var(--scrollbar-width);
+                height: var(--scrollbar-width);
+            }
+            .window::-webkit-scrollbar-track,
+            .window::-webkit-scrollbar-track-piece,
+            .window::-webkit-resizer,
+            .window::-webkit-scrollbar-corner,
+            .window::-webkit-scrollbar-button {
+                display: none;
+            }
+            .window::-webkit-scrollbar-thumb {
+                background: var(--settings-accent-color);
             }
             .sidebar {
                 flex: 0 0 auto;
                 display: flex;
                 flex-flow: column;
+                user-select: none;
             }
             .page {
                 flex: 1 1 auto;
@@ -182,7 +198,6 @@ export class PageRoot extends LitElement {
             }
             .tab-drawer {
                 flex: 1 1 auto;
-                user-select: none;
                 direction: rtl;
                 overflow-y: overlay;
                 padding-top: 8rem;

@@ -150,6 +150,7 @@ export class MainModule implements Module<SimpleResult> {
             return [{
                 module: MODULE_ID,
                 kind: 'simple-result',
+                query: query.text,
                 quality: query.matchAny(getAllTranslations('quit'), name),
                 icon: { material: 'exit_to_app' },
                 primary: name,

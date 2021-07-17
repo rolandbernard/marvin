@@ -76,6 +76,7 @@ export class FoldersModule implements Module<FoldersResult> {
                             return [{
                                 module: MODULE_ID,
                                 kind: 'simple-result',
+                                query: query.text,
                                 icon: {
                                     url: stats.isDirectory() ? undefined : (await app.getFileIcon(file)).toDataURL(),
                                     material: stats.isDirectory() ? 'folder' : 'insert_drive_file',

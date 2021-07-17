@@ -27,6 +27,7 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
                 return {
                     module: MODULE_ID,
                     kind: 'simple-result',
+                    query: query.text,
                     quality: query.matchText(name),
                     icon: {
                         material: match(command, {
