@@ -1,30 +1,35 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html } from "lit-element";
 
-import { GlobalConfig } from "common/config";
-import { SimpleConfig } from "common/config-desc";
-import { DeepIndex } from "common/util";
+import { AbstractSetting } from "renderer/settings/abstract-setting";
+
+import 'renderer/settings/toggle-switch';
 
 @customElement('boolean-setting')
-export class BooleanSetting extends LitElement {
-
-    @property({ attribute: false })
-    config?: GlobalConfig;
-
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
+export class BooleanSetting extends AbstractSetting {
 
     static get styles() {
         return css`
+            :host {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+            .toggle {
+                padding-right: 1rem;
+            }
         `;
     }
 
     render() {
         return html`
+            <toggle-switch
+                class="toggle"
+                .value=${this.configValue()}
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
+            ></toggle-switch>
         `;
     }
 }
-

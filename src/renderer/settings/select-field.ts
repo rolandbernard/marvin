@@ -52,6 +52,11 @@ export class SelectField extends LitElement {
                 position: relative;
                 text-align: left;
                 user-select: none;
+                color: var(--settings-text-color);
+                cursor: pointer;
+            }
+            .disabled {
+                color: var(--settings-border-hover-color);
             }
             .value {
                 padding: 0.75rem;
@@ -59,7 +64,6 @@ export class SelectField extends LitElement {
                 border-radius: var(--settings-input-border-radius);
                 border: 1px solid var(--settings-border-color);
                 position: relative;
-                color: var(--settings-text-color);
             }
             .disabled .value, .open .value {
                 pointer-events: none;
@@ -121,6 +125,7 @@ export class SelectField extends LitElement {
             <div class="${classes}">
                 <div
                     class="value"
+                    tabindex="0"
                     @click="${this.onOpen}"
                 >
                     ${this.options?.find(option => option.value === this.value)?.label}

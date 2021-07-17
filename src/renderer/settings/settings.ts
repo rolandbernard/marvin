@@ -228,6 +228,8 @@ export class PageRoot extends LitElement {
                 width: 2.5rem;
                 color: var(--settings-accent-color);
                 justify-content: flex-start;
+                transition: var(--transition);
+                transition-property: text-shadow, color; 
             }
             .tab.activatable .icon {
                 color: var(--settings-inactive-color);

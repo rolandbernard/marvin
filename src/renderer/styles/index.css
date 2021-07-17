@@ -12,7 +12,7 @@
     --settings-input-border-radius: 0.2rem;
     --settings-error-color: red;
 
-    --transition: 300ms ease;
+    --transition: 200ms ease;
 }
 
 html, body {

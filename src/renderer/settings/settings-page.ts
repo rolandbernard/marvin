@@ -97,6 +97,7 @@ export class SettingsPage extends LitElement {
             }
             .name {
                 padding: 0.8rem 0;
+                padding-right: 0.25rem;
                 text-align: left;
                 white-space: nowrap;
             }
