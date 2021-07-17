@@ -1,6 +1,7 @@
 
 import { css, customElement, html, LitElement, property } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
+import { styleMap } from "lit-html/directives/style-map";
 
 import 'renderer/common/material-icon';
 
@@ -76,7 +77,7 @@ export class SelectField<Type> extends LitElement {
                 box-shadow: 0 0 0 1px var(--settings-active-color);
             }
             .dropdown {
-                top: 0;
+                top: calc(-2.5rem * var(--position));
                 position: absolute;
                 width: 100%;
                 box-shadow: var(--box-shadow-position) var(--settings-shadow-color);
@@ -84,7 +85,7 @@ export class SelectField<Type> extends LitElement {
                 background: var(--settings-background);
                 z-index: 100;
                 transition: var(--transition);
-                transition-property: opacity, visibility;
+                transition-property: opacity, visibility, top;
                 opacity: 0;
                 visibility: hidden;
                 outline: none;
@@ -95,6 +96,7 @@ export class SelectField<Type> extends LitElement {
             }
             .option {
                 padding: 0.75rem;
+                font-size: 1rem;
                 color: var(--settings-text-color);
                 transition: var(--transition);
                 transition-property: background, color; 
@@ -121,8 +123,11 @@ export class SelectField<Type> extends LitElement {
             'disabled': this.disabled ? true : false,
             'open': this.open,
         });
+        const styles = styleMap({
+            '--position': (this.options?.findIndex(option => option.value === this.value) ?? 0).toString(),
+        });
         return html`
-            <div class="${classes}">
+            <div class="${classes}" style="${styles}">
                 <div
                     class="value"
                     tabindex="0"
