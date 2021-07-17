@@ -9,7 +9,6 @@ import { config } from "main/config";
 /// Checks whether there exists a prefix that applies to this query. If one exists only return
 /// modules that fit that prefix, otherwise, return all modules that don't require a prefix.
 function findPossibleModules(query: Query): ModuleId[] {
-    let to_eval: ModuleId[];
     if (config.general.exclusive_module_prefix) {
         let prefix = '';
         for (const id of Object.keys(modules)) {
@@ -19,29 +18,21 @@ function findPossibleModules(query: Query): ModuleId[] {
                 }
             }
         }
-        to_eval = Object.keys(modules)
-            .filter((id) =>
-                prefix === ''
-                || (
-                    config.modules[id]
-                    && config.modules[id]!.active && config.modules[id]!.prefix === prefix
-                )
-            );
+        if (prefix.length !== 0) {
+            return Object.keys(modules)
+                .filter(id => config.modules[id] && config.modules[id]!.active)
+                .filter(id => config.modules[id]?.prefix === prefix);
+        }
     } else {
-        to_eval = Object.keys(modules)
-            .filter((id) =>
-                config.modules[id]
-                && config.modules[id]!.active && query.text.startsWith(config.modules[id]!.prefix)
-            );
+        const result = Object.keys(modules)
+            .filter(id => config.modules[id] && config.modules[id]!.active)
+            .filter(id => query.text.startsWith(config.modules[id]!.prefix));
+        if (result.length !== 0) {
+            return result;
+        }
     }
-    if (to_eval.length === 0) {
-        to_eval = Object.keys(modules)
-            .filter((id) =>
-                !config.modules[id]
-                || config.modules[id]!.active && !config.modules[id]!.prefix
-            );
-    }
-    return to_eval;
+    return Object.keys(modules)
+        .filter(id => !config.modules[id] || (config.modules[id]!.active && !config.modules[id]!.prefix));
 }
 
 async function searchQueryInModule(id: ModuleId, query: Query): Promise<Result[]> {
