@@ -33,8 +33,13 @@ export class ToggleSwitch extends LitElement {
                 height: 0.9rem;
                 border-radius: 50rem;
                 position: relative;
-                cursor: pointer;
                 outline: none;
+            }
+            .input.enabled {
+                cursor: pointer;
+            }
+            .input.disabled {
+                filter: saturate(0.25);
             }
             .input::before, .input::after {
                 content: '';
@@ -48,7 +53,7 @@ export class ToggleSwitch extends LitElement {
                 transition: var(--transition);
                 transition-property: background, left, width, height;
             }
-            .input:hover::after, .input:hover::before {
+            .input.enabled:hover::after, .input-enabled:hover::before {
                 width: 1.4rem;
                 height: 1.4rem;
             }

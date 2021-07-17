@@ -1,29 +1,40 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html } from "lit-element";
 
-import { GlobalConfig } from "common/config";
-import { SimpleConfig } from "common/config-desc";
-import { DeepIndex } from "common/util";
+import { getTranslation } from "common/local/locale";
+
+import { AbstractSetting } from "renderer/settings/abstract-setting";
+
+import 'renderer/settings/text-field';
 
 @customElement('amount-setting')
-export class AmountSetting extends LitElement {
+export class AmountSetting extends AbstractSetting {
 
-    @property({ attribute: false })
-    config?: GlobalConfig;
+    validate(shortcut: string): string | undefined {
+        return parseInt(shortcut) >= 0.0 ? undefined : getTranslation('size_error', this.config);
+    }
 
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'amount' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
+    updateConfig(value: string) {
+        super.updateConfig(parseInt(value));
+    }
 
     static get styles() {
         return css`
+            :host {
+                width: 100%;
+            }
         `;
     }
 
     render() {
         return html`
+            <text-field
+                type="number"
+                .value="${this.configValue()}"
+                .validation="${this.validate.bind(this)}"
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
+            ></text-field>
         `;
     }
 }

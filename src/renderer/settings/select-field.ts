@@ -54,6 +54,8 @@ export class SelectField<Type> extends LitElement {
                 text-align: left;
                 user-select: none;
                 color: var(--settings-text-color);
+            }
+            .select.enabled {
                 cursor: pointer;
             }
             .disabled {

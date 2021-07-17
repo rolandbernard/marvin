@@ -72,7 +72,7 @@ export class TextField extends LitElement {
                 width: 100%;
             }
             .disabled .input {
-                color: var(--settings-border-color);
+                color: var(--settings-border-hover-color);
                 user-select: none;
             }
             .slot {

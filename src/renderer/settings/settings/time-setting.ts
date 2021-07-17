@@ -24,14 +24,12 @@ export class TimeSetting extends AbstractSetting {
 
     updateConfig(value: string) {
         const milliseconds = time(parseFloat(value), this.unit ?? TimeUnit.MILLISECONDS);
-        console.log(milliseconds);
         super.updateConfig(milliseconds);
     }
 
     onUnitChange(e: CustomEvent) {
         this.unit = e.detail.value as TimeUnit;
         this.value = (this.configValue() / time(1, this.unit)).toString();
-        console.log(this.unit, this.value);
     }
 
     static get styles() {
