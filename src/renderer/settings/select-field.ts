@@ -5,13 +5,13 @@ import { classMap } from "lit-html/directives/class-map";
 import 'renderer/common/material-icon';
 
 @customElement('select-field')
-export class SelectField extends LitElement {
+export class SelectField<Type> extends LitElement {
 
     @property({ attribute: false })
-    value?: string;
+    value?: Type;
 
     @property({ attribute: false })
-    options?: { value: string, label: string }[];
+    options?: { value: Type, label: string }[];
 
     @property({ attribute: false })
     disabled?: boolean;
@@ -31,7 +31,7 @@ export class SelectField extends LitElement {
         });
     }
 
-    onClose(value?: string) {
+    onClose(value?: Type) {
         this.open = false;
         if (value) {
             this.value = value;

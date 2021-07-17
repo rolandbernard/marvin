@@ -35,6 +35,7 @@ const TRANSLATION_ITALIAN = {
 
     quality_error: 'Il valore deve essere compreso tra 0,0 e 1,0',
     size_error: 'Il valore deve essere un numero intero maggiore di 0',
+    time_error: 'Il valore deve essere un numero positivo',
     shortcut_error: 'Il valore deve essere un shortcut valido',
     path_error: 'Il valore deve essere un percorso assoluto valido',
     quality: 'Priorità',

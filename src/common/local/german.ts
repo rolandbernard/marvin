@@ -35,6 +35,7 @@ const TRANSLATION_GERMAN = {
 
     quality_error: 'Der Wert muss zwischen 0,0 und 1,0 liegen',
     size_error: 'Der Wert muss eine Ganzzahl größer als 0 sein',
+    time_error: 'Der Wert muss eine positive Zahl sein',
     shortcut_error: 'Der Wert muss ein gültiger Shortcut sein',
     path_error: 'Der Wert muss ein gültiger absoluter Pfad sein',
     quality: 'Priorität',

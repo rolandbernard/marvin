@@ -32,13 +32,19 @@ export class AbstractSetting extends LitElement {
         return indexObject(this.config, this.index);
     }
 
-    onChange(e: CustomEvent) {
-        if (this.config && this.index && this.validate(e.detail.value) === undefined) {
+    updateConfig(value: any) {
+        if (this.config && this.index) {
             const parent = indexObject(this.config, this.index.slice(0, this.index.length - 1));
             if (parent) {
-                parent[this.index[this.index.length - 1]] = e.detail.value;
+                parent[this.index[this.index.length - 1]] = value;
                 this.dispatchEvent(new CustomEvent('update'));
             }
+        }
+    }
+
+    onChange(e: CustomEvent) {
+        if (this.validate(e.detail.value) === undefined) {
+            this.updateConfig(e.detail.value);
         }
     }
 }

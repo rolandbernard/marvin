@@ -17,7 +17,7 @@ export class BooleanSetting extends AbstractSetting {
                 justify-content: flex-end;
             }
             .toggle {
-                padding-right: 1rem;
+                padding: 0.5rem 1rem;
             }
         `;
     }

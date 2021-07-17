@@ -1,30 +1,76 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html, property } from "lit-element";
 
-import { GlobalConfig } from "common/config";
-import { SimpleConfig } from "common/config-desc";
-import { DeepIndex } from "common/util";
+import { getTranslation } from "common/local/locale";
+import { closestUnit, shortUnit, time, TimeUnit } from "common/time";
+
+import { AbstractSetting } from "renderer/settings/abstract-setting";
+
+import 'renderer/settings/text-field';
+import 'renderer/settings/select-field';
 
 @customElement('time-setting')
-export class TimeSetting extends LitElement {
+export class TimeSetting extends AbstractSetting {
 
     @property({ attribute: false })
-    config?: GlobalConfig;
+    unit?: TimeUnit;
 
     @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
+    value?: string;
 
-    @property({ attribute: false })
-    index?: DeepIndex;
+    validate(shortcut: string): string | undefined {
+        return parseFloat(shortcut) >= 0.0 ? undefined : getTranslation('time_error', this.config);
+    }
+
+    updateConfig(value: string) {
+        const milliseconds = time(parseFloat(value), this.unit ?? TimeUnit.MILLISECONDS);
+        console.log(milliseconds);
+        super.updateConfig(milliseconds);
+    }
+
+    onUnitChange(e: CustomEvent) {
+        this.unit = e.detail.value as TimeUnit;
+        this.value = (this.configValue() / time(1, this.unit)).toString();
+        console.log(this.unit, this.value);
+    }
 
     static get styles() {
         return css`
+            :host {
+                width: 100%;
+            }
+            .select {
+                margin: -1px;
+                width: 4.5rem;
+            }
         `;
     }
 
     render() {
+        if (this.config && !this.unit) {
+            this.unit = closestUnit(this.configValue());
+            this.value = (this.configValue() / time(1, this.unit)).toString();
+        }
+        const options = Object.values(TimeUnit).slice(0, 3).map(option => ({
+            value: option,
+            label: shortUnit(option),
+        }));
         return html`
+            <text-field
+                type="number"
+                .value="${this.value}"
+                .validation="${this.validate.bind(this)}"
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
+            >
+                <select-field
+                    class="select"
+                    .value=${this.unit}
+                    .options=${options}
+                    .disabled="${this.isDisabled()}"
+                    @change="${this.onUnitChange}"
+                ></select-field>
+            </text-field>
         `;
     }
 }
-
