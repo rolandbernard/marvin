@@ -136,37 +136,29 @@ export class PageRoot extends LitElement {
                 color: var(--settings-text-color);
                 font-family: var(--font-family);
             }
-            .tab-drawer {
+            .sidebar {
                 flex: 0 0 auto;
-                user-select: none;
-                direction: rtl;
-                overflow-y: overlay;
-            }
-            .tab-drawer::-webkit-scrollbar {
-                width: var(--scrollbar-width);
-            }
-            .tab-drawer::-webkit-scrollbar-track,
-            .tab-drawer::-webkit-scrollbar-track-piece,
-            .tab-drawer::-webkit-resizer,
-            .tab-drawer::-webkit-scrollbar-corner,
-            .tab-drawer::-webkit-scrollbar-button {
-                display: none;
-            }
-            .tab-drawer::-webkit-scrollbar-thumb {
-                background: var(--settings-accent-color);
+                display: flex;
+                flex-flow: column;
             }
             .page {
                 flex: 1 1 auto;
             }
             .header {
+                flex: 0 0 auto;
                 display: flex;
                 flex-flow: column;
                 align-items: flex-start;
                 justify-content: center;
                 padding: 2rem 1rem;
+                background: var(--settings-transparent-background);
+                height: 8rem;
+                box-sizing: border-box;
+                backdrop-filter: blur(5px);
+                z-index: 100;
+                margin-left: var(--scrollbar-width);
             }
             .logo-title {
-                direction: ltr;
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: center;
@@ -187,6 +179,27 @@ export class PageRoot extends LitElement {
                 font-size: 2rem;
                 font-weight: 600;
                 padding-left: 1rem;
+            }
+            .tab-drawer {
+                flex: 1 1 auto;
+                user-select: none;
+                direction: rtl;
+                overflow-y: overlay;
+                padding-top: 8rem;
+                margin-top: -8rem;
+            }
+            .tab-drawer::-webkit-scrollbar {
+                width: var(--scrollbar-width);
+            }
+            .tab-drawer::-webkit-scrollbar-track,
+            .tab-drawer::-webkit-scrollbar-track-piece,
+            .tab-drawer::-webkit-resizer,
+            .tab-drawer::-webkit-scrollbar-corner,
+            .tab-drawer::-webkit-scrollbar-button {
+                display: none;
+            }
+            .tab-drawer::-webkit-scrollbar-thumb {
+                background: var(--settings-accent-color);
             }
             .tab {
                 direction: ltr;
@@ -239,7 +252,7 @@ export class PageRoot extends LitElement {
                 class="window"
                 style="${getConfigStyles(this.config)}"
             >
-                <div class="tab-drawer">
+                <div class="sidebar">
                     <div class="header">
                         <div class="logo-title">
                             <img class="logo" src=${Logo} />
@@ -250,7 +263,9 @@ export class PageRoot extends LitElement {
                             ${this.config?.platform}
                         </div>
                     </div>
-                    ${this.buildConfigTabs()}
+                    <div class="tab-drawer">
+                        ${this.buildConfigTabs()}
+                    </div>
                 </div>
                 <settings-page
                     class="page"

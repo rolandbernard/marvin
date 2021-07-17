@@ -29,12 +29,12 @@ export function getConfigStyles(config?: GlobalConfig) {
         '--settings-text-color': config?.theme.settings.text_color ?? 'black',
         '--settings-accent-color': config?.theme.settings.accent_color ?? 'black',
         '--settings-shadow-color': config?.theme.settings.shadow_color ?? '#00000080',
-        '--settings-hover-background': colorAsHex(
-            multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.select_color ?? '#00000080'))
-        ),
         '--settings-selection-background': config?.theme.settings.select_color ?? 'grey',
         '--settings-selection-text-color': config?.theme.settings.select_text_color ?? 'black',
         '--settings-active-color': config?.theme.settings.active_color ?? 'green',
+        '--settings-hover-background': colorAsHex(
+            multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.select_color ?? '#00000080'))
+        ),
         '--settings-inactive-color': colorAsHex(
             multiplyColor([1, 1, 1, 0.1], parseColor(config?.theme.settings.text_color ?? '#00000000'))
         ),
@@ -43,6 +43,9 @@ export function getConfigStyles(config?: GlobalConfig) {
         ),
         '--settings-border-hover-color': colorAsHex(
             multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.text_color ?? '#00000000'))
+        ),
+        '--settings-transparent-background': colorAsHex(
+            multiplyColor([1, 1, 1, 0.8], parseColor(config?.theme.settings.background_color ?? '#00000080'))
         ),
     });
 }

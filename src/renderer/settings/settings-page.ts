@@ -1,5 +1,5 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html, LitElement, property, TemplateResult } from "lit-element";
 
 import { GlobalConfig } from "common/config";
 import { ObjectConfig } from "common/config-desc";
@@ -19,6 +19,41 @@ export class SettingsPage extends LitElement {
 
     @property({ attribute: false })
     index?: DeepIndex;
+
+    buildSettingsRows() {
+        const findSettings = 
+            (desc: ObjectConfig, index: DeepIndex):
+            (TemplateResult | undefined)[] | undefined => {
+            return desc.options?.map(entry => {
+                const entry_index = index.concat(entry.name!);
+                const name = getTranslation(entry.name!, this.config);
+                if (entry.kind === 'object') {
+                    return html`
+                        <tr>
+                            <td><div class="subheader">${name}</div></td>
+                        </tr>
+                        ${findSettings(entry, entry_index)}
+                    `;
+                } else {
+                    return html`
+                        <tr class="row">
+                            <td class="name">${name}</td>
+                            <td class="setting">
+                                <some-setting
+                                    .config="${this.config}"
+                                    .desc="${entry}"
+                                    .index="${entry_index}"
+                                ></some-setting>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+        if (this.page && this.index) {
+            return findSettings(this.page, this.index);
+        }
+    }
 
     static get styles() {
         return css`
@@ -47,6 +82,7 @@ export class SettingsPage extends LitElement {
                 min-height: calc(100% - 2rem);
                 padding: 0 1rem;
                 box-sizing: border-box;
+                user-select: none;
             }
             .table {
                 width: 100%;
@@ -63,6 +99,14 @@ export class SettingsPage extends LitElement {
                 width: 100%;
                 text-align: right;
             }
+            .subheader {
+                direction: ltr;
+                font-size: 0.75rem;
+                margin-left: -0.5rem;
+                padding-top: 1rem;
+                opacity: 0.75;
+                font-weight: 600;
+            }
         `;
     }
 
@@ -70,22 +114,7 @@ export class SettingsPage extends LitElement {
         return html`
             <div class="page">
                 <table class="table">
-                    ${this.page?.options?.filter(option =>
-                            !option.platform
-                            || option.platform === this.config?.platform
-                            || option.platform.includes?.(this.config?.platform!)
-                        ).map(option => html`
-                        <tr class="row">
-                            <td class="name">${getTranslation(option.name!, this.config)}</td>
-                            <td class="setting">
-                                <some-setting
-                                    .config="${this.config}"
-                                    .desc="${option}"
-                                    .index="${this.index?.concat(option.name!)}"
-                                ></some-setting>
-                            </td>
-                        </tr>
-                    `)}
+                    ${this.buildSettingsRows()}
                 </table>
             </div>
         `;
