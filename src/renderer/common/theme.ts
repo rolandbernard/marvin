@@ -45,7 +45,7 @@ export function getConfigStyles(config?: GlobalConfig) {
             multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.text_color ?? '#00000000'))
         ),
         '--settings-transparent-background': colorAsHex(
-            multiplyColor([1, 1, 1, 0.8], parseColor(config?.theme.settings.background_color ?? '#00000080'))
+            multiplyColor([1, 1, 1, 0.8], parseColor(config?.theme.settings.background_color ?? '#ffffff'))
         ),
     });
 }

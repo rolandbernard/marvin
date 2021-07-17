@@ -206,15 +206,16 @@ export class PageRoot extends LitElement {
                 cursor: pointer;
                 font-size: 1rem;
                 padding: 0.8rem 1rem;
-                transition-duration: 0.3s;
+                transition: var(--transition);
                 transition-property: background, color; 
                 border-radius: 0 50rem 50rem 0;
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: center;
                 justify-content: flex-start;
+                outline: none;
             }
-            .tab:hover {
+            .tab:hover, .tab:focus-within {
                 background: var(--settings-hover-background);
             }
             .tab.selected {

@@ -68,13 +68,17 @@ export class OutputField extends LitElement {
                 align-items: stretch;
                 background: var(--output-background);
             }
-            .selected {
+            .result {
+                background: var(--output-background);
+                color: var(--output-text-color);
+                min-height: var(--min-element-height);
+                transition: var(--transition);
+                transition-property: background, color; 
+            }
+            .result.selected {
                 background: var(--output-selection-background);
                 color: var(--output-selection-text-color);
                 cursor: pointer;
-            }
-            .result {
-                min-height: var(--min-element-height);
             }
         `;
     }

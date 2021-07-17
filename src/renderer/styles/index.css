@@ -11,6 +11,8 @@
     --settings-border-radius: 0.5rem;
     --settings-input-border-radius: 0.2rem;
     --settings-error-color: red;
+
+    --transition: 300ms ease;
 }
 
 html, body {

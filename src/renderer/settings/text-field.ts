@@ -35,12 +35,10 @@ export class TextField extends LitElement {
     static get styles() {
         return css`
             :host {
-                width: 100%;
                 display: flex;
                 flex-flow: column;
             }
             .input-wrap {
-                width: 100%;
                 display: flex;
                 flex-flex: row nowrap;
                 background: var(--settings-background);
@@ -63,14 +61,18 @@ export class TextField extends LitElement {
                 box-shadow: 0 0 0 1px var(--settings-error-color);
             }
             .input {
-                width: 100%;
                 flex: 1 1 auto;
                 padding: 0.75rem;
                 font-family: var(--font-family);
+                color: var(--settings-text-color);
                 font-size: 1rem;
                 background: none;
                 border: none;
                 outline: none;
+            }
+            .disabled .input {
+                color: var(--settings-border-color);
+                user-select: none;
             }
             .slot {
                 flex: 0 0 auto;

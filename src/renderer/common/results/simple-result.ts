@@ -28,8 +28,6 @@ export class SimpleResultComponent extends LitElement {
                 flex-flow: row nowrap;
                 align-items: center;
                 justify-content: center;
-                background: var(--output-background);
-                color: var(--output-text-color);
                 user-select: none;
                 padding: 0.5rem;
             }
