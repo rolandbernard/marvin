@@ -1,10 +1,10 @@
 
-import { Query } from "common/query";
-import { ModuleId } from "common/module";
-import { Result } from "common/result";
+import { Query } from 'common/query';
+import { ModuleId } from 'common/module';
+import { Result } from 'common/result';
 
-import { moduleForId, modules } from "main/modules";
-import { config } from "main/config";
+import { moduleForId, modules } from 'main/modules';
+import { config } from 'main/config';
 
 /// Checks whether there exists a prefix that applies to this query. If one exists only return
 /// modules that fit that prefix, otherwise, return all modules that don't require a prefix.

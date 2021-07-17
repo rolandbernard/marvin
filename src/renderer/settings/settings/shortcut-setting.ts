@@ -1,9 +1,9 @@
 
-import { css, customElement, html } from "lit-element";
+import { css, customElement, html } from 'lit-element';
 
-import { getTranslation } from "common/local/locale";
+import { getTranslation } from 'common/local/locale';
 
-import { AbstractSetting } from "renderer/settings/abstract-setting";
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/settings/text-field';
 

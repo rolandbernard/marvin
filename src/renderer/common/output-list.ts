@@ -5,7 +5,6 @@ import { classMap } from 'lit-html/directives/class-map';
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';
 import { match } from 'common/util';
-import { Query } from 'common/query';
 
 import 'renderer/common/results/simple-result';
 import 'renderer/common/results/text-result';

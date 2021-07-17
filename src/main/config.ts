@@ -1,6 +1,6 @@
 
 import { readFile, writeFile } from 'fs/promises';
-import { app } from "electron";
+import { app } from 'electron';
 import { join } from 'path';
 
 import { GlobalConfig } from 'common/config';

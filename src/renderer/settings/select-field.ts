@@ -1,7 +1,7 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
-import { classMap } from "lit-html/directives/class-map";
-import { styleMap } from "lit-html/directives/style-map";
+import { css, customElement, html, LitElement, property } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map';
+import { styleMap } from 'lit-html/directives/style-map';
 
 import 'renderer/common/material-icon';
 

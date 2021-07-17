@@ -1,29 +1,40 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html } from 'lit-element';
+import { isAbsolute } from 'path';
 
-import { GlobalConfig } from "common/config";
-import { SimpleConfig } from "common/config-desc";
-import { DeepIndex } from "common/util";
+import { getTranslation } from 'common/local/locale';
+
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
+
+import 'renderer/settings/text-field';
 
 @customElement('path-setting')
-export class PathSetting extends LitElement {
+export class PathSetting extends AbstractSetting {
 
-    @property({ attribute: false })
-    config?: GlobalConfig;
-
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
+    validate(path: string): string | undefined {
+        if (isAbsolute(path)) {
+            return undefined;
+        } else {
+            return getTranslation('path_error', this.config);
+        }
+    }
 
     static get styles() {
         return css`
+            :host {
+                width: 100%;
+            }
         `;
     }
 
     render() {
         return html`
+            <text-field
+                .value="${this.configValue()}"
+                .validation="${this.validate.bind(this)}"
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
+            ></text-field>
         `;
     }
 }

@@ -1,7 +1,7 @@
 
-import { css, customElement, html } from "lit-element";
+import { css, customElement, html } from 'lit-element';
 
-import { AbstractSetting } from "renderer/settings/abstract-setting";
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/settings/text-field';
 

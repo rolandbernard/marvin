@@ -1,9 +1,9 @@
 
-import { LitElement, property } from "lit-element";
+import { LitElement, property } from 'lit-element';
 
-import { GlobalConfig } from "common/config";
-import { ConfigDescription } from "common/config-desc";
-import { DeepIndex, indexObject } from "common/util";
+import { GlobalConfig } from 'common/config';
+import { ConfigDescription } from 'common/config-desc';
+import { DeepIndex, indexObject } from 'common/util';
 
 export class AbstractSetting extends LitElement {
 
@@ -28,8 +28,8 @@ export class AbstractSetting extends LitElement {
         }
     }
 
-    configValue() {
-        return indexObject(this.config, this.index);
+    configValue<Type>(): Type {
+        return indexObject(this.config, this.index) as Type;
     }
 
     updateConfig(value: any) {

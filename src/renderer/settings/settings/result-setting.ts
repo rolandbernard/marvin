@@ -1,9 +1,9 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html, LitElement, property } from 'lit-element';
 
-import { GlobalConfig } from "common/config";
-import { SimpleConfig } from "common/config-desc";
-import { DeepIndex } from "common/util";
+import { GlobalConfig } from 'common/config';
+import { SimpleConfig } from 'common/config-desc';
+import { DeepIndex } from 'common/util';
 
 @customElement('result-setting')
 export class ResultSetting extends LitElement {

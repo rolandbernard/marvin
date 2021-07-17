@@ -1,10 +1,10 @@
 
-import { css, customElement, html, property } from "lit-element";
+import { css, customElement, html, property } from 'lit-element';
 
-import { getTranslation } from "common/local/locale";
-import { closestUnit, shortUnit, time, TimeUnit } from "common/time";
+import { getTranslation } from 'common/local/locale';
+import { closestUnit, shortUnit, time, TimeUnit } from 'common/time';
 
-import { AbstractSetting } from "renderer/settings/abstract-setting";
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/settings/text-field';
 import 'renderer/settings/select-field';
@@ -29,7 +29,7 @@ export class TimeSetting extends AbstractSetting {
 
     onUnitChange(e: CustomEvent) {
         this.unit = e.detail.value as TimeUnit;
-        this.value = (this.configValue() / time(1, this.unit)).toString();
+        this.value = (this.configValue<number>() / time(1, this.unit)).toString();
     }
 
     static get styles() {
@@ -47,7 +47,7 @@ export class TimeSetting extends AbstractSetting {
     render() {
         if (this.config && !this.unit) {
             this.unit = closestUnit(this.configValue());
-            this.value = (this.configValue() / time(1, this.unit)).toString();
+            this.value = (this.configValue<number>() / time(1, this.unit)).toString();
         }
         const options = Object.values(TimeUnit).slice(0, 3).map(option => ({
             value: option,

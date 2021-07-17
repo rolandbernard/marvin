@@ -1,10 +1,10 @@
 
-import { css, customElement, html } from "lit-element";
+import { css, customElement, html } from 'lit-element';
 
-import { SelectConfig } from "common/config-desc";
-import { getTranslation } from "common/local/locale";
+import { SelectConfig } from 'common/config-desc';
+import { getTranslation } from 'common/local/locale';
 
-import { AbstractSetting } from "renderer/settings/abstract-setting";
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/settings/select-field';
 

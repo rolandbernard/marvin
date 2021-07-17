@@ -1,9 +1,9 @@
 
-import { customElement, html, LitElement, property } from "lit-element";
+import { customElement, html, LitElement, property } from 'lit-element';
 
-import { GlobalConfig } from "common/config";
-import { SimpleConfig } from "common/config-desc";
-import { DeepIndex, match } from "common/util";
+import { GlobalConfig } from 'common/config';
+import { SimpleConfig } from 'common/config-desc';
+import { DeepIndex, match } from 'common/util';
 
 import 'renderer/settings/settings/amount-setting';
 import 'renderer/settings/settings/array-setting';

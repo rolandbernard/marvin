@@ -1,6 +1,6 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
-import { classMap } from "lit-html/directives/class-map";
+import { css, customElement, html, LitElement, property } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map';
 
 @customElement('toggle-switch')
 export class ToggleSwitch extends LitElement {

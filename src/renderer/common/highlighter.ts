@@ -1,7 +1,7 @@
 
-import { html } from "lit-html";
+import { html } from 'lit-html';
 
-import { Query } from "common/query";
+import { Query } from 'common/query';
 
 export function highlightTextUsingMatch(text?: string, query?: Query) {
     if (text && query) {

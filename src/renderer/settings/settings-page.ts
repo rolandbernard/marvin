@@ -1,10 +1,10 @@
 
-import { css, customElement, html, LitElement, property, TemplateResult } from "lit-element";
+import { css, customElement, html, LitElement, property, TemplateResult } from 'lit-element';
 
-import { GlobalConfig } from "common/config";
-import { ObjectConfig } from "common/config-desc";
-import { DeepIndex } from "common/util";
-import { getTranslation } from "common/local/locale";
+import { GlobalConfig } from 'common/config';
+import { ObjectConfig } from 'common/config-desc';
+import { DeepIndex } from 'common/util';
+import { getTranslation } from 'common/local/locale';
 
 import 'renderer/settings/some-setting';
 
@@ -33,10 +33,28 @@ export class SettingsPage extends LitElement {
                 const name = getTranslation(entry.name!, this.config);
                 if (entry.kind === 'object') {
                     return html`
-                        <tr>
-                            <td><div class="subheader">${name}</div></td>
+                        <tr class="row">
+                            <td>
+                                <div class="subheader">${name}</div>
+                            </td>
                         </tr>
                         ${findSettings(entry, entry_index)}
+                    `;
+                } else if (entry.kind === 'array') {
+                    return html`
+                        <tr class="row">
+                            <td class="name" colspan="2">${name}</td>
+                        </tr>
+                        <tr class="row">
+                            <td class="setting" colspan="2">
+                                <some-setting
+                                    .config="${this.config}"
+                                    .desc="${entry}"
+                                    .index="${entry_index}"
+                                    @update="${this.onUpdate}"
+                                ></some-setting>
+                            </td>
+                        </tr>
                     `;
                 } else {
                     return html`
