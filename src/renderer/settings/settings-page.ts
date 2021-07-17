@@ -4,7 +4,7 @@ import { css, customElement, html, LitElement, property, TemplateResult } from '
 import { GlobalConfig } from 'common/config';
 import { ObjectConfig } from 'common/config-desc';
 import { DeepIndex } from 'common/util';
-import { getTranslation } from 'common/local/locale';
+import { getTranslation, hasTranslation } from 'common/local/locale';
 
 import 'renderer/settings/some-setting';
 
@@ -135,12 +135,25 @@ export class SettingsPage extends LitElement {
                 opacity: 0.75;
                 font-weight: 600;
             }
+            .description {
+                font-family: var(--font-family);
+                font-size: 1rem;
+                margin: 1rem;
+            }
         `;
     }
 
     render() {
+        const desc = this.page?.name + '_description';
         return html`
             <div class="page">
+                ${hasTranslation(desc)
+                    ? html`
+                        <div class="description">
+                            ${getTranslation(desc, this.config)}
+                        </div>
+                    `
+                    : undefined}
                 <table class="table">
                     ${this.buildSettingsRows()}
                 </table>

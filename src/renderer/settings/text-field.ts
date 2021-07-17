@@ -85,7 +85,7 @@ export class TextField extends LitElement {
                 color: var(--settings-error-color);
                 padding-left: 0.5rem;
                 text-align: left;
-                bottom: -1rem;
+                bottom: -1.1rem;
                 left: 0;
             }
         `;

@@ -119,6 +119,8 @@ export class ArraySetting extends AbstractSetting {
                 background: var(--settings-background);
                 color: var(--settings-accent-color);
                 cursor: pointer;
+                transition: var(--transition);
+                transition-property: background, color; 
             }
             .button:hover {
                 background: var(--settings-hover-background);

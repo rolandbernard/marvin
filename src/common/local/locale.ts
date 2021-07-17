@@ -31,6 +31,11 @@ export function getTranslation(text: Translatable, config?: GlobalConfig): strin
     return TRANSLATIONS[config?.general.language ?? 'en'][text] ?? TRANSLATIONS['en'][text] ?? text;
 }
 
+export function hasTranslation(text: string, config?: GlobalConfig): text is Translatable {
+    return (TRANSLATIONS[config?.general.language ?? 'en'][text as Translatable] ?? TRANSLATIONS['en'][text as Translatable])
+            ? true : false;
+}
+
 export function getAllTranslations(text: keyof Translation): string[] {
     return Object.values(Language)
         .map((lang) => TRANSLATIONS[lang][text])
