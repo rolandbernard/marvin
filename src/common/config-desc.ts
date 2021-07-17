@@ -32,7 +32,7 @@ export interface ArrayConfig extends BaseConfig {
 
 export interface SelectConfig extends BaseConfig {
     kind: 'select';
-    options: string[];
+    options: Translatable[];
 }
 
 export interface ButtonConfig extends BaseConfig {

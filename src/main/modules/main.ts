@@ -24,6 +24,7 @@ app.commandLine.appendSwitch("disable-gpu");
 export class MainModule implements Module<SimpleResult> {
     tray?: Tray;
     window?: BrowserWindow;
+    shortcut?: string;
 
     createTrayIcon() {
         this.tray = new Tray(join(__dirname, Logo));
@@ -113,9 +114,14 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     registerShortcut() {
-        const ret = globalShortcut.register(config.general.global_shortcut, this.toggleWindow.bind(this));
-        if (!ret) {
-            console.error('Failed to register a global shortcut.');
+        if (this.shortcut !== config.general.global_shortcut) {
+            const ret = globalShortcut.register(config.general.global_shortcut, this.toggleWindow.bind(this));
+            if (!ret) {
+                console.error('Failed to register a global shortcut.');
+            } else if (this.shortcut) {
+                globalShortcut.unregister(this.shortcut);
+            }
+            this.shortcut = config.general.global_shortcut;
         }
     }
 
@@ -129,8 +135,8 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     async update() {
-        this.deinit();
-        this.init();
+        this.registerShortcut();
+        this.window?.webContents.send('show', config, config.getDescription());
     }
 
     async deinit() {

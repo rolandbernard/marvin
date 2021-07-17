@@ -1,5 +1,5 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { customElement, html, LitElement, property } from "lit-element";
 
 import { GlobalConfig } from "common/config";
 import { SimpleConfig } from "common/config-desc";
@@ -33,29 +33,28 @@ export class SomeSetting extends LitElement {
     @property({ attribute: false })
     index?: DeepIndex;
 
-    static get styles() {
-        return css`
-        `;
+    onUpdate() {
+        this.dispatchEvent(new CustomEvent('update'));
     }
 
     render() {
         return html`
             ${this.desc && match(this.desc.kind, {
-                'boolean': html`<boolean-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></boolean-setting>`,
-                'quality': html`<quality-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></quality-setting>`,
-                'path': html`<path-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></path-setting>`,
-                'shortcut': html`<shortcut-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></shortcut-setting>`,
-                'color': html`<color-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></color-setting>`,
-                'code': html`<code-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></code-setting>`,
-                'result': html`<result-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></result-setting>`,
-                'size': html`<size-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></size-setting>`,
-                'text': html`<text-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></text-setting>`,
-                'time': html`<time-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></time-setting>`,
-                'amount': html`<amount-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></amount-setting>`,
-                'array': html`<array-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></array-setting>`,
-                'select': html`<select-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></select-setting>`,
-                'button': html`<button-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></button-setting>`,
-                'object': html`<object-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}"></object-setting>`,
+                'boolean': html`<boolean-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></boolean-setting>`,
+                'quality': html`<quality-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></quality-setting>`,
+                'path': html`<path-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></path-setting>`,
+                'shortcut': html`<shortcut-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></shortcut-setting>`,
+                'color': html`<color-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></color-setting>`,
+                'code': html`<code-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></code-setting>`,
+                'result': html`<result-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></result-setting>`,
+                'size': html`<size-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></size-setting>`,
+                'text': html`<text-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></text-setting>`,
+                'time': html`<time-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></time-setting>`,
+                'amount': html`<amount-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></amount-setting>`,
+                'array': html`<array-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></array-setting>`,
+                'select': html`<select-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></select-setting>`,
+                'button': html`<button-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></button-setting>`,
+                'object': html`<object-setting .config="${this.config}" .desc="${this.desc}" .index="${this.index}" @update="${this.onUpdate}"></object-setting>`,
                 'page': undefined,
                 'pages': undefined,
             })}

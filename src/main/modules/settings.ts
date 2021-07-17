@@ -62,8 +62,7 @@ export class SettingsModule implements Module<SimpleResult> {
     }
 
     async update() {
-        this.deinit();
-        this.init();
+        this.window?.webContents.send('show', config, config.getDescription());
     }
 
     async deinit() {

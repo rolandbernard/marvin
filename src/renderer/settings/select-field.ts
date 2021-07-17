@@ -2,51 +2,36 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 
-@customElement('text-field')
-export class TextField extends LitElement {
-
-    @property()
-    type: string = 'text';
+@customElement('select-field')
+export class SelectField extends LitElement {
 
     @property({ attribute: false })
     value?: string;
 
     @property({ attribute: false })
+    options?: { value: string, label: string }[];
+
+    @property({ attribute: false })
     disabled?: boolean;
-
-    @property({ attribute: false })
-    validation?: (value: string) => string | undefined;
-
-    @property({ attribute: false })
-    error?: string;
 
     onChange(event: Event) {
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
-                value: (event.target as HTMLInputElement).value,
+                value: (event.target as HTMLSelectElement).value,
             }
         }));
-    }
-
-    onInput(event: Event) {
-        this.error = this.validation?.((event.target as HTMLInputElement).value);
     }
 
     static get styles() {
         return css`
             :host {
                 width: 100%;
-                display: flex;
-                flex-flow: column;
             }
             .input-wrap {
                 width: 100%;
-                display: flex;
-                flex-flex: row nowrap;
                 background: var(--settings-background);
                 border-radius: var(--settings-input-border-radius);
                 border: 1px solid var(--settings-border-color);
-                position: relative;
             }
             .input-wrap.disabled {
                 pointer-events: none;
@@ -58,32 +43,15 @@ export class TextField extends LitElement {
                 border-color: var(--settings-active-color);
                 box-shadow: 0 0 0 1px var(--settings-active-color);
             }
-            .input-wrap.enabled.wrong {
-                border-color: var(--settings-error-color);
-                box-shadow: 0 0 0 1px var(--settings-error-color);
-            }
             .input {
                 width: 100%;
-                flex: 1 1 auto;
                 padding: 0.75rem;
                 font-family: var(--font-family);
                 font-size: 1rem;
                 background: none;
                 border: none;
                 outline: none;
-            }
-            .slot {
-                flex: 0 0 auto;
-            }
-            .error {
-                position: absolute;
-                font-size: 0.65rem;
-                font-family: var(--font-family);
-                color: var(--settings-error-color);
-                padding-left: 0.5rem;
-                text-align: left;
-                bottom: -1rem;
-                left: 0;
+                appearance: none;
             }
         `;
     }
@@ -93,26 +61,25 @@ export class TextField extends LitElement {
             'input-wrap': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
-            'wrong': this.error ? true : false,
         });
         return html`
             <div class="${classes}">
-                <input
+                <select
                     class="input"
-                    spellcheck="false"
-                    autocomplete="off"
                     ?disabled="${this.disabled}"
-                    type="${this.type}"
-                    .value=${this.value}
                     @change="${this.onChange}"
-                    @input="${this.onInput}"
-                ></input>
-                <slot class="slot"></slot>
-                <div class="error">
-                    ${this.error}
-                </div>
+                >
+                    ${this.options?.map(option => html`
+                        <option
+                            class="option"
+                            value="${option.value}"
+                            ?selected="${option.value === this.value}"
+                        >
+                            ${option.label}
+                        </option>
+                    `)}
+                </select>
             </div>
         `;
     }
 }
-

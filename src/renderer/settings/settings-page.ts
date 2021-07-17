@@ -20,6 +20,10 @@ export class SettingsPage extends LitElement {
     @property({ attribute: false })
     index?: DeepIndex;
 
+    onUpdate() {
+        this.dispatchEvent(new CustomEvent('update'));
+    }
+
     buildSettingsRows() {
         const findSettings = 
             (desc: ObjectConfig, index: DeepIndex):
@@ -43,6 +47,7 @@ export class SettingsPage extends LitElement {
                                     .config="${this.config}"
                                     .desc="${entry}"
                                     .index="${entry_index}"
+                                    @update="${this.onUpdate}"
                                 ></some-setting>
                             </td>
                         </tr>
@@ -80,7 +85,7 @@ export class SettingsPage extends LitElement {
                 margin: 1rem;
                 width: calc(100% - 2rem);
                 min-height: calc(100% - 2rem);
-                padding: 0 1rem;
+                padding: 0.25rem 1rem;
                 box-sizing: border-box;
                 user-select: none;
             }
@@ -98,6 +103,7 @@ export class SettingsPage extends LitElement {
             .setting {
                 width: 100%;
                 text-align: right;
+                padding: 0.75rem 0;
             }
             .subheader {
                 direction: ltr;

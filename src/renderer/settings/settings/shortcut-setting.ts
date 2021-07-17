@@ -1,26 +1,16 @@
 
-import { css, customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html } from "lit-element";
 
-import { GlobalConfig } from "common/config";
-import { SimpleConfig } from "common/config-desc";
-import { DeepIndex, indexObject } from "common/util";
+import { getTranslation } from "common/local/locale";
+
+import { AbstractSetting } from "renderer/settings/abstract-setting";
 
 import 'renderer/settings/text-field';
-import {getTranslation} from "common/local/locale";
 
 @customElement('shortcut-setting')
-export class ShortcutSetting extends LitElement {
+export class ShortcutSetting extends AbstractSetting {
 
-    @property({ attribute: false })
-    config?: GlobalConfig;
-
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
-
-    validateShortcut(shortcut: string): string | undefined {
+    validate(shortcut: string): string | undefined {
         const match = shortcut.match(new RegExp(
             '^((Command|Cmd|Control|Ctrl|CommandOrControl|CmdOrCtrl|Alt|Option|AltGr|Shift|Super)[+])*' +
             '([A-Za-z0-9!"#$%&\'()*+,\\-./:;<=>?@\\[\\]\\\\^_`{|}~]|F[0-9]|F1[0-9]|F2[0-4]|num[0-9]|numdec|numadd|numsub|nummult|numdiv' +
@@ -42,9 +32,10 @@ export class ShortcutSetting extends LitElement {
     render() {
         return html`
             <text-field
-                .value="${indexObject(this.config, this.index)}"
-                .validation="${this.validateShortcut}"
-                .tooltip="${getTranslation('shortcut_error', this.config)}"
+                .value="${this.configValue()}"
+                .validation="${this.validate.bind(this)}"
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
             ></text-field>
         `;
     }
