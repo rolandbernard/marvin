@@ -3,7 +3,7 @@ import { css, customElement, html, LitElement, property } from 'lit-element';
 
 import { GlobalConfig } from 'common/config';
 
-import 'renderer/common/material-icon';
+import 'renderer/common/ui/material-icon';
 
 @customElement('input-field')
 export class InputField extends LitElement {

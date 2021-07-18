@@ -6,8 +6,8 @@ import { closestUnit, shortUnit, time, TimeUnit } from 'common/time';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
-import 'renderer/settings/text-field';
-import 'renderer/settings/select-field';
+import 'renderer/common/ui/text-field';
+import 'renderer/common/ui/select-field';
 
 @customElement('time-setting')
 export class TimeSetting extends AbstractSetting {

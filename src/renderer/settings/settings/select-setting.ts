@@ -6,7 +6,7 @@ import { getTranslation } from 'common/local/locale';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
-import 'renderer/settings/select-field';
+import 'renderer/common/ui/select-field';
 
 @customElement('select-setting')
 export class SelectSetting extends AbstractSetting {

@@ -5,7 +5,7 @@ import { getTranslation } from 'common/local/locale';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
-import 'renderer/settings/text-field';
+import 'renderer/common/ui/text-field';
 
 @customElement('amount-setting')
 export class AmountSetting extends AbstractSetting {

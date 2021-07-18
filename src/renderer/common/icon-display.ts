@@ -4,7 +4,7 @@ import { css, customElement, html, LitElement, property } from 'lit-element';
 import { GlobalConfig } from 'common/config';
 import { Icon } from 'common/result';
 
-import 'renderer/common/material-icon';
+import 'renderer/common/ui/material-icon';
 
 @customElement('icon-display')
 export class IconDisplay extends LitElement {

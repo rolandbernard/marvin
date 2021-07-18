@@ -8,7 +8,7 @@ import { cloneDeep } from 'common/util';
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/settings/some-setting';
-import 'renderer/common/material-icon';
+import 'renderer/common/ui/material-icon';
 
 @customElement('array-setting')
 export class ArraySetting extends AbstractSetting {
@@ -88,8 +88,6 @@ export class ArraySetting extends AbstractSetting {
                 border: 1px solid var(--settings-border-color);
                 margin-top: -1rem;
                 width: 100%;
-                padding: 0.25rem 1rem;
-                padding-right: 0;
                 box-sizing: border-box;
                 user-select: none;
             }
@@ -100,8 +98,7 @@ export class ArraySetting extends AbstractSetting {
                 font-family: var(--font-family);
             }
             .name {
-                padding: 0.8rem 0;
-                padding-right: 0.8rem;
+                padding: 0.8rem;
                 text-align: left;
                 white-space: nowrap;
             }

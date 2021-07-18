@@ -35,7 +35,7 @@ export abstract class QueryExecutor extends LitElement {
                 this.results = results;
                 this.selected = 0;
                 this.centered = true;
-            }, this.config?.general.incremental_result_debounce);
+            }, this.config?.general.incremental_results ? this.config?.general.incremental_result_debounce : 0);
         });
     }
 

@@ -3,7 +3,7 @@ import { css, customElement, html, LitElement, property } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { styleMap } from 'lit-html/directives/style-map';
 
-import 'renderer/common/material-icon';
+import 'renderer/common/ui/material-icon';
 
 @customElement('select-field')
 export class SelectField<Type> extends LitElement {
@@ -67,6 +67,8 @@ export class SelectField<Type> extends LitElement {
                 border-radius: var(--settings-input-border-radius);
                 border: 1px solid var(--settings-border-color);
                 position: relative;
+                transition: var(--transition);
+                transition-property: border, box-shadow; 
             }
             .disabled .value, .open .value {
                 pointer-events: none;

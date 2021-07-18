@@ -3,7 +3,7 @@ import { css, customElement, html } from 'lit-element';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
-import 'renderer/settings/toggle-switch';
+import 'renderer/common/ui/toggle-switch';
 
 @customElement('boolean-setting')
 export class BooleanSetting extends AbstractSetting {

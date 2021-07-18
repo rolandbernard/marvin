@@ -54,13 +54,18 @@ export class PageRoot extends QueryExecutor {
                 flex: 0 0 auto;
                 min-height: var(--min-element-height);
                 box-shadow: var(--box-shadow-position) var(--input-shadow-color);
+                border-radius: var(--border-radius) var(--border-radius) 0 0;
+                overflow: hidden;
             }
             .output-list {
                 box-shadow: var(--box-shadow-position) var(--output-shadow-color);
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                overflow: hidden;
             }
             .output {
                 flex: 1 1 auto;
                 overflow-y: overlay;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
             }
             .output::-webkit-scrollbar {
                 width: var(--scrollbar-width);

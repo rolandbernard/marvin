@@ -45,6 +45,8 @@ export class TextField extends LitElement {
                 border-radius: var(--settings-input-border-radius);
                 border: 1px solid var(--settings-border-color);
                 position: relative;
+                transition: var(--transition);
+                transition-property: border, box-shadow; 
             }
             .input-wrap.disabled {
                 pointer-events: none;

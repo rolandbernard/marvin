@@ -10,9 +10,11 @@ import { DeepIndex, indexObject } from 'common/util';
 
 import { getConfigStyles } from 'renderer/common/theme';
 
+import 'renderer/common/ui/button-like';
+
 import 'renderer/styles/index.css';
 
-import 'renderer/common/material-icon';
+import 'renderer/common/ui/material-icon';
 import 'renderer/settings/settings-page';
 
 import Logo from 'logo.png';
@@ -89,18 +91,20 @@ export class PageRoot extends LitElement {
                         'activatable': activatable,
                     });
                     return html`
-                        <div
-                            class="${classes}"
-                            @click="${() => this.selectPage(entry_index)}"
-                        >
-                            <material-icon
-                                class="icon"
-                                name="${entry.icon ?? (activatable ? 'fiber_manual_record' : '')}"
-                            ></material-icon>
-                            <span>
-                                ${name}
-                            </span>
-                        </div>
+                        <button-like class="tab-button">
+                            <div
+                                class="${classes}"
+                                @click="${() => this.selectPage(entry_index)}"
+                            >
+                                <material-icon
+                                    class="icon"
+                                    name="${entry.icon ?? (activatable ? 'fiber_manual_record' : '')}"
+                                ></material-icon>
+                                <span>
+                                    ${name}
+                                </span>
+                            </div>
+                        </button-like>
                     `;
                 } else if (entry.kind === 'pages') {
                     return html`
@@ -216,22 +220,22 @@ export class PageRoot extends LitElement {
             .tab-drawer::-webkit-scrollbar-thumb {
                 background: var(--settings-accent-color);
             }
+            .tab-button {
+                border-radius: 0 50rem 50rem 0;
+            }
             .tab {
+                border-radius: 0 50rem 50rem 0;
                 direction: ltr;
                 cursor: pointer;
                 font-size: 1rem;
                 padding: 0.8rem 1rem;
                 transition: var(--transition);
                 transition-property: background, color; 
-                border-radius: 0 50rem 50rem 0;
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: center;
                 justify-content: flex-start;
                 outline: none;
-            }
-            .tab:hover, .tab:focus-within {
-                background: var(--settings-hover-background);
             }
             .tab.selected {
                 background: var(--settings-selection-background);

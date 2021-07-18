@@ -3,7 +3,7 @@ import { css, customElement, html } from 'lit-element';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
-import 'renderer/settings/text-field';
+import 'renderer/common/ui/text-field';
 
 @customElement('text-setting')
 export class TextSetting extends AbstractSetting {

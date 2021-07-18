@@ -130,6 +130,16 @@ class GeneralConfig extends Config {
 
     @configKind('boolean')
     enhanced_search = true;
+
+    constructor() {
+        super();
+        this.addConfigField({
+            kind: 'button',
+            name: 'reset_config',
+            action: 'reset-config',
+            confirm: false,
+        });
+    }
 }
 
 class InputThemeConfig extends Config {

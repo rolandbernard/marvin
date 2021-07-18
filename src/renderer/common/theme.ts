@@ -8,7 +8,7 @@ import { parseColor, multiplyColor, colorAsHex } from 'common/color';
 export function getConfigStyles(config?: GlobalConfig) {
     return styleMap({
         // General
-        '--border-radius': config?.theme.border_radius.toString() ?? '0',
+        '--border-radius': (config?.theme.border_radius.toString() ?? '0') + 'px',
 
         // Input field
         '--input-background': config?.theme.input.background_color ?? 'black',
@@ -36,7 +36,7 @@ export function getConfigStyles(config?: GlobalConfig) {
             multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.active_color ?? '#00ff00'))
         ),
         '--settings-hover-background': colorAsHex(
-            multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.select_color ?? '#00000080'))
+            multiplyColor([1, 1, 1, 0.5], parseColor(config?.theme.settings.select_color ?? '#00000080'))
         ),
         '--settings-inactive-color': colorAsHex(
             multiplyColor([1, 1, 1, 0.1], parseColor(config?.theme.settings.text_color ?? '#00000000'))

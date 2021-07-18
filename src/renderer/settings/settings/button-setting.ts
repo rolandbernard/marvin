@@ -1,29 +1,17 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { customElement, html } from 'lit-element';
 
-import { GlobalConfig } from 'common/config';
-import { SimpleConfig } from 'common/config-desc';
-import { DeepIndex } from 'common/util';
+import { ButtonConfig } from 'common/config-desc';
+
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 @customElement('button-setting')
-export class ButtonSetting extends LitElement {
-
-    @property({ attribute: false })
-    config?: GlobalConfig;
-
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
-
-    static get styles() {
-        return css`
-        `;
-    }
+export class ButtonSetting extends AbstractSetting {
+    desc?: ButtonConfig
 
     render() {
         return html`
+            
         `;
     }
 }

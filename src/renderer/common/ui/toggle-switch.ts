@@ -34,6 +34,8 @@ export class ToggleSwitch extends LitElement {
                 border-radius: 50rem;
                 position: relative;
                 outline: none;
+                transition: var(--transition);
+                transition-property: background;
             }
             .input.enabled {
                 cursor: pointer;
