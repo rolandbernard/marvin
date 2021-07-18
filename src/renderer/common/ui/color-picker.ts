@@ -8,7 +8,7 @@ import { Color, colorAsHex, hsvToRgb } from 'common/color';
 export class ColorPicker extends LitElement {
 
     @property({ attribute: false })
-    color: Color = [0, 0, 0, 0]; // HSV color
+    color: Color = [0, 0, 0, 0]; // HSVA color
 
     @property({ attribute: false })
     top = false;

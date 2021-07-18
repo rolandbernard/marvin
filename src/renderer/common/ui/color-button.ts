@@ -12,7 +12,7 @@ import 'renderer/common/ui/color-picker';
 export class ColorButton extends LitElement {
 
     @property({ attribute: false })
-    color?: string;
+    color: string = '#fff';
 
     @property({ attribute: false })
     disabled?: boolean;
@@ -26,7 +26,7 @@ export class ColorButton extends LitElement {
     @query('.button')
     button?: HTMLButtonElement;
 
-    temp?: Color;
+    temp: Color = [0, 0, 0, 0];
 
     onChange(event: CustomEvent) {
         this.temp = event.detail.value;
@@ -34,6 +34,7 @@ export class ColorButton extends LitElement {
 
     onOpen() {
         this.open = true;
+        this.temp = rgbToHsv(parseColor(this.color));
         setTimeout(() => {
             // Only at after this event was handled
             const handle = () => {
@@ -117,8 +118,10 @@ export class ColorButton extends LitElement {
             .picker {
                 width: 20rem;
                 height: 20rem;
+                min-height: 7.5rem;
                 max-height: 80vh;
-                max-width: 80vw;
+                min-width: 7.5rem;
+                max-width: 50vw;
                 top: -0.5rem;
                 right: -0.5rem;
                 position: absolute;
@@ -146,11 +149,8 @@ export class ColorButton extends LitElement {
     }
 
     render() {
-        const color = this.color ?? '#fff';
-        const rgb = parseColor(color);
-        this.temp = rgbToHsv(rgb);
         const styles = styleMap({
-            '--color': color,
+            '--color': this.color,
         });
         const classes = classMap({
             'wrapper': true,

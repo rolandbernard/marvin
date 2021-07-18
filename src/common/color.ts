@@ -1,6 +1,10 @@
 
 export type Color = [number, number, number, number?];
 
+function mod(a: number, b: number) {
+    return ((a % b) + b) % b;
+}
+
 export function rgbToHue([r, g, b]: Color): number {
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
@@ -8,11 +12,11 @@ export function rgbToHue([r, g, b]: Color): number {
     if (c === 0) {
         return 0;
     } else if (max === r) {
-        return (g - b) / c / 6;
+        return mod((g - b) / c / 6, 1);
     } else if (max === g) {
-        return (2 + (b - r) / c) / 6;
+        return mod((2 + (b - r) / c) / 6, 1);
     } else {
-        return (4 + (r - g) / c) / 6;
+        return mod((4 + (r - g) / c) / 6, 1);
     }
 }
 

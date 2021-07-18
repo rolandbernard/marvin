@@ -136,7 +136,7 @@ export class PageRoot extends LitElement {
                 height: 100%;
                 display: flex;
                 flex-flow: row nowrap;
-                background: var(--settings-background);
+                background: var(--settings-dark-background);
                 color: var(--settings-text-color);
                 font-family: var(--font-family);
                 overflow: overlay;
