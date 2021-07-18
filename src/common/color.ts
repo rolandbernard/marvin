@@ -1,62 +1,53 @@
 
 export type Color = [number, number, number, number?];
 
+export function rgbToHue([r, g, b]: Color): number {
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const c = max - min;
+    if (c === 0) {
+        return 0;
+    } else if (max === r) {
+        return (g - b) / c / 6;
+    } else if (max === g) {
+        return (2 + (b - r) / c) / 6;
+    } else {
+        return (4 + (r - g) / c) / 6;
+    }
+}
+
 export function rgbToHsl([r, g, b, a]: Color): Color {
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const l = (max + min) / 2;
-    let h = 0;
-    let s = 0;
-    if (max !== min) {
-        if (l < 0.5) {
-            s = (max - min) / (max + min);
-        } else {
-            s = (max - min) / (2.0 - max - min);
-        }
-        if (r === max) {
-            h = (g - b) / (max - min);
-        } else if (g === max) {
-            h = 2.0 + (b - r) / (max - min);
-        } else {
-            h = 4.0 + (r - g) / (max - min);
-        }
-    }
-    h = h / 6;
-    while (h < 0) {
-        h += 1;
-    }
+    const h = rgbToHue([r, g, b]);
+    const s = max === min ? 0 : (max - l) / Math.min(l, 1 - l);
     return [h, s, l, a ?? 1];
 }
 
+export function rgbToHsv([r, g, b, a]: Color): Color {
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const h = rgbToHue([r, g, b]);
+    const s = (max - min) / max;
+    return [h, s, max, a ?? 1];
+}
+
 export function hslToRgb([h, s, l, a]: Color): Color {
-    let r = l;
-    let g = l;
-    let b = l;
-    if (s !== 0) {
-        function hueToRgb(p: number, q: number, t: number): number {
-            if (t < 0) {
-                t += 1;
-            }
-            if (t > 1) {
-                t -= 1;
-            }
-            if (t < 1 / 6) {
-                return p + (q - p) * 6 * t;
-            } else if (t < 1 / 2) {
-                return q;
-            } else if (t < 2 / 3) {
-                return p + (q - p) * (2 / 3 - t) * 6;
-            } else {
-                return p;
-            }
-        }
-        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        const p = 2 * l - q;
-        r = hueToRgb(p, q, h + 1 / 3);
-        g = hueToRgb(p, q, h);
-        b = hueToRgb(p, q, h - 1 / 3);
+    function toRgb(n: number): number {
+        const k = (n + 12 * h) % 12;
+        const a = s * Math.min(l, 1 - l);
+        return l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
     }
-    return [r, g, b, a ?? 1];
+    return [toRgb(0), toRgb(8), toRgb(4), a ?? 1];
+}
+
+export function hsvToRgb([h, s, v, a]: Color): Color {
+    function toRgb(n: number): number {
+        const k = (n + 6 * h) % 6;
+        return v - v * s * Math.max(0, Math.min(k, 4 - k, 1));
+    }
+    return [toRgb(5), toRgb(3), toRgb(1), a ?? 1];
 }
 
 export function multiplyColor([a, b, c, d]: Color, [e, f, g, h]: Color): Color {
@@ -83,6 +74,8 @@ export function parseColor(query: string): Color {
         return match.slice(1, 4).map(v => parseValue(v, 255)).concat(match[4] ? [parseValue(match[4])] : []) as Color;
     } else if (match = query.match(/^\s*hsla?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
         return hslToRgb([parseValue(match[1], 360), parseValue(match[2], 255), parseValue(match[3], 255)].concat(match[4] ? [parseValue(match[4])] : []) as Color);
+    } else if (match = query.match(/^\s*hsva?\s*\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,?\s*(\d+\.?\d*%?)?\s*\)$/)) {
+        return hsvToRgb([parseValue(match[1], 360), parseValue(match[2], 255), parseValue(match[3], 255)].concat(match[4] ? [parseValue(match[4])] : []) as Color);
     } else {
         return [0, 0, 0, 0];
     }
@@ -113,6 +106,15 @@ export function colorAsHsl(color: Color): string {
         return `hsla(${hsl[0] * 360}, ${hsl[1] * 100}%, ${hsl[2] * 100}%, ${hsl[3]})`;
     } else {
         return `hsl(${hsl[0] * 360}, ${hsl[1] * 100}%, ${hsl[2] * 100}%)`;
+    }
+}
+
+export function colorAsHsv(color: Color): string {
+    const hsv = rgbToHsv(color);
+    if (hsv[3]) {
+        return `hsva(${hsv[0] * 360}, ${hsv[1] * 100}%, ${hsv[2] * 100}%, ${hsv[3]})`;
+    } else {
+        return `hsv(${hsv[0] * 360}, ${hsv[1] * 100}%, ${hsv[2] * 100}%)`;
     }
 }
 
