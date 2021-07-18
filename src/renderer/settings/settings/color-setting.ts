@@ -1,21 +1,12 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { css, customElement, html } from 'lit-element';
 
-import { GlobalConfig } from 'common/config';
-import { SimpleConfig } from 'common/config-desc';
-import { DeepIndex } from 'common/util';
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
+
+import 'renderer/common/ui/color-button';
 
 @customElement('color-setting')
-export class ColorSetting extends LitElement {
-
-    @property({ attribute: false })
-    config?: GlobalConfig;
-
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
+export class ColorSetting extends AbstractSetting {
 
     static get styles() {
         return css`
@@ -24,6 +15,12 @@ export class ColorSetting extends LitElement {
 
     render() {
         return html`
+            <color-button
+                class="color"
+                .color="${this.configValue()}"
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
+            ></color-button>
         `;
     }
 }

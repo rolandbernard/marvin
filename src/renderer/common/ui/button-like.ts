@@ -24,10 +24,7 @@ export class ButtonLike extends LitElement {
             const ripple_child = document.createElement('div');
             ripple_child.classList.add('touch-child');
             ripple.appendChild(ripple_child);
-            const size = Math.sqrt(
-                this.button.clientWidth * this.button.clientWidth
-                + this.button.clientHeight * this.button.clientHeight
-            );
+            const size = Math.sqrt(rect.width * rect.width + rect.height * rect.height);
             ripple.style.width = (size * 2) + 'px';
             ripple.style.height = (size * 2) + 'px';
             ripple.style.left = (x - size) + 'px';

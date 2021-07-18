@@ -77,7 +77,6 @@ export class ToggleSwitch extends LitElement {
             .input:checked::after {
                 left: 85%;
                 background: var(--settings-active-color);
-                box-shadow: var(--box-shadow-position) var(--settings-shadow-color);
             }
         `;
     }

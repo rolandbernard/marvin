@@ -29,7 +29,7 @@ export function rgbToHsv([r, g, b, a]: Color): Color {
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const h = rgbToHue([r, g, b]);
-    const s = (max - min) / max;
+    const s = max !== 0 ? (max - min) / max : 0;
     return [h, s, max, a ?? 1];
 }
 

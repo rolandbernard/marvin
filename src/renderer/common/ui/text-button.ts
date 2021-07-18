@@ -27,10 +27,10 @@ export class TextButton extends LitElement {
                 padding: 0;
                 margin: 0;
                 outline: none;
-                cursor: pointer;
             }
             .button.enabled:hover {
                 border: 1px solid var(--settings-border-hover-color);
+                cursor: pointer;
             }
             .button.disabled {
                 color: var(--settings-border-hover-color);

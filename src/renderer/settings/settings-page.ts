@@ -108,6 +108,7 @@ export class SettingsPage extends LitElement {
                 padding: 0.25rem 1rem;
                 box-sizing: border-box;
                 user-select: none;
+                overflow: hidden;
             }
             .table {
                 width: 100%;

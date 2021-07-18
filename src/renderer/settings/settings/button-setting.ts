@@ -28,6 +28,7 @@ export class ButtonSetting extends AbstractSetting {
         return html`
             <text-button
                 .text="${getTranslation(this.desc?.name!, this.config)}"
+                .disabled="${this.isDisabled()}"
                 @click="${this.onClick}"
             ></text-button>
         `;
