@@ -1,6 +1,6 @@
 
 import { ipcRenderer } from 'electron';
-import { css, customElement, html } from 'lit-element';
+import { customElement, html } from 'lit-element';
 
 import { ButtonConfig } from 'common/config-desc';
 import { getTranslation } from 'common/local/locale';
@@ -22,14 +22,6 @@ export class ButtonSetting extends AbstractSetting {
         } else if (this.desc) {
             ipcRenderer.send(this.desc.action);
         }
-    }
-
-    static get styles() {
-        return css`
-            .toggle {
-                padding: 0 1rem;
-            }
-        `;
     }
 
     render() {

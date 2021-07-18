@@ -15,6 +15,7 @@ export abstract class Config {
     static [desc_meta] = new WeakMap<Config, ConfigDescription[]>();
 
     copyFromPrototype() {
+        Object.getPrototypeOf(this).copyFromPrototype?.();
         if (!Config[desc_meta].has(this)) {
             Config[desc_meta].set(this, []);
             const super_desc = Config[desc_meta].get(Object.getPrototypeOf(this));
@@ -137,7 +138,7 @@ class GeneralConfig extends Config {
             kind: 'button',
             name: 'reset_config',
             action: 'reset-config',
-            confirm: false,
+            confirm: true,
         });
     }
 }

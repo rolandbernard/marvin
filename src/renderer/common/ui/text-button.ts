@@ -41,7 +41,7 @@ export class TextButton extends LitElement {
                 padding: 0.75rem;
                 font-family: var(--font-family);
                 font-size: 0.9rem;
-                font-weight: 600;
+                font-weight: 500;
             }
         `;
     }
