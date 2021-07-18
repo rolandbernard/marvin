@@ -16,9 +16,15 @@ interface SystemCommandsResult extends SimpleResult {
     command: Command;
 }
 
+class SystemCommandsConfig extends ModuleConfig {
+    constructor() {
+        super(true);
+    }
+}
+
 @module(MODULE_ID)
 export class SystemCommandsModule implements Module<SystemCommandsResult> {
-    readonly config = new ModuleConfig(true);
+    readonly configs = SystemCommandsConfig;
 
     async search(query: Query): Promise<SystemCommandsResult[]> {
         if (query.text.length > 0) {

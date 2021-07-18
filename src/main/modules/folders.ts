@@ -12,6 +12,7 @@ import { getPlatform } from 'common/platform';
 
 import { module } from 'main/modules';
 import { openFile } from 'main/adapters/file-handler';
+import { moduleConfig } from 'main/config';
 
 const MODULE_ID = 'folders';
 
@@ -54,11 +55,19 @@ class FoldersConfig extends ModuleConfig {
 
     @config({ kind: 'array', base: { kind: 'path', name: 'path' }, default: default_path })
     directories = [ app.getPath('home'), default_path ]
+
+    constructor() {
+        super(true);
+    }
 }
 
 @module(MODULE_ID)
 export class FoldersModule implements Module<FoldersResult> {
-    readonly config = new FoldersConfig(true);
+    readonly configs = FoldersConfig;
+
+    get config() {
+        return moduleConfig<FoldersConfig>(MODULE_ID);
+    }
 
     async search(query: Query): Promise<FoldersResult[]> {
         if (query.text.length > 0) {

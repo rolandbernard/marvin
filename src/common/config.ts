@@ -230,10 +230,10 @@ export class GlobalConfig extends Config {
         super();
         this.modules = Object.assign({},
             ...Object.keys(modules).sort()
-                .map(module => ({ module, config: modules[module as Translatable].config }))
+                .map(module => ({ module, config: modules[module as Translatable].configs }))
                 .filter(({ config }) => config)
                 .map(({ module, config }) => ({
-                    [module]: config,
+                    [module]: new config!(),
                 }))
         );
     }

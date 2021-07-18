@@ -4,6 +4,7 @@ import { classMap } from 'lit-html/directives/class-map';
 import { styleMap } from 'lit-html/directives/style-map';
 
 import 'renderer/common/ui/material-icon';
+import 'renderer/common/ui/button-like';
 
 @customElement('select-field')
 export class SelectField<Type> extends LitElement {
@@ -99,14 +100,12 @@ export class SelectField<Type> extends LitElement {
                 visibility: visible;
             }
             .option {
-                padding: 0.75rem;
+                display: block;
                 font-size: 1rem;
                 color: var(--settings-text-color);
-                transition: var(--transition);
-                transition-property: background, color; 
             }
-            .option:hover {
-                background: var(--settings-hover-background);
+            .option-label {
+                padding: 0.75rem;
             }
             .icon {
                 content: 'expand_more';
@@ -141,12 +140,14 @@ export class SelectField<Type> extends LitElement {
                 </div>
                 <div class="dropdown">
                     ${this.options?.map(option => html`
-                        <div
+                        <button-like
                             class="option"
                             @click="${() => this.onClose(option.value)}"
                         >
-                            ${option.label}
-                        </div>
+                            <div class="option-label">
+                                ${option.label}
+                            <div>
+                        </button-like>
                     `)}
                 </div>
                 <material-icon

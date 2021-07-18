@@ -3,8 +3,9 @@ import { readFile, writeFile } from 'fs/promises';
 import { app } from 'electron';
 import { join } from 'path';
 
-import { GlobalConfig } from 'common/config';
+import { GlobalConfig, ModuleConfig } from 'common/config';
 import { mergeDeep } from 'common/util';
+import { ModuleId } from 'common/module';
 
 import { modules } from 'main/modules';
 
@@ -41,5 +42,9 @@ export async function updateConfig(new_config?: GlobalConfig) {
     } catch (e) {
         // Ignore errors, simply don't write the config
     }
+}
+
+export function moduleConfig<Config extends ModuleConfig>(id: ModuleId): Config {
+    return config.modules[id] as Config;
 }
 

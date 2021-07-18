@@ -32,6 +32,12 @@ export class TextField extends LitElement {
         this.error = this.validation?.((event.target as HTMLInputElement).value);
     }
 
+    updated(props: Map<string, unknown>) {
+        if (props.has('value')) {
+            this.error = this.validation?.(this.value!);
+        }
+    }
+
     static get styles() {
         return css`
             :host {

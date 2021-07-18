@@ -47,7 +47,12 @@ export class TimeSetting extends AbstractSetting {
     render() {
         if (this.config && !this.unit) {
             this.unit = closestUnit(this.configValue());
-            this.value = (this.configValue<number>() / time(1, this.unit)).toString();
+        }
+        if (this.unit) {
+            const value = this.configValue<number>() / time(1, this.unit);
+            if (!this.value || parseFloat(this.value) !== value) {
+                this.value = value.toString();
+            }
         }
         const options = Object.values(TimeUnit).slice(0, 3).map(option => ({
             value: option,
