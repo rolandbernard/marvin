@@ -14,7 +14,7 @@ export class ToggleSwitch extends LitElement {
     onChange(event: Event) {
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
-                value: (event.target as HTMLInputElement).checked,
+                value: (event.currentTarget as HTMLInputElement).checked,
             }
         }));
     }

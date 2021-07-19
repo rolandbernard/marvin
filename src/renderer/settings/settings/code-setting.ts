@@ -1,29 +1,28 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { css, customElement, html } from 'lit-element';
 
-import { GlobalConfig } from 'common/config';
-import { SimpleConfig } from 'common/config-desc';
-import { DeepIndex } from 'common/util';
+import { AbstractSetting } from 'renderer//settings/abstract-setting';
+
+import 'renderer/common/ui/code-area';
 
 @customElement('code-setting')
-export class CodeSetting extends LitElement {
-
-    @property({ attribute: false })
-    config?: GlobalConfig;
-
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
+export class CodeSetting extends AbstractSetting {
 
     static get styles() {
         return css`
+            :host {
+                width: 100%;
+            }
         `;
     }
 
     render() {
         return html`
+            <code-area
+                .value="${this.configValue()}"
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
+            ></code-area>
         `;
     }
 }

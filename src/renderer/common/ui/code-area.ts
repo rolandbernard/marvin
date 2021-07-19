@@ -2,11 +2,8 @@
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 
-@customElement('text-field')
-export class TextField extends LitElement {
-
-    @property()
-    type: string = 'text';
+@customElement('code-area')
+export class CodeArea extends LitElement {
 
     @property({ attribute: false })
     value?: string;
@@ -14,27 +11,24 @@ export class TextField extends LitElement {
     @property({ attribute: false })
     disabled?: boolean;
 
-    @property({ attribute: false })
-    validation?: (value: string) => string | undefined;
-
-    @property({ attribute: false })
-    error?: string;
-
     onChange(event: Event) {
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
-                value: (event.currentTarget as HTMLInputElement).value,
+                value: (event.currentTarget as HTMLTextAreaElement).value,
             }
         }));
     }
 
-    onInput(event: Event) {
-        this.error = this.validation?.((event.currentTarget as HTMLInputElement).value);
-    }
-
-    updated(props: Map<string, unknown>) {
-        if (props.has('value')) {
-            this.error = this.validation?.(this.value!);
+    onKeyDown(event: KeyboardEvent) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            const target = (event.currentTarget as HTMLTextAreaElement);
+            const selection_start = target.selectionStart;
+            const selection_end = target.selectionEnd;
+            const new_value = `${target.value.substring(0, selection_start)}    ${target.value.substring(selection_end)}`;
+            target.value = new_value;
+            target.selectionStart = selection_start + 4;
+            target.selectionEnd = selection_start + 4;
         }
     }
 
@@ -71,30 +65,33 @@ export class TextField extends LitElement {
             .input {
                 flex: 1 1 auto;
                 padding: 0.75rem;
-                font-family: var(--font-family);
+                font-family: var(--font-family-mono);
                 color: var(--settings-text-color);
                 font-size: 1rem;
                 background: none;
                 border: none;
                 outline: none;
                 width: 100%;
+                resize: vertical;
+                white-space: pre;
             }
             .disabled .input {
                 color: var(--settings-border-hover-color);
                 user-select: none;
             }
-            .slot {
-                flex: 0 0 auto;
+            .input::-webkit-scrollbar {
+                width: var(--scrollbar-width);
+                height: var(--scrollbar-width);
             }
-            .error {
-                position: absolute;
-                font-size: 0.65rem;
-                font-family: var(--font-family);
-                color: var(--settings-error-color);
-                padding-left: 0.5rem;
-                text-align: left;
-                bottom: -1.1rem;
-                left: 0;
+            .input::-webkit-scrollbar-track,
+            .input::-webkit-scrollbar-track-piece,
+            .input::-webkit-resizer,
+            .input::-webkit-scrollbar-corner,
+            .input::-webkit-scrollbar-button {
+                display: none;
+            }
+            .input::-webkit-scrollbar-thumb {
+                background: var(--settings-accent-color);
             }
         `;
     }
@@ -104,24 +101,18 @@ export class TextField extends LitElement {
             'input-wrap': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
-            'wrong': this.error ? true : false,
         });
         return html`
             <div class="${classes}">
-                <input
+                <textarea
                     class="input"
                     spellcheck="false"
                     autocomplete="off"
                     ?disabled="${this.disabled}"
-                    type="${this.type}"
                     .value=${this.value}
                     @change="${this.onChange}"
-                    @input="${this.onInput}"
-                ></input>
-                <slot class="slot"></slot>
-                <div class="error">
-                    ${this.error}
-                </div>
+                    @keydown="${this.onKeyDown}"
+                ></textarea>
             </div>
         `;
     }

@@ -1,29 +1,41 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { css, customElement, html } from 'lit-element';
 
-import { GlobalConfig } from 'common/config';
-import { SimpleConfig } from 'common/config-desc';
-import { DeepIndex } from 'common/util';
+import { getTranslation } from 'common/local/locale';
+
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
+
+import 'renderer/common/ui/text-field';
 
 @customElement('quality-setting')
-export class QualitySetting extends LitElement {
+export class QualitySetting extends AbstractSetting {
 
-    @property({ attribute: false })
-    config?: GlobalConfig;
+    validate(shortcut: string): string | undefined {
+        const value = parseFloat(shortcut);
+        return value >= 0.0 && value <= 1.0 ? undefined : getTranslation('quality_error', this.config);
+    }
 
-    @property({ attribute: false })
-    desc?: SimpleConfig & { kind: 'boolean' };
-
-    @property({ attribute: false })
-    index?: DeepIndex;
+    updateConfig(value: string) {
+        super.updateConfig(parseFloat(value));
+    }
 
     static get styles() {
         return css`
+            :host {
+                width: 100%;
+            }
         `;
     }
 
     render() {
         return html`
+            <text-field
+                type="number"
+                .value="${this.configValue()}"
+                .validation="${this.validate.bind(this)}"
+                .disabled="${this.isDisabled()}"
+                @change="${this.onChange}"
+            ></text-field>
         `;
     }
 }
