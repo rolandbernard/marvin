@@ -52,10 +52,6 @@ export abstract class Config {
                     entry.options.push(transformed);
                 }
                 entry.options.sort((a, b) => a.name!.localeCompare(b.name!));
-            } else if (entry.kind === 'array') {
-                if (entry.default instanceof Config) {
-                    entry.base = entry.default.getDescription();
-                }
             }
         }
         return description;
@@ -69,6 +65,9 @@ export function config(details: ConfigDescription) {
             || details.platform === getPlatform()
             || details.platform.includes?.(getPlatform())
         ) {
+            if (details.kind === 'array' && !details.base && details.default instanceof Config) {
+                details.base = details.default.getDescription();
+            }
             target.addConfigField({
                 name: prop,
                 ...details,
