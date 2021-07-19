@@ -14,17 +14,16 @@ import 'renderer/common/ui/material-icon';
 export class ArraySetting extends AbstractSetting {
     desc?: ArrayConfig;
 
-    onUpdate() {
-        this.dispatchEvent(new CustomEvent('update'));
-    }
-
     onDelete(i: number) {
         this.configValue<unknown[]>()?.splice(i, 1);
         this.onUpdate();
     }
 
     onNew() {
+        console.log(this.configValue())
+        console.log(this.desc);
         this.configValue<unknown[]>()?.push(cloneDeep(this.desc?.default));
+        console.log(this.config);
         this.onUpdate();
     }
 
@@ -33,10 +32,10 @@ export class ArraySetting extends AbstractSetting {
         if (desc && this.index && this.config) {
             return this.configValue<unknown[]>()?.map((_, i) => {
                 const entry_index = this.index?.concat(i);
-                if (desc.kind === 'object' || desc.kind === 'array') {
+                if (desc.kind === 'object') {
                     return html`
                         <tr class="row">
-                            <td class="setting" colspan="2">
+                            <td class="setting large" colspan="2">
                                 <some-setting
                                     .config="${this.config}"
                                     .desc="${desc}"
@@ -106,6 +105,9 @@ export class ArraySetting extends AbstractSetting {
                 width: 100%;
                 text-align: right;
                 padding: 0.75rem 0;
+            }
+            .large {
+                padding-left: 0.8rem;
             }
             .button {
                 margin: 0.25rem;

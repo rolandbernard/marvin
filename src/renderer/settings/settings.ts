@@ -292,7 +292,7 @@ export class PageRoot extends LitElement {
                 <settings-page
                     class="page"
                     .config="${this.config}"
-                    .page="${this.getSelectedPage()}"
+                    .desc="${this.getSelectedPage()}"
                     .index="${this.selected}"
                     @update="${this.onUpdate}"
                 ></settings-page>
