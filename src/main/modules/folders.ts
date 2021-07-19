@@ -84,8 +84,8 @@ export class FoldersModule implements Module<FoldersResult> {
                             const stats = await stat(file);
                             return [{
                                 module: MODULE_ID,
-                                kind: 'simple-result',
                                 query: query.text,
+                                kind: 'simple-result',
                                 icon: {
                                     url: stats.isDirectory() ? undefined : (await app.getFileIcon(file)).toDataURL(),
                                     material: stats.isDirectory() ? 'folder' : 'insert_drive_file',
@@ -114,3 +114,4 @@ export class FoldersModule implements Module<FoldersResult> {
         openFile(result.file);
     }
 }
+
