@@ -3,6 +3,8 @@ import TRANSLATION_ENGLISH from 'common/local/english';
 import TRANSLATION_ITALIAN from 'common/local/italian';
 import TRANSLATION_GERMAN from 'common/local/german';
 
+import TRANSLATION_COMMON from 'common/local/common';
+
 import { GlobalConfig } from 'common/config';
 
 export enum Language {
@@ -11,16 +13,10 @@ export enum Language {
     German  = 'de',
 }
 
-const LANGUAGE_NAMES = {
-    'en': 'English',
-    'it': 'Italiano',
-    'de': 'Deutsch',
-}
-
 const TRANSLATIONS = {
-    'en': Object.assign(TRANSLATION_ENGLISH, LANGUAGE_NAMES),
-    'it': Object.assign(TRANSLATION_ITALIAN, LANGUAGE_NAMES),
-    'de': Object.assign(TRANSLATION_GERMAN, LANGUAGE_NAMES),
+    'en': Object.assign(TRANSLATION_ENGLISH, TRANSLATION_COMMON),
+    'it': Object.assign(TRANSLATION_ITALIAN, TRANSLATION_COMMON),
+    'de': Object.assign(TRANSLATION_GERMAN, TRANSLATION_COMMON),
 };
 
 export type Translation = typeof TRANSLATIONS[Language];
@@ -32,8 +28,7 @@ export function getTranslation(text: Translatable, config?: GlobalConfig): strin
 }
 
 export function hasTranslation(text: string, config?: GlobalConfig): text is Translatable {
-    return (TRANSLATIONS[config?.general.language ?? 'en'][text as Translatable] ?? TRANSLATIONS['en'][text as Translatable])
-            ? true : false;
+    return TRANSLATIONS[config?.general.language ?? 'en'][text as Translatable] ? true : false;
 }
 
 export function getAllTranslations(text: keyof Translation): string[] {

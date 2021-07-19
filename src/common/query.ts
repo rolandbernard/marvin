@@ -1,10 +1,12 @@
 
 export class Query {
     readonly advanced: boolean;
+    readonly raw: string;
     readonly text: string;
     readonly regex: RegExp;
 
-    constructor(text: string, advanced: boolean) {
+    constructor(raw: string, text: string, advanced: boolean) {
+        this.raw = raw;
         this.advanced = advanced;
         this.text = text.trim();
         if (this.advanced) {
@@ -42,7 +44,7 @@ export class Query {
 
     withoutPrefix(prefix: string) {
         if (this.text.startsWith(prefix)) {
-            return new Query(this.text.replace(prefix, ''), this.advanced);
+            return new Query(this.raw, this.text.replace(prefix, ''), this.advanced);
         } else {
             return this;
         }

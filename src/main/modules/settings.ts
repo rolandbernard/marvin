@@ -79,7 +79,7 @@ export class SettingsModule implements Module<SimpleResult> {
                 quality: query.matchAny(getAllTranslations('settings'), name),
                 icon: { material: 'settings' },
                 primary: name,
-                autocomplete: copyCase(name, query.text),
+                autocomplete: copyCase(name, query.raw),
             }];
         } else {
             return [];

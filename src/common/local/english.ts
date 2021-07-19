@@ -61,9 +61,6 @@ const TRANSLATION_ENGLISH = {
     calculator_description: 'This module allows you to do calculations using mathjs',
     simplified: 'simplified',
     rationalized: 'rationalized',
-    mathjs: 'Math.js',
-    algebrite: 'Algebrite',
-    mathjs_algebrite: 'Math.js + Algebrite',
 
     linux_applications: 'Linux applications',
     linux_applications_description: 'This module allows you to start applications on linux',
@@ -147,3 +144,4 @@ const TRANSLATION_ENGLISH = {
 };
 
 export default TRANSLATION_ENGLISH;
+

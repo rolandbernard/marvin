@@ -12,7 +12,7 @@ function findPossibleModules(query: Query): ModuleId[] {
     if (config.general.exclusive_module_prefix) {
         let prefix = '';
         for (const id of Object.keys(modules)) {
-            if (config.modules[id] && config.modules[id]!.active && query.text.startsWith(config.modules[id]!.prefix)) {
+            if (config.modules[id] && config.modules[id]!.active && query.raw.startsWith(config.modules[id]!.prefix)) {
                 if (config.modules[id]!.prefix.length > prefix.length) {
                     prefix = config.modules[id]!.prefix;
                 }
@@ -26,7 +26,7 @@ function findPossibleModules(query: Query): ModuleId[] {
     } else {
         const result = Object.keys(modules)
             .filter(id => config.modules[id] && config.modules[id]!.active)
-            .filter(id => query.text.startsWith(config.modules[id]!.prefix));
+            .filter(id => query.raw.startsWith(config.modules[id]!.prefix));
         if (result.length !== 0) {
             return result;
         }

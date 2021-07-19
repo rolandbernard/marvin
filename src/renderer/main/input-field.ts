@@ -1,5 +1,5 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { css, customElement, html, LitElement, property, query } from 'lit-element';
 
 import { GlobalConfig } from 'common/config';
 
@@ -17,12 +17,25 @@ export class InputField extends LitElement {
     @property({ attribute: false })
     prediction: string = '';
 
+    @query('.input')
+    input?: HTMLInputElement;
+
     onChange(event: Event) {
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
                 value: (event.target as HTMLInputElement).value,
             }
         }));
+    }
+
+    onScroll() {
+        if (this.input && this.input.scrollLeft !== 0) {
+            this.prediction = '';
+        }
+    }
+
+    updated() {
+        this.onScroll();
     }
 
     static get styles() {
@@ -61,6 +74,7 @@ export class InputField extends LitElement {
                 margin: 0;
             }
             .prediction {
+                white-space: pre;
                 pointer-events: none;
                 position: absolute;
                 display: inline;
@@ -91,6 +105,7 @@ export class InputField extends LitElement {
                         autocomplete="off"
                         .value="${this.text}"
                         @input="${this.onChange}"
+                        @scroll="${this.onScroll}"
                     ></input>
                 </div>
             </div>

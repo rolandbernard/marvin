@@ -144,3 +144,4 @@ const TRANSLATION_GERMAN = {
 };
 
 export default TRANSLATION_GERMAN;
+

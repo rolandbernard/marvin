@@ -42,7 +42,7 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
                         })
                     },
                     primary: name,
-                    autocomplete: copyCase(name, query.text),
+                    autocomplete: copyCase(name, query.raw),
                     command: command,
                 };
             });

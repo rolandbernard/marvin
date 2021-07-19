@@ -66,7 +66,8 @@ export class SimpleResultComponent extends LitElement {
     }
 
     render() {
-        const query = new Query(this.result?.query ?? '', this.config?.general?.enhanced_search ?? false);
+        const text = this.result?.query ?? '';
+        const query = new Query(text, text, this.config?.general?.enhanced_search ?? false);
         return html`
             <icon-display
                 class="icon"

@@ -154,7 +154,7 @@ export class MainModule implements Module<SimpleResult> {
                 quality: query.matchAny(getAllTranslations('quit'), name),
                 icon: { material: 'exit_to_app' },
                 primary: name,
-                autocomplete: copyCase(name, query.text),
+                autocomplete: copyCase(name, query.raw),
             }];
         } else {
             return [];

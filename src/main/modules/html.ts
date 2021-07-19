@@ -1,12 +1,14 @@
 
-import { Config, configKind, ModuleConfig } from 'common/config';
+import { Config, config, configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
 import { HtmlResult } from 'common/result';
 import { Module } from 'common/module';
-import { config } from 'common/config';
+import { copyCase } from 'common/util';
 
 import { module } from 'main/modules';
 import { moduleConfig } from 'main/config';
+
+const MODULE_ID = 'html';
 
 class HtmlEntry extends Config {
     @configKind('text')
@@ -18,8 +20,6 @@ class HtmlEntry extends Config {
     @configKind('quality')
     default_quality = 0;
 }
-
-const MODULE_ID = 'html';
 
 class HtmlConfig extends ModuleConfig {
     @config({ kind: 'array', default: new HtmlEntry() })
@@ -47,6 +47,7 @@ export class HtmlModule implements Module<HtmlResult> {
             quality: query.text.length > 0
                 ? query.matchText(entry.name)
                 : entry.default_quality,
+            autocomplete: copyCase(entry.name, query.raw),
         }));
     }
 }

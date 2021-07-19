@@ -77,3 +77,4 @@ export class TimeSetting extends AbstractSetting {
         `;
     }
 }
+
