@@ -114,7 +114,7 @@ class GeneralConfig extends Config {
     max_results = 200;
 
     @configKind('boolean')
-    incremental_results = false;
+    incremental_results = true;
 
     @config({ kind: 'time', disabled: { index: ['general', 'incremental_results'], compare: false } })
     incremental_result_debounce = time(20, TimeUnit.MILLISECONDS);

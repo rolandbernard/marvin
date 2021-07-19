@@ -64,7 +64,7 @@ export class CalculatorModule implements Module<SimpleResult> {
                 addResult(() => algebrite.rationalize(query.text).toString(), 'rationalized');
             }
             return results.filter((val, index) =>
-                val.primary.replace('=', '').trim() !== '' && val.primary.replace('=', '').trim() !== 'nil'
+                !['', 'nil', 'null', 'undefined'].includes(val.primary.replace('=', '').trim())
                 && val.primary.substr(2).replaceAll(' ', '').trim() !== query.text.replaceAll(' ', '').trim()
                 && results.findIndex((v) => v.primary.replaceAll(' ', '').trim() === val.primary.replaceAll(' ', '').trim()) === index
             );
