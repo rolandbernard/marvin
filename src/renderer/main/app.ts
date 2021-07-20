@@ -9,8 +9,10 @@ import { getConfigStyles } from 'renderer/common/theme';
 import { QueryExecutor } from 'renderer/common/executor';
 
 import 'renderer/common/output-list';
-import 'renderer/main/input-field';
 import 'renderer/styles/index.css';
+
+import 'renderer/main/input-field';
+import 'renderer/main/some-preview';
 
 @customElement('page-root')
 export class PageRoot extends QueryExecutor {
@@ -62,8 +64,14 @@ export class PageRoot extends QueryExecutor {
                 border-radius: 0 0 var(--border-radius) var(--border-radius);
                 overflow: hidden;
             }
-            .output {
+            .output-area {
                 flex: 1 1 auto;
+                position: relative;
+                height: 0;
+            }
+            .output {
+                width: 100%;
+                height: 100%;
                 overflow-y: overlay;
                 border-radius: 0 0 var(--border-radius) var(--border-radius);
             }
@@ -97,18 +105,23 @@ export class PageRoot extends QueryExecutor {
                     .config="${this.config}"
                     @change="${this.onQueryChange}"
                 ></input-field>
-                <div class="output">
-                    <output-list
-                        class="output-list"
-                        .config="${this.config}"
-                        .results="${this.results}"
-                        .selected="${this.selected}"
-                        .centered="${this.centered}"
-                        .query="${this.query}"
-                        @hover="${this.onHover}"
-                        @execute="${this.onExecute}"
-                        @drag="${this.onDrag}"
-                    ></output-list>
+                <div class="output-area">
+                    <div class="output">
+                        <output-list
+                            class="output-list"
+                            .config="${this.config}"
+                            .results="${this.results}"
+                            .selected="${this.selected}"
+                            .centered="${this.centered}"
+                            .query="${this.query}"
+                            @hover="${this.onHover}"
+                            @execute="${this.onExecute}"
+                            @drag="${this.onDrag}"
+                        ></output-list>
+                        <some-preview
+                            .preview="${this.selectedResult()?.preview}"
+                        ></some-preview>
+                    </div>
                 </div>
             <div>
         `;

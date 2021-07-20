@@ -22,7 +22,7 @@ import 'renderer/settings/settings/time-setting';
 @customElement('some-setting')
 export class SomeSetting extends AbstractSetting {
 
-    element(tag: string, attributes: any[]) {
+    element(tag: string, ...attributes: any[]) {
         return html([
             `<${tag} .config="`,
             `" .desc="`,
@@ -33,8 +33,7 @@ export class SomeSetting extends AbstractSetting {
     }
 
     render() {
-        const attributes = [this.config, this.desc, this.index, this.onUpdate];
-        return this.element(this.desc?.kind + '-setting', attributes);
+        return this.element(this.desc?.kind + '-setting', this.config, this.desc, this.index, this.onUpdate);
     }
 }
 
