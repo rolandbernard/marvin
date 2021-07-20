@@ -14,7 +14,7 @@ enum CommandMode {
 }
 
 export function executeCommand(command: string, mode = CommandMode.SIMPLE) {
-    runMatch(getPlatform(), {
+    return runMatch(getPlatform(), {
         'linux': () => executeCommandLinux(command, mode),
         'unsupported': () => { }
     });

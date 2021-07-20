@@ -6,12 +6,10 @@ import { extname, dirname, join, basename, sep, relative } from 'path';
 import { config, configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
 import { FilePreview, SimpleResult } from 'common/result';
-import { match } from 'common/util';
 import { Module } from 'common/module';
-import { getPlatform } from 'common/platform';
 
 import { module } from 'main/modules';
-import { openFile } from 'main/adapters/file-handler';
+import { getDefaultPath, openFile } from 'main/adapters/file-handler';
 import { moduleConfig } from 'main/config';
 
 const MODULE_ID = 'folders';
@@ -44,17 +42,12 @@ interface FoldersResult extends SimpleResult {
     file: string;
 }
 
-const default_path = match(getPlatform(), {
-    'linux': '/',
-    'unsupported': '',
-});
-
 class FoldersConfig extends ModuleConfig {
     @configKind('boolean')
     file_preview = false;
 
-    @config({ kind: 'array', base: { kind: 'path', name: 'path' }, default: default_path })
-    directories = [ app.getPath('home'), default_path ]
+    @config({ kind: 'array', base: { kind: 'path', name: 'path' }, default: getDefaultPath() })
+    directories = [ app.getPath('home'), getDefaultPath() ]
 
     constructor() {
         super(true);

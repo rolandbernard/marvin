@@ -1,17 +1,24 @@
 
-import { runMatch } from 'common/util';
+import { match, runMatch } from 'common/util';
 import { getPlatform } from 'common/platform';
 
 import { executeCommand, escapeForTerminal } from 'main/adapters/commands';
 
+export function getDefaultPath(): string {
+    return match(getPlatform(), {
+        'linux': '/',
+        'unsupported': '',
+    });
+}
+
 export function openFile(path: string) {
-    runMatch(getPlatform(), {
+    return runMatch(getPlatform(), {
         'linux': () => openFileLinux(path),
         'unsupported': () => { }
     });
 }
 
 function openFileLinux(path: string) {
-    executeCommand(`xdg-open ${escapeForTerminal(path)}`)
+    return executeCommand(`xdg-open ${escapeForTerminal(path)}`)
 }
 

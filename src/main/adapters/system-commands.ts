@@ -10,14 +10,14 @@ export enum Command {
 }
 
 export function executeSystemCommands(command: Command) {
-    runMatch(getPlatform(), {
+    return runMatch(getPlatform(), {
         'linux': () => executeSystemCommandsLinux(command),
         'unsupported': () => { }
     });
 }
 
 function executeSystemCommandsLinux(command: Command) {
-    runMatch(command, {
+    return runMatch(command, {
         'shutdown': () => executeCommand('shutdown now || systemctl poweroff'),
         'reboot': () => executeCommand('reboot || systemctl reboot'),
     });
