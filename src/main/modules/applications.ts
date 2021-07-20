@@ -7,7 +7,6 @@ import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { time, TimeUnit } from 'common/time';
 import { copyCase } from 'common/util';
-import { Language } from 'common/local/locale';
 
 import { executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
 import { getDefaultPath } from 'main/adapters/file-handler';
@@ -17,7 +16,7 @@ import { module } from 'main/modules';
 const MODULE_ID = 'applications';
 
 interface ApplicationsResult extends SimpleResult {
-    application: string;
+    application: unknown;
 }
 
 class ApplicationsConfig extends ModuleConfig {
@@ -36,7 +35,7 @@ class ApplicationsConfig extends ModuleConfig {
 export class ApplicationsModule implements Module<ApplicationsResult> {
     readonly configs = ApplicationsConfig;
 
-    refresh?: NodeJS.Timeout;
+    refresh?: NodeJS.Timer;
 
     get config() {
         return moduleConfig<ApplicationsConfig>(MODULE_ID);
@@ -44,8 +43,10 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
 
     async init() {
         if (this.config.active) {
-            await updateApplicationCache(this.config.directories);
-            this.refresh = setTimeout(this.init.bind(this), this.config.refresh_interval_min);
+            updateApplicationCache(this.config.directories);
+            this.refresh = setInterval(() => {
+                updateApplicationCache(this.config.directories);
+            }, this.config.refresh_interval_min);
         }
     }
 
@@ -55,31 +56,33 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
     }
 
     async deinit() {
-        clearTimeout(this.refresh!);
+        clearInterval(this.refresh!);
     }
 
     async search(query: Query): Promise<ApplicationsResult[]> {
-        function forLanguage(names?: Record<Language, string>): string | undefined {
-            return names?.[config.general.language] ?? Object.values(names ?? {})[0];
+        function forLanguage(names?: Record<string, string>): string | undefined {
+            return names?.[config.general.language]
+                ?? names?.['default']
+                ?? Object.values(names ?? {})[0];
         }
         if (query.text.length > 0) {
             return (await getAllApplications()).map(application => {
-                const name = forLanguage(application.name) ?? basename(application.application);
+                const name = forLanguage(application.name) ?? basename(application.file);
                 const action = forLanguage(application.action);
-                const description = forLanguage(application.description) ?? application.application;
+                const description = forLanguage(application.description) ?? application.file;
                 return {
                     module: MODULE_ID,
                     query: query.text,
                     kind: 'simple-result',
                     icon: { url: application.icon },
                     primary: name,
-                    secondary: action ? name : description,
+                    secondary: action !== name ? name : description,
                     quality: Math.max(
                         query.matchAny(Object.values(application.name ?? {}), name),
                         query.matchAny(Object.values(application.action ?? {}), action) * 0.75,
                         query.matchAny(Object.values(application.description ?? {}), name) * 0.5,
                         query.matchAny(Object.values(application.other ?? {}).flat()) * 0.5,
-                        query.matchText(application.application) * 0.5,
+                        query.matchText(application.file) * 0.5,
                     ),
                     autocomplete: copyCase(name, query.raw),
                     application: application.application,

@@ -7,7 +7,7 @@ import { getPlatform } from 'common/platform';
 
 const execAsync = promisify(exec);
 
-enum CommandMode {
+export enum CommandMode {
     SIMPLE = 'simple',
     SHELL = 'shell',
     TERMINAL = 'terminal',
