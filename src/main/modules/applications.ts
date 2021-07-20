@@ -7,6 +7,7 @@ import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { time, TimeUnit } from 'common/time';
 import { copyCase } from 'common/util';
+import { Language } from 'common/local/locale';
 
 import { executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
 import { getDefaultPath } from 'main/adapters/file-handler';
@@ -58,18 +59,28 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
     }
 
     async search(query: Query): Promise<ApplicationsResult[]> {
+        function forLanguage(names?: Record<Language, string>): string | undefined {
+            return names?.[config.general.language] ?? Object.values(names ?? {})[0];
+        }
         if (query.text.length > 0) {
             return (await getAllApplications()).map(application => {
-                const app = basename(application.application);
-                const name = application.name?.[config.general.language] ?? app;
+                const name = forLanguage(application.name) ?? basename(application.application);
+                const action = forLanguage(application.action);
+                const description = forLanguage(application.description) ?? application.application;
                 return {
                     module: MODULE_ID,
                     query: query.text,
                     kind: 'simple-result',
                     icon: { url: application.icon },
-                    primary: '',
-                    secondary: '',
-                    quality: 0,
+                    primary: name,
+                    secondary: action ? name : description,
+                    quality: Math.max(
+                        query.matchAny(Object.values(application.name ?? {}), name),
+                        query.matchAny(Object.values(application.action ?? {}), action) * 0.75,
+                        query.matchAny(Object.values(application.description ?? {}), name) * 0.5,
+                        query.matchAny(Object.values(application.other ?? {}).flat()) * 0.5,
+                        query.matchText(application.application) * 0.5,
+                    ),
                     autocomplete: copyCase(name, query.raw),
                     application: application.application,
                 };
@@ -83,3 +94,4 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
         executeApplication(result.application);
     }
 }
+

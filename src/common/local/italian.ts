@@ -62,8 +62,8 @@ const TRANSLATION_ITALIAN = {
     simplified: 'semplificato',
     rationalized: 'razionalizzato',
 
-    linux_applications: 'Applicazioni Linux',
-    linux_applications_description: 'Questo modulo consente di avviare applicazioni su Linux',
+    applications: 'Applicazioni',
+    applications_description: 'Questo modulo consente di avviare applicazioni',
     refresh_interval_min: 'Intervallo di aggiornamento',
     refresh_applications: 'Aggiornare l\'elenco delle applicazioni',
 

@@ -62,8 +62,8 @@ const TRANSLATION_ENGLISH = {
     simplified: 'simplified',
     rationalized: 'rationalized',
 
-    linux_applications: 'Linux applications',
-    linux_applications_description: 'This module allows you to start applications on linux',
+    applications: 'Applications',
+    applications_description: 'This module allows you to start applications',
     refresh_interval_min: 'Refresh interval',
     refresh_applications: 'Refresh applications',
 

@@ -7,10 +7,10 @@ import { executeApplicationLinux, getDefaultDirectoriesLinux, updateApplicationC
 
 export interface Application {
     icon?: string;
-    name?: Record<Language, string | undefined>;
-    action?: Record<Language, string | undefined>;
-    description?: Record<Language, string | undefined>;
-    other?: Record<Language, string[] | undefined>;
+    name?: Record<Language, string>;
+    action?: Record<Language, string>;
+    description?: Record<Language, string>;
+    other?: Record<Language, string[]>;
     application: string;
 }
 

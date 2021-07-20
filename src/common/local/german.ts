@@ -62,8 +62,8 @@ const TRANSLATION_GERMAN = {
     simplified: 'vereinfacht',
     rationalized: 'rationalisiert',
 
-    linux_applications: 'Linux Anwendungen',
-    linux_applications_description: 'Mit diesem Modul können Sie Anwendungen unter Linux starten',
+    applications: 'Anwendungen',
+    applications_description: 'Mit diesem Modul können Sie Anwendungen suchen und starten',
     refresh_interval_min: 'Aktualisierungsintervall',
     refresh_applications: 'Anwendungsliste aktualisieren',
 
