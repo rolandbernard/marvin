@@ -20,10 +20,7 @@ export class ArraySetting extends AbstractSetting {
     }
 
     onNew() {
-        console.log(this.configValue())
-        console.log(this.desc);
         this.configValue<unknown[]>()?.push(cloneDeep(this.desc?.default));
-        console.log(this.config);
         this.onUpdate();
     }
 
