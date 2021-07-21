@@ -16,10 +16,19 @@ export class HtmlResultComponent extends LitElement {
 
     static get styles() {
         return css`
+            :host {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: stretch;
+                user-select: none;
+                padding: 0.5rem;
+            }
             .text {
+                flex: 1 1 auto;
                 font-size: 1rem;
                 font-family: var(--font-family);
-                margin: auto;
+                min-width: 0;
             }
         `;
     }

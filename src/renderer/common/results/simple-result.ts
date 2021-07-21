@@ -24,7 +24,7 @@ export class SimpleResultComponent extends LitElement {
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: center;
-                justify-content: center;
+                justify-content: stretch;
                 user-select: none;
                 padding: 0.5rem;
             }
@@ -35,6 +35,7 @@ export class SimpleResultComponent extends LitElement {
             }
             .text {
                 flex: 1 1 auto;
+                min-width: 0;
                 display: flex;
                 flex-flow: column;
                 align-items: flex-start;
@@ -48,6 +49,7 @@ export class SimpleResultComponent extends LitElement {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 padding-bottom: 0.125rem;
+                width: 100%;
             }
             .primary strong {
                 font-weight: 600;
@@ -58,6 +60,7 @@ export class SimpleResultComponent extends LitElement {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                width: 100%;
             }
             .secondary strong {
                 font-weight: 500;
