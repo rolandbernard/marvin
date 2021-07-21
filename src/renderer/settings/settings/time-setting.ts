@@ -16,7 +16,7 @@ export class TimeSetting extends AbstractSetting {
     unit?: TimeUnit;
 
     @property({ attribute: false })
-    value?: string;
+    value: string = '';
 
     validate(shortcut: string): string | undefined {
         return parseFloat(shortcut) >= 0.0 ? undefined : getTranslation('time_error', this.config);
@@ -45,14 +45,13 @@ export class TimeSetting extends AbstractSetting {
     }
 
     render() {
-        if (this.config && !this.unit) {
+        if (!this.unit) {
             this.unit = closestUnit(this.configValue());
         }
-        if (this.unit) {
-            const value = this.configValue<number>() / time(1, this.unit);
-            if (!this.value || parseFloat(this.value) !== value) {
-                this.value = value.toString();
-            }
+        const value = time(parseFloat(this.value), this.unit);
+        if (this.configValue() !== value) {
+            this.unit = closestUnit(this.configValue());
+            this.value = (this.configValue<number>() / time(1, this.unit)).toString();
         }
         const options = Object.values(TimeUnit).slice(0, 3).map(option => ({
             value: option,

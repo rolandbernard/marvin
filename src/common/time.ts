@@ -40,9 +40,9 @@ export function shortUnit(unit: TimeUnit): string {
     });
 }
 
-export function closestUnit(milliseconds: Time): TimeUnit {
+export function closestUnit(milliseconds: Time, max = TimeUnit.MINUTE): TimeUnit {
     for (const unit of Object.values(TimeUnit).reverse()) {
-        if (time(1, unit) < milliseconds) {
+        if (time(1, max) >= time(1, unit) && time(1, unit) < milliseconds) {
             return unit;
         }
     }
