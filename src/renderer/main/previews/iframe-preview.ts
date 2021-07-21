@@ -1,22 +1,33 @@
 
 import { css, customElement, html, LitElement, property } from 'lit-element';
 
-import { FilePreview } from 'common/result';
+import { IFramePreview } from 'common/result';
 
 @customElement('iframe-preview')
-export class IFramePreview extends LitElement {
+export class IFramePreviewComponent extends LitElement {
 
     @property({ attribute: false })
-    preview?: FilePreview;
+    preview?: IFramePreview;
 
     static get styles() {
         return css`
+            .preview {
+                max-width: 50%;
+                height: 100%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                border: none;
+            }
         `;
     }
 
     render() {
-        // TODO: Implement when necessary
         return html`
+            <iframe
+                class="preview"
+                src="${this.preview?.url}"
+            ></iframe>
         `;
     }
 }
