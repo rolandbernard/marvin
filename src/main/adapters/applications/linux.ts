@@ -2,6 +2,7 @@
 import { app } from 'electron';
 import { readFile, writeFile, stat, readdir } from 'fs/promises';
 import { join, basename } from 'path';
+import { spawn } from 'child_process';
 
 import { Application } from 'main/adapters/applications/applications';
 import { CommandMode, executeCommand } from 'main/adapters/commands';
@@ -44,28 +45,43 @@ async function getIconFallbackTheme() {
     return theme?.stdout.trim() ?? '';
 }
 
-async function indexIconsFromPath(theme_path: string) {
-    const find_output = await executeCommand(`find -L ${theme_path} -type f`);
-    if (find_output) {
-        const files = find_output.stdout.split('\n');
-        for (const file of files) {
-            if (!icon_index[basename(file)]) {
-                icon_index[basename(file)] = file;
-            }
-            if (!icon_index[basename(file).toLowerCase()]) {
-                icon_index[basename(file).toLowerCase()] = file;
-            }
+function indexIconsFromPath(theme_path: string) {
+    return new Promise((res, rej) => {
+        try {
+            const child = spawn('find', ['-L', theme_path, '-type', 'f']);
+            child.on('exit', res);
+            child.on('error', rej);
+            let last = '';
+            child.stdout.setEncoding('utf8');
+            child.stdout.on('data', (chunk: string) => {
+                const split = (last + chunk).split('\n');
+                if (split.length > 0) {
+                    last = split.pop()!;
+                    for (const file of split) {
+                        if (!icon_index[basename(file)]) {
+                            icon_index[basename(file)] = file;
+                        }
+                        if (!icon_index[basename(file).toLowerCase()]) {
+                            icon_index[basename(file).toLowerCase()] = file;
+                        }
+                    }
+                }
+            });
+        } catch (e) {
+            rej(e);
         }
-    }
+    });
 }
 
 async function createIconIndex() {
     const icon_path = '/usr/share/icons';
     const icon_path_pixmaps = "/usr/share/pixmaps";
-    await indexIconsFromPath(join(icon_path, await getIconTheme()));
-    await indexIconsFromPath(join(icon_path, await getIconFallbackTheme()));
-    await indexIconsFromPath(icon_path);
-    await indexIconsFromPath(icon_path_pixmaps);
+    await Promise.all([
+        indexIconsFromPath(join(icon_path, await getIconTheme())),
+        indexIconsFromPath(join(icon_path, await getIconFallbackTheme())),
+        indexIconsFromPath(icon_path),
+        indexIconsFromPath(icon_path_pixmaps),
+    ]);
 }
 
 async function findIconPath(name: string) {
@@ -173,10 +189,8 @@ async function addApplication(desktop: Desktop, file: string) {
         applications.push({
             file: file,
             application: action,
-            icon: await getApplicationIcon(
-                action['Icon']?.['default']
-                ?? desktop['desktop']?.['Icon']?.['default']
-            ),
+            icon: await getApplicationIcon(action['Icon']?.['default'])
+                ?? await getApplicationIcon(desktop['desktop']?.['Icon']?.['default']),
             name: desktop['desktop']?.['Name'] ?? {},
             action: action['Name'] ?? {},
             description: action['Comment'] ?? desktop['desktop']?.['Comment'] ?? {},
@@ -219,11 +233,13 @@ export async function getAllApplicationsLinux(): Promise<Application[]> {
 }
 
 export function executeApplicationLinux(application: any) {
-    const exec = application['Exec']?.['default'];
-    if (application['Terminal']?.['default'] === 'true') {
-        executeCommand(exec, CommandMode.TERMINAL);
-    } else {
-        executeCommand(exec);
+    const exec = application['Exec']?.['default']?.replace(/\%./g, '');
+    if (exec) {
+        if (application['Terminal']?.['default'] === 'true') {
+            executeCommand(exec, CommandMode.TERMINAL);
+        } else {
+            executeCommand(exec);
+        }
     }
 }
 
