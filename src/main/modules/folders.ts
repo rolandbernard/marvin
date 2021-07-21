@@ -14,6 +14,30 @@ import { moduleConfig } from 'main/config';
 
 const MODULE_ID = 'folders';
 
+export function generateFilePreview(filename: string): FilePreview | undefined {
+    if (extname(filename).match(/\.(pdf)/i)) {
+        return {
+            kind: 'embed-preview',
+            file: `file://${filename}`,
+        };
+    } else if (extname(filename).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
+        return {
+            kind: 'image-preview',
+            file: `file://${filename}`,
+        };
+    } else if (extname(filename).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
+        return {
+            kind: 'video-preview',
+            file: `file://${filename}`,
+        };
+    } else if (extname(filename).match(/\.(mp3|wav|mpeg)/i)) {
+        return {
+            kind: 'audio-preview',
+            file: `file://${filename}`,
+        };
+    }
+}
+
 interface FoldersResult extends SimpleResult {
     module: typeof MODULE_ID;
     file: string;
@@ -37,30 +61,6 @@ export class FoldersModule implements Module<FoldersResult> {
 
     get config() {
         return moduleConfig<FoldersConfig>(MODULE_ID);
-    }
-
-    generateFilePreview(filename: string): FilePreview | undefined {
-        if (extname(filename).match(/\.(pdf)/i)) {
-            return {
-                kind: 'embed-preview',
-                file: `file://${filename}`,
-            };
-        } else if (extname(filename).match(/\.(a?png|avif|gif|jpe?g|jfif|pjp(eg)?|svg|webp|bmp|ico|cur)/i)) {
-            return {
-                kind: 'image-preview',
-                file: `file://${filename}`,
-            };
-        } else if (extname(filename).match(/\.(mp4|webm|avi|ogv|ogm|ogg)/i)) {
-            return {
-                kind: 'video-preview',
-                file: `file://${filename}`,
-            };
-        } else if (extname(filename).match(/\.(mp3|wav|mpeg)/i)) {
-            return {
-                kind: 'audio-preview',
-                file: `file://${filename}`,
-            };
-        }
     }
 
     async search(query: Query): Promise<FoldersResult[]> {
@@ -89,7 +89,7 @@ export class FoldersModule implements Module<FoldersResult> {
                                 quality: query.matchText(file),
                                 autocomplete: relative(directory, file) + (stats.isDirectory() ? sep : ''),
                                 file: file,
-                                preview: this.config.file_preview ? this.generateFilePreview(file) : undefined,
+                                preview: this.config.file_preview ? generateFilePreview(file) : undefined,
                             } as FoldersResult];
                         } catch (e) {
                             return [];
