@@ -16,21 +16,22 @@ export function getDefaultDirectoriesLinux(): string[] {
 let loaded = false;
 let applications: Application[] = [];
 let icons: Record<string, string> = {};
-let icon_index: Record<string, string>;
+let indexed = false;
+let icon_index: Record<string, string> = {};
 
 const APPLICATION_CACHE_FILENAME = 'applications.json';
+const CACHE_PATH = join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
 
 async function loadApplicationCache() {
-    const cache_path = join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
     try {
-        applications = JSON.parse(await readFile(cache_path, { encoding: 'utf8' }));
-    } catch (e) { }
-    await writeFile(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
+        applications = JSON.parse(await readFile(CACHE_PATH, { encoding: 'utf8' }));
+    } catch (e) { /* Ignore errors */ }
 }
 
 async function updateCache() {
-    const cache_path = join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
-    await writeFile(cache_path, JSON.stringify(applications), { encoding: 'utf8' });
+    try {
+        await writeFile(CACHE_PATH, JSON.stringify(applications), { encoding: 'utf8' });
+    } catch (e) { /* Ignore errors */  }
 }
 
 async function getIconTheme() {
@@ -154,12 +155,12 @@ function collectOther(desktop: Desktop, action: Action) {
     const keys = [ 'Keywords', 'Categories', 'GenericName' ];
     for (const key of keys) {
         if (desktop['desktop']?.[key]) {
-            for (const lang of desktop['desktop'][key] as any) {
+            for (const lang in desktop['desktop'][key]) {
                 ret[lang] = [ ...(ret[lang] ?? []), desktop['desktop'][key][lang] ];
             }
         }
         if (action[key]) {
-            for (const lang of action[key] as any) {
+            for (const lang in action[key]) {
                 ret[lang] = [ ...(ret[lang] ?? []), action[key][lang] ];
             }
         }
@@ -176,9 +177,9 @@ async function addApplication(desktop: Desktop, file: string) {
                 action['Icon']?.['default']
                 ?? desktop['desktop']?.['Icon']?.['default']
             ),
-            name: desktop['desktop']?.['Name'] ?? [],
-            action: action['Name'] ?? [],
-            description: action['Comment'] ?? desktop['desktop']?.['Comment'] ?? [],
+            name: desktop['desktop']?.['Name'] ?? {},
+            action: action['Name'] ?? {},
+            description: action['Comment'] ?? desktop['desktop']?.['Comment'] ?? {},
             other: collectOther(desktop, action),
         });
     }
@@ -187,10 +188,13 @@ async function addApplication(desktop: Desktop, file: string) {
 export async function updateApplicationCacheLinux(directories: string[]) {
     if (!loaded) {
         await loadApplicationCache();
+        loaded = true;
     }
-    if (!icon_index) {
-        icon_index = {};
-        await createIconIndex();
+    if (!indexed) {
+        try {
+            await createIconIndex();
+            indexed = true;
+        } catch (e) { /* Ignore errors */  }
     }
     applications = [];
     for (const directory of directories) {
@@ -199,8 +203,9 @@ export async function updateApplicationCacheLinux(directories: string[]) {
             for (const file of files) {
                 if (file.endsWith('.desktop')) {
                     try {
-                        const data = await readFile(join(directory, file), { encoding: 'utf8' });
-                        await addApplication(parseDesktopFile(data), file);
+                        const path = join(directory, file);
+                        const data = await readFile(path, { encoding: 'utf8' });
+                        await addApplication(parseDesktopFile(data), path);
                     } catch(e) { /* Ignore errors */ }
                 }
             }

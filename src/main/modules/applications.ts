@@ -70,13 +70,14 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
                 const name = forLanguage(application.name) ?? basename(application.file);
                 const action = forLanguage(application.action);
                 const description = forLanguage(application.description) ?? application.file;
+                const is_action = action && action !== name;
                 return {
                     module: MODULE_ID,
                     query: query.text,
                     kind: 'simple-result',
                     icon: { url: application.icon },
-                    primary: name,
-                    secondary: action !== name ? name : description,
+                    primary: is_action ? action! : name,
+                    secondary: is_action ? name : description,
                     quality: Math.max(
                         query.matchAny(Object.values(application.name ?? {}), name),
                         query.matchAny(Object.values(application.action ?? {}), action) * 0.75,

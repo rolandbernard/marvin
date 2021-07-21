@@ -2,7 +2,7 @@
 import { runMatch } from 'common/util';
 import { getPlatform } from 'common/platform';
 
-import { executeApplicationLinux, getDefaultDirectoriesLinux, updateApplicationCacheLinux } from 'main/adapters/applications/linux';
+import { executeApplicationLinux, getAllApplicationsLinux, getDefaultDirectoriesLinux, updateApplicationCacheLinux } from 'main/adapters/applications/linux';
 
 export interface Application {
     icon?: string;
@@ -30,7 +30,7 @@ export function updateApplicationCache(directories: string[]) {
 
 export function getAllApplications(): Promise<Application[]> {
     return runMatch(getPlatform(), {
-        'linux': () => getAllApplications(),
+        'linux': () => getAllApplicationsLinux(),
         'unsupported': async () => [],
     });
 }
