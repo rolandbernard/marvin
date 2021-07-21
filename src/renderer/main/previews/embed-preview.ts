@@ -13,7 +13,7 @@ export class EmbedPreview extends LitElement {
         return css`
             .preview {
                 max-width: 50%;
-                max-height: 100%;
+                height: 100%;
                 position: absolute;
                 right: 0;
                 top: 0;

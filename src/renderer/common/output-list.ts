@@ -1,6 +1,7 @@
 
 import { css, customElement, html, LitElement, property, query } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
+import { repeat } from 'lit-html/directives/repeat';
 
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';
@@ -81,7 +82,7 @@ export class OutputField extends LitElement {
 
     render() {
         return html`
-            ${this.results?.map((result, i) => {
+            ${repeat(this.results ?? [], result => JSON.stringify(result), (result, i) => {
                 const classes = classMap({
                     'result': true,
                     'selected': i === this.selected,

@@ -13,6 +13,7 @@ import { Command, executeSystemCommands } from 'main/adapters/system-commands';
 const MODULE_ID = 'system_commands';
 
 interface SystemCommandsResult extends SimpleResult {
+    module: typeof MODULE_ID;
     command: Command;
 }
 

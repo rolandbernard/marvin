@@ -1,4 +1,5 @@
 
+import { ipcMain } from 'electron';
 import { basename } from 'path';
 
 import { configKind, config as configDesc, ModuleConfig } from 'common/config';
@@ -11,11 +12,12 @@ import { copyCase } from 'common/util';
 import { executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
 import { getDefaultPath } from 'main/adapters/file-handler';
 import { config, moduleConfig } from 'main/config';
-import { module } from 'main/modules';
+import { module, moduleForId } from 'main/modules';
 
 const MODULE_ID = 'applications';
 
 interface ApplicationsResult extends SimpleResult {
+    module: typeof MODULE_ID;
     application: unknown;
 }
 
@@ -28,8 +30,18 @@ class ApplicationsConfig extends ModuleConfig {
 
     constructor() {
         super(true);
+        this.addConfigField({
+            kind: 'button',
+            name: 'refresh_applications',
+            action: 'refresh-applications',
+            confirm: false,
+        });
     }
 }
+
+ipcMain.on('refresh-applications', () => {
+    moduleForId<ApplicationsModule>(MODULE_ID)?.refreshApplications();
+});
 
 @module(MODULE_ID)
 export class ApplicationsModule implements Module<ApplicationsResult> {
@@ -41,11 +53,15 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
         return moduleConfig<ApplicationsConfig>(MODULE_ID);
     }
 
+    refreshApplications() {
+        return updateApplicationCache(this.config.directories);
+    }
+
     async init() {
         if (this.config.active) {
-            updateApplicationCache(this.config.directories);
+            this.refreshApplications();
             this.refresh = setInterval(() => {
-                updateApplicationCache(this.config.directories);
+                this.refreshApplications();
             }, this.config.refresh_interval_min);
         }
     }
