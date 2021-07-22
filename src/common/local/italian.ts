@@ -99,8 +99,8 @@ const TRANSLATION_ITALIAN = {
     deepl: 'Deepl',
     deepl_description: 'Questo modulo consente di tradurre testi utilizzando Deepl in una finestra headless',
 
-    linux_windows: 'Linux windows',
-    linux_windows_description: 'With this module you can find open windows',
+    windows: 'Finestre',
+    windows_description: 'Con questo modulo potete trovare le finestre aperte',
 
     google_translate: 'Google Translate',
     google_translate_description: 'Questo modulo consente di tradurre testi utilizzando Google Translate in una finestra headless',

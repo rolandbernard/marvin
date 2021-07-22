@@ -51,16 +51,18 @@ export abstract class Config {
         };
         for (const entry of description.options) {
             if (entry.kind === 'page' || entry.kind === 'object') {
-                const transformed: ObjectConfig = (this as any)[entry.name!].getDescription();
+                const transformed: ObjectConfig = (this as any)[entry.name!]?.getDescription?.();
                 entry.options = transformed?.options;
             } else if (entry.kind === 'pages') {
                 entry.options = [];
                 const pages = (this as any)[entry.name!];
                 for (const page in pages) {
-                    const transformed: ObjectConfig = pages[page].getDescription();
-                    transformed.name = page as Translatable;
-                    transformed.kind = 'page';
-                    entry.options.push(transformed);
+                    const transformed: ObjectConfig = pages[page]?.getDescription?.();
+                    if (transformed) {
+                        transformed.name = page as Translatable;
+                        transformed.kind = 'page';
+                        entry.options.push(transformed);
+                    }
                 }
                 entry.options.sort((a, b) => a.name!.localeCompare(b.name!));
             }
