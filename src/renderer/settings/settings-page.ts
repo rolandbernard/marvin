@@ -36,24 +36,39 @@ export class SettingsPage extends AbstractSetting {
                 margin: 1rem;
                 width: fit-content;
                 min-width: calc(100% - 2rem);
-                min-height: calc(100% - 2rem);
                 padding: 0.25rem 1rem;
                 box-sizing: border-box;
                 user-select: none;
                 overflow: hidden;
             }
+            .header {
+                margin: 1rem 2rem;
+            }
+            .name {
+                font-family: var(--font-family);
+                font-size: 1.5rem;
+                font-weight: 500;
+            }
             .description {
                 font-family: var(--font-family);
                 font-size: 1rem;
-                margin: 1rem;
+                margin-top: 0.5rem;
             }
         `;
     }
 
     render() {
+        const name = this.desc?.name ?? '';
         const desc = this.desc?.name + '_description';
         return html`
-            <div class="page">
+            <div class="header">
+                ${hasTranslation(name)
+                    ? html`
+                        <div class="name">
+                            ${getTranslation(name, this.config)}
+                        </div>
+                    `
+                    : undefined}
                 ${hasTranslation(desc)
                     ? html`
                         <div class="description">
@@ -61,6 +76,8 @@ export class SettingsPage extends AbstractSetting {
                         </div>
                     `
                     : undefined}
+            </div>
+            <div class="page">
                 <settings-table
                     .config="${this.config}"
                     .desc="${this.desc}"

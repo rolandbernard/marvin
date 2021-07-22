@@ -9,14 +9,33 @@ import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/settings/some-setting';
 
+type TemplateArray = (TemplateResult | undefined)[] | undefined;
+
 @customElement('settings-table')
 export class SettingsTable extends AbstractSetting {
     desc?: ObjectConfig;
 
+    subdivide(array: TemplateArray): TemplateArray {
+        const result: TemplateArray = [];
+        if (array) {
+            for (let i = 0; i < array.length; i++) {
+                if (i !== 0) {
+                    result.push(html`
+                        <tr class="row">
+                            <td colspan="2">
+                                <div class="divider"></div>
+                            </td>
+                        </tr>
+                    `);
+                }
+                result.push(array[i]);
+            }
+        }
+        return result;
+    }
+
     buildSettingsRows() {
-        const findSettings = 
-            (desc: ObjectConfig, index: DeepIndex):
-            (TemplateResult | undefined)[] | undefined => {
+        const findSettings = (desc: ObjectConfig, index: DeepIndex): TemplateArray => {
             return desc.options?.map(entry => {
                 const entry_index = index.concat(entry.name!);
                 const name = getTranslation(entry.name!, this.config);
@@ -27,7 +46,7 @@ export class SettingsTable extends AbstractSetting {
                                 <div class="subheader">${name}</div>
                             </td>
                         </tr>
-                        ${findSettings(entry, entry_index)}
+                        ${this.subdivide(findSettings(entry, entry_index))}
                     `;
                 } else if (entry.kind === 'array') {
                     return html`
@@ -63,7 +82,7 @@ export class SettingsTable extends AbstractSetting {
             });
         }
         if (this.desc && this.index) {
-            return findSettings(this.desc, this.index);
+            return this.subdivide(findSettings(this.desc, this.index));
         }
     }
 
@@ -77,6 +96,11 @@ export class SettingsTable extends AbstractSetting {
             }
             .row {
                 font-family: var(--font-family);
+            }
+            .divider {
+                height: 1px;
+                margin: 0 0.5rem;
+                background: var(--settings-inactive-color);
             }
             .name {
                 width: 30%;
@@ -93,7 +117,7 @@ export class SettingsTable extends AbstractSetting {
             .subheader {
                 direction: ltr;
                 font-size: 0.75rem;
-                margin-left: -0.5rem;
+                margin-left: -0.25rem;
                 padding-top: 1rem;
                 opacity: 0.75;
                 font-weight: 600;
@@ -109,3 +133,4 @@ export class SettingsTable extends AbstractSetting {
         `;
     }
 }
+

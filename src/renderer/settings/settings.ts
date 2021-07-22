@@ -172,7 +172,7 @@ export class PageRoot extends LitElement {
                 justify-content: center;
                 padding: 2rem 1rem;
                 background: var(--settings-transparent-background);
-                height: 8rem;
+                height: 6rem;
                 box-sizing: border-box;
                 backdrop-filter: blur(5px);
                 z-index: 100;
@@ -192,20 +192,21 @@ export class PageRoot extends LitElement {
                 font-weight: 600;
             }
             .logo {
-                width: 3rem;
-                height: 3rem;
+                width: 2.5rem;
+                height: 2.5rem;
             }
             .title {
-                font-size: 2rem;
+                font-size: 1.75rem;
                 font-weight: 600;
-                padding-left: 1rem;
+                padding-left: 0.5rem;
             }
             .tab-drawer {
                 flex: 1 1 auto;
                 direction: rtl;
                 overflow-y: overlay;
-                padding-top: 8rem;
-                margin-top: -8rem;
+                padding-top: 7rem;
+                margin-top: -6rem;
+                padding-bottom: 1rem;
             }
             .tab-drawer::-webkit-scrollbar {
                 width: var(--scrollbar-width);

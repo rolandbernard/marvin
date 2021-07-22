@@ -33,10 +33,10 @@ export function getConfigStyles(config?: GlobalConfig) {
         '--settings-selection-text-color': config?.theme.settings.select_text_color ?? 'black',
         '--settings-active-color': config?.theme.settings.active_color ?? 'green',
         '--settings-dark-background': colorAsHex(
-            multiplyColor([0.95, 0.95, 0.95], parseColor(config?.theme.settings.background_color ?? '#ffffff'))
+            multiplyColor([0.99, 0.99, 0.99], parseColor(config?.theme.settings.background_color ?? '#ffffff'))
         ),
         '--settings-transparent-background': colorAsHex(
-            multiplyColor([0.95, 0.95, 0.95, 0.8], parseColor(config?.theme.settings.background_color ?? '#ffffff'))
+            multiplyColor([0.99, 0.99, 0.99, 0.8], parseColor(config?.theme.settings.background_color ?? '#ffffff'))
         ),
         '--settings-light-active-color': colorAsHex(
             multiplyColor([1, 1, 1, 0.4], parseColor(config?.theme.settings.active_color ?? '#00ff00'))

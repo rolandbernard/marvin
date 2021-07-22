@@ -48,6 +48,11 @@ export class ArraySetting extends AbstractSetting {
                                 ></material-icon>
                             </td>
                         </tr>
+                        <tr class="row">
+                            <td colspan="2">
+                                <div class="divider"></div>
+                            </td>
+                        </tr>
                     `;
                 } else {
                     const name = getTranslation(this.desc?.base?.name!, this.config);
@@ -68,6 +73,11 @@ export class ArraySetting extends AbstractSetting {
                                     name="delete"
                                     @click="${() => this.onDelete(i)}"
                                 ></material-icon>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td colspan="2">
+                                <div class="divider"></div>
                             </td>
                         </tr>
                     `;
@@ -92,6 +102,11 @@ export class ArraySetting extends AbstractSetting {
             }
             .row {
                 font-family: var(--font-family);
+            }
+            .divider {
+                height: 1px;
+                margin: 0 0.5rem;
+                background: var(--settings-inactive-color);
             }
             .name {
                 padding: 0.8rem;
