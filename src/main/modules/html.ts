@@ -39,7 +39,7 @@ export class HtmlModule implements Module<HtmlResult> {
     }
 
     async search(query: Query): Promise<HtmlResult[]> {
-        return this.config.entries.map((entry) => ({
+        return this.config.entries.map(entry => ({
             module: MODULE_ID,
             query: query.text,
             kind: 'html-result',

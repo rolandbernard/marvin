@@ -30,7 +30,7 @@ class FoldersConfig extends ModuleConfig {
     search_limit = 1000;
 
     constructor() {
-        super(false);
+        super(true);
     }
 }
 
