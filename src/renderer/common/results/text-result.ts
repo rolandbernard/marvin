@@ -34,10 +34,6 @@ export class TextResultComponent extends LitElement {
             .text {
                 flex: 1 1 auto;
                 min-width: 0;
-                display: flex;
-                flex-flow: column;
-                align-items: flex-start;
-                justify-content: center;
                 font-family: var(--font-family);
             }
         `;

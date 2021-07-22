@@ -2,7 +2,7 @@
 import { app } from 'electron';
 import { stat } from 'fs/promises';
 import { spawn } from 'child_process';
-import { dirname, basename, sep, relative } from 'path';
+import { basename, sep } from 'path';
 
 import { configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
@@ -30,7 +30,7 @@ class FoldersConfig extends ModuleConfig {
     search_limit = 1000;
 
     constructor() {
-        super(true);
+        super(false);
     }
 }
 
@@ -69,7 +69,6 @@ export class LocateModule implements Module<LocateResult> {
     async search(query: Query): Promise<LocateResult[]> {
         if (query.text.length > 0) {
             return await Promise.all((await this.searchFor(query.text)).map(async file => {
-                const directory = dirname(file);
                 const stats = await stat(file);
                 return {
                     module: MODULE_ID,
@@ -82,7 +81,7 @@ export class LocateModule implements Module<LocateResult> {
                     primary: basename(file),
                     secondary: file,
                     quality: query.matchText(file),
-                    autocomplete: relative(directory, file) + (stats.isDirectory() ? sep : ''),
+                    autocomplete: file + (stats.isDirectory() ? sep : ''),
                     file: file,
                     preview: this.config.file_preview ? generateFilePreview(file) : undefined,
                 } as LocateResult;

@@ -38,6 +38,7 @@ export class IconDisplay extends LitElement {
                 width: 2rem;
                 height: 2rem;
                 flex: 0 0 auto;
+                overflow: hidden;
             }
             .fallback {
                 font-family: var(--font-family);

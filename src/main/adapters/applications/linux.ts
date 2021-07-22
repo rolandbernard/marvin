@@ -24,9 +24,12 @@ const APPLICATION_CACHE_FILENAME = 'applications.json';
 const CACHE_PATH = join(app.getPath('userData'), APPLICATION_CACHE_FILENAME);
 
 async function loadApplicationCache() {
-    try {
-        applications = JSON.parse(await readFile(CACHE_PATH, { encoding: 'utf8' }));
-    } catch (e) { /* Ignore errors */ }
+    if (!loaded) {
+        try {
+            applications = JSON.parse(await readFile(CACHE_PATH, { encoding: 'utf8' }));
+            loaded = true;
+        } catch (e) { /* Ignore errors */ }
+    }
 }
 
 async function updateCache() {
@@ -200,10 +203,7 @@ async function addApplication(desktop: Desktop, file: string) {
 }
 
 export async function updateApplicationCacheLinux(directories: string[]) {
-    if (!loaded) {
-        await loadApplicationCache();
-        loaded = true;
-    }
+    await loadApplicationCache();
     if (!indexed) {
         try {
             await createIconIndex();
