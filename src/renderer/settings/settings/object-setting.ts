@@ -12,7 +12,7 @@ export class ObjectSetting extends AbstractSetting {
                 border-radius: var(--settings-border-radius);
                 background: var(--settings-background);
                 border: 1px solid var(--settings-border-color);
-                padding: 0.8rem;
+                padding: 0.25rem 0.8rem;
             }
         `;
     }

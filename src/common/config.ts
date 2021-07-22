@@ -9,16 +9,15 @@ import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-des
 import { cloneDeep } from 'common/util';
 import { getPlatform } from 'common/platform';
 
-const desc_meta = Symbol();
+const config_desc = new WeakMap<Config, ConfigDescription[]>();
 
 export abstract class Config {
-    static [desc_meta] = new WeakMap<Config, ConfigDescription[]>();
 
     copyFromPrototype() {
         Object.getPrototypeOf(this).copyFromPrototype?.();
-        if (!Config[desc_meta].has(this)) {
-            Config[desc_meta].set(this, []);
-            const super_desc = Config[desc_meta].get(Object.getPrototypeOf(this));
+        if (!config_desc.has(this)) {
+            config_desc.set(this, []);
+            const super_desc = config_desc.get(Object.getPrototypeOf(this));
             super_desc?.forEach(this.addConfigField.bind(this));
         }
     }
@@ -30,13 +29,25 @@ export abstract class Config {
     addConfigField(desc: ConfigDescription) {
         // This will be called by a decorator, so the constructor will not have run yet.
         this.copyFromPrototype();
-        Config[desc_meta].get(this)?.push(desc);
+        config_desc.get(this)?.push(desc);
+    }
+
+    removeConfigField(name: string) {
+        // This will be called by a decorator, so the constructor will not have run yet.
+        this.copyFromPrototype();
+        const desc = config_desc.get(this);
+        if (desc) {
+            const index = desc.findIndex(desc => desc.name === name);
+            if (index >= 0) {
+                desc.splice(index, 1);
+            }
+        }
     }
 
     getDescription(): ObjectConfig {
         const description = {
             kind: 'object' as 'object',
-            options: cloneDeep(Config[desc_meta].get(this)) ?? [],
+            options: cloneDeep(config_desc.get(this)) ?? [],
         };
         for (const entry of description.options) {
             if (entry.kind === 'page' || entry.kind === 'object') {

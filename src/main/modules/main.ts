@@ -140,6 +140,9 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     async deinit() {
+        if (this.shortcut) {
+            globalShortcut.unregister(this.shortcut);
+        }
         this.window?.destroy();
         this.tray?.destroy();
     }
