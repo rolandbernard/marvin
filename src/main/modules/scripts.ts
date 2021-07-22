@@ -58,7 +58,7 @@ export class ScriptModule implements Module<ScriptResult> {
             quality: query.text.length > 0
                 ? query.matchText(entry.name)
                 : entry.default_quality,
-            autocomplete: copyCase(entry.name, query.raw),
+            autocomplete: copyCase(this.config.prefix + entry.name, query.raw),
             command: entry.script,
             mode: entry.execute_in_terminal ? CommandMode.TERMINAL : CommandMode.SHELL,
         }));

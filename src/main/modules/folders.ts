@@ -87,7 +87,7 @@ export class FoldersModule implements Module<FoldersResult> {
                                 primary: basename(file),
                                 secondary: file,
                                 quality: query.matchText(file),
-                                autocomplete: relative(directory, file) + (stats.isDirectory() ? sep : ''),
+                                autocomplete: this.config.prefix + relative(directory, file) + (stats.isDirectory() ? sep : ''),
                                 file: file,
                                 preview: this.config.file_preview ? generateFilePreview(file) : undefined,
                             } as FoldersResult];

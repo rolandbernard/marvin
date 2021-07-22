@@ -47,7 +47,7 @@ export class HtmlModule implements Module<HtmlResult> {
             quality: query.text.length > 0
                 ? query.matchText(entry.name)
                 : entry.default_quality,
-            autocomplete: copyCase(entry.name, query.raw),
+            autocomplete: copyCase(this.config.prefix + entry.name, query.raw),
         }));
     }
 }

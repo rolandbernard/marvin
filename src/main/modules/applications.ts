@@ -101,7 +101,7 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
                         query.matchAny(Object.values(application.other ?? {}).flat()) * 0.5,
                         query.matchText(application.file) * 0.5,
                     ),
-                    autocomplete: copyCase(name, query.raw),
+                    autocomplete: copyCase(this.config.prefix + name, query.raw),
                     application: application.application,
                 };
             });

@@ -103,7 +103,7 @@ export class ClipboardModule implements Module<TextResult> {
             icon: { material: 'assignment' },
             text: text,
             quality: query.text.length > 0 ? Math.max(match, query.matchText(text)) : this.config.default_quality,
-            autocomplete: copyCase(text, query.raw),
+            autocomplete: copyCase(this.config.prefix + text, query.raw),
         }));
     }
 

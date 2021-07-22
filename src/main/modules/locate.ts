@@ -81,7 +81,7 @@ export class LocateModule implements Module<LocateResult> {
                     primary: basename(file),
                     secondary: file,
                     quality: query.matchText(file),
-                    autocomplete: file + (stats.isDirectory() ? sep : ''),
+                    autocomplete: this.config.prefix + file + (stats.isDirectory() ? sep : ''),
                     file: file,
                     preview: this.config.file_preview ? generateFilePreview(file) : undefined,
                 } as LocateResult;

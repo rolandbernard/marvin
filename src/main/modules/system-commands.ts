@@ -6,7 +6,7 @@ import { SimpleResult } from 'common/result';
 import { copyCase, match } from 'common/util';
 import { Module } from 'common/module';
 
-import { config } from 'main/config';
+import { config, moduleConfig } from 'main/config';
 import { module } from 'main/modules';
 import { Command, executeSystemCommands } from 'main/adapters/system-commands';
 
@@ -27,6 +27,10 @@ class SystemCommandsConfig extends ModuleConfig {
 export class SystemCommandsModule implements Module<SystemCommandsResult> {
     readonly configs = SystemCommandsConfig;
 
+    get config() {
+        return moduleConfig<SystemCommandsConfig>(MODULE_ID);
+    }
+
     async search(query: Query): Promise<SystemCommandsResult[]> {
         if (query.text.length > 0) {
             return Object.values(Command).map(command => {
@@ -43,7 +47,7 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
                         })
                     },
                     primary: name,
-                    autocomplete: copyCase(name, query.raw),
+                    autocomplete: copyCase(this.config.prefix + name, query.raw),
                     command: command,
                 };
             });
