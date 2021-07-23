@@ -1,5 +1,5 @@
 
-import { customElement, html, LitElement, property } from 'lit-element';
+import { css, customElement, html, LitElement, property } from 'lit-element';
 
 import { Preview } from 'common/result';
 
@@ -21,6 +21,14 @@ export class SomePreview extends LitElement {
             `<${tag} .preview="`,
             `"></${tag}>`,
         ] as any, ...attributes);
+    }
+
+    static get styles() {
+        return css`
+            :host {
+                display: contents;
+            }
+        `;
     }
 
     render() {

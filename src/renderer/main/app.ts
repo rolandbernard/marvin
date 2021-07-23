@@ -62,11 +62,6 @@ export class PageRoot extends QueryExecutor {
                 border-radius: var(--border-radius) var(--border-radius) 0 0;
                 overflow: hidden;
             }
-            .output-list {
-                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
-                border-radius: 0 0 var(--border-radius) var(--border-radius);
-                overflow: hidden;
-            }
             .output-area {
                 flex: 1 1 auto;
                 position: relative;
@@ -77,6 +72,17 @@ export class PageRoot extends QueryExecutor {
                 height: 100%;
                 overflow-y: overlay;
                 border-radius: 0 0 var(--border-radius) var(--border-radius);
+            }
+            .result {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: stretch;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                overflow: hidden;
+            }
+            .output-list {
+                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
+                flex: 1 1 100%;
             }
             .output::-webkit-scrollbar {
                 width: var(--scrollbar-width);
@@ -111,23 +117,25 @@ export class PageRoot extends QueryExecutor {
                 ></input-field>
                 <div class="output-area">
                     <div class="output">
-                        <output-list
-                            class="output-list"
-                            .config="${this.config}"
-                            .results="${this.results}"
-                            .selected="${this.selected}"
-                            .centered="${this.centered}"
-                            .query="${this.query}"
-                            @hover="${this.onHover}"
-                            @execute="${this.onExecute}"
-                            @drag="${this.onDrag}"
-                        ></output-list>
-                        <some-preview
-                            .preview="${this.selectedResult()?.preview}"
-                        ></some-preview>
+                        <div class="result">
+                            <output-list
+                                class="output-list"
+                                .config="${this.config}"
+                                .results="${this.results}"
+                                .selected="${this.selected}"
+                                .centered="${this.centered}"
+                                .query="${this.query}"
+                                @hover="${this.onHover}"
+                                @execute="${this.onExecute}"
+                                @drag="${this.onDrag}"
+                            ></output-list>
+                            <some-preview
+                                .preview="${this.selectedResult()?.preview}"
+                            ></some-preview>
+                        </div>
                     </div>
                 </div>
-            <div>
+            </div>
         `;
     }
 }
