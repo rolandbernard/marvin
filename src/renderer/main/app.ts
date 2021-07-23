@@ -21,7 +21,7 @@ export class PageRoot extends QueryExecutor {
         super();
         ipcRenderer.on('show', (_msg, config: GlobalConfig) => {
             this.config = config;
-            ipcRenderer.send('query', '');
+            ipcRenderer.send('query', this.query);
         });
         ipcRenderer.on('hide', () => {
             this.query = '';
