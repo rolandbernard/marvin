@@ -89,6 +89,7 @@ export class ClipboardModule implements Module<HistoryResult> {
                 }
                 return {
                     ...option,
+                    query: query.text,
                     quality: Math.min(1.0, quality),
                 };
             }).sort((a, b) =>

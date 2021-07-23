@@ -7,7 +7,6 @@ import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { time, TimeUnit } from 'common/time';
-import { copyCase } from 'common/util';
 
 import { executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
 import { getDefaultPath } from 'main/adapters/file-handler';
@@ -101,7 +100,7 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
                         query.matchAny(Object.values(application.other ?? {}).flat()) * 0.5,
                         query.matchText(application.file) * 0.5,
                     ),
-                    autocomplete: copyCase(this.config.prefix + name, query.raw),
+                    autocomplete: this.config.prefix + name,
                     application: application.application,
                 };
             });

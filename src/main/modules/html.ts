@@ -3,7 +3,6 @@ import { Config, config, configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
 import { HtmlResult } from 'common/result';
 import { Module } from 'common/module';
-import { copyCase } from 'common/util';
 
 import { module } from 'main/modules';
 import { moduleConfig } from 'main/config';
@@ -47,7 +46,7 @@ export class HtmlModule implements Module<HtmlResult> {
             quality: query.text.length > 0
                 ? query.matchText(entry.name)
                 : entry.default_quality,
-            autocomplete: copyCase(this.config.prefix + entry.name, query.raw),
+            autocomplete: this.config.prefix + entry.name,
         }));
     }
 }

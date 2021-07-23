@@ -3,7 +3,6 @@ import { ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
-import { copyCase } from 'common/util';
 
 import { moduleConfig } from 'main/config';
 import { module } from 'main/modules';
@@ -43,7 +42,7 @@ export class WindowsModule implements Module<WindowsResult> {
                     query.matchText(window.title),
                     query.matchText(window.application)
                 ),
-                autocomplete: copyCase(this.config.prefix + window.title, query.raw),
+                autocomplete: this.config.prefix + window.title,
                 window: window.window,
             }));
         } else {

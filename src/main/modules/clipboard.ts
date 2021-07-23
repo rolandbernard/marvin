@@ -9,7 +9,6 @@ import { TextResult } from 'common/result';
 import { Module } from 'common/module';
 import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { time, TimeUnit } from 'common/time';
-import { copyCase } from 'common/util';
 
 import { module } from 'main/modules';
 import { moduleConfig, config } from 'main/config';
@@ -103,7 +102,7 @@ export class ClipboardModule implements Module<TextResult> {
             icon: { material: 'assignment' },
             text: text,
             quality: query.text.length > 0 ? 0.75 * Math.max(match, query.matchText(text)) : this.config.default_quality,
-            autocomplete: copyCase(this.config.prefix + text, query.raw),
+            autocomplete: this.config.prefix + text,
         }));
     }
 

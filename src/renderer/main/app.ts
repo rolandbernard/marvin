@@ -4,6 +4,7 @@ import { ipcRenderer } from 'electron';
 
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';
+import { copyCase } from 'common/util';
 
 import { getConfigStyles } from 'renderer/common/theme';
 import { QueryExecutor } from 'renderer/common/executor';
@@ -25,7 +26,8 @@ export class PageRoot extends QueryExecutor {
         });
         ipcRenderer.on('hide', () => {
             this.query = '';
-            ipcRenderer.send('query', '');
+            this.selected = 0;
+            this.results = [];
         });
     }
 
@@ -102,7 +104,7 @@ export class PageRoot extends QueryExecutor {
                 <input-field
                     class="input"
                     .text="${this.query}"
-                    .prediction="${this.selectedResult()?.autocomplete ?? ''}"
+                    .prediction="${copyCase(this.selectedResult()?.autocomplete ?? '', this.query)}"
                     .loading=${this.results ? false : true}
                     .config="${this.config}"
                     @change="${this.onQueryChange}"

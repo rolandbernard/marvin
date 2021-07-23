@@ -3,7 +3,7 @@ import { ModuleConfig } from 'common/config';
 import { getTranslation } from 'common/local/locale';
 import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
-import { copyCase, match } from 'common/util';
+import { match } from 'common/util';
 import { Module } from 'common/module';
 
 import { config, moduleConfig } from 'main/config';
@@ -47,7 +47,7 @@ export class SystemCommandsModule implements Module<SystemCommandsResult> {
                         })
                     },
                     primary: name,
-                    autocomplete: copyCase(this.config.prefix + name, query.raw),
+                    autocomplete: this.config.prefix + name,
                     command: command,
                 };
             });

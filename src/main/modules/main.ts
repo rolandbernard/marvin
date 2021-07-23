@@ -7,7 +7,6 @@ import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { Query } from 'common/query';
 import { isDevelopment } from 'common/platform';
-import { copyCase } from 'common/util';
 
 import { config } from 'main/config';
 import { module, moduleForId } from 'main/modules';
@@ -157,7 +156,7 @@ export class MainModule implements Module<SimpleResult> {
                 quality: query.matchAny(getAllTranslations('quit'), name),
                 icon: { material: 'exit_to_app' },
                 primary: name,
-                autocomplete: copyCase(name, query.raw),
+                autocomplete: name,
             }];
         } else {
             return [];

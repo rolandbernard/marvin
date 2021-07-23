@@ -6,7 +6,6 @@ import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { Query } from 'common/query';
-import { copyCase } from 'common/util';
 import { isDevelopment } from 'common/platform';
 
 import { config } from 'main/config';
@@ -79,7 +78,7 @@ export class SettingsModule implements Module<SimpleResult> {
                 quality: query.matchAny(getAllTranslations('settings'), name),
                 icon: { material: 'settings' },
                 primary: name,
-                autocomplete: copyCase(name, query.raw),
+                autocomplete: name,
             }];
         } else {
             return [];
