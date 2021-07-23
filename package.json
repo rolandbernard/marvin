@@ -25,9 +25,11 @@
         "algebrite": "^1.4.0",
         "lit-element": "^2.5.1",
         "lit-html": "^1.4.1",
-        "mathjs": "^9.4.4"
+        "mathjs": "^9.4.4",
+        "node-fetch": "^2.6.1"
     },
     "devDependencies": {
+        "@types/node-fetch": "^2.5.12",
         "@types/webpack-env": "^1.16.2",
         "css-loader": "^5.2.6",
         "electron": "^13.1.6",
