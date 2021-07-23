@@ -57,3 +57,26 @@ export interface HtmlResult extends BaseResult {
 
 export type Result = SimpleResult | TextResult | HtmlResult;
 
+export function getResultKey(result: Result): string {
+    if (result.kind === 'html-result') {
+        return JSON.stringify({
+            module: result.module,
+            html: result.html,
+            file: result.file,
+        });
+    } else if (result.kind === 'text-result') {
+        return JSON.stringify({
+            module: result.module,
+            text: result.text,
+            file: result.file,
+        });
+    } else {
+        return JSON.stringify({
+            module: result.module,
+            primary: result.primary,
+            secondary: result.secondary,
+            file: result.file,
+        });
+    }
+}
+

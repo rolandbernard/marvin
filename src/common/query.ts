@@ -92,7 +92,7 @@ export class Query {
 
     matchAny(texts: string[], primary?: string): number {
         return Math.max(
-            ...texts.map(text => this.matchText(text) * 0.5),
+            ...texts.map(text => this.matchText(text) * (primary ? 0.5 : 1)),
             this.matchText(primary ?? '')
         );
     }

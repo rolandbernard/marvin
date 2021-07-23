@@ -1,7 +1,7 @@
 
 import { Query } from 'common/query';
 import { ModuleId } from 'common/module';
-import { Result } from 'common/result';
+import { getResultKey, Result } from 'common/result';
 
 import { moduleForId, modules } from 'main/modules';
 import { config } from 'main/config';
@@ -50,7 +50,7 @@ function filterAndSortQueryResults(results: Result[]): Result[] {
         .filter(option => option.quality > 0)
         .sort((a, b) => b.quality - a.quality)
         .filter(element => {
-            let value = JSON.stringify(element);
+            let value = getResultKey(element);
             if (!existing.has(value)) {
                 existing.add(value);
                 return true;
