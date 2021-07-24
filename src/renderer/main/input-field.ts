@@ -60,6 +60,7 @@ export class InputField extends LitElement {
                 font-family: var(--font-family);
                 font-size: 1.5rem;
                 font-weight: 300;
+                font-variant-ligatures: none;
                 color: var(--input-text-color);
             }
             .input {

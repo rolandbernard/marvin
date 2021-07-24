@@ -174,7 +174,7 @@ export class ColorPicker extends LitElement {
             .sliders .handle {
                 width: 1.1rem;
                 height: 1.1rem;
-                background: var(--settings-background);
+                background: white;
                 box-shadow: var(--box-shadow-position) var(--settings-shadow-color);
                 position: absolute;
                 transform: translate(-50%, -50%);

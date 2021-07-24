@@ -100,7 +100,8 @@ export class SettingsTable extends AbstractSetting {
             .divider {
                 height: 1px;
                 margin: 0 0.5rem;
-                background: var(--settings-inactive-color);
+                background: var(--settings-border-color);
+                opacity: 0.25;
             }
             .name {
                 width: 30%;

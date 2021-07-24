@@ -66,12 +66,13 @@ export class PageRoot extends QueryExecutor {
                 flex: 1 1 auto;
                 position: relative;
                 height: 0;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                overflow: hidden;
             }
             .output {
                 width: 100%;
                 height: 100%;
                 overflow-y: overlay;
-                border-radius: 0 0 var(--border-radius) var(--border-radius);
             }
             .result {
                 display: flex;
