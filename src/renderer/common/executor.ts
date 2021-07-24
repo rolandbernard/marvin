@@ -55,7 +55,6 @@ export abstract class QueryExecutor extends LitElement {
     }
 
     onQueryChange(e: CustomEvent) {
-        console.log(e);
         this.query = e.detail.value;
         this.sendQueryRequest();
     }

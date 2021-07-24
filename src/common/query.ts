@@ -1,4 +1,6 @@
 
+const MAX_MATCH_LENGTH = 200;
+
 export class Query {
     readonly advanced: boolean;
     readonly raw: string;
@@ -43,7 +45,7 @@ export class Query {
     }
 
     withoutPrefix(prefix: string) {
-        if (this.text.startsWith(prefix)) {
+        if (prefix.length > 0 && this.text.startsWith(prefix)) {
             return new Query(this.raw, this.text.replace(prefix, ''), this.advanced);
         } else {
             return this;
@@ -51,6 +53,7 @@ export class Query {
     }
 
     matchText(text: string): number {
+        text = text.substr(0, MAX_MATCH_LENGTH);
         const match = text.match(this.regex);
         if (match && text.length > 0) {
             const best_match = match.reduce((a, b) => a.length <= b.length ? a : b);
