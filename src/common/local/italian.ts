@@ -126,7 +126,7 @@ const TRANSLATION_ITALIAN = {
     alias: 'Alias',
     alias_description: 'Con questo modulo è possibile aggiungere un alias per un\'opzione specifica, che può poi essere utilizzato per cercare l\'opzione',
     aliases: 'Alias',
-    option: 'Opzione',
+    result: 'Risultato',
     prefix_text: 'Aggiungi il nome come prefisso',
 
     currency_converter: 'Convertitore di valuta',

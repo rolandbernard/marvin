@@ -126,7 +126,7 @@ const TRANSLATION_GERMAN = {
     alias: 'Alias',
     alias_description: 'Mit diesem Modul können Sie einen Alias für eine bestimmte Option hinzufügen, mit welchem dann nach der Option gesucht werden kann',
     aliases: 'Aliase',
-    option: 'Option',
+    result: 'Ergebnis',
     prefix_text: 'Name als Präfix hinzufügen',
 
     currency_converter: 'Währungsumrechner',

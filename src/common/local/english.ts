@@ -126,7 +126,7 @@ const TRANSLATION_ENGLISH = {
     alias: 'Alias',
     alias_description: 'This module allows you to add an alias for a certain option, that allows you to search it under a different name',
     aliases: 'Aliases',
-    option: 'Option',
+    result: 'Result',
     prefix_text: 'Add name as prefix',
 
     currency_converter: 'Currency converter',
