@@ -76,7 +76,7 @@ class DuckDuckGoConfig extends ModuleConfig {
     url_preview = false;
 
     constructor() {
-        super(true, 'd?');
+        super(true, 'a?');
     }
 }
 
