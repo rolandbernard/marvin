@@ -80,10 +80,12 @@ export class PageRoot extends QueryExecutor {
                 align-items: stretch;
                 border-radius: 0 0 var(--border-radius) var(--border-radius);
                 overflow: hidden;
+                width: 100%;
             }
             .output-list {
                 box-shadow: var(--box-shadow-position) var(--output-shadow-color);
                 flex: 1 1 100%;
+                width: 100%;
             }
             .output::-webkit-scrollbar {
                 width: var(--scrollbar-width);

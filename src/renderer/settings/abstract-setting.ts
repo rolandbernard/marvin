@@ -16,7 +16,7 @@ export class AbstractSetting extends LitElement {
     @property({ attribute: false })
     index?: DeepIndex;
 
-    validate(_value: string): string | undefined {
+    validate(_value: unknown): string | undefined {
         return undefined;
     }
 

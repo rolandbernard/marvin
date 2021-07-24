@@ -63,6 +63,7 @@ export class OutputField extends LitElement {
                 flex-flow: column;
                 align-items: stretch;
                 background: var(--output-background);
+                text-align: left;
             }
             .result {
                 background: var(--output-background);

@@ -12,6 +12,9 @@ export class TextField extends LitElement {
     value?: string;
 
     @property({ attribute: false })
+    placeholder = '';
+
+    @property({ attribute: false })
     disabled?: boolean;
 
     @property({ attribute: false })
@@ -29,7 +32,9 @@ export class TextField extends LitElement {
     }
 
     onInput(event: Event) {
-        this.error = this.validation?.((event.currentTarget as HTMLInputElement).value);
+        const value = (event.currentTarget as HTMLInputElement).value;
+        this.dispatchEvent(new CustomEvent('input-change', { detail: { value } }));
+        this.error = this.validation?.(value);
     }
 
     updated(props: Map<string, unknown>) {
@@ -112,8 +117,9 @@ export class TextField extends LitElement {
                     class="input"
                     spellcheck="false"
                     autocomplete="off"
-                    ?disabled="${this.disabled}"
                     type="${this.type}"
+                    placeholder="${this.placeholder}"
+                    ?disabled="${this.disabled}"
                     .value=${this.value}
                     @change="${this.onChange}"
                     @input="${this.onInput}"

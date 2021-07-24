@@ -39,7 +39,6 @@ export class SettingsPage extends AbstractSetting {
                 padding: 0.25rem 1rem;
                 box-sizing: border-box;
                 user-select: none;
-                overflow: hidden;
             }
             .header {
                 margin: 1rem 2rem;

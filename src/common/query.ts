@@ -52,7 +52,7 @@ export class Query {
 
     matchText(text: string): number {
         const match = text.match(this.regex);
-        if (match) {
+        if (match && text.length > 0) {
             const best_match = match.reduce((a, b) => a.length <= b.length ? a : b);
             const starts_with = text.toLowerCase().startsWith(best_match.toLowerCase());
             if (this.text.length === best_match.length) {
