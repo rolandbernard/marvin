@@ -26,9 +26,9 @@ export function escapeForTerminal(text: string) {
 
 function executeCommandLinux(command: string, mode = CommandMode.SIMPLE) {
     return runMatch(mode, {
-        'terminal': () => execAsync(`xterm -e ${escapeForTerminal(command)}`),
-        'shell': () => execAsync(`sh <<< ${escapeForTerminal(command)}`),
-        'simple': () => execAsync(command),
+        'terminal': () => execAsync(`xterm -e ${escapeForTerminal(command)}`).catch(() => {}),
+        'shell': () => execAsync(`sh <<< ${escapeForTerminal(command)}`).catch(() => {}),
+        'simple': () => execAsync(command).catch(() => {}),
     });
 }
 

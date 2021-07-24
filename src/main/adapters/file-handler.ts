@@ -19,6 +19,6 @@ export function openFile(path: string) {
 }
 
 function openFileLinux(path: string) {
-    return executeCommand(`xdg-open ${escapeForTerminal(path)}`)
+    return executeCommand(`xdg-open ${escapeForTerminal(path)}`);
 }
 

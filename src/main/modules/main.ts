@@ -11,6 +11,7 @@ import { isDevelopment } from 'common/platform';
 import { config } from 'main/config';
 import { module, moduleForId } from 'main/modules';
 import { SettingsModule } from 'main/modules/settings';
+import { openUrl } from 'main/adapters/url-handler';
 
 import Logo from 'logo.png';
 
@@ -79,8 +80,15 @@ export class MainModule implements Module<SimpleResult> {
             this.window.on('blur', hideWindow);
         }
 
-        this.window.webContents.on('will-navigate', (e) => {
+        this.window.webContents.on('will-navigate', (e, url) => {
             e.preventDefault();
+            openUrl(url);
+        });
+        this.window.webContents.setWindowOpenHandler(details => {
+            openUrl(details.url);
+            return {
+                action: 'deny',
+            };
         });
 
         this.window.loadURL(`file://${join(__dirname, 'app.html')}`);
