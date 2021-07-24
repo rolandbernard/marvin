@@ -131,6 +131,7 @@ const TRANSLATION_ENGLISH = {
 
     currency_converter: 'Currency converter',
     currency_converter_description: 'This module allows you to quickly convert between currencies',
+    round_to: 'Decimal places',
 
     dictionary: 'Dictionary',
     dictionary_description: 'This module allows you to quickly lookup definitions and synonyms for words',

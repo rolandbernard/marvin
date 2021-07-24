@@ -46,8 +46,8 @@ export class CalculatorModule implements Module<SimpleResult> {
                         kind: 'simple-result',
                         icon: { material: 'functions' },
                         primary: `= ${value}`,
-                        secondary: `${query.text}${name ? ` ${getTranslation(name, config)}` : ''}`,
-                        autocomplete: query.raw + ' = ' + value,
+                        secondary: `${query.text} ${name ? getTranslation(name, config) : ''}`,
+                        autocomplete: `${query.raw} = ${value}`,
                         quality: this.config.quality,
                     });
                 } catch (e) { }

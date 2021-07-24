@@ -182,7 +182,6 @@ export class DuckDuckGoModule implements Module<DuckDuckGoResult> {
             resultsForItems(items);
             return results;
         } catch (e) {
-            console.error(e);
             return [];
         }
     }

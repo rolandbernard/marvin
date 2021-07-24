@@ -131,6 +131,7 @@ const TRANSLATION_GERMAN = {
 
     currency_converter: 'Währungsumrechner',
     currency_converter_description: 'Mit diesem Modul ist es möglich schnell zwischen Wahrungen umzurechnen',
+    round_to: 'Nachkommastellen',
 
     dictionary: 'Wörterbuch',
     dictionary_description: 'Mit diesem Modul können schnell Definitionen und Synonyme für Wörter nachgeschlagen werden',

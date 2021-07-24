@@ -131,6 +131,7 @@ const TRANSLATION_ITALIAN = {
 
     currency_converter: 'Convertitore di valuta',
     currency_converter_description: 'Questo modulo consente di convertire rapidamente tra valute',
+    round_to: 'Posizioni decimali',
 
     dictionary: 'Dizionario',
     dictionary_description: 'Questo modulo può essere utilizzato per cercare rapidamente definizioni e sinonimi di parole',
