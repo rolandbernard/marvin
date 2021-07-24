@@ -79,7 +79,7 @@ export class CurrencyConverterModule implements Module<SimpleResult> {
     }
 
     parseQuery(query: string): { value?: number, from?: string, to?: string } {
-        const match = query.match(/^(\d+.?|\d*.?\d+)\s*(.+)\s+(to|in)\s+(.+)$/i);
+        const match = query.match(/^\s*(\d+\.?|\d*\.?\d+)\s*(\S+)\s+(to|in)\s+(\S+)\s*$/i);
         if (match) {
             const from = match[2].toUpperCase();
             const to = match[4].toUpperCase();
@@ -97,7 +97,7 @@ export class CurrencyConverterModule implements Module<SimpleResult> {
     async search(query: Query): Promise<SimpleResult[]> {
         if (query.text.length > 0) {
             const { value, from, to } = this.parseQuery(query.text);
-            if (value && from && to) {
+            if (value !== undefined && from && to) {
                 await this.loadCurrencyRates();
                 const round = Math.pow(10, this.config.round_to);
                 const result = Math.round(value / this.rates![from] * this.rates![to] * round) / round;
