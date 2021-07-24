@@ -15,12 +15,15 @@ class AliasEntry extends Config {
 
     @configKind('result')
     result?: Result;
-}
 
-class AliasConfig extends ModuleConfig {
     @configKind('boolean')
     prefix_text = true;
 
+    @configKind('quality')
+    default_quality = 0;
+}
+
+class AliasConfig extends ModuleConfig {
     @config({ kind: 'array', default: new AliasEntry() })
     aliases: AliasEntry[] = [];
 
@@ -39,23 +42,26 @@ export class AliasModule implements Module<Result> {
 
     async search(query: Query): Promise<Result[]> {
         const aliases = this.config.aliases.filter(entry => entry.result);
-        if (this.config.prefix_text) {
-            return aliases.map(entry => ({
-                ...entry.result!,
-                primary: entry.name + ': ' + (entry.result as any).primary,
-                text: entry.name + ': ' + (entry.result as any).text,
-                query: query.text,
-                quality: query.matchText(entry.name),
-                autocomplete: this.config.prefix + entry.name,
-            }));
-        } else {
-            return aliases.map(entry => ({
-                ...entry.result!,
-                query: query.text,
-                quality: query.matchText(entry.name),
-                autocomplete: this.config.prefix + entry.name,
-            }));
-        }
+        return aliases.map(entry => {
+            const match = query.text.length > 0 ? query.matchText(entry.name) : entry.default_quality;
+            if (entry.prefix_text) {
+                return {
+                    ...entry.result!,
+                    primary: entry.name + ': ' + (entry.result as any).primary,
+                    text: entry.name + ': ' + (entry.result as any).text,
+                    query: query.text,
+                    quality: match,
+                    autocomplete: this.config.prefix + entry.name,
+                };
+            } else {
+                return {
+                    ...entry.result!,
+                    query: query.text,
+                    quality: match,
+                    autocomplete: this.config.prefix + entry.name,
+                };
+            }
+        });
     }
 }
 
