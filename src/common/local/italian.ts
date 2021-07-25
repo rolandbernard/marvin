@@ -26,6 +26,7 @@ const TRANSLATION_ITALIAN = {
     border_radius: 'Raggio di confine',
     input: 'Campo di input',
     output: 'Area dei risultati',
+    select_a_theme: 'Seleziona un theme',
 
     modules: 'Moduli',
     active: 'Attivo',

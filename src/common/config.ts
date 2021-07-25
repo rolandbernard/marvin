@@ -8,6 +8,7 @@ import { ModuleId, Module } from 'common/module';
 import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-desc';
 import { cloneDeep } from 'common/util';
 import { getPlatform } from 'common/platform';
+import { THEMES } from 'common/themes';
 
 const config_desc = new WeakMap<Config, ConfigDescription[]>();
 
@@ -26,10 +27,21 @@ export abstract class Config {
         this.copyFromPrototype();
     }
 
-    addConfigField(desc: ConfigDescription) {
+    addConfigField(desc: ConfigDescription, at?: number) {
         // This will be called by a decorator, so the constructor will not have run yet.
         this.copyFromPrototype();
-        config_desc.get(this)?.push(desc);
+        if (at !== undefined) {
+            const old = config_desc.get(this);
+            if (old) {
+                config_desc.set(this, [
+                    ...old.slice(0, at),
+                    desc,
+                    ...old.slice(at),
+                ]);
+            }
+        } else {
+            config_desc.get(this)?.push(desc);
+        }
     }
 
     removeConfigField(name: string) {
@@ -157,64 +169,64 @@ class GeneralConfig extends Config {
 
 class InputThemeConfig extends Config {
     @configKind('color')
-    background_color = '#1f252a';
+    background_color = THEMES.default.input.background_color;
 
     @configKind('color')
-    text_color = '#ffffff';
+    text_color = THEMES.default.input.text_color;
 
     @configKind('color')
-    accent_color = '#f0f0f0';
+    accent_color = THEMES.default.input.accent_color;
 
     @configKind('color')
-    shadow_color = '#00000000';
+    shadow_color = THEMES.default.input.shadow_color;
 }
 
 class OutputThemeConfig extends Config {
     @configKind('color')
-    background_color = '#262c33';
+    background_color = THEMES.default.output.background_color;
 
     @configKind('color')
-    text_color = '#f0f0f0';
+    text_color = THEMES.default.output.text_color;
 
     @configKind('color')
-    accent_color = '#f0f0f0';
+    accent_color = THEMES.default.output.accent_color;
 
     @configKind('color')
-    select_color = '#313943';
+    select_color = THEMES.default.output.select_color;
 
     @configKind('color')
-    select_text_color = '#f0f0f0';
+    select_text_color = THEMES.default.output.select_text_color;
 
     @configKind('color')
-    shadow_color = '#00000020';
+    shadow_color = THEMES.default.output.shadow_color;
 }
 
 class SettingsThemeConfig extends Config {
     @configKind('color')
-    background_color = '#f0f0f0';
+    background_color = THEMES.default.settings.background_color;
 
     @configKind('color')
-    text_color = '#000000';
+    text_color = THEMES.default.settings.text_color;
 
     @configKind('color')
-    accent_color = '#505050';
+    accent_color = THEMES.default.settings.accent_color;
 
     @configKind('color')
-    select_color = '#e0e0e0';
+    select_color = THEMES.default.settings.select_color;
 
     @configKind('color')
-    select_text_color = '#000000';
+    select_text_color = THEMES.default.settings.select_text_color;
 
     @configKind('color')
-    active_color = '#23d160';
+    active_color = THEMES.default.settings.active_color;
 
     @configKind('color')
-    shadow_color = '#00000020';
+    shadow_color = THEMES.default.settings.shadow_color;
 }
 
 class ThemeConfig extends Config {
     @configKind('size')
-    border_radius = 5;
+    border_radius = THEMES.default.border_radius;
 
     @configKind('object')
     input = new InputThemeConfig();
@@ -224,6 +236,17 @@ class ThemeConfig extends Config {
 
     @configKind('object')
     settings = new SettingsThemeConfig();
+
+    constructor() {
+        super();
+        this.addConfigField({
+            kind: 'select-action',
+            name: 'theme',
+            placeholder: 'select_a_theme',
+            options: Object.keys(THEMES) as Translatable[],
+            action: 'change-theme',
+        }, 0);
+    }
 }
 
 export class GlobalConfig extends Config {

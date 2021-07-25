@@ -35,11 +35,18 @@ export interface SelectConfig extends BaseConfig {
     options: Translatable[];
 }
 
+export interface SelectActionConfig extends BaseConfig {
+    kind: 'select-action';
+    placeholder: Translatable;
+    options: Translatable[];
+    action: string;
+}
+
 export interface ButtonConfig extends BaseConfig {
     kind: 'button';
     action: string;
     confirm: boolean;
 }
 
-export type ConfigDescription = SimpleConfig | ObjectConfig | ArrayConfig | SelectConfig | ButtonConfig;
+export type ConfigDescription = SimpleConfig | ObjectConfig | ArrayConfig | SelectConfig | SelectActionConfig | ButtonConfig;
 

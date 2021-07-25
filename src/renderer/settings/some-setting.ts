@@ -13,6 +13,7 @@ import 'renderer/settings/settings/object-setting';
 import 'renderer/settings/settings/path-setting';
 import 'renderer/settings/settings/quality-setting';
 import 'renderer/settings/settings/result-setting';
+import 'renderer/settings/settings/select-action-setting';
 import 'renderer/settings/settings/select-setting';
 import 'renderer/settings/settings/shortcut-setting';
 import 'renderer/settings/settings/size-setting';

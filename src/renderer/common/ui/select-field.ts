@@ -13,6 +13,9 @@ export class SelectField<Type> extends LitElement {
     value?: Type;
 
     @property({ attribute: false })
+    placeholder = ' ';
+
+    @property({ attribute: false })
     options?: { value: Type, label: string }[];
 
     @property({ attribute: false })
@@ -36,7 +39,6 @@ export class SelectField<Type> extends LitElement {
     onClose(value?: Type) {
         this.open = false;
         if (value) {
-            this.value = value;
             this.dispatchEvent(new CustomEvent('change', {
                 detail: {
                     value: value,
@@ -59,7 +61,7 @@ export class SelectField<Type> extends LitElement {
             .select.enabled {
                 cursor: pointer;
             }
-            .disabled {
+            .disabled, .placeholder {
                 color: var(--settings-border-hover-color);
             }
             .value {
@@ -131,13 +133,26 @@ export class SelectField<Type> extends LitElement {
         });
         return html`
             <div class="${classes}" style="${styles}">
-                <div
-                    class="value"
-                    tabindex="0"
-                    @click="${this.onOpen}"
-                >
-                    ${this.options?.find(option => option.value === this.value)?.label}
-                </div>
+                ${!this.value
+                    ? html`
+                        <div
+                            class="value placeholder"
+                            tabindex="0"
+                            @click="${this.onOpen}"
+                        >
+                            ${this.placeholder}
+                        </div>
+                    `
+                    : html`
+                        <div
+                            class="value"
+                            tabindex="0"
+                            @click="${this.onOpen}"
+                        >
+                            ${this.options?.find(option => option.value === this.value)?.label}
+                        </div>
+                    `
+                }
                 <div class="dropdown">
                     ${this.options?.map(option => html`
                         <button-like

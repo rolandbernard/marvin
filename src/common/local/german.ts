@@ -26,6 +26,7 @@ const TRANSLATION_GERMAN = {
     border_radius: 'Randradius',
     input: 'Eingabefeld',
     output: 'Ergebnisbereich',
+    select_a_theme: 'Wählen Sie ein Theme',
 
     modules: 'Module',
     active: 'Aktiv',

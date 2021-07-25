@@ -26,6 +26,7 @@ const TRANSLATION_ENGLISH = {
     border_radius: 'Border radius',
     input: 'Input field',
     output: 'Result area',
+    select_a_theme: 'Select a theme',
 
     modules: 'Modules',
     active: 'Active',

@@ -67,8 +67,8 @@ export class TimeSetting extends AbstractSetting {
             >
                 <select-field
                     class="select"
-                    .value=${this.unit}
-                    .options=${options}
+                    .value="${this.unit}"
+                    .options="${options}"
                     .disabled="${this.isDisabled()}"
                     @change="${this.onUnitChange}"
                 ></select-field>

@@ -26,7 +26,7 @@ export class BooleanSetting extends AbstractSetting {
         return html`
             <toggle-switch
                 class="toggle"
-                .value=${this.configValue()}
+                .value="${this.configValue()}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"
             ></toggle-switch>

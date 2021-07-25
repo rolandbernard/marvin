@@ -201,7 +201,7 @@ export class ColorPicker extends LitElement {
                     repeat;
             }
             .black {
-                background: linear-gradient(to right, rgba(0, 0, 0, 0), black);
+                background: linear-gradient(to right, rgba(0, 0, 0, 0), var(--settings-text-color));
                 height: 100%;
             }
             .alpha .handle {

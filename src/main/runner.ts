@@ -4,6 +4,8 @@ import { app, ipcMain, WebContents } from 'electron';
 import { Result } from 'common/result';
 import { Query } from 'common/query';
 import { GlobalConfig } from 'common/config';
+import { mergeDeep } from 'common/util';
+import { THEMES } from 'common/themes';
 
 import { executeResult, searchQuery } from 'main/executor';
 import { config, resetConfig, updateConfig } from 'main/config';
@@ -80,14 +82,22 @@ ipcMain.on('drag', async (event, option: Result) => {
     }
 });
 
-ipcMain.on('update-config', async (_msg, new_config: GlobalConfig) => {
+ipcMain.on('update-config', async (msg, new_config: GlobalConfig) => {
     await updateConfig(new_config);
+    msg.sender.send('show', config, config.getDescription());
     await updateModules();
 });
 
 ipcMain.on('reset-config', async (msg) => {
     await resetConfig();
-    await updateModules();
     msg.sender.send('show', config, config.getDescription());
+    await updateModules();
+});
+
+ipcMain.on('change-theme', async (msg, theme: keyof typeof THEMES) => {
+    mergeDeep(config.theme, THEMES[theme]);
+    await updateConfig();
+    msg.sender.send('show', config, config.getDescription());
+    await updateModules();
 });
 

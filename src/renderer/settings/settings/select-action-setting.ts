@@ -1,16 +1,23 @@
 
+import { ipcRenderer } from 'electron';
 import { css, customElement, html } from 'lit-element';
 
-import { SelectConfig } from 'common/config-desc';
+import { SelectActionConfig } from 'common/config-desc';
 import { getTranslation } from 'common/local/locale';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/common/ui/select-field';
 
-@customElement('select-setting')
-export class SelectSetting extends AbstractSetting {
-    desc?: SelectConfig;
+@customElement('select-action-setting')
+export class SelectActionSetting extends AbstractSetting {
+    desc?: SelectActionConfig;
+
+    onChange(e: CustomEvent) {
+        if (this.desc) {
+            ipcRenderer.send(this.desc.action, e.detail.value);
+        }
+    }
 
     static get styles() {
         return css`
@@ -27,7 +34,7 @@ export class SelectSetting extends AbstractSetting {
         }));
         return html`
             <select-field
-                .value="${this.configValue()}"
+                .placeholder="${getTranslation(this.desc!.placeholder, this.config)}"
                 .options="${options}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"
