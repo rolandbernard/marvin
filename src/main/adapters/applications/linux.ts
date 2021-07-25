@@ -187,7 +187,7 @@ function collectOther(desktop: Desktop, action: Action) {
     return ret;
 }
 
-async function addApplication(desktop: Desktop, file: string) {
+async function addApplication(applications: Application[], desktop: Desktop, file: string) {
     for (const action of Object.values(desktop)) {
         applications.push({
             file: file,
@@ -210,7 +210,7 @@ export async function updateApplicationCacheLinux(directories: string[]) {
             indexed = true;
         } catch (e) { /* Ignore errors */  }
     }
-    applications = [];
+    const new_applications: Application[] = [];
     for (const directory of directories) {
         try {
             const files = await readdir(directory);
@@ -219,12 +219,13 @@ export async function updateApplicationCacheLinux(directories: string[]) {
                     try {
                         const path = join(directory, file);
                         const data = await readFile(path, { encoding: 'utf8' });
-                        await addApplication(parseDesktopFile(data), path);
+                        await addApplication(new_applications, parseDesktopFile(data), path);
                     } catch(e) { /* Ignore errors */ }
                 }
             }
         } catch(e) { /* Ignore errors */ }
     }
+    applications = new_applications;
     await updateCache();
 }
 
