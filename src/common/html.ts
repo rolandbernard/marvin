@@ -87,11 +87,11 @@ function matchesSelectors(element: HtmlElement, query: string[]): boolean {
     }
 }
 
-function selectAllHelper(element: HtmlElement, query: string[][][]): HtmlElement[] {
+function selectAllHelper(element: HtmlElement, query: string[][][]): HtmlTag[] {
     if (typeof element === 'string') {
         return [];
     } else {
-        const result: HtmlElement[] = [];
+        const result: HtmlTag[] = [];
         if (query.some(option => matchesSelectors(element, option[0]) && option.length === 1)) {
             result.push(element);
         }
@@ -111,7 +111,7 @@ function selectAllHelper(element: HtmlElement, query: string[][][]): HtmlElement
 
 const SELECTOR_MATCH = /(#\w+|\.\w+|\w+)/g;
 
-export function selectAll(element: HtmlElement, query: string): HtmlElement[] {
+export function selectAll(element: HtmlElement, query: string): HtmlTag[] {
     const selector = query
         .split(/\s*,\s*/)
         .map(option =>

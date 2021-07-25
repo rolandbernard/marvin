@@ -96,8 +96,8 @@ const TRANSLATION_GERMAN = {
     maximum_history: 'Maximale einträge',
     clear_history: 'Verlauf löschen',
 
-    deepl: 'Deepl',
-    deepl_description: 'Mit diesem Modul können Sie Texte mithilfe von Deepl in einem headless Fenster übersetzen',
+    translate: 'Übersetzung',
+    translate_description: 'Mit diesem Modul können Sie Wörter übersetzen',
 
     windows: 'Fenster',
     windows_description: 'Mit diesem Modul können Sie geöffnete Fenster finden',

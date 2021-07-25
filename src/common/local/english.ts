@@ -96,8 +96,8 @@ const TRANSLATION_ENGLISH = {
     maximum_history: 'Maximum history',
     clear_history: 'Clear history',
 
-    deepl: 'Deepl',
-    deepl_description: 'This module allows you to translate text by using Deepl in a headless window',
+    translate: 'Translate',
+    translate_description: 'This module allows you to translate single words',
 
     windows: 'Windows',
     windows_description: 'This module allows you to find open windows',

@@ -99,6 +99,9 @@ const TRANSLATION_ITALIAN = {
     deepl: 'Deepl',
     deepl_description: 'Questo modulo consente di tradurre testi utilizzando Deepl in una finestra headless',
 
+    translate: 'Traduzione',
+    translate_description: 'Con questo modulo è possibile tradurre parole',
+
     windows: 'Finestre',
     windows_description: 'Con questo modulo potete trovare le finestre aperte',
 
