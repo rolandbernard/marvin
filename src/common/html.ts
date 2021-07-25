@@ -87,18 +87,21 @@ function matchesSelectors(element: HtmlElement, query: string[]): boolean {
     }
 }
 
-function selectAllHelper(element: HtmlElement, query: string[][]): HtmlElement[] {
+function selectAllHelper(element: HtmlElement, query: string[][][]): HtmlElement[] {
     if (typeof element === 'string') {
         return [];
     } else {
         const result: HtmlElement[] = [];
-        if (matchesSelectors(element, query[0])) {
-            if (query.length === 1) {
-                result.push(element);
-            } else {
-                query = query.slice(1);
-            }
+        if (query.some(option => matchesSelectors(element, option[0]) && option.length === 1)) {
+            result.push(element);
         }
+        query = query.map(option => {
+            if (matchesSelectors(element, option[0]) && option.length !== 1) {
+                return option.slice(1);
+            } else {
+                return option;
+            }
+        });
         for (const elem of element.content) {
             result.push(...selectAllHelper(elem, query));
         }
@@ -109,6 +112,14 @@ function selectAllHelper(element: HtmlElement, query: string[][]): HtmlElement[]
 const SELECTOR_MATCH = /(#\w+|\.\w+|\w+)/g;
 
 export function selectAll(element: HtmlElement, query: string): HtmlElement[] {
-    return selectAllHelper(element, query.split(/\s+/).map(elem => elem.match(SELECTOR_MATCH) ?? []));
+    const selector = query
+        .split(/\s*,\s*/)
+        .map(option =>
+            option.split(/\s+/)
+                .map(elem => elem.match(SELECTOR_MATCH)!)
+                .filter(elem => elem)
+        )
+        .filter(option => option.length > 0);
+    return selectAllHelper(element, selector);
 }
 
