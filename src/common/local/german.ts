@@ -47,7 +47,7 @@ const TRANSLATION_GERMAN = {
 
     folders: 'Ordner',
     folders_description: 'Dieses Modul ermöglicht das durchsuchen von Dateien',
-    directories: 'Verzeichnisse',
+    directories: 'Ordner',
     path: 'Pfad',
     file_preview: 'Datei-Vorschau',
 
@@ -138,6 +138,8 @@ const TRANSLATION_GERMAN = {
 
     bookmarks: 'Lesezeichen',
     bookmarks_description: 'Mit diesem Modul ist es möglich Lesezeichen von Firefox, Midori und Chromium/Google Chrome zu durchsuchen',
+    chromium_directories: 'Chromium Ordner',
+    firefox_directories: 'Firefox Ordner',
 
     email: 'E-Mail',
     email_description: 'Mit diesem Modul ist es möglich schnell eine neue E-Mail zu beginnen',

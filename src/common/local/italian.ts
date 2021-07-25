@@ -47,7 +47,7 @@ const TRANSLATION_ITALIAN = {
 
     folders: 'Cartelle',
     folders_description: 'Questo modulo ti consente di sfogliare i tuoi file',
-    directories: 'Elenchi',
+    directories: 'Cartelle',
     path: 'Percorso',
     file_preview: 'Anteprima file',
 
@@ -138,6 +138,8 @@ const TRANSLATION_ITALIAN = {
 
     bookmarks: 'Segnalibri',
     bookmarks_description: 'Con questo modulo è possibile cercare tra i segnalibri di Firefox, Midori e Chromium/Google Chrome',
+    chromium_directories: 'Cartelle Chromium',
+    firefox_directories: 'Cartelle Firefox',
 
     email: 'E-mail',
     email_description: 'Con questo modulo è possibile avviare rapidamente una nuova e-mail',

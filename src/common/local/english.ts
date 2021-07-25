@@ -138,6 +138,8 @@ const TRANSLATION_ENGLISH = {
 
     bookmarks: 'Bookmarks',
     bookmarks_description: 'This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks',
+    chromium_directories: 'Chromium directories',
+    firefox_directories: 'Firefox directories',
 
     email: 'Email',
     email_description: 'This module allows one to quickly start writing a new email',

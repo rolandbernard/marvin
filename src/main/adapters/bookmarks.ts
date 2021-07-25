@@ -2,19 +2,36 @@
 import { app } from 'electron';
 import { join } from 'path';
 import { readFile, readdir } from 'fs/promises';
-import { decompressData } from 'common/lz4';
 
-const CHROMIUM_BOOKMARKS = [
-    join(app.getPath('home'), '.config/chromium/Default/Bookmarks'),
-    join(app.getPath('home'), '.config/google-chrome/Default/Bookmarks'),
-    join(app.getPath('home'), '.config/google-chrome-unstable/Default/Bookmarks'),
-    join(app.getPath('home'), '.config/BraveSoftware/Brave-Browser/Default/Bookmarks'),
-    join(app.getPath('home'), '.config/microsoft-edge-beta/Default/Bookmarks'),
+import { decompressData } from 'common/lz4';
+import { match } from 'common/util';
+import { getPlatform } from 'common/platform';
+
+const CHROMIUM_BOOKMARKS_LINUX = [
+    join(app.getPath('home'), '.config/chromium'),
+    join(app.getPath('home'), '.config/google-chrome'),
+    join(app.getPath('home'), '.config/google-chrome-unstable'),
+    join(app.getPath('home'), '.config/BraveSoftware/Brave-Browser'),
+    join(app.getPath('home'), '.config/microsoft-edge-beta'),
 ];
 
-const FIREFOX_FOLDERS = [
+export function getDefaultChromiumDirectories(): string[] {
+    return match(getPlatform(), {
+        'linux': CHROMIUM_BOOKMARKS_LINUX,
+        'unsupported': [],
+    });
+}
+
+const FIREFOX_FOLDERS_LINUX = [
     join(app.getPath('home'), '.mozilla/firefox'),
 ];
+
+export function getDefaultFirefoxDirectories(): string[] {
+    return match(getPlatform(), {
+        'linux': FIREFOX_FOLDERS_LINUX,
+        'unsupported': [],
+    });
+}
 
 function recursiveBookmarkSearch(bookmarks: any): Bookmark[] {
     if (bookmarks instanceof Object) {
@@ -41,10 +58,11 @@ function recursiveBookmarkSearch(bookmarks: any): Bookmark[] {
     }
 }
 
-async function getChromiumBookmarks(): Promise<Bookmark[]> {
+async function getChromiumBookmarks(folders: string[]): Promise<Bookmark[]> {
     const ret: Bookmark[] = []
-    for (const file of CHROMIUM_BOOKMARKS) {
+    for (const folder of folders) {
         try {
+            const file = join(folder, 'Default', 'Bookmarks');
             const bookmarks = JSON.parse(await readFile(file, { encoding: 'utf8' }));
             ret.push(...recursiveBookmarkSearch(bookmarks));
         } catch (e) { /* Ignore errors */ }
@@ -52,9 +70,9 @@ async function getChromiumBookmarks(): Promise<Bookmark[]> {
     return ret;
 }
 
-async function getFirefoxBookmarks(): Promise<Bookmark[]> {
+async function getFirefoxBookmarks(folders: string[]): Promise<Bookmark[]> {
     const ret: Bookmark[] = []
-    for (const folder of FIREFOX_FOLDERS) {
+    for (const folder of folders) {
         try {
             const folders = (await readdir(folder))
                 .filter((file) => file.endsWith('.default'))
@@ -81,10 +99,10 @@ export interface Bookmark {
 
 let bookmarks: Bookmark[] = [];
 
-export async function updateBookmarkCache() {
+export async function updateBookmarkCache(chromium_folders: string[], firefox_folders: string[]) {
     bookmarks = [
-        ...(await getChromiumBookmarks()),
-        ...(await getFirefoxBookmarks()),
+        ...(await getChromiumBookmarks(chromium_folders)),
+        ...(await getFirefoxBookmarks(firefox_folders)),
     ];
 }
 

@@ -1,5 +1,5 @@
 
-import { configKind, ModuleConfig } from 'common/config';
+import { config as configDesc, configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
@@ -8,7 +8,8 @@ import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { module } from 'main/modules';
 import { config, moduleConfig } from 'main/config';
 import { openUrl } from 'main/adapters/url-handler';
-import {getAllBookmarks, updateBookmarkCache} from 'main/adapters/bookmarks';
+import { getAllBookmarks, getDefaultChromiumDirectories, getDefaultFirefoxDirectories, updateBookmarkCache } from 'main/adapters/bookmarks';
+import { getDefaultPath } from 'main/adapters/file-handler';
 
 const MODULE_ID = 'bookmarks';
 
@@ -18,8 +19,17 @@ interface BookmarkResult extends SimpleResult {
 }
 
 class BookmarkConfig extends ModuleConfig {
+    @configKind('quality')
+    default_quality = 0;
+
     @configKind('boolean')
     url_preview = false;
+
+    @configDesc({ kind: 'array', base: { kind: 'path', name: 'path' }, default: getDefaultPath() })
+    chromium_directories = getDefaultChromiumDirectories();
+
+    @configDesc({ kind: 'array', base: { kind: 'path', name: 'path' }, default: getDefaultPath() })
+    firefox_directories = getDefaultFirefoxDirectories();
 
     constructor() {
         super(true);
@@ -30,17 +40,18 @@ class BookmarkConfig extends ModuleConfig {
 export class BookmarkModule implements Module<BookmarkResult> {
     readonly configs = BookmarkConfig;
 
+    last_load?: number;
+
     get config() {
         return moduleConfig<BookmarkConfig>(MODULE_ID);
     }
 
-    async init() {
-        await updateBookmarkCache();
-    }
-
     async search(query: Query): Promise<BookmarkResult[]> {
         if (query.text.length > 0) {
-            updateBookmarkCache(); // Update the bookmarks asynchronously
+            if (!this.last_load || (Date.now() - this.last_load) > 1000) {
+                await updateBookmarkCache(this.config.chromium_directories, this.config.firefox_directories);
+                this.last_load = Date.now();
+            }
             const match = query.matchAny(getAllTranslations('bookmarks'), getTranslation('bookmarks', config));
             return (await getAllBookmarks()).map(bookmark => ({
                 module: MODULE_ID,
