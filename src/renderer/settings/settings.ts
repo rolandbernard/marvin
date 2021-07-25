@@ -209,7 +209,7 @@ export class PageRoot extends LitElement {
                 padding-bottom: 1rem;
             }
             .tab-drawer::-webkit-scrollbar {
-                width: calc(var(--scrollbar-width) / 2);
+                width: var(--scrollbar-width);
             }
             .tab-drawer::-webkit-scrollbar-track,
             .tab-drawer::-webkit-scrollbar-track-piece,

@@ -200,7 +200,7 @@ class SettingsThemeConfig extends Config {
     accent_color = '#505050';
 
     @configKind('color')
-    select_color = '#00000015';
+    select_color = '#e0e0e0';
 
     @configKind('color')
     select_text_color = '#000000';
