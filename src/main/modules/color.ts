@@ -17,7 +17,7 @@ class ColorConfig extends ModuleConfig {
     quality = 1;
 
     @configKind('boolean')
-    color_preview = false;
+    color_preview = true;
 
     constructor() {
         super(true);

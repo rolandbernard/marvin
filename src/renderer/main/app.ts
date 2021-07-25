@@ -46,14 +46,17 @@ export class PageRoot extends QueryExecutor {
                 width: 100%;
                 height: 100%;
                 display: flex;
-                align-items: center;
-                justify-content: center;
+                flex-flow: column;
+                align-items: stretch;
+                justify-content: flex-start;
             }
             .window {
-                width: calc(100% - 20px);
-                height: calc(100% - 20px);
+                margin: 10px;
+                max-height: calc(100% - 20px);
                 display: flex;
                 flex-direction: column;
+                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
+                border-radius: var(--border-radius) var(--border-radius);
             }
             .input {
                 flex: 0 0 auto;
@@ -61,17 +64,18 @@ export class PageRoot extends QueryExecutor {
                 box-shadow: var(--box-shadow-position) var(--input-shadow-color);
                 border-radius: var(--border-radius) var(--border-radius) 0 0;
                 overflow: hidden;
+                z-index: 1;
             }
             .output-area {
                 flex: 1 1 auto;
                 position: relative;
-                height: 0;
+                height: fit-content;
                 border-radius: 0 0 var(--border-radius) var(--border-radius);
                 overflow: hidden;
             }
             .output {
                 width: 100%;
-                height: 100%;
+                max-height: 100%;
                 overflow-y: overlay;
             }
             .result {
@@ -83,7 +87,6 @@ export class PageRoot extends QueryExecutor {
                 width: 100%;
             }
             .output-list {
-                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
                 flex: 1 1 100%;
                 width: 100%;
             }

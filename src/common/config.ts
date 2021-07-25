@@ -157,13 +157,13 @@ class GeneralConfig extends Config {
 
 class InputThemeConfig extends Config {
     @configKind('color')
-    background_color = '#000000';
+    background_color = '#1f252a';
 
     @configKind('color')
     text_color = '#ffffff';
 
     @configKind('color')
-    accent_color = '#ffffff';
+    accent_color = '#f0f0f0';
 
     @configKind('color')
     shadow_color = '#00000000';
@@ -171,27 +171,27 @@ class InputThemeConfig extends Config {
 
 class OutputThemeConfig extends Config {
     @configKind('color')
-    background_color = '#000000';
+    background_color = '#262c33';
 
     @configKind('color')
-    text_color = '#ffffff';
+    text_color = '#f0f0f0';
 
     @configKind('color')
-    accent_color = '#ffffff';
+    accent_color = '#f0f0f0';
 
     @configKind('color')
-    select_color = '#303030';
+    select_color = '#313943';
 
     @configKind('color')
-    select_text_color = '#ffffff';
+    select_text_color = '#f0f0f0';
 
     @configKind('color')
-    shadow_color = '#00000000';
+    shadow_color = '#00000020';
 }
 
 class SettingsThemeConfig extends Config {
     @configKind('color')
-    background_color = '#ffffff';
+    background_color = '#f0f0f0';
 
     @configKind('color')
     text_color = '#000000';
@@ -206,15 +206,15 @@ class SettingsThemeConfig extends Config {
     select_text_color = '#000000';
 
     @configKind('color')
-    active_color = '#539b26';
+    active_color = '#23d160';
 
     @configKind('color')
-    shadow_color = '#00000080';
+    shadow_color = '#00000020';
 }
 
 class ThemeConfig extends Config {
     @configKind('size')
-    border_radius = 0;
+    border_radius = 5;
 
     @configKind('object')
     input = new InputThemeConfig();
