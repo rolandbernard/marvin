@@ -87,6 +87,7 @@ export class InputField extends LitElement {
                 width: 1.65rem;
                 height: 1.65rem;
                 margin-right: 0.65rem;
+                fill: none;
                 stroke: var(--input-accent-color);
                 stroke-width: 6px;
                 stroke-linecap: round;

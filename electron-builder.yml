@@ -10,6 +10,7 @@ linux:
     icon: ./static/logo.png
     target:
         - AppImage
+        - zip
     category: Utility
     publish:
         - github

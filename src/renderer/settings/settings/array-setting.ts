@@ -130,7 +130,7 @@ export class ArraySetting extends AbstractSetting {
                     ${this.buildItemRows()}
                     <tr class="row">
                         <td></td>
-                        <td></td>
+                        <td class="setting"></td>
                         <td class="add">
                             <button-like class="button-like">
                                 <material-icon
