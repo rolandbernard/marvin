@@ -45,7 +45,7 @@ export class InputField extends LitElement {
     static get styles() {
         return css`
             .wrapper {
-                padding: 0.85rem;
+                padding: 0.85rem 0.75rem;
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: center;
@@ -84,18 +84,16 @@ export class InputField extends LitElement {
                 right: 0;
             }
             .icon {
-                width: 1.75rem;
-                height: 1.75rem;
-                margin-right: 0.5rem;
+                width: 1.65rem;
+                height: 1.65rem;
+                margin-right: 0.65rem;
                 stroke: var(--input-accent-color);
-                stroke-width: 4px;
-            }
-            .path {
+                stroke-width: 6px;
+                stroke-linecap: round;
                 transform-origin: 50% 50%;
             }
-            .loading .path {
-                d: path('m 46.524486,55.970966 c -1.295659,0.75925 -5.263007,3.53983 -12.659024,3.592809 C 21.559597,59.651924 13.691653,52.660271 9.9262039,42.563167 v 0 0 0 0 0');
-                animation: rotate 500ms infinite linear;
+            .loading .icon {
+                animation: rotate 600ms infinite linear;
             }
             @keyframes rotate {
                 0% {
@@ -104,6 +102,25 @@ export class InputField extends LitElement {
                 100% {
                     transform: rotate(360deg);
                 }
+            }
+            .path {
+                transition: var(--transition);
+                transition-property: d; 
+            }
+            .loading .path:nth-child(1) {
+                d: path('M 47.5 10 A 37.5 37.5 0 0 1 85 47.5');
+            }
+            .loading .path:nth-child(2) {
+                d: path('M 47.5 85 A 37.5 37.5 0 0 1 47.5 85');
+            }
+            .loading .path:nth-child(3) {
+                d: path('M 47.5 85 A 37.5 37.5 0 0 1 10 47.5');
+            }
+            .loading .path:nth-child(4) {
+                d: path('M 10 47.5 A 37.5 37.5 0 0 1 10 47.5');
+            }
+            .loading .path:nth-child(5) {
+                d: path('M 85 47.5 L 85 47.5');
             }
         `;
     }
@@ -118,11 +135,12 @@ export class InputField extends LitElement {
         });
         return html`
             <div class="${classes}">
-                <svg class="icon" viewBox="0 0 67.733 67.733">
-                    <path
-                        class="path"
-                        d="m 37.473819,37.124262 c 0,0 -4.033383,4.734457 -12.172532,4.945909 -9.280568,0.241104 -16.8096247,-7.525925 -16.8096247,-16.809625 0,-9.2837 7.5259247,-16.8096253 16.8096247,-16.8096255 9.2837,8e-7 16.809627,7.5259255 16.809624,16.8096255 v 0 c 0.150704,7.379854 -4.637092,11.863716 -4.637092,11.863716 l 20.293728,20.978063"
-                    />
+                <svg class="icon" viewBox="0 0 95 95">
+                    <path class="path" d="M 35 10 A 25 25 0 0 1 60 35"/>
+                    <path class="path" d="M 60 35 A 25 25 0 0 1 35 60"/>
+                    <path class="path" d="M 35 60 A 25 25 0 0 1 10 35"/>
+                    <path class="path" d="M 10 35 A 25 25 0 0 1 35 10"/>
+                    <path class="path" d="M 53 53 L 85 85"/>
                 </svg>
                 <div class="field">
                     ${prediction}
