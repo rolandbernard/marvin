@@ -98,7 +98,7 @@ export class PageRoot extends QueryExecutor {
                 display: none;
             }
             .output::-webkit-scrollbar-thumb {
-                background: var(--output-accent-color);
+                background: var(--output-selection-background);
             }
         `;
     }

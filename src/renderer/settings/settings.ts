@@ -153,7 +153,7 @@ export class PageRoot extends LitElement {
                 display: none;
             }
             .window::-webkit-scrollbar-thumb {
-                background: var(--settings-accent-color);
+                background: var(--settings-selection-background);
             }
             .sidebar {
                 flex: 0 0 auto;
@@ -209,7 +209,7 @@ export class PageRoot extends LitElement {
                 padding-bottom: 1rem;
             }
             .tab-drawer::-webkit-scrollbar {
-                width: var(--scrollbar-width);
+                width: calc(var(--scrollbar-width) / 2);
             }
             .tab-drawer::-webkit-scrollbar-track,
             .tab-drawer::-webkit-scrollbar-track-piece,
@@ -219,7 +219,7 @@ export class PageRoot extends LitElement {
                 display: none;
             }
             .tab-drawer::-webkit-scrollbar-thumb {
-                background: var(--settings-accent-color);
+                background: var(--settings-selection-background);
             }
             .tab-button {
                 border-radius: 0 50rem 50rem 0;

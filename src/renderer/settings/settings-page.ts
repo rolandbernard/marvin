@@ -27,7 +27,7 @@ export class SettingsPage extends AbstractSetting {
                 display: none;
             }
             :host::-webkit-scrollbar-thumb {
-                background: var(--settings-accent-color);
+                background: var(--settings-selection-background);
             }
             .page {
                 box-shadow: var(--box-shadow-position) var(--settings-shadow-color);

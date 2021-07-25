@@ -11,7 +11,7 @@ import { modules } from 'main/modules';
 
 export let config: GlobalConfig;
 
-const config_path = join(app.getPath('userData'), 'new-marvin.json');
+const config_path = join(app.getPath('userData'), 'marvin.json');
 
 export async function loadConfig() {
     // Modules are already registered, create a default config for them

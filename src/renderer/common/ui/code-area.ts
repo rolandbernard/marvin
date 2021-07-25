@@ -91,7 +91,7 @@ export class CodeArea extends LitElement {
                 display: none;
             }
             .input::-webkit-scrollbar-thumb {
-                background: var(--settings-accent-color);
+                background: var(--settings-selection-background);
             }
         `;
     }
