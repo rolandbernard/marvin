@@ -18,6 +18,15 @@ export class ResultSelector extends QueryExecutor {
     @property({ attribute: false })
     disabled?: boolean;
 
+    @property({ attribute: false })
+    focused = false;
+
+    onQueryResult(results: Result[]) {
+        if (this.focused) {
+            super.onQueryResult(results);
+        }
+    }
+
     executeResult(result: Result) {
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
@@ -28,8 +37,14 @@ export class ResultSelector extends QueryExecutor {
         this.results = [];
     }
 
+    onFocus() {
+        this.focused = true;
+        this.results = [];
+        this.sendQueryRequest();
+    }
+
     onBlur() {
-        this.query = '';
+        this.focused = false;
         this.results = [];
     }
 
@@ -106,6 +121,7 @@ export class ResultSelector extends QueryExecutor {
                 @input-change="${this.onQueryChange}"
                 @keydown="${this.onKeyDown}"
                 @blur="${this.onBlur}"
+                @focus="${this.onFocus}"
             ></text-field>
             <div class="output-area">
                 <div class="output">

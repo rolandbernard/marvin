@@ -39,6 +39,7 @@ export class InputField extends LitElement {
     }
 
     updated() {
+        this.input?.focus();
         this.onScroll();
     }
 
@@ -146,6 +147,7 @@ export class InputField extends LitElement {
                 <div class="field">
                     ${prediction}
                     <input
+                        autofocus="true"
                         class="input"
                         spellcheck="false"
                         autocomplete="off"
