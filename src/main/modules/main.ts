@@ -6,7 +6,7 @@ import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { Query } from 'common/query';
-import { isDevelopment } from 'common/platform';
+import { getPlatform, isDevelopment, Platform } from 'common/platform';
 
 import { config } from 'main/config';
 import { module, moduleForId } from 'main/modules';
@@ -17,8 +17,10 @@ import Logo from 'logo.png';
 
 const MODULE_ID = 'main';
 
-// Transparency will not work without this
-app.commandLine.appendSwitch("disable-gpu");
+if (getPlatform() === Platform.LINUX) {
+    // Transparency will not work without this
+    app.commandLine.appendSwitch("disable-gpu");
+}
 
 @module(MODULE_ID as any) // This module has no config => needs no translation
 export class MainModule implements Module<SimpleResult> {
@@ -59,10 +61,9 @@ export class MainModule implements Module<SimpleResult> {
             resizable: false,
             maximizable: false,
             minimizable: false,
-            movable: false,
             skipTaskbar: true,
             center: true,
-            frame: inDevelopment,
+            frame: getPlatform() === Platform.LINUX && inDevelopment,
             show: false,
             transparent: true,
             alwaysOnTop: true,
@@ -70,7 +71,6 @@ export class MainModule implements Module<SimpleResult> {
             height: config.general.max_height + 20,
             icon: join(__dirname, Logo),
         });
-
         const hideWindow = (e: Event) => {
             e.preventDefault();
             this.hideWindow();
