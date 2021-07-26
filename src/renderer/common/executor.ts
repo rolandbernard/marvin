@@ -55,7 +55,7 @@ export abstract class QueryExecutor extends LitElement {
         clearTimeout(this.loading_timeout!);
         this.loading_timeout = setTimeout(() => {
             this.results = undefined;
-        }, 200);
+        }, 100);
     }
 
     onQueryChange(e: CustomEvent) {

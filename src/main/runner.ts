@@ -54,7 +54,7 @@ async function handleQuery(query: string, sender: WebContents) {
     const results = await searchQuery(
         new Query(query, query, config.general.enhanced_search),
         config.general.incremental_results
-            ? (results) => sendUpdatedOptions(begin_count, sender, results)
+            ? (results) => results.length !== 0 && sendUpdatedOptions(begin_count, sender, results)
             : undefined
     );
     sendUpdatedOptions(begin_count, sender, results);
