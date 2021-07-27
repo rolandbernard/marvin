@@ -47,7 +47,7 @@ export class ShortcutModule implements Module<Result> {
             for (const entry of this.config.shortcuts) {
                 try {
                     globalShortcut.register(entry.shortcut, () => {
-                        executeCommand(entry.script, entry.execute_in_terminal ? CommandMode.TERMINAL : CommandMode.SHELL);
+                        executeCommand(entry.script, entry.execute_in_terminal ? CommandMode.TERMINAL : CommandMode.SIMPLE);
                     });
                     this.shortcuts.push(entry.shortcut);
                 } catch (e) { /* Ignore errors */ }

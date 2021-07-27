@@ -57,7 +57,7 @@ export class CommandModule implements Module<CommandResult> {
                     secondary: `${getTranslation('execute', config)}: ${query.text}`,
                     quality: this.config.quality,
                     command: query.text,
-                    mode: CommandMode.SHELL,
+                    mode: CommandMode.SIMPLE,
                 },
             ];
         } else {
