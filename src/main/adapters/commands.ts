@@ -9,7 +9,6 @@ const execAsync = promisify(exec);
 
 export enum CommandMode {
     SIMPLE = 'simple',
-    SHELL = 'shell',
     TERMINAL = 'terminal',
 }
 
@@ -27,7 +26,6 @@ export function escapeForTerminal(text: string) {
 function executeCommandLinux(command: string, mode = CommandMode.SIMPLE) {
     return runMatch(mode, {
         'terminal': () => execAsync(`xterm -e ${escapeForTerminal(command)}`).catch(() => {}),
-        'shell': () => execAsync(`sh <<< ${escapeForTerminal(command)}`).catch(() => {}),
         'simple': () => execAsync(command).catch(() => {}),
     });
 }
