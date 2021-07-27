@@ -1,5 +1,5 @@
 
-import { app, ipcMain, WebContents } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, WebContents } from 'electron';
 
 import { Result } from 'common/result';
 import { Query } from 'common/query';
@@ -99,5 +99,18 @@ ipcMain.on('change-theme', async (msg, theme: keyof typeof THEMES) => {
     await updateConfig();
     msg.sender.send('show', config, config.getDescription());
     await updateModules();
+});
+
+ipcMain.handle('show-dialog', (msg, text: string) => {
+    const window = BrowserWindow.fromWebContents(msg.sender);
+    if (window) {
+        return dialog.showMessageBoxSync(window, {
+            message: text,
+            title: 'Marvin',
+            buttons: ['Cancel', 'Ok'],
+        });
+    } else {
+        return true;
+    }
 });
 

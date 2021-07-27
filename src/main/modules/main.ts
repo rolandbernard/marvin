@@ -70,6 +70,7 @@ export class MainModule implements Module<SimpleResult> {
             width: config.general.width + 20,
             height: config.general.max_height + 20,
             icon: join(__dirname, Logo),
+            title: 'Marvin',
         });
         const hideWindow = (e: Event) => {
             e.preventDefault();

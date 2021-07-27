@@ -279,7 +279,7 @@ export class PageRoot extends LitElement {
                     <div class="header">
                         <div class="logo-title">
                             <img class="logo" src=${Logo} />
-                            <div class="title">Settings</div>
+                            <div class="title">${getTranslation('settings', this.config)}</div>
                         </div>
                         <div class="version">
                             v${this.config?.version}
