@@ -7,6 +7,7 @@ import { openFile } from 'main//adapters/file-handler';
 export function openUrl(url: string) {
     return runMatch(getPlatform(), {
         'linux': () => openFile(url),
+        'win32': () => openFile(url),
         'unsupported': () => { }
     });
 }

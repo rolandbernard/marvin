@@ -14,6 +14,7 @@ export interface Window {
 export function openWindows(): Promise<Window[]> {
     return runMatch(getPlatform(), {
         'linux': () => openWindowsLinux(),
+        'win32': async () => [],
         'unsupported': async () => []
     });
 }
@@ -32,6 +33,7 @@ async function openWindowsLinux(): Promise<Window[]> {
 export function focusWindow(window: unknown) {
     return runMatch(getPlatform(), {
         'linux': () => focusWindowLinux(window),
+        'win32': () => { },
         'unsupported': () => { }
     });
 }

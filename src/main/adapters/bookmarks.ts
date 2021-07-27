@@ -18,6 +18,7 @@ const CHROMIUM_BOOKMARKS_LINUX = [
 export function getDefaultChromiumDirectories(): string[] {
     return match(getPlatform(), {
         'linux': CHROMIUM_BOOKMARKS_LINUX,
+        'win32': [],
         'unsupported': [],
     });
 }
@@ -29,6 +30,7 @@ const FIREFOX_FOLDERS_LINUX = [
 export function getDefaultFirefoxDirectories(): string[] {
     return match(getPlatform(), {
         'linux': FIREFOX_FOLDERS_LINUX,
+        'win32': [],
         'unsupported': [],
     });
 }

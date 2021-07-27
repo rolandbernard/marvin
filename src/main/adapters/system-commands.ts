@@ -12,6 +12,7 @@ export enum Command {
 export function executeSystemCommands(command: Command) {
     return runMatch(getPlatform(), {
         'linux': () => executeSystemCommandsLinux(command),
+        'win32': () => { },
         'unsupported': () => { }
     });
 }

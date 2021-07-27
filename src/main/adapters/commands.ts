@@ -20,8 +20,12 @@ export function executeCommand(command: string, mode = CommandMode.SIMPLE, shell
     });
 }
 
-export function escapeForTerminal(text: string) {
+export function escapeForTerminalLinux(text: string) {
     return `'${text.replace(/\'/g, "'\\''")}'`;
+}
+
+export function escapeForTerminalWindows(text: string) {
+    return `"${text}"`;
 }
 
 export function escapeCommandWindows(text: string) {
@@ -30,7 +34,7 @@ export function escapeCommandWindows(text: string) {
 
 function executeCommandLinux(command: string, mode = CommandMode.SIMPLE, shell?: string) {
     return runMatch(mode, {
-        'terminal': () => execAsync(`xterm -e ${escapeForTerminal(command)}`, { shell: shell }).catch(() => {}),
+        'terminal': () => execAsync(`xterm -e ${escapeForTerminalLinux(command)}`, { shell: shell }).catch(() => {}),
         'simple': () => execAsync(command, { shell: shell }).catch(() => {}),
     });
 }

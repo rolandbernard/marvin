@@ -17,6 +17,7 @@ export interface Application {
 export function getDefaultDirectories(): string[] {
     return runMatch(getPlatform(), {
         'linux': () => getDefaultDirectoriesLinux(),
+        'win32': () => [],
         'unsupported': () => [],
     });
 }
@@ -24,6 +25,7 @@ export function getDefaultDirectories(): string[] {
 export function updateApplicationCache(directories: string[]) {
     return runMatch(getPlatform(), {
         'linux': () => updateApplicationCacheLinux(directories),
+        'win32': () => [],
         'unsupported': () => {},
     });
 }
@@ -31,6 +33,7 @@ export function updateApplicationCache(directories: string[]) {
 export function getAllApplications(): Promise<Application[]> {
     return runMatch(getPlatform(), {
         'linux': () => getAllApplicationsLinux(),
+        'win32': async () => [],
         'unsupported': async () => [],
     });
 }
@@ -38,6 +41,7 @@ export function getAllApplications(): Promise<Application[]> {
 export function executeApplication(application: unknown) {
     return runMatch(getPlatform(), {
         'linux': () => executeApplicationLinux(application),
+        'win32': () => [],
         'unsupported': () => {},
     });
 }
