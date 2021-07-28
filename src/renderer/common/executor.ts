@@ -38,15 +38,15 @@ export abstract class QueryExecutor extends LitElement {
 
     onQueryResult(results: Result[], finished: boolean) {
         clearTimeout(this.result_timeout!);
-        console.log(results, finished);
         if (finished) {
+            clearTimeout(this.loading_timeout!);
             this.results = results;
             this.selected = 0;
             this.centered = true;
             this.loading = false;
-            clearTimeout(this.loading_timeout!);
         } else {
             this.result_timeout = setTimeout(() => {
+                console.log(results, finished);
                 this.results = results;
                 this.selected = 0;
                 this.centered = true;
@@ -59,15 +59,17 @@ export abstract class QueryExecutor extends LitElement {
     }
 
     sendQueryRequest() {
+        clearTimeout(this.loading_timeout!);
+        this.result_timeout = setTimeout(() => {
+            this.results = [];
+        }, 100);
+        this.loading_timeout = setTimeout(() => {
+            this.loading = true;
+        }, 100);
         clearTimeout(this.query_timeout!);
         this.query_timeout = setTimeout(() => {
             ipcRenderer.send('query', this.query);
         }, this.config?.general.debounce_time);
-        clearTimeout(this.loading_timeout!);
-        this.loading_timeout = setTimeout(() => {
-            this.results = [];
-            this.loading = true;
-        }, 100);
     }
 
     onQueryChange(e: CustomEvent) {
