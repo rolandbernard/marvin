@@ -1,10 +1,13 @@
 
 import { css, customElement, html } from 'lit-element';
 
+import { ObjectConfig } from 'common/config-desc';
+
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 @customElement('object-setting')
 export class ObjectSetting extends AbstractSetting {
+    desc?: ObjectConfig;
 
     static get styles() {
         return css`
@@ -26,7 +29,7 @@ export class ObjectSetting extends AbstractSetting {
                     .index="${this.index}"
                     @update="${this.onUpdate}"
                 ></settings-table>
-            <div>
+            </div>
         `;
     }
 }

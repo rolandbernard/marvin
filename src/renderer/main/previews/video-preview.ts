@@ -25,9 +25,9 @@ export class VideoPreview extends LitElement {
         return html`
             <video
                 class="preview"
-                controls="true"
-                autoplay="true"
-                src="${this.preview?.file}"
+                ?controls="${true}"
+                ?autoplay="${true}"
+                src="${this.preview?.file ?? ''}"
             ></video>
         `;
     }

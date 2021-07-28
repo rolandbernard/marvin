@@ -32,21 +32,26 @@ export abstract class QueryExecutor extends LitElement {
     constructor() {
         super();
         ipcRenderer.on('query-result', (_msg, results: Result[], finished: boolean) => {
-            this.onQueryResult(results);
-            if (finished) {
-                this.loading = false;
-            }
+            this.onQueryResult(results, finished);
         });
     }
 
-    onQueryResult(results: Result[]) {
+    onQueryResult(results: Result[], finished: boolean) {
         clearTimeout(this.result_timeout!);
-        this.result_timeout = setTimeout(() => {
-            clearTimeout(this.loading_timeout!);
+        console.log(results, finished);
+        if (finished) {
             this.results = results;
             this.selected = 0;
             this.centered = true;
-        }, this.config?.general.incremental_results ? this.config?.general.incremental_result_debounce : 0);
+            this.loading = false;
+            clearTimeout(this.loading_timeout!);
+        } else {
+            this.result_timeout = setTimeout(() => {
+                this.results = results;
+                this.selected = 0;
+                this.centered = true;
+            }, this.config?.general.incremental_result_debounce);
+        }
     }
 
     selectedResult(): Result | undefined {

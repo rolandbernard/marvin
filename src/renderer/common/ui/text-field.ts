@@ -51,7 +51,7 @@ export class TextField extends LitElement {
             }
             .input-wrap {
                 display: flex;
-                flex-flex: row nowrap;
+                flex-flow: row nowrap;
                 background: var(--settings-background);
                 border-radius: var(--settings-input-border-radius);
                 border: 1px solid var(--settings-border-color);
@@ -117,10 +117,10 @@ export class TextField extends LitElement {
                     class="input"
                     spellcheck="false"
                     autocomplete="off"
-                    type="${this.type}"
+                    type="${this.type as any}"
                     placeholder="${this.placeholder}"
                     ?disabled="${this.disabled}"
-                    .value=${this.value}
+                    .value=${this.value ?? ''}
                     @change="${this.onChange}"
                     @input="${this.onInput}"
                 ></input>

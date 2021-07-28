@@ -161,7 +161,7 @@ export class SelectField<Type> extends LitElement {
                         >
                             <div class="option-label">
                                 ${option.label}
-                            <div>
+                            </div>
                         </button-like>
                     `)}
                 </div>

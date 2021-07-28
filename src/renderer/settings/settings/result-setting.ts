@@ -21,9 +21,9 @@ export class ResultSelector extends QueryExecutor {
     @property({ attribute: false })
     focused = false;
 
-    onQueryResult(results: Result[]) {
+    onQueryResult(results: Result[], finished: boolean) {
         if (this.focused) {
-            super.onQueryResult(results);
+            super.onQueryResult(results, finished);
         }
     }
 
@@ -158,7 +158,7 @@ export class ResultSetting extends AbstractSetting {
         return html`
             <result-selector
                 .config=${this.config}
-                .result="${this.configValue()}"
+                .result="${this.configValue<Result>()}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"
             ></result-selector>
