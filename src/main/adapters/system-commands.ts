@@ -12,7 +12,7 @@ export enum Command {
 export function executeSystemCommands(command: Command) {
     return runMatch(getPlatform(), {
         'linux': () => executeSystemCommandsLinux(command),
-        'win32': () => { },
+        'win32': () => executeSystemCommandsWindows(command),
         'unsupported': () => { }
     });
 }
@@ -24,3 +24,9 @@ function executeSystemCommandsLinux(command: Command) {
     });
 }
 
+function executeSystemCommandsWindows(command: Command) {
+    return runMatch(command, {
+        'shutdown': () => executeCommand('shutdown /s /t 0'),
+        'reboot': () => executeCommand('shutdown /r /t 0'),
+    });
+}
