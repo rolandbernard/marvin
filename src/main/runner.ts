@@ -25,7 +25,7 @@ type RunnerResult = Result & {
     id: number
 };
 
-function sendUpdatedOptions(id: number, sender: WebContents, results: Result[]) {
+function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], finished: boolean) {
     if (id === execution_count) {
         original_option.length = 0;
         sender.send('query-result', results.map((opt, id) => {
@@ -44,7 +44,7 @@ function sendUpdatedOptions(id: number, sender: WebContents, results: Result[]) 
             }
             original_option[id] = opt;
             return reduced_option;
-        }));
+        }), finished);
     }
 }
 
@@ -54,10 +54,10 @@ async function handleQuery(query: string, sender: WebContents) {
     const results = await searchQuery(
         new Query(query, query, config.general.enhanced_search),
         config.general.incremental_results
-            ? (results) => results.length !== 0 && sendUpdatedOptions(begin_count, sender, results)
+            ? (results) => results.length !== 0 && sendUpdatedOptions(begin_count, sender, results, false)
             : undefined
     );
-    sendUpdatedOptions(begin_count, sender, results);
+    sendUpdatedOptions(begin_count, sender, results, true);
 }
 
 ipcMain.on('query', (msg, query: string) => {

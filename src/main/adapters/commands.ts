@@ -24,19 +24,19 @@ export function escapeForTerminalLinux(text: string) {
     return `'${text.replace(/\'/g, "'\\''")}'`;
 }
 
-export function escapeForTerminalWindows(text: string) {
-    return `"${text}"`;
-}
-
-export function escapeCommandWindows(text: string) {
-    return `${text.trim().replace(/(\r?\n)+/g, " & ")}`;
-}
-
 function executeCommandLinux(command: string, mode = CommandMode.SIMPLE, shell?: string) {
     return runMatch(mode, {
         'terminal': () => execAsync(`xterm -e ${escapeForTerminalLinux(command)}`, { shell: shell }).catch(() => {}),
         'simple': () => execAsync(command, { shell: shell }).catch(() => {}),
     });
+}
+
+export function escapeForTerminalWindows(text: string) {
+    return `"${text}"`;
+}
+
+function escapeCommandWindows(text: string) {
+    return `${text.trim().replace(/(\r?\n)+/g, " & ")}`;
 }
 
 function executeCommandWindows(command: string, mode = CommandMode.SIMPLE, shell?: string) {

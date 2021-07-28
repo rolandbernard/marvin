@@ -17,6 +17,9 @@ export abstract class QueryExecutor extends LitElement {
     results?: Result[] = [];
 
     @property({ attribute: false })
+    loading = false;
+
+    @property({ attribute: false })
     selected = 0;
 
     @property({ attribute: false })
@@ -28,8 +31,11 @@ export abstract class QueryExecutor extends LitElement {
 
     constructor() {
         super();
-        ipcRenderer.on('query-result', (_msg, results: Result[]) => {
+        ipcRenderer.on('query-result', (_msg, results: Result[], finished: boolean) => {
             this.onQueryResult(results);
+            if (finished) {
+                this.loading = false;
+            }
         });
     }
 
@@ -54,7 +60,8 @@ export abstract class QueryExecutor extends LitElement {
         }, this.config?.general.debounce_time);
         clearTimeout(this.loading_timeout!);
         this.loading_timeout = setTimeout(() => {
-            this.results = undefined;
+            this.results = [];
+            this.loading = true;
         }, 100);
     }
 

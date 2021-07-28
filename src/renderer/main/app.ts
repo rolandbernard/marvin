@@ -117,7 +117,7 @@ export class PageRoot extends QueryExecutor {
                     class="input"
                     .text="${this.query}"
                     .prediction="${copyCase(this.selectedResult()?.autocomplete ?? '', this.query)}"
-                    .loading=${this.results ? false : true}
+                    .loading=${this.loading}
                     .config="${this.config}"
                     @change="${this.onQueryChange}"
                 ></input-field>
