@@ -15,10 +15,16 @@ const CHROMIUM_BOOKMARKS_LINUX = [
     join(app.getPath('home'), '.config/microsoft-edge-beta'),
 ];
 
+const CHROMIUM_BOOKMARKS_WINDOWS = [
+    join(app.getPath('home'), 'AppData\\Local\\Microsoft\\Edge\\User Data'),
+    join(app.getPath('home'), 'AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data'),
+    join(app.getPath('home'), 'AppData\\Local\\Google\\Chrome\\User Data'),
+];
+
 export function getDefaultChromiumDirectories(): string[] {
     return match(getPlatform(), {
         'linux': CHROMIUM_BOOKMARKS_LINUX,
-        'win32': [],
+        'win32': CHROMIUM_BOOKMARKS_WINDOWS,
         'unsupported': [],
     });
 }
@@ -27,10 +33,14 @@ const FIREFOX_FOLDERS_LINUX = [
     join(app.getPath('home'), '.mozilla/firefox'),
 ];
 
+const FIREFOX_FOLDERS_WINDOWS = [
+    join(app.getPath('home'), 'AppData\\Roaming\\Mozilla\\Firefox\\Profiles'),
+];
+
 export function getDefaultFirefoxDirectories(): string[] {
     return match(getPlatform(), {
         'linux': FIREFOX_FOLDERS_LINUX,
-        'win32': [],
+        'win32': FIREFOX_FOLDERS_WINDOWS,
         'unsupported': [],
     });
 }
@@ -77,16 +87,23 @@ async function getFirefoxBookmarks(folders: string[]): Promise<Bookmark[]> {
     for (const folder of folders) {
         try {
             const folders = (await readdir(folder))
-                .filter((file) => file.endsWith('.default'))
-                .map((file) => join(folder, file, 'bookmarkbackups'));
+                .map(file => join(folder, file, 'bookmarkbackups'));
             const files = await Promise.all(folders.map(async folder => {
-                const files = await readdir(folder);
-                return join(folder, files.sort().pop()!);
+                try {
+                    const files = await readdir(folder);
+                    return join(folder, files.sort().pop()!);
+                } catch (e) {
+                    return undefined;
+                }
             }));
-            ret.push(...(await Promise.all(files.map(async file => {
-                const data = decompressData(await readFile(file));
-                const bookmarks = JSON.parse(data.toString());
-                return recursiveBookmarkSearch(bookmarks);
+            ret.push(...(await Promise.all(files.filter(file => file).map(async file => {
+                try {
+                    const data = decompressData(await readFile(file!));
+                    const bookmarks = JSON.parse(data.toString());
+                    return recursiveBookmarkSearch(bookmarks);
+                } catch (e) {
+                    return [];
+                }
             }))).flat());
         } catch (e) { /* Ignore errors */ }
     }
