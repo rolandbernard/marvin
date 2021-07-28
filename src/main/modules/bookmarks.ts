@@ -47,11 +47,11 @@ export class BookmarkModule implements Module<BookmarkResult> {
     }
 
     async search(query: Query): Promise<BookmarkResult[]> {
+        if (!this.last_load || (Date.now() - this.last_load) > 60000) {
+            updateBookmarkCache(this.config.chromium_directories, this.config.firefox_directories);
+            this.last_load = Date.now();
+        }
         if (query.text.length > 0) {
-            if (!this.last_load || (Date.now() - this.last_load) > 1000) {
-                await updateBookmarkCache(this.config.chromium_directories, this.config.firefox_directories);
-                this.last_load = Date.now();
-            }
             const match = query.matchAny(getAllTranslations('bookmarks'), getTranslation('bookmarks', config));
             return (await getAllBookmarks()).map(bookmark => ({
                 module: MODULE_ID,

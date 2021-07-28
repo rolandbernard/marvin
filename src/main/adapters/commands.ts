@@ -35,13 +35,9 @@ export function escapeForTerminalWindows(text: string) {
     return `"${text}"`;
 }
 
-function escapeCommandWindows(text: string) {
-    return `${text.trim().replace(/(\r?\n)+/g, " & ")}`;
-}
-
 function executeCommandWindows(command: string, mode = CommandMode.SIMPLE, shell?: string) {
     return runMatch(mode, {
-        'terminal': () => execAsync(`start cmd /c "${escapeCommandWindows(command)}"`, { shell: shell }).catch(() => {}),
-        'simple': () => execAsync(escapeCommandWindows(command), { shell: shell }).catch(() => {}),
+        'terminal': () => execAsync(`start cmd /c "${command}"`, { shell: shell }).catch(() => {}),
+        'simple': () => execAsync(command, { shell: shell }).catch((e) => {console.log(e)}),
     });
 }

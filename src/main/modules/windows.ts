@@ -6,7 +6,7 @@ import { Module } from 'common/module';
 
 import { moduleConfig } from 'main/config';
 import { module } from 'main/modules';
-import { focusWindow, openWindows } from 'main/adapters/windows';
+import { focusWindow, openWindows, updateWindowCache } from 'main/adapters/windows';
 
 const MODULE_ID = 'windows';
 
@@ -25,11 +25,17 @@ class WindowsConfig extends ModuleConfig {
 export class WindowsModule implements Module<WindowsResult> {
     readonly configs = WindowsConfig;
 
+    last_load?: number;
+
     get config() {
         return moduleConfig<WindowsConfig>(MODULE_ID);
     }
 
     async search(query: Query): Promise<WindowsResult[]> {
+        if (!this.last_load || (Date.now() - this.last_load) > 60000) {
+            updateWindowCache();
+            this.last_load = Date.now();
+        }
         if (query.text.length > 0) {
             return (await openWindows()).map(window => ({
                 module: MODULE_ID,
