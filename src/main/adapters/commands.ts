@@ -26,18 +26,28 @@ export function escapeForTerminalLinux(text: string) {
 
 function executeCommandLinux(command: string, mode = CommandMode.SIMPLE, shell?: string) {
     return runMatch(mode, {
-        'terminal': () => execAsync(`xterm -e ${escapeForTerminalLinux(command)}`, { shell: shell }).catch(() => {}),
+        'terminal': () => execAsync(`xterm -e ${escapeForTerminalLinux(command)}`).catch(() => {}),
         'simple': () => execAsync(command, { shell: shell }).catch(() => {}),
     });
 }
 
-export function escapeForTerminalWindows(text: string) {
+export function escapeForCmdWindows(text: string) {
     return `"${text}"`;
 }
 
-function executeCommandWindows(command: string, mode = CommandMode.SIMPLE, shell?: string) {
+export function escapeForPowershellWindows(text: string) {
+    return `"${text.replace(/([$`])/g, '`$1').replace(/"/g, '\\`"')}"`;
+}
+
+function executeCommandWindows(command: string, mode = CommandMode.SIMPLE, shell = 'powershell') {
     return runMatch(mode, {
-        'terminal': () => execAsync(`start cmd /c "${command}"`, { shell: shell }).catch(() => {}),
-        'simple': () => execAsync(command, { shell: shell }).catch((e) => {console.log(e)}),
+        'terminal': () => {
+            if (shell === 'powershell') {
+                return execAsync(`Start-Process powershell ${escapeForPowershellWindows(command)}`, { shell: 'powershell' }).catch(() => {});
+            } else {
+                return execAsync(`start cmd /c "${command}"`).catch(() => {});
+            }
+        },
+        'simple': () => execAsync(command, { shell: shell }).catch(() => {}),
     });
 }

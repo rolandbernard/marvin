@@ -2,7 +2,7 @@
 import { match, runMatch } from 'common/util';
 import { getPlatform } from 'common/platform';
 
-import { executeCommand, escapeForTerminalLinux, escapeForTerminalWindows } from 'main/adapters/commands';
+import { executeCommand, escapeForTerminalLinux, escapeForCmdWindows, CommandMode } from 'main/adapters/commands';
 
 export function getDefaultPath(): string {
     return match(getPlatform(), {
@@ -25,5 +25,5 @@ function openFileLinux(path: string) {
 }
 
 function openFileWindows(path: string) {
-    return executeCommand(`start "" ${escapeForTerminalWindows(path)}`);
+    return executeCommand(`start "" ${escapeForCmdWindows(path)}`, CommandMode.SIMPLE, 'cmd');
 }
