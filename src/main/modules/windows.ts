@@ -12,7 +12,7 @@ const MODULE_ID = 'windows';
 
 interface WindowsResult extends SimpleResult {
     module: typeof MODULE_ID;
-    window: unknown;
+    window: string;
 }
 
 class WindowsConfig extends ModuleConfig {
@@ -32,7 +32,7 @@ export class WindowsModule implements Module<WindowsResult> {
     }
 
     async search(query: Query): Promise<WindowsResult[]> {
-        if (!this.last_load || (Date.now() - this.last_load) > 60000) {
+        if (!this.last_load || (Date.now() - this.last_load) > 10000) {
             updateWindowCache();
             this.last_load = Date.now();
         }

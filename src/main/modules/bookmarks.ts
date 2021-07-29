@@ -47,7 +47,7 @@ export class BookmarkModule implements Module<BookmarkResult> {
     }
 
     async search(query: Query): Promise<BookmarkResult[]> {
-        if (!this.last_load || (Date.now() - this.last_load) > 60000) {
+        if (!this.last_load || (Date.now() - this.last_load) > 10000) {
             updateBookmarkCache(this.config.chromium_directories, this.config.firefox_directories);
             this.last_load = Date.now();
         }

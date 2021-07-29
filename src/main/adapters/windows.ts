@@ -1,4 +1,6 @@
 
+import { basename } from 'path';
+
 import { runMatch } from 'common/util';
 import { getPlatform } from 'common/platform';
 
@@ -8,7 +10,7 @@ export interface Window {
     title: string;
     application: string;
     icon?: string;
-    window: unknown;
+    window: string;
 }
 
 let windows: Window[] = [];
@@ -33,7 +35,89 @@ async function updateWindowCacheLinux() {
 }
 
 async function updateWindowCacheWindows() {
-    const script = 'Get-Process | Where { $_.mainWindowTitle } | Select-Object -Property ProcessName, MainWindowTitle, MainWindowHandle | ConvertTo-Csv';
+    const script = `
+Add-Type @"
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.ComponentModel;
+
+public class InfoWindow {
+    public IntPtr Handle = IntPtr.Zero;
+    public string File = "";
+    public string Title = "";
+}
+
+public class RunningWindows {
+
+    [DllImport("USER32.DLL")]
+    private static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
+
+    [DllImport("USER32.DLL")]
+    private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+    [DllImport("USER32.DLL")]
+    private static extern int GetWindowTextLength(IntPtr hWnd);
+
+    [DllImport("USER32.DLL")]
+    private static extern bool IsWindowVisible(IntPtr hWnd);
+
+    [DllImport("USER32.DLL")]
+    private static extern IntPtr GetShellWindow();
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern int GetWindowThreadProcessId(IntPtr handle, out uint processId);  
+
+    public static string GetProcessPath(IntPtr hwnd) {
+        if (hwnd != IntPtr.Zero) {
+            uint pid = 0;
+            GetWindowThreadProcessId(hwnd, out pid);
+            if (pid != 0) {
+                var process = Process.GetProcessById((int)pid);
+                if (process != null) {
+                    return process.MainModule.FileName.ToString();
+                }
+            }
+        }
+        return "";
+    }
+
+    private delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
+
+    public static List<InfoWindow> GetOpenedWindows()
+    {
+        IntPtr shellWindow = GetShellWindow();
+        List<InfoWindow> windows = new List<InfoWindow>();
+
+        EnumWindows(new EnumWindowsProc(delegate(IntPtr hWnd, int lParam) {
+            if (hWnd == shellWindow) {
+                return true;
+            }
+            if (!IsWindowVisible(hWnd)) {
+                return true;
+            }
+            int length = GetWindowTextLength(hWnd);
+            if (length == 0) {
+                return true;
+            }
+            StringBuilder builder = new StringBuilder(length);
+            GetWindowText(hWnd, builder, length + 1);
+            var info = new InfoWindow();
+            info.Handle = hWnd;
+            info.File = GetProcessPath(hWnd);
+            info.Title = builder.ToString();
+            windows.Add(info);
+            return true;
+        }), 0);
+
+        return windows;
+    }
+}
+"@
+[RunningWindows]::GetOpenedWindows() | ConvertTo-Csv
+    `;
     const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
     windows = result?.stdout?.split('\n').slice(2).filter(line => line)
         .map(line =>
@@ -43,9 +127,9 @@ async function updateWindowCacheWindows() {
                 .filter(elm => elm.length >= 1)
         )
         .map(line => ({
-            title: line[1],
-            application: line[0],
-            window: line[2],
+            title: line[2],
+            application: basename(line[1]),
+            window: line[0],
         })) ?? [];
 }
 
@@ -53,10 +137,10 @@ export async function openWindows(): Promise<Window[]> {
     return windows;
 }
 
-export function focusWindow(window: unknown) {
+export function focusWindow(window: string) {
     return runMatch(getPlatform(), {
-        'linux': () => focusWindowLinux(window as string),
-        'win32': () => focusWindowWindows(window as string),
+        'linux': () => focusWindowLinux(window),
+        'win32': () => focusWindowWindows(window),
         'unsupported': () => { }
     });
 }
@@ -68,12 +152,12 @@ function focusWindowLinux(window: string) {
 function focusWindowWindows(window: string) {
     const script = `
 $type = Add-Type -PassThru -NameSpace Util -Name SetFgWin -MemberDefinition @'
-[DllImport("user32.dll", SetLastError=true)]
-public static extern bool SetForegroundWindow(IntPtr hWnd);
-[DllImport("user32.dll", SetLastError=true)]
-public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);    
-[DllImport("user32.dll", SetLastError=true)]
-public static extern bool IsIconic(IntPtr hWnd);
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);    
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern bool IsIconic(IntPtr hWnd);
 '@
 $null = $type::SetForegroundWindow(${window})
 if ($type::IsIconic(${window})) {
