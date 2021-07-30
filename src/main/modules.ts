@@ -35,19 +35,19 @@ export function moduleForId<Type extends Module<any>>(id: ModuleId): Type | unde
 
 export async function initModules() {
     for (const module of Object.values(modules)) {
-        await module.init?.();
+        await module.init?.().catch(() => { /* Ignore errors */ });
     }
 }
 
 export async function updateModules() {
     for (const module of Object.values(modules)) {
-        await module.update?.();
+        await module.update?.().catch(() => { /* Ignore errors */ });
     }
 }
 
 export async function deinitModules() {
     for (const module of Object.values(modules)) {
-        await module.deinit?.();
+        await module.deinit?.().catch(() => { /* Ignore errors */ });
     }
 }
 

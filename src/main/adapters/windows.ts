@@ -36,6 +36,8 @@ async function updateWindowCacheLinux() {
 
 async function updateWindowCacheWindows() {
     const script = `
+[Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+$ErrorActionPreference = 'SilentlyContinue'
 Add-Type @"
 using System;
 using System.Collections.Generic;
@@ -116,21 +118,19 @@ public class RunningWindows {
     }
 }
 "@
-[RunningWindows]::GetOpenedWindows() | ConvertTo-Csv
+[RunningWindows]::GetOpenedWindows() | ConvertTo-Json
     `;
     const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
-    windows = result?.stdout?.split('\n').slice(2).filter(line => line)
-        .map(line =>
-            line.split(',')
-                .map(elm => elm.trim())
-                .map(elm => elm.substr(1, elm.length - 2).trim())
-                .filter(elm => elm.length >= 1)
-        )
-        .map(line => ({
-            title: line[2],
-            application: basename(line[1]),
-            window: line[0],
-        })) ?? [];
+    try {
+        windows = JSON.parse(result?.stdout ?? '[]')
+        .map((window: any) => ({
+            title: window.Title,
+            application: basename(window.File),
+            window: window.Handle,
+        }));
+    } catch (e) {
+        /* Ignore errors that might happen when parsing */
+    }
 }
 
 export async function openWindows(): Promise<Window[]> {

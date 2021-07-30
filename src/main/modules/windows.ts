@@ -32,7 +32,7 @@ export class WindowsModule implements Module<WindowsResult> {
     }
 
     async search(query: Query): Promise<WindowsResult[]> {
-        if (!this.last_load || (Date.now() - this.last_load) > 10000) {
+        if (!this.last_load || (Date.now() - this.last_load) > 1000) {
             updateWindowCache();
             this.last_load = Date.now();
         }
