@@ -1,6 +1,6 @@
 
 import { ipcMain } from 'electron';
-import { basename } from 'path';
+import { basename, dirname } from 'path';
 
 import { configKind, config as configDesc, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
@@ -84,7 +84,8 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
             return (await getAllApplications()).map(application => {
                 const name = forLanguage(application.name) ?? basename(application.file);
                 const action = forLanguage(application.action);
-                const description = forLanguage(application.description) ?? application.file;
+                const filename = basename(dirname(application.file)) + ' › ' + basename(application.file);
+                const description = forLanguage(application.description) ?? filename;
                 const is_action = action && action !== name;
                 return {
                     module: MODULE_ID,
@@ -96,7 +97,7 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
                     quality: Math.max(
                         query.matchAny(Object.values(application.name ?? {}), name),
                         query.matchAny(Object.values(application.action ?? {}), action) * 0.75,
-                        query.matchAny(Object.values(application.description ?? {}), name) * 0.5,
+                        query.matchAny(Object.values(application.description ?? {}), description) * 0.5,
                         query.matchAny(Object.values(application.other ?? {}).flat()) * 0.5,
                         query.matchText(application.file) * 0.5,
                     ),

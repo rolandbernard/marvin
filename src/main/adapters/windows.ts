@@ -120,14 +120,14 @@ public class RunningWindows {
 "@
 [RunningWindows]::GetOpenedWindows() | ConvertTo-Json
     `;
-    const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
     try {
+        const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
         windows = JSON.parse(result?.stdout ?? '[]')
-        .map((window: any) => ({
-            title: window.Title,
-            application: basename(window.File),
-            window: window.Handle,
-        }));
+            .map((window: any) => ({
+                title: window.Title,
+                application: basename(window.File),
+                window: window.Handle,
+            }));
     } catch (e) {
         /* Ignore errors that might happen when parsing */
     }
