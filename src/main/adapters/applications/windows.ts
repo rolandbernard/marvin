@@ -6,6 +6,7 @@ import { join, basename, extname } from 'path';
 import { Application } from 'main/adapters/applications/applications';
 import { CommandMode, executeCommand } from 'main/adapters/commands';
 import { openFile } from 'main/adapters/file-handler';
+import { unique } from 'common/util';
 
 export function getDefaultDirectoriesWinows(): string[] {
     return [
@@ -37,6 +38,11 @@ async function updateCache() {
 }
 
 async function loadUWPApplications(directories: string[]): Promise<Application[]> {
+    const script = `
+[Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+$ErrorActionPreference = 'SilentlyContinue'
+
+    `;
     return [];
 }
 
@@ -48,8 +54,18 @@ async function loadWin32Applications(directories: string[]): Promise<Application
     const script = `
 [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 $ErrorActionPreference = 'SilentlyContinue'
+function Get-ShortcutTarget($filename) {
+    $sh = New-Object -COM WScript.Shell
+    $targetPath = $sh.CreateShortcut($filename).TargetPath 
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($sh) | Out-Null
+    if ($targetPath) {
+        return $targetPath
+    } else {
+        return $filename
+    }
+}
 Add-Type -AssemblyName System.Drawing
-function Get-Icon($fileName) {
+function Get-Icon($filename) {
     $stream = New-Object IO.MemoryStream
     $bitmap = [System.Drawing.Icon]::ExtractAssociatedIcon($filename).toBitmap()
     $bitmap.Save($stream, [System.Drawing.Imaging.ImageFormat]::Png)
@@ -60,19 +76,21 @@ function Get-Icon($fileName) {
 }
 ${folders} |
     % { Get-ChildItem -Path $_ -include ${extentions} -Recurse -File } |
-    % { @{ file = $_.FullName; name = $_.BaseName; icon = Get-Icon($_.FullName) } } |
+    % { $targetFile = Get-ShortcutTarget($_.FullName);
+        @{ file = $_.FullName; name = $_.BaseName; target = $targetFile; icon = Get-Icon($targetFile) } } |
     ConvertTo-Json
     `;
     try {
         const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
-        return Promise.all(JSON.parse(result?.stdout || '[]')
-            .map(async (application: any) => ({
+        const results = unique(JSON.parse(result?.stdout || '[]'), (elem: any) => elem.target);
+        return await Promise.all(
+            results.map(async (application: any) => ({
                 file: application.file,
                 application: application.file,
                 icon: application.icon,
                 name: { default: application.name },
                 description: { },
-                other: [ ],
+                other: { },
             }))
         );
     } catch (e) {
