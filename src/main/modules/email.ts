@@ -48,22 +48,30 @@ export class EmailModule implements Module<EmailResult> {
         }
     }
 
+    itemForEmail(query: Query, email: string): EmailResult {
+        return {
+            module: MODULE_ID,
+            query: query.text,
+            kind: 'simple-result',
+            icon: { material: 'drafts' },
+            primary: query.text,
+            secondary: getTranslation('open_new_email', config),
+            quality: this.config.quality,
+            url: email,
+        };
+    }
+
     async search(query: Query): Promise<EmailResult[]> {
         if (this.isValidEmail(query.text)) {
             const email = this.completeEmail(query.text);
-            return [{
-                module: MODULE_ID,
-                query: query.text,
-                kind: 'simple-result',
-                icon: { material: 'drafts' },
-                primary: query.text,
-                secondary: getTranslation('open_new_email', config),
-                quality: this.config.quality,
-                url: email,
-            }];
+            return [this.itemForEmail(query, email)];
         } else {
             return [];
         }
+    }
+
+    async rebuild(query: Query, result: EmailResult): Promise<EmailResult | undefined> {
+        return this.itemForEmail(query, result.url);
     }
 
     async execute(result: EmailResult) {

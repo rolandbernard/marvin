@@ -170,21 +170,29 @@ export class MainModule implements Module<SimpleResult> {
         this.tray?.destroy();
     }
 
+    mainItem(query: Query): SimpleResult {
+        const name = getTranslation('quit', config);
+        return {
+            module: MODULE_ID,
+            kind: 'simple-result',
+            query: query.text,
+            quality: query.matchAny(getAllTranslations('quit'), name),
+            icon: { material: 'exit_to_app' },
+            primary: name,
+            autocomplete: name,
+        };
+    }
+
     async search(query: Query): Promise<SimpleResult[]> {
         if (query.text.length > 0) {
-            const name = getTranslation('quit', config);
-            return [{
-                module: MODULE_ID,
-                kind: 'simple-result',
-                query: query.text,
-                quality: query.matchAny(getAllTranslations('quit'), name),
-                icon: { material: 'exit_to_app' },
-                primary: name,
-                autocomplete: name,
-            }];
+            return [this.mainItem(query)];
         } else {
             return [];
         }
+    }
+
+    async rebuild(query: Query, _result: SimpleResult): Promise<SimpleResult | undefined> {
+        return this.mainItem(query);
     }
 
     async execute() {

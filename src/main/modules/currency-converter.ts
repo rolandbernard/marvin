@@ -94,26 +94,37 @@ export class CurrencyConverterModule implements Module<SimpleResult> {
         return { };
     }
 
+    async itemForQuery(query: Query, text: string, raw?: string): Promise<SimpleResult | undefined> {
+        const { value, from, to } = this.parseQuery(text);
+        if (value !== undefined && from && to) {
+            await this.loadCurrencyRates();
+            const round = Math.pow(10, this.config.round_to);
+            const result = Math.round(value / this.rates![from] * this.rates![to] * round) / round;
+            return {
+                module: MODULE_ID,
+                query: query.text,
+                kind: 'simple-result',
+                icon: { material: 'timeline' },
+                primary: `= ${result} ${to}`,
+                secondary: `${value} ${from}`,
+                autocomplete: `${raw ? raw : this.config.prefix + text} = ${result} ${to}`,
+                quality: this.config.quality,
+            };
+        }
+    }
+
     async search(query: Query): Promise<SimpleResult[]> {
         if (query.text.length > 0) {
-            const { value, from, to } = this.parseQuery(query.text);
-            if (value !== undefined && from && to) {
-                await this.loadCurrencyRates();
-                const round = Math.pow(10, this.config.round_to);
-                const result = Math.round(value / this.rates![from] * this.rates![to] * round) / round;
-                return [{
-                    module: MODULE_ID,
-                    query: query.text,
-                    kind: 'simple-result',
-                    icon: { material: 'timeline' },
-                    primary: `= ${result} ${to}`,
-                    secondary: `${value} ${from}`,
-                    autocomplete: `${query.raw} = ${result} ${to}`,
-                    quality: this.config.quality,
-                }];
+            const result = await this.itemForQuery(query, query.text, query.raw);
+            if (result) {
+                return [result];
             }
         }
         return [];
+    }
+
+    async rebuild(query: Query, result: SimpleResult): Promise<SimpleResult | undefined> {
+        return await this.itemForQuery(query, result.query);
     }
 
     async execute(result: SimpleResult) {

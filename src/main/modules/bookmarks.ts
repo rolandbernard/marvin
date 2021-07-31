@@ -76,6 +76,16 @@ export class BookmarkModule implements Module<BookmarkResult> {
         }
     }
 
+    async rebuild(_query: Query, result: BookmarkResult): Promise<BookmarkResult | undefined> {
+        return {
+            ...result,
+            preview: this.config.url_preview ? {
+                kind: 'iframe-preview',
+                url: result.url,
+            } : undefined,
+        };
+    }
+
     async execute(result: BookmarkResult) {
         openUrl(result.url);
     }

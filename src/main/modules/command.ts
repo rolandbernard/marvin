@@ -34,35 +34,36 @@ export class CommandModule implements Module<CommandResult> {
         return moduleConfig<CommandConfig>(MODULE_ID);
     }
 
+    itemForCommandAndMode(query: Query, command: string, mode: CommandMode): CommandResult {
+        const name = mode === CommandMode.TERMINAL
+            ? getTranslation('execute_in_terminal', config)
+            : getTranslation('execute', config);
+        return {
+            module: MODULE_ID,
+            query: query.text,
+            kind: 'simple-result',
+            icon: { material: 'code' },
+            primary: command,
+            secondary: `${name}: ${query.text}`,
+            quality: this.config.quality,
+            command: command,
+            mode: CommandMode.TERMINAL,
+        };
+    }
+
     async search(query: Query): Promise<CommandResult[]> {
         if (query.text.length > 0) {
             return [
-                {
-                    module: MODULE_ID,
-                    query: query.text,
-                    kind: 'simple-result',
-                    icon: { material: 'code' },
-                    primary: query.text,
-                    secondary: `${getTranslation('execute_in_terminal', config)}: ${query.text}`,
-                    quality: this.config.quality,
-                    command: query.text,
-                    mode: CommandMode.TERMINAL,
-                },
-                {
-                    module: MODULE_ID,
-                    query: query.text,
-                    kind: 'simple-result',
-                    icon: { material: 'code' },
-                    primary: query.text,
-                    secondary: `${getTranslation('execute', config)}: ${query.text}`,
-                    quality: this.config.quality,
-                    command: query.text,
-                    mode: CommandMode.SIMPLE,
-                },
+                this.itemForCommandAndMode(query, query.text, CommandMode.TERMINAL),
+                this.itemForCommandAndMode(query, query.text, CommandMode.SIMPLE),
             ];
         } else {
             return [];
         }
+    }
+
+    async rebuild(query: Query, result: CommandResult): Promise<CommandResult | undefined> {
+        return this.itemForCommandAndMode(query, result.command, result.mode);
     }
 
     async execute(result: CommandResult) {

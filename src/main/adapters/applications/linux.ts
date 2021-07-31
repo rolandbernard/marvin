@@ -188,8 +188,10 @@ function collectOther(desktop: Desktop, action: Action) {
 }
 
 async function addApplication(applications: Application[], desktop: Desktop, file: string) {
-    for (const action of Object.values(desktop)) {
+    for (const action_name of Object.keys(desktop)) {
+        const action = desktop[action_name];
         applications.push({
+            id: `${file} __DO__ ${action_name}`,
             file: file,
             application: action,
             icon: await getApplicationIcon(action['Icon']?.['default'])

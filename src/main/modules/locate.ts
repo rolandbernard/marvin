@@ -47,26 +47,30 @@ export class LocateModule implements Module<LocateResult> {
         return result?.stdout?.split('\n').filter(line => line) ?? [];
     }
 
+    async itemForFile(query: Query, file: string): Promise<LocateResult> {
+        const stats = await stat(file);
+        return {
+            module: MODULE_ID,
+            query: query.text,
+            kind: 'simple-result',
+            icon: {
+                url: stats.isDirectory() ? undefined : (await app.getFileIcon(file)).toDataURL(),
+                material: stats.isDirectory() ? 'folder' : 'insert_drive_file',
+            },
+            primary: basename(file),
+            secondary: file,
+            quality: query.matchText(file),
+            autocomplete: this.config.prefix + file + (stats.isDirectory() ? sep : ''),
+            file: file,
+            preview: this.config.file_preview ? generateFilePreview(file) : undefined,
+        };
+    }
+
     async search(query: Query): Promise<LocateResult[]> {
         if (query.text.length > 0) {
             return (await Promise.all((await this.searchFor(query.text)).map(async file => {
                 try {
-                    const stats = await stat(file);
-                    return [{
-                        module: MODULE_ID,
-                        query: query.text,
-                        kind: 'simple-result',
-                        icon: {
-                            url: stats.isDirectory() ? undefined : (await app.getFileIcon(file)).toDataURL(),
-                            material: stats.isDirectory() ? 'folder' : 'insert_drive_file',
-                        },
-                        primary: basename(file),
-                        secondary: file,
-                        quality: query.matchText(file),
-                        autocomplete: this.config.prefix + file + (stats.isDirectory() ? sep : ''),
-                        file: file,
-                        preview: this.config.file_preview ? generateFilePreview(file) : undefined,
-                    } as LocateResult];
+                    return [await this.itemForFile(query, file)];
                 } catch (e) {
                     return [];
                 }
@@ -74,6 +78,12 @@ export class LocateModule implements Module<LocateResult> {
         } else {
             return [];
         }
+    }
+
+    async rebuild(query: Query, result: LocateResult): Promise<LocateResult | undefined> {
+        try {
+            return await this.itemForFile(query, result.file);
+        } catch(e) { /* Remove the item */ }
     }
 
     async execute(result: LocateResult) {

@@ -201,6 +201,17 @@ export class DuckDuckGoModule implements Module<DuckDuckGoResult> {
         }
     }
 
+    async rebuild(_query: Query, result: DuckDuckGoResult): Promise<DuckDuckGoResult | undefined> {
+        return {
+            ...result,
+            quality: this.config.quality,
+            preview: this.config.url_preview && result.url ? {
+                kind: 'iframe-preview',
+                url: result.url,
+            } : undefined,
+        };
+    }
+
     async execute(result: DuckDuckGoResult) {
         if (result.url) {
             openUrl(result.url);

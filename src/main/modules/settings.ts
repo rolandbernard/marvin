@@ -69,21 +69,29 @@ export class SettingsModule implements Module<SimpleResult> {
         this.window?.destroy();
     }
 
+    settingsItem(query: Query): SimpleResult {
+        const name = getTranslation('settings', config);
+        return {
+            module: MODULE_ID,
+            kind: 'simple-result',
+            query: query.text,
+            quality: query.matchAny(getAllTranslations('settings'), name),
+            icon: { material: 'settings' },
+            primary: name,
+            autocomplete: name,
+        };
+    }
+
     async search(query: Query): Promise<SimpleResult[]> {
         if (query.text.length > 0) {
-            const name = getTranslation('settings', config);
-            return [{
-                module: MODULE_ID,
-                kind: 'simple-result',
-                query: query.text,
-                quality: query.matchAny(getAllTranslations('settings'), name),
-                icon: { material: 'settings' },
-                primary: name,
-                autocomplete: name,
-            }];
+            return [this.settingsItem(query)];
         } else {
             return [];
         }
+    }
+
+    async rebuild(query: Query, _result: SimpleResult): Promise<SimpleResult | undefined> {
+        return this.settingsItem(query);
     }
 
     async execute() {

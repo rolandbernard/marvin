@@ -112,6 +112,17 @@ export class FoldersModule implements Module<FoldersResult> {
         }
     }
 
+    async rebuild(query: Query, result: FoldersResult): Promise<FoldersResult | undefined> {
+        try {
+            await stat(result.file);
+            return {
+                ...result,
+                quality: query.matchText(result.file),
+                preview: this.config.file_preview ? generateFilePreview(result.file) : undefined,
+            };
+        } catch (e) { /* Remove the result */ }
+    }
+
     async execute(result: FoldersResult) {
         openFile(result.file);
     }
