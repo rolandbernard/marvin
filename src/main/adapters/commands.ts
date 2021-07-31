@@ -9,26 +9,45 @@ const execAsync = promisify(exec);
 
 export enum CommandMode {
     SIMPLE = 'simple',
-    SHELL = 'shell',
     TERMINAL = 'terminal',
 }
 
-export function executeCommand(command: string, mode = CommandMode.SIMPLE) {
+export function executeCommand(command: string, mode = CommandMode.SIMPLE, shell?: string) {
     return runMatch(getPlatform(), {
-        'linux': () => executeCommandLinux(command, mode),
+        'linux': () => executeCommandLinux(command, mode, shell),
+        'win32': () => executeCommandWindows(command, mode, shell),
         'unsupported': () => { }
     });
 }
 
-export function escapeForTerminal(text: string) {
+export function escapeForTerminalLinux(text: string) {
     return `'${text.replace(/\'/g, "'\\''")}'`;
 }
 
-function executeCommandLinux(command: string, mode = CommandMode.SIMPLE) {
+function executeCommandLinux(command: string, mode = CommandMode.SIMPLE, shell?: string) {
     return runMatch(mode, {
-        'terminal': () => execAsync(`xterm -e ${escapeForTerminal(command)}`).catch(() => {}),
-        'shell': () => execAsync(`sh <<< ${escapeForTerminal(command)}`).catch(() => {}),
-        'simple': () => execAsync(command).catch(() => {}),
+        'terminal': () => execAsync(`xterm -e ${escapeForTerminalLinux(command)}`).catch(() => {}),
+        'simple': () => execAsync(command, { shell: shell }).catch(() => {}),
     });
 }
 
+export function escapeForCmdWindows(text: string) {
+    return `"${text}"`;
+}
+
+export function escapeForPowershellWindows(text: string) {
+    return `"${text.replace(/([$`])/g, '`$1').replace(/"/g, '\\`"')}"`;
+}
+
+function executeCommandWindows(command: string, mode = CommandMode.SIMPLE, shell = 'powershell') {
+    return runMatch(mode, {
+        'terminal': () => {
+            if (shell === 'powershell') {
+                return execAsync(`Start-Process powershell ${escapeForPowershellWindows(command)}`, { shell: 'powershell' }).catch(() => {});
+            } else {
+                return execAsync(`start cmd /c "${command}"`).catch(() => {});
+            }
+        },
+        'simple': () => execAsync(command, { shell: shell }).catch(() => {}),
+    });
+}

@@ -10,6 +10,7 @@ export function isDevelopment() {
 // List of supported platforms
 export enum Platform {
     LINUX = 'linux',
+    WINDOWS = 'win32',
     UNSUPPORTED = 'unsupported',
 }
 

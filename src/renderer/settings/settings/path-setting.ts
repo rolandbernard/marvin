@@ -30,7 +30,7 @@ export class PathSetting extends AbstractSetting {
     render() {
         return html`
             <text-field
-                .value="${this.configValue()}"
+                .value="${this.configValue<string>()}"
                 .validation="${this.validate.bind(this)}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"

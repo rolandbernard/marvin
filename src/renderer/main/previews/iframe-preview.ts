@@ -26,7 +26,7 @@ export class IFramePreviewComponent extends LitElement {
         return html`
             <iframe
                 class="preview"
-                src="${this.preview?.url}"
+                src="${this.preview?.url ?? ''}"
             ></iframe>
         `;
     }

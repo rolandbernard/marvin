@@ -1,4 +1,7 @@
 
+productName: Marvin
+copyright: Copyright © 2020-2021 ${author}
+
 directories:
     output: build
     buildResources: bundle
@@ -15,3 +18,15 @@ linux:
     publish:
         - github
 
+win:
+    icon: ./static/logo.ico
+    target:
+        - target: nsis
+        - target: zip
+    publish:
+        - github
+
+nsis:
+    allowToChangeInstallationDirectory: true
+    oneClick: false
+    perMachine: true

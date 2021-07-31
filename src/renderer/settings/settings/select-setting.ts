@@ -27,7 +27,7 @@ export class SelectSetting extends AbstractSetting {
         }));
         return html`
             <select-field
-                .value="${this.configValue()}"
+                .value="${this.configValue<any>()}"
                 .options="${options}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"

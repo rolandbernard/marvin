@@ -19,7 +19,7 @@ export class TextSetting extends AbstractSetting {
     render() {
         return html`
             <text-field
-                .value="${this.configValue()}"
+                .value="${this.configValue<string>()}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"
             ></text-field>

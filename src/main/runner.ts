@@ -1,5 +1,5 @@
 
-import { app, ipcMain, WebContents } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, WebContents } from 'electron';
 
 import { Result } from 'common/result';
 import { Query } from 'common/query';
@@ -25,7 +25,7 @@ type RunnerResult = Result & {
     id: number
 };
 
-function sendUpdatedOptions(id: number, sender: WebContents, results: Result[]) {
+function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], finished: boolean) {
     if (id === execution_count) {
         original_option.length = 0;
         sender.send('query-result', results.map((opt, id) => {
@@ -44,7 +44,7 @@ function sendUpdatedOptions(id: number, sender: WebContents, results: Result[]) 
             }
             original_option[id] = opt;
             return reduced_option;
-        }));
+        }), finished);
     }
 }
 
@@ -54,10 +54,10 @@ async function handleQuery(query: string, sender: WebContents) {
     const results = await searchQuery(
         new Query(query, query, config.general.enhanced_search),
         config.general.incremental_results
-            ? (results) => results.length !== 0 && sendUpdatedOptions(begin_count, sender, results)
+            ? (results) => results.length !== 0 && sendUpdatedOptions(begin_count, sender, results, false)
             : undefined
     );
-    sendUpdatedOptions(begin_count, sender, results);
+    sendUpdatedOptions(begin_count, sender, results, true);
 }
 
 ipcMain.on('query', (msg, query: string) => {
@@ -99,5 +99,18 @@ ipcMain.on('change-theme', async (msg, theme: keyof typeof THEMES) => {
     await updateConfig();
     msg.sender.send('show', config, config.getDescription());
     await updateModules();
+});
+
+ipcMain.handle('show-dialog', (msg, text: string) => {
+    const window = BrowserWindow.fromWebContents(msg.sender);
+    if (window) {
+        return dialog.showMessageBoxSync(window, {
+            message: text,
+            title: 'Marvin',
+            buttons: ['Cancel', 'Ok'],
+        });
+    } else {
+        return true;
+    }
 });
 

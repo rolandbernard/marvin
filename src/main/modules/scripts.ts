@@ -59,7 +59,7 @@ export class ScriptModule implements Module<ScriptResult> {
                 : entry.default_quality,
             autocomplete: this.config.prefix + entry.name,
             command: entry.script,
-            mode: entry.execute_in_terminal ? CommandMode.TERMINAL : CommandMode.SHELL,
+            mode: entry.execute_in_terminal ? CommandMode.TERMINAL : CommandMode.SIMPLE,
         }));
     }
 

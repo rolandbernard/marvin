@@ -5,13 +5,9 @@
     "repository": "https://github.com/rolandbernard/marvin/",
     "author": "Roland Bernard",
     "license": "MIT",
-    "build": {
-        "appId": "${name}",
-        "productName": "Marvin",
-        "copyright": "Copyright © 2020-2021 ${author}"
-    },
     "os": [
-        "linux"
+        "linux",
+        "win32"
     ],
     "main": "./bundle/main.js",
     "scripts": {
@@ -20,7 +16,7 @@
         "package": "electron-builder --config electron-builder.yml --publish never",
         "release": "electron-builder --config electron-builder.yml --publish always",
         "debug": "npm run bundle && npm run start",
-        "build": "NODE_ENV=production npm run bundle && npm run package"
+        "build": "npm run bundle && npm run package"
     },
     "dependencies": {
         "algebrite": "^1.4.0",

@@ -25,7 +25,7 @@ export class ImagePreview extends LitElement {
         return html`
             <img
                 class="preview"
-                src="${this.preview?.file}"
+                src="${this.preview?.file ?? ''}"
             ></img>
         `;
     }

@@ -24,9 +24,9 @@ export class AudioPreview extends LitElement {
         return html`
             <audio
                 class="preview"
-                controls="true"
-                autoplay="true"
-                src="${this.preview?.file}"
+                ?controls="${true}"
+                ?autoplay="${true}"
+                src="${this.preview?.file ?? ''}"
             ></audio>
         `;
     }

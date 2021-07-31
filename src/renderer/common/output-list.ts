@@ -3,7 +3,7 @@ import { css, customElement, html, LitElement, property, query } from 'lit-eleme
 import { classMap } from 'lit-html/directives/class-map';
 
 import { GlobalConfig } from 'common/config';
-import { Result } from 'common/result';
+import { HtmlResult, Result, SimpleResult, TextResult } from 'common/result';
 import { match } from 'common/util';
 
 import 'renderer/common/results/simple-result';
@@ -98,19 +98,19 @@ export class OutputField extends LitElement {
                             'simple-result': html`
                                 <simple-result
                                     class="${classes}"
-                                    .result="${result}"
+                                    .result="${result as SimpleResult}"
                                 ></simple-result>
                             `,
                             'text-result': html`
                                 <text-result
                                     class="${classes}"
-                                    .result="${result}"
+                                    .result="${result as TextResult}"
                                 ></text-result>
                             `,
                             'html-result': html`
                                 <html-result
                                     class="${classes}"
-                                    .result="${result}"
+                                    .result="${result as HtmlResult}"
                                 ></html-result>
                             `,
                         })}
