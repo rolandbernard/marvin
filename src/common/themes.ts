@@ -50,7 +50,7 @@ export const THEMES = {
             shadow_color: '#00000020',
         },
         settings: {
-            background_color: '#f0f0f0',
+            background_color: '#ffffff',
             text_color: '#000000',
             accent_color: '#505050',
             select_color: '#e0e0e0',
@@ -102,7 +102,7 @@ export const THEMES = {
             shadow_color: '#00000020',
         },
         settings: {
-            background_color: '#f0f0f0',
+            background_color: '#ffffff',
             text_color: '#000000',
             accent_color: '#505050',
             select_color: '#e0e0e0',
@@ -154,7 +154,7 @@ export const THEMES = {
             shadow_color: '#00000020',
         },
         settings: {
-            background_color: '#f0f0f0',
+            background_color: '#ffffff',
             text_color: '#000000',
             accent_color: '#505050',
             select_color: '#e0e0e0',

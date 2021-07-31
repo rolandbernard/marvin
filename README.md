@@ -2,8 +2,7 @@
 Marvin
 ======
 
-This is a keystroke launcher for Linux. It is build using electron but it has not been ported to
-Windows or MacOS yet.
+This is a keystroke launcher for Linux and Windows.
 
 ![screenshot](assets/main.png)
 
@@ -122,7 +121,7 @@ This module allows you to create custom HTML entries.
 
 ![screenshot](assets/html.png)
 
-### Locate
+### Locate (Linux only)
 
 This module allows you to search for files using locate.
 
@@ -202,5 +201,6 @@ This only works when running with yarn start and not in the packaged application
 yarn build
 ```
 
-The output can be found in the `build` directory.
+The output can be found in the `build` directory. If the `NODE_ENV` variable is not set to
+`production` a development build will be generated.
 

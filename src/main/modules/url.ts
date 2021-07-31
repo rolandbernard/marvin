@@ -54,26 +54,34 @@ export class UrlModule implements Module<UrlResult> {
         }
     }
 
+    itemForUrl(query: Query, url: string): UrlResult {
+        return {
+            module: MODULE_ID,
+            query: query.text,
+            kind: 'simple-result',
+            icon: { material: 'language' },
+            primary: url,
+            secondary: getTranslation('open_in_browser', config),
+            quality: this.config.quality,
+            url: url,
+            preview: this.config.url_preview ? {
+                kind: 'iframe-preview',
+                url: url,
+            } : undefined,
+        };
+    }
+
     async search(query: Query): Promise<UrlResult[]> {
         if (this.isValidUrl(query.text)) {
             const url = this.completeUrl(query.text);
-            return [{
-                module: MODULE_ID,
-                query: query.text,
-                kind: 'simple-result',
-                icon: { material: 'language' },
-                primary: query.text,
-                secondary: getTranslation('open_in_browser', config),
-                quality: this.config.quality,
-                url: url,
-                preview: this.config.url_preview ? {
-                    kind: 'iframe-preview',
-                    url: url,
-                } : undefined,
-            }];
+            return [this.itemForUrl(query, url)];
         } else {
             return [];
         }
+    }
+
+    async rebuild(query: Query, result: UrlResult): Promise<UrlResult | undefined> {
+        return this.itemForUrl(query, result.url);
     }
 
     async execute(result: UrlResult) {

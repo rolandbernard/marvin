@@ -8,7 +8,7 @@ import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { time, TimeUnit } from 'common/time';
 
-import { executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
+import { Application, executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
 import { getDefaultPath } from 'main/adapters/file-handler';
 import { config, moduleConfig } from 'main/config';
 import { module, moduleForId } from 'main/modules';
@@ -18,6 +18,7 @@ const MODULE_ID = 'applications';
 interface ApplicationsResult extends SimpleResult {
     module: typeof MODULE_ID;
     application: unknown;
+    app_id: string;
 }
 
 class ApplicationsConfig extends ModuleConfig {
@@ -74,40 +75,49 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
         clearInterval(this.refresh!);
     }
 
+    forLanguage(names?: Record<string, string>): string | undefined {
+        return names?.[config.general.language]
+            ?? names?.['default']
+            ?? Object.values(names ?? {})[0];
+    }
+
+    itemForApplication(query: Query, application: Application): ApplicationsResult {
+        const name = this.forLanguage(application.name) ?? basename(application.file);
+        const action = this.forLanguage(application.action);
+        const filename = basename(dirname(application.file)) + ' › ' + basename(application.file);
+        const description = this.forLanguage(application.description) ?? filename;
+        const is_action = action && action !== name;
+        return {
+            module: MODULE_ID,
+            query: query.text,
+            kind: 'simple-result',
+            icon: { url: application.icon },
+            primary: is_action ? action! : name,
+            secondary: is_action ? name : description,
+            quality: Math.max(
+                query.matchAny(Object.values(application.name ?? {}), name),
+                query.matchAny(Object.values(application.action ?? {}), action) * 0.75,
+                query.matchAny(Object.values(application.description ?? {}), description) * 0.5,
+                query.matchAny(Object.values(application.other ?? {}).flat()) * 0.5,
+                query.matchText(application.file) * 0.5,
+            ),
+            autocomplete: this.config.prefix + name,
+            application: application.application,
+            app_id: application.id,
+        };
+    }
+
     async search(query: Query): Promise<ApplicationsResult[]> {
-        function forLanguage(names?: Record<string, string>): string | undefined {
-            return names?.[config.general.language]
-                ?? names?.['default']
-                ?? Object.values(names ?? {})[0];
-        }
         if (query.text.length > 0) {
-            return (await getAllApplications()).map(application => {
-                const name = forLanguage(application.name) ?? basename(application.file);
-                const action = forLanguage(application.action);
-                const filename = basename(dirname(application.file)) + ' › ' + basename(application.file);
-                const description = forLanguage(application.description) ?? filename;
-                const is_action = action && action !== name;
-                return {
-                    module: MODULE_ID,
-                    query: query.text,
-                    kind: 'simple-result',
-                    icon: { url: application.icon },
-                    primary: is_action ? action! : name,
-                    secondary: is_action ? name : description,
-                    quality: Math.max(
-                        query.matchAny(Object.values(application.name ?? {}), name),
-                        query.matchAny(Object.values(application.action ?? {}), action) * 0.75,
-                        query.matchAny(Object.values(application.description ?? {}), description) * 0.5,
-                        query.matchAny(Object.values(application.other ?? {}).flat()) * 0.5,
-                        query.matchText(application.file) * 0.5,
-                    ),
-                    autocomplete: this.config.prefix + name,
-                    application: application.application,
-                };
-            });
+            return (await getAllApplications()).map(application => this.itemForApplication(query, application));
         } else {
             return [];
         }
+    }
+
+    async rebuild(query: Query, result: ApplicationsResult): Promise<ApplicationsResult | undefined> {
+        const application = (await getAllApplications()).find(app => app.id === result.app_id);
+        return application && this.itemForApplication(query, application);
     }
 
     async execute(result: ApplicationsResult) {

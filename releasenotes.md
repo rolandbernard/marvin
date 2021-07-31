@@ -1,6 +1,18 @@
 
 # Release notes
 
+v0.2.0
+
+* Added Windows support
+   * All modules except for the locate module have been ported
+   * There is an installer and a portable version
+   * The Windows version has an autostart option
+* Improved the history module
+   * Results that can no longer be executed will be hidden
+   * The results now update to match the new settings for some modules
+* Fixed the loading animation with incremental results
+
+
 v0.1.0
 
 * Improved multiple modules

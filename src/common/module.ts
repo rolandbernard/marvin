@@ -11,6 +11,7 @@ export interface Module<ModuleResult extends Result> {
     deinit?: () => Promise<void>;
 
     search?: (query: Query) => Promise<ModuleResult[]>;
+    rebuild?: (query: Query, result: ModuleResult) => Promise<ModuleResult | undefined>;
     execute?: (result: ModuleResult) => Promise<void>;
     executeAny?: (result: Result) => Promise<void>;
 }

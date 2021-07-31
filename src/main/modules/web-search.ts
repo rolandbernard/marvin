@@ -59,6 +59,23 @@ export class WebSearchModule implements Module<WebSearchResult> {
         return moduleConfig<WebSearchConfig>(MODULE_ID);
     }
 
+    itemForUrl(query: Query, url: string): WebSearchResult {
+        return {
+            module: MODULE_ID,
+            query: query.text,
+            kind: 'simple-result',
+            icon: { material: 'search' },
+            primary: url,
+            secondary: getTranslation('open_in_browser', config),
+            quality: this.config.quality,
+            url: url,
+            preview: this.config.url_preview ? {
+                kind: 'iframe-preview',
+                url: url,
+            } : undefined,
+        };
+    }
+
     async search(query: Query): Promise<WebSearchResult[]> {
         return this.config.patterns
             .filter(pattern => query.text.startsWith(pattern.prefix))
@@ -66,21 +83,12 @@ export class WebSearchModule implements Module<WebSearchResult> {
             .map(pattern => {
                 const sub_query = query.text.replace(pattern.prefix, '').trim();
                 const url = pattern.url_pattern.replaceAll('$', encodeURIComponent(sub_query));
-                return {
-                    module: MODULE_ID,
-                    query: query.text,
-                    kind: 'simple-result',
-                    icon: { material: 'search' },
-                    primary: url,
-                    secondary: getTranslation('open_in_browser', config),
-                    quality: this.config.quality,
-                    url: url,
-                    preview: this.config.url_preview ? {
-                        kind: 'iframe-preview',
-                        url: url,
-                    } : undefined,
-                };
+                return this.itemForUrl(query, url);
             });
+    }
+
+    async rebuild(query: Query, result: WebSearchResult): Promise<WebSearchResult | undefined> {
+        return this.itemForUrl(query, result.url);
     }
 
     async execute(result: WebSearchResult) {

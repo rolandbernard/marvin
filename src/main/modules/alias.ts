@@ -4,7 +4,7 @@ import { Query } from 'common/query';
 import { Result } from 'common/result';
 import { Module } from 'common/module';
 
-import { module } from 'main/modules';
+import { module, moduleForId } from 'main/modules';
 import { moduleConfig } from 'main/config';
 
 const MODULE_ID = 'alias';
@@ -40,7 +40,22 @@ export class AliasModule implements Module<Result> {
         return moduleConfig<AliasConfig>(MODULE_ID);
     }
 
+    async rebuildEntries(query: Query) {
+        const aliases = this.config.aliases.filter(entry => entry.result);
+        for (const entry of aliases) {
+            const module = moduleForId(entry.result!.module);
+            if (module) {
+                if (module.rebuild) {
+                    entry.result = await module.rebuild(query, entry.result!);
+                }
+            } else {
+                delete entry.result;
+            }
+        }
+    }
+
     async search(query: Query): Promise<Result[]> {
+        await this.rebuildEntries(query);
         const aliases = this.config.aliases.filter(entry => entry.result);
         return aliases.map(entry => {
             const match = query.text.length > 0 ? query.matchText(entry.name) : entry.default_quality;

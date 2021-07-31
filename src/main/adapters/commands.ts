@@ -41,13 +41,14 @@ export function escapeForPowershellWindows(text: string) {
 
 function executeCommandWindows(command: string, mode = CommandMode.SIMPLE, shell = 'powershell') {
     return runMatch(mode, {
-        'terminal': () => {
+        'terminal': async () => {
             if (shell === 'powershell') {
-                return execAsync(`Start-Process powershell ${escapeForPowershellWindows(command)}`, { shell: 'powershell' }).catch(() => {});
+                return await execAsync(`Start-Process powershell ${escapeForPowershellWindows(command)}`, { shell: 'powershell' }).catch(() => {});
             } else {
-                return execAsync(`start cmd /c "${command}"`).catch(() => {});
+                return await execAsync(`start cmd /c "${command}"`).catch(() => {});
             }
         },
         'simple': () => execAsync(command, { shell: shell }).catch(() => {}),
     });
 }
+

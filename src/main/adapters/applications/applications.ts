@@ -3,7 +3,7 @@ import { runMatch } from 'common/util';
 import { getPlatform } from 'common/platform';
 
 import { executeApplicationLinux, getAllApplicationsLinux, getDefaultDirectoriesLinux, updateApplicationCacheLinux } from 'main/adapters/applications/linux';
-import { executeApplicationWindows, getAllApplicationsWinodws, getDefaultDirectoriesWinows, updateApplicationCacheWindows } from 'main/adapters/applications/windows';
+import { executeApplicationWindows, getAllApplicationsWindows, getDefaultDirectoriesWindows, updateApplicationCacheWindows } from 'main/adapters/applications/windows';
 
 export interface Application {
     icon?: string;
@@ -13,12 +13,13 @@ export interface Application {
     other?: Record<string, string[]>;
     application: unknown;
     file: string;
+    id: string;
 }
 
 export function getDefaultDirectories(): string[] {
     return runMatch(getPlatform(), {
         'linux': () => getDefaultDirectoriesLinux(),
-        'win32': () => getDefaultDirectoriesWinows(),
+        'win32': () => getDefaultDirectoriesWindows(),
         'unsupported': () => [],
     });
 }
@@ -34,7 +35,7 @@ export function updateApplicationCache(directories: string[]) {
 export function getAllApplications(): Promise<Application[]> {
     return runMatch(getPlatform(), {
         'linux': () => getAllApplicationsLinux(),
-        'win32': () => getAllApplicationsWinodws(),
+        'win32': () => getAllApplicationsWindows(),
         'unsupported': async () => [],
     });
 }

@@ -58,6 +58,17 @@ export class UrlModule implements Module<SimpleResult> {
         }
     }
 
+    async rebuild(_query: Query, result: SimpleResult): Promise<SimpleResult | undefined> {
+        return {
+            ...result,
+            quality: this.config.quality,
+            preview: this.config.color_preview ? {
+                kind: 'color-preview',
+                color: colorAsHex(parseColor(result.query)),
+            } : undefined,
+        };
+    }
+
     async execute(result: SimpleResult) {
         clipboard.writeText(result.primary);
     }

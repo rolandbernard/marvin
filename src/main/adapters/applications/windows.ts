@@ -1,14 +1,14 @@
 
 import { app } from 'electron';
-import { readFile, writeFile, stat, readdir } from 'fs/promises';
-import { join, basename, extname } from 'path';
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 
 import { Application } from 'main/adapters/applications/applications';
 import { CommandMode, executeCommand } from 'main/adapters/commands';
 import { openFile } from 'main/adapters/file-handler';
 import { unique } from 'common/util';
 
-export function getDefaultDirectoriesWinows(): string[] {
+export function getDefaultDirectoriesWindows(): string[] {
     return [
         "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs",
         join(app.getPath('home'), 'AppData\\Roaming\\Microsoft\\Windows\\Start Menu'),
@@ -37,7 +37,7 @@ async function updateCache() {
     } catch (e) { /* Ignore errors */  }
 }
 
-async function loadUWPApplications(directories: string[]): Promise<Application[]> {
+async function loadUWPApplications(): Promise<Application[]> {
     const script = `
 [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 $ErrorActionPreference = 'SilentlyContinue'
@@ -126,6 +126,7 @@ $apps |
         const results = JSON.parse(result?.stdout || '[]');
         return await Promise.all(
             results.map(async (application: any) => ({
+                id: application.file,
                 file: application.file,
                 application: application.file,
                 icon: application.icon,
@@ -139,11 +140,11 @@ $apps |
     }
 }
 
-const APP_EXTENTIONS = [ '.lnk', '.appref-ms', '.url', '.exe' ];
+const APP_EXTENSIONS = [ '.lnk', '.approx-ms', '.url', '.exe' ];
 
 async function loadWin32Applications(directories: string[]): Promise<Application[]> {
     const folders = directories.map(dir => `'${dir}'`).join(', ');
-    const extentions = APP_EXTENTIONS.map(dir => `*${dir}`).join(', ');
+    const extensions = APP_EXTENSIONS.map(dir => `*${dir}`).join(', ');
     const script = `
 [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 $ErrorActionPreference = 'SilentlyContinue'
@@ -167,7 +168,7 @@ function Get-Icon($filename) {
     return $result
 }
 ${folders} |
-    % { Get-ChildItem -Path $_ -include ${extentions} -Recurse -File } |
+    % { Get-ChildItem -Path $_ -include ${extensions} -Recurse -File } |
     % { $targetFile = Get-ShortcutTarget($_.FullName);
         @{ file = $_.FullName; name = $_.BaseName; target = $targetFile; icon = Get-Icon($targetFile) } } |
     ConvertTo-Json
@@ -178,6 +179,7 @@ ${folders} |
         const results = unique(JSON.parse(result?.stdout || '[]'), (elem: any) => elem.target);
         return await Promise.all(
             results.map(async (application: any) => ({
+                id: application.target,
                 file: application.file,
                 application: application.file,
                 icon: application.icon,
@@ -195,12 +197,12 @@ export async function updateApplicationCacheWindows(directories: string[]) {
     await loadApplicationCache();
     applications = [
         ...await loadWin32Applications(directories),
-        ...await loadUWPApplications(directories),
+        ...await loadUWPApplications(),
     ];
     await updateCache();
 }
 
-export async function getAllApplicationsWinodws(): Promise<Application[]> {
+export async function getAllApplicationsWindows(): Promise<Application[]> {
     return applications;
 }
 

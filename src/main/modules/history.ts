@@ -8,7 +8,7 @@ import { Query } from 'common/query';
 import { getResultKey, Result } from 'common/result';
 import { Module } from 'common/module';
 
-import { module } from 'main/modules';
+import { module, moduleForId } from 'main/modules';
 import { moduleConfig } from 'main/config';
 
 const HISTORY_FILENAME = 'history.json';
@@ -80,29 +80,64 @@ export class ClipboardModule implements Module<HistoryResult> {
         }
     }
 
+    async rebuildResult(query: Query, result: HistoryResult): Promise<Result | undefined> {
+        const module = moduleForId(result.module);
+        if (module) {
+            if (module.rebuild) {
+                try {
+                    return await module.rebuild(query, result);
+                } catch (e) {
+                    return result;
+                }
+            } else {
+                return result;
+            }
+        }
+    }
+
     async search(query: Query): Promise<HistoryResult[]> {
         if (query.text.length > 0) {
-            return history.map(option => {
-                let quality = 0.5 * query.matchAny(Object.values(option).filter(val => typeof val === 'string'));
-                if (this.config.weight_by_frequency) {
-                    quality *= 2 * Math.atan(option.history_frequency!);
+            return (await Promise.all(history.map(async option => {
+                const rebuild = await this.rebuildResult(query, option);
+                if (rebuild) {
+                    let quality = 0.5 * rebuild.quality * query.matchAny([
+                        (option as any).text ?? '',
+                        (option as any).primary ?? '',
+                        (option as any).secondary ?? ''
+                    ])
+                    if (this.config.weight_by_frequency) {
+                        quality *= 2 * Math.atan(option.history_frequency!);
+                    }
+                    return [{
+                        ...rebuild,
+                        query: query.text,
+                        quality: Math.min(1.0, quality),
+                        history_frequency: option.history_frequency,
+                    }];
+                } else {
+                    return [];
                 }
-                return {
-                    ...option,
-                    query: query.text,
-                    quality: Math.min(1.0, quality),
-                };
-            }).sort((a, b) =>
+            }))).flat().sort((a, b) =>
+                this.config.sort_by_frequency ? b.history_frequency! - a.history_frequency! : 0
+            );
+        } else if (this.config.quality > 0) {
+            return (await Promise.all(history.map(async option => {
+                const rebuild = await this.rebuildResult(query, option);
+                if (rebuild) {
+                    return [{
+                        ...rebuild,
+                        query: query.text,
+                        quality: this.config.quality,
+                        history_frequency: option.history_frequency,
+                    }];
+                } else {
+                    return [];
+                }
+            }))).flat().sort((a, b) =>
                 this.config.sort_by_frequency ? b.history_frequency! - a.history_frequency! : 0
             );
         } else {
-            return history.map(option => ({
-                ...option,
-                query: query.text,
-                quality: this.config.quality
-            })).sort((a, b) =>
-                this.config.sort_by_frequency ? b.history_frequency! - a.history_frequency! : 0
-            );
+            return [];
         }
     }
 
