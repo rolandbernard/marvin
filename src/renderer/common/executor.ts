@@ -59,10 +59,11 @@ export abstract class QueryExecutor extends LitElement {
     }
 
     sendQueryRequest() {
-        clearTimeout(this.loading_timeout!);
+        clearTimeout(this.result_timeout!);
         this.result_timeout = setTimeout(() => {
             this.results = [];
         }, 100);
+        clearTimeout(this.loading_timeout!);
         this.loading_timeout = setTimeout(() => {
             this.loading = true;
         }, 100);

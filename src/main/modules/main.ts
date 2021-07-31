@@ -28,9 +28,11 @@ export class MainModule implements Module<SimpleResult> {
     window?: BrowserWindow;
     shortcut?: string;
 
-    createTrayIcon() {
-        this.tray = new Tray(join(__dirname, Logo));
-        this.tray.setToolTip('Marvin');
+    updateTrayIcon() {
+        if (!this.tray) {
+            this.tray = new Tray(join(__dirname, Logo));
+            this.tray.setToolTip('Marvin');
+        }
         const context_menu = Menu.buildFromTemplate([
             {
                 label: getTranslation('open', config),
@@ -133,9 +135,20 @@ export class MainModule implements Module<SimpleResult> {
         }
     }
 
+    updateLoginItem() {
+        if (!isDevelopment()) {
+            app.setLoginItemSettings({
+                args: [],
+                openAtLogin: config.general.autostart,
+                path: process.execPath,
+            });
+        }
+    }
+
     async init() {
-        this.createTrayIcon();
+        this.updateTrayIcon();
         this.registerShortcut();
+        this.updateLoginItem();
         setTimeout(() => {
             // This has to be delayed, because otherwise transparency will not work on linux
             this.createWindow();
@@ -143,7 +156,9 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     async update() {
+        this.updateTrayIcon();
         this.registerShortcut();
+        this.updateLoginItem();
         this.window?.webContents.send('show', config, config.getDescription());
     }
 
