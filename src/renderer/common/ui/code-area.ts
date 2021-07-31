@@ -40,7 +40,7 @@ export class CodeArea extends LitElement {
             }
             .input-wrap {
                 display: flex;
-                flex-flex: row nowrap;
+                flex-flow: row nowrap;
                 background: var(--settings-background);
                 border-radius: var(--settings-input-border-radius);
                 border: 1px solid var(--settings-border-color);
@@ -109,7 +109,7 @@ export class CodeArea extends LitElement {
                     spellcheck="false"
                     autocomplete="off"
                     ?disabled="${this.disabled}"
-                    .value=${this.value}
+                    .value=${this.value ?? ''}
                     @change="${this.onChange}"
                     @keydown="${this.onKeyDown}"
                 ></textarea>

@@ -91,3 +91,6 @@ export function indexObject(object: any, index: DeepIndex = []): any {
     }
 }
 
+export function unique<Type, Key>(array: Type[], key: (elem: Type) => Key): Type[] {
+    return array.filter((elem, index) => array.findIndex(e => key(e) === key(elem)) === index);
+}

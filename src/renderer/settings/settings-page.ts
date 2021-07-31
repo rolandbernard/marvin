@@ -2,13 +2,15 @@
 import { css, customElement, html } from 'lit-element';
 
 import { getTranslation, hasTranslation } from 'common/local/locale';
+import { ObjectConfig } from 'common/config-desc';
 
-import { AbstractSetting } from 'renderer//settings/abstract-setting';
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
 import 'renderer/settings/settings-table';
 
 @customElement('settings-page')
 export class SettingsPage extends AbstractSetting {
+    desc?: ObjectConfig;
 
     static get styles() {
         return css`

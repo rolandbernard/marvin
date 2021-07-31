@@ -1,7 +1,7 @@
 
 import { app } from 'electron';
 import { readdir, stat } from 'fs/promises';
-import { extname, dirname, join, basename, sep, relative } from 'path';
+import { extname, dirname, join, basename, sep, relative, isAbsolute } from 'path';
 
 import { config, configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
@@ -63,42 +63,50 @@ export class FoldersModule implements Module<FoldersResult> {
         return moduleConfig<FoldersConfig>(MODULE_ID);
     }
 
-    async search(query: Query): Promise<FoldersResult[]> {
-        if (query.text.length > 0) {
-            return (await Promise.all(this.config.directories.map(async directory => {
+    async resultsFor(query: Query, self: string, rel?: string) {
+        try {
+            const parent = dirname(self);
+            const files = [
+                ...(await readdir(parent).catch(() => [])).map(file => join(parent, file)),
+                ...(await readdir(self).catch(() => [])).map(file => join(self, file)),
+            ];
+            return (await Promise.all(files.map(async file => {
                 try {
-                    const parent = join(directory, dirname(query.text));
-                    const self = join(directory, query.text);
-                    const files = [
-                        ...(await readdir(parent).catch(() => [])).map(file => join(parent, file)),
-                        ...(await readdir(self).catch(() => [])).map(file => join(self, file)),
-                    ];
-                    return (await Promise.all(files.map(async file => {
-                        try {
-                            const stats = await stat(file);
-                            return [{
-                                module: MODULE_ID,
-                                query: query.text,
-                                kind: 'simple-result',
-                                icon: {
-                                    url: stats.isDirectory() ? undefined : (await app.getFileIcon(file)).toDataURL(),
-                                    material: stats.isDirectory() ? 'folder' : 'insert_drive_file',
-                                },
-                                primary: basename(file),
-                                secondary: file,
-                                quality: query.matchText(file),
-                                autocomplete: this.config.prefix + relative(directory, file) + (stats.isDirectory() ? sep : ''),
-                                file: file,
-                                preview: this.config.file_preview ? generateFilePreview(file) : undefined,
-                            } as FoldersResult];
-                        } catch (e) {
-                            return [];
-                        }
-                    }))).flat();
+                    const stats = await stat(file);
+                    const complete = rel ? relative(rel, file) : file;
+                    return [{
+                        module: MODULE_ID,
+                        query: query.text,
+                        kind: 'simple-result',
+                        icon: {
+                            url: stats.isDirectory() ? undefined : (await app.getFileIcon(file)).toDataURL(),
+                            material: stats.isDirectory() ? 'folder' : 'insert_drive_file',
+                        },
+                        primary: basename(file),
+                        secondary: file,
+                        quality: query.matchText(file),
+                        autocomplete: `${this.config.prefix}${complete}${(stats.isDirectory() ? sep : '')}`,
+                        file: file,
+                        preview: this.config.file_preview ? generateFilePreview(file) : undefined,
+                    } as FoldersResult];
                 } catch (e) {
                     return [];
                 }
             }))).flat();
+        } catch (e) {
+            return [];
+        }
+    }
+
+    async search(query: Query): Promise<FoldersResult[]> {
+        if (query.text.length > 0) {
+            let absolute: FoldersResult[] = [];
+            if (isAbsolute(query.text)) {
+                absolute = await this.resultsFor(query, query.text);
+            }
+            return (await Promise.all(this.config.directories.map(async directory => {
+                return this.resultsFor(query, join(directory, query.text), directory);
+            }))).flat().concat(absolute);
         } else {
             return [];
         }

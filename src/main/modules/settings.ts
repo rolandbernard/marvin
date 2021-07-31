@@ -31,6 +31,7 @@ export class SettingsModule implements Module<SimpleResult> {
             show: false,
             width: config.general.width * 2,
             icon: join(__dirname, Logo),
+            title: 'Marvin ' + getTranslation('settings', config),
         });
 
         if (!inDevelopment) {

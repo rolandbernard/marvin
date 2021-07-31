@@ -6,7 +6,7 @@ import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { Query } from 'common/query';
-import { isDevelopment } from 'common/platform';
+import { getPlatform, isDevelopment, Platform } from 'common/platform';
 
 import { config } from 'main/config';
 import { module, moduleForId } from 'main/modules';
@@ -17,8 +17,10 @@ import Logo from 'logo.png';
 
 const MODULE_ID = 'main';
 
-// Transparency will not work without this
-app.commandLine.appendSwitch("disable-gpu");
+if (getPlatform() === Platform.LINUX) {
+    // Transparency will not work without this
+    app.commandLine.appendSwitch("disable-gpu");
+}
 
 @module(MODULE_ID as any) // This module has no config => needs no translation
 export class MainModule implements Module<SimpleResult> {
@@ -26,9 +28,11 @@ export class MainModule implements Module<SimpleResult> {
     window?: BrowserWindow;
     shortcut?: string;
 
-    createTrayIcon() {
-        this.tray = new Tray(join(__dirname, Logo));
-        this.tray.setToolTip('Marvin');
+    updateTrayIcon() {
+        if (!this.tray) {
+            this.tray = new Tray(join(__dirname, Logo));
+            this.tray.setToolTip('Marvin');
+        }
         const context_menu = Menu.buildFromTemplate([
             {
                 label: getTranslation('open', config),
@@ -59,18 +63,17 @@ export class MainModule implements Module<SimpleResult> {
             resizable: false,
             maximizable: false,
             minimizable: false,
-            movable: false,
             skipTaskbar: true,
             center: true,
-            frame: inDevelopment,
+            frame: getPlatform() === Platform.LINUX && inDevelopment,
             show: false,
             transparent: true,
             alwaysOnTop: true,
             width: config.general.width + 20,
             height: config.general.max_height + 20,
             icon: join(__dirname, Logo),
+            title: 'Marvin',
         });
-
         const hideWindow = (e: Event) => {
             e.preventDefault();
             this.hideWindow();
@@ -132,9 +135,20 @@ export class MainModule implements Module<SimpleResult> {
         }
     }
 
+    updateLoginItem() {
+        if (!isDevelopment()) {
+            app.setLoginItemSettings({
+                args: [],
+                openAtLogin: config.general.autostart,
+                path: process.execPath,
+            });
+        }
+    }
+
     async init() {
-        this.createTrayIcon();
+        this.updateTrayIcon();
         this.registerShortcut();
+        this.updateLoginItem();
         setTimeout(() => {
             // This has to be delayed, because otherwise transparency will not work on linux
             this.createWindow();
@@ -142,7 +156,9 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     async update() {
+        this.updateTrayIcon();
         this.registerShortcut();
+        this.updateLoginItem();
         this.window?.webContents.send('show', config, config.getDescription());
     }
 

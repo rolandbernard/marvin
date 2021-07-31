@@ -17,7 +17,7 @@ export class ColorSetting extends AbstractSetting {
         return html`
             <color-button
                 class="color"
-                .color="${this.configValue()}"
+                .color="${this.configValue<string>()}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"
             ></color-button>

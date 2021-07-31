@@ -2,6 +2,7 @@
 const TRANSLATION_ITALIAN = {
     general: 'Generale',
     global_shortcut: 'Shortcut globale',
+    autostart: 'Autostart',
     language: 'Lingua',
     debounce_time: 'Debounce time',
     width: 'Larghezza',

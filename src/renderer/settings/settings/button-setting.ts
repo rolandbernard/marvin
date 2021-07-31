@@ -13,10 +13,10 @@ import 'renderer/common/ui/text-button';
 export class ButtonSetting extends AbstractSetting {
     desc?: ButtonConfig
 
-    onClick() {
+    async onClick() {
         if (this.desc?.confirm) {
             const question = getTranslation(this.desc.name!, this.config) + '?';
-            if (confirm(question)) {
+            if (await ipcRenderer.invoke('show-dialog', question)) {
                 ipcRenderer.send(this.desc.action);
             }
         } else if (this.desc) {

@@ -6,7 +6,7 @@ import { classMap } from 'lit-html/directives/class-map';
 export class ToggleSwitch extends LitElement {
 
     @property({ attribute: false })
-    value?: string;
+    value?: boolean;
 
     @property({ attribute: false })
     disabled?: boolean;
@@ -92,7 +92,7 @@ export class ToggleSwitch extends LitElement {
                 type="checkbox"
                 class="${classes}"
                 ?disabled="${this.disabled}"
-                .checked="${this.value}"
+                .checked="${this.value ?? false}"
                 @change="${this.onChange}"
             ></input>
         `;

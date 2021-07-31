@@ -147,7 +147,7 @@ export class InputField extends LitElement {
                 <div class="field">
                     ${prediction}
                     <input
-                        autofocus="true"
+                        ?autofocus="${true}"
                         class="input"
                         spellcheck="false"
                         autocomplete="off"

@@ -31,7 +31,7 @@ export class QualitySetting extends AbstractSetting {
         return html`
             <text-field
                 type="number"
-                .value="${this.configValue()}"
+                .value="${this.configValue<number>().toString()}"
                 .validation="${this.validate.bind(this)}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"

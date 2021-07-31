@@ -19,7 +19,7 @@ export class CodeSetting extends AbstractSetting {
     render() {
         return html`
             <code-area
-                .value="${this.configValue()}"
+                .value="${this.configValue<string>()}"
                 .disabled="${this.isDisabled()}"
                 @change="${this.onChange}"
             ></code-area>

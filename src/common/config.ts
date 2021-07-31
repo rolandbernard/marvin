@@ -7,7 +7,7 @@ import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module';
 import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-desc';
 import { cloneDeep } from 'common/util';
-import { getPlatform } from 'common/platform';
+import { getPlatform, Platform } from 'common/platform';
 import { THEMES } from 'common/themes';
 
 const config_desc = new WeakMap<Config, ConfigDescription[]>();
@@ -122,6 +122,9 @@ export class ModuleConfig extends Config {
 class GeneralConfig extends Config {
     @configKind('shortcut')
     global_shortcut = 'Alt+Space';
+
+    @config({ kind: 'boolean', platform: Platform.WINDOWS })
+    autostart = true;
 
     @config({ kind: 'select', options: Object.values(Language) })
     language = Language.English;

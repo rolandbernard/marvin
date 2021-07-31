@@ -25,7 +25,7 @@ export class EmbedPreview extends LitElement {
         return html`
             <embed
                 class="preview"
-                src="${this.preview?.file}"
+                src="${this.preview?.file ?? ''}"
             ></embed>
         `;
     }

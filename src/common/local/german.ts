@@ -2,6 +2,7 @@
 const TRANSLATION_GERMAN = {
     general: 'Allgemein',
     global_shortcut: 'Globaler Shortcut',
+    autostart: 'Autostart',
     language: 'Sprache',
     debounce_time: 'Debounce time',
     width: 'Breite',
