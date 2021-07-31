@@ -44,7 +44,7 @@ export class CommandModule implements Module<CommandResult> {
             kind: 'simple-result',
             icon: { material: 'code' },
             primary: command,
-            secondary: `${name}: ${query.text}`,
+            secondary: `${name}: ${command}`,
             quality: this.config.quality,
             command: command,
             mode: CommandMode.TERMINAL,

@@ -60,7 +60,7 @@ export class UrlModule implements Module<UrlResult> {
             query: query.text,
             kind: 'simple-result',
             icon: { material: 'language' },
-            primary: query.text,
+            primary: url,
             secondary: getTranslation('open_in_browser', config),
             quality: this.config.quality,
             url: url,

@@ -10,6 +10,7 @@ import { Module } from 'common/module';
 
 import { module, moduleForId } from 'main/modules';
 import { moduleConfig } from 'main/config';
+import { openFile } from 'main/adapters/file-handler';
 
 const HISTORY_FILENAME = 'history.json';
 const HISTORY_PATH = join(app.getPath('userData'), HISTORY_FILENAME);
@@ -100,10 +101,11 @@ export class ClipboardModule implements Module<HistoryResult> {
             return (await Promise.all(history.map(async option => {
                 const rebuild = await this.rebuildResult(query, option);
                 if (rebuild) {
-                    let quality = Math.max(
-                        rebuild.quality,
-                        0.25 * query.matchAny(Object.values(option).filter(val => typeof val === 'string'))
-                    );
+                    let quality = 0.5 * rebuild.quality * query.matchAny([
+                        (option as any).text ?? '',
+                        (option as any).primary ?? '',
+                        (option as any).secondary ?? ''
+                    ])
                     if (this.config.weight_by_frequency) {
                         quality *= 2 * Math.atan(option.history_frequency!);
                     }
