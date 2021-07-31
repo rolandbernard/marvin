@@ -31,3 +31,5 @@ nsis:
     allowToChangeInstallationDirectory: true
     oneClick: false
     perMachine: true
+    createDesktopShortcut: false
+

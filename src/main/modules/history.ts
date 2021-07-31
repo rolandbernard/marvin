@@ -10,7 +10,6 @@ import { Module } from 'common/module';
 
 import { module, moduleForId } from 'main/modules';
 import { moduleConfig } from 'main/config';
-import { openFile } from 'main/adapters/file-handler';
 
 const HISTORY_FILENAME = 'history.json';
 const HISTORY_PATH = join(app.getPath('userData'), HISTORY_FILENAME);

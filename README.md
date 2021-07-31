@@ -201,5 +201,6 @@ This only works when running with yarn start and not in the packaged application
 yarn build
 ```
 
-The output can be found in the `build` directory.
+The output can be found in the `build` directory. If the `NODE_ENV` variable is not set to
+`production` a development build will be generated.
 
