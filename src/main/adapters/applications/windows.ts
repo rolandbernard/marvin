@@ -41,9 +41,102 @@ async function loadUWPApplications(directories: string[]): Promise<Application[]
     const script = `
 [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 $ErrorActionPreference = 'SilentlyContinue'
-
+$apps = Get-StartApps | Where-Object { $_.AppID.Contains("!") }
+function FindLogoFilePath($logoFilePath) {
+    if ([System.IO.File]::Exists($logoFilePath) -eq $true) {
+        return $logoFilePath
+    }
+    $filePath = Get-ChildItem $logoFilePath.Replace(".png", ".scale-*.png") |
+        Sort-Object -Property Name |
+        Select-Object -First 1 -ExpandProperty FullName
+    if ($filePath -ne $null) {
+        $logoFilePath = $filePath
+    }
+    if ([System.IO.File]::Exists($logoFilePath) -eq $true) {
+        return $logoFilePath
+    }
+    $filePath = Get-ChildItem $logoFilePath.Replace(".png", ".targetsize-*.png") |
+        Where-Object { ($_.Name -match "targetsize-(\\d+)\\.png") -and ($Matches[1] -ge 48) } |
+        Sort-Object -Property Name |
+        Select-Object -First 1 -ExpandProperty FullName
+    if ($filePath -ne $null) {
+        $logoFilePath = $filePath
+    }
+    if ([System.IO.File]::Exists($logoFilePath) -eq $true) {
+        return $logoFilePath
+    }
+    $filePath = Get-ChildItem $logoFilePath.Replace(".png", ".targetsize-*.png") |
+        Where-Object { ($_.Name -match "targetsize-(\\d+).*\\.png") -and ($Matches[1] -ge 48) } |
+        Sort-Object -Property Name |
+        Select-Object -First 1 -ExpandProperty FullName
+    if ($filePath -ne $null) {
+        $logoFilePath = $filePath
+    }
+    if ([System.IO.File]::Exists($logoFilePath) -eq $true) {
+        return $logoFilePath
+    } else {
+        return $null
+    }
+}
+filter ArrayToDict
+{
+    begin { $dict = @{} }
+    process { $dict[$_.PackageFamilyName] = $_ }
+    end { return $dict }
+}
+$packageFamilyNamesToPackages = Get-AppxPackage -PackageTypeFilter Main | ArrayToDict;
+function Get-Icon($appId) {
+    $appId = $_.AppID.SubString($_.AppId.IndexOf("!") + 1)
+    $packageFamilyName = $_.AppID.SubString(0, $_.AppId.IndexOf("!"))
+    $package = $packageFamilyNamesToPackages[$packageFamilyName]
+    $packageFullName = $package.PackageFullName
+    if ($packageFullName -ne $null) {
+        $manifest = Get-AppxPackageManifest $packageFullName
+        $app = $manifest.Package.Applications.Application | Where-Object { $_.Id -eq $appId }
+        $logo = $app.VisualElements.Square44x44Logo
+        if ($logo -eq $null) {
+            $logo = $app.VisualElements.Square30x30Logo
+        }
+        if ($logo -eq $null) {
+            $logo = $app.VisualElements.Logo
+        }
+        if ($logo -ne $null) {
+            $logoFilePath = FindLogoFilePath(Join-Path $package.InstallLocation $logo)
+            if ($logoFilePath -eq $null) {
+                $logoFilePath = FindLogoFilePath([IO.Path]::Combine($package.InstallLocation, "images", $logo))
+            }
+            if ($logoFilePath -ne $null) {
+                $logoBytes = Get-Content -Encoding Byte -Path $logoFilePath
+                $logoBase64 = [Convert]::ToBase64String($logoBytes)
+            } else {
+                $logoBase64 = ""
+            }
+        } else {
+            $logoBase64 = ""
+        }
+    }
+    return 'data:image/png;base64,' + $logoBase64
+}
+$apps |
+    % { @{ name = $_.Name; file = 'shell:AppsFolder\\' + $_.AppID; icon = Get-Icon($_.AppID) } } |
+    ConvertTo-Json
     `;
-    return [];
+    try {
+        const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
+        const results = JSON.parse(result?.stdout || '[]');
+        return await Promise.all(
+            results.map(async (application: any) => ({
+                file: application.file,
+                application: application.file,
+                icon: application.icon,
+                name: { default: application.name },
+                description: { },
+                other: { },
+            }))
+        );
+    } catch (e) {
+        return [];
+    }
 }
 
 const APP_EXTENTIONS = [ '.lnk', '.appref-ms', '.url', '.exe' ];
@@ -54,10 +147,9 @@ async function loadWin32Applications(directories: string[]): Promise<Application
     const script = `
 [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 $ErrorActionPreference = 'SilentlyContinue'
+$sh = New-Object -COM WScript.Shell
 function Get-ShortcutTarget($filename) {
-    $sh = New-Object -COM WScript.Shell
     $targetPath = $sh.CreateShortcut($filename).TargetPath 
-    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($sh) | Out-Null
     if ($targetPath) {
         return $targetPath
     } else {
@@ -79,6 +171,7 @@ ${folders} |
     % { $targetFile = Get-ShortcutTarget($_.FullName);
         @{ file = $_.FullName; name = $_.BaseName; target = $targetFile; icon = Get-Icon($targetFile) } } |
     ConvertTo-Json
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($sh) | Out-Null
     `;
     try {
         const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
