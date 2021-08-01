@@ -1,5 +1,5 @@
 
-import { ipcMain } from 'electron';
+import { app, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 
 import { Module } from 'common/module';
@@ -14,13 +14,9 @@ autoUpdater.logger = null;
 
 async function checkForUpdate() {
     try {
-        const result = await autoUpdater.checkForUpdatesAndNotify();
-        if (result) {
-            config.update.latest = result.updateInfo.version;
-            config.update.can_update = autoUpdater.currentVersion.compare(result.updateInfo.version) < 0;
-        } else {
-            config.update.can_update = false;
-        }
+        const result = await autoUpdater.checkForUpdates();
+        config.update.latest = result.updateInfo.version;
+        config.update.can_update = autoUpdater.currentVersion.compare(result.updateInfo.version) < 0;
     } catch (e) {
         config.update.can_update = false;
     }
@@ -42,16 +38,20 @@ ipcMain.on(IpcChannels.INSTALL_UPDATE, async () => {
     if (!isDevelopment()) {
         try {
             await autoUpdater.downloadUpdate();
-            autoUpdater.quitAndInstall();
+            autoUpdater.quitAndInstall(false, true);
         } catch (e) {
             config.update.can_update = false;
         }
     }
 });
 
-autoUpdater.on("update-downloaded", () => {
-    if (config.update.auto_update) {
-        autoUpdater.autoInstallOnAppQuit = true;
+app.on('quit', () => {
+    try {
+        if (config.update.auto_update) {
+            autoUpdater.quitAndInstall(true, false);
+        }
+    } catch (e) {
+        /* Ignore errors */
     }
 });
 
@@ -67,7 +67,7 @@ export class UpdateModule implements Module<any> {
             config.update.latest = version.version;
         }
         config.update.platform = getPlatform();
-        config.update.can_update = false;
+        config.update.can_update = autoUpdater.currentVersion.compare(config.update.latest) < 0;
         await this.update();
     }
 
