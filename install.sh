@@ -3,8 +3,10 @@
 # This is an install script that can be used to install this application on linux.
 
 URL=https://github.com/rolandbernard/marvin/releases/latest/download
-DIR=~/.config/marvin
-LINK=/usr/bin/marvin
+DIR=~/.config/marvin/bin
+SCRIPT=${DIR}/marvin
+DESKTOP=~/.local/share/applications/marvin.desktop
+BIN=/usr/bin/marvin
 
 mkdir -p ${DIR}
 
@@ -18,6 +20,16 @@ fi
 wget -P ${DIR} ${URL}/Marvin-${VERSION}.AppImage
 chmod uga+x ${DIR}/Marvin-${VERSION}.AppImage
 
-sudo rm -f ${LINK}
-sudo ln -s ${DIR}/Marvin-*.AppImage ${LINK}
+rm -f ${SCRIPT}
+echo "${DIR}/Marvin-*.AppImage" > ${SCRIPT}
+chmod a+x ${SCRIPT}
+
+echo "
+[Desktop Entry]
+Name=Marvin
+Exec=${SCRIPT}
+Terminal=false
+" > ${DESKTOP}
+
+sudo ln -s ${SCRIPT} ${BIN}
 
