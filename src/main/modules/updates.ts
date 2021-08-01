@@ -9,11 +9,17 @@ import { IpcChannels } from 'common/ipc';
 import { config, updateConfig } from 'main/config';
 import { module } from 'main/modules';
 
+autoUpdater.logger = null;
+
 async function checkForUpdate() {
     try {
-        const result = await autoUpdater.checkForUpdates();
-        config.update.latest = result.updateInfo.version;
-        config.update.can_update = autoUpdater.currentVersion.compare(result.updateInfo.version) < 0;
+        const result = await autoUpdater.checkForUpdatesAndNotify();
+        if (result) {
+            config.update.latest = result.updateInfo.version;
+            config.update.can_update = autoUpdater.currentVersion.compare(result.updateInfo.version) < 0;
+        } else {
+            config.update.can_update = false;
+        }
     } catch (e) {
         config.update.can_update = false;
     }
