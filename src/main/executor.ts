@@ -80,8 +80,8 @@ export async function searchQuery(query: Query, callback?: (results: Result[]) =
 export async function executeResult(result: Result) {
     await Promise.all(
         Object.values(modules)
-            .map(module => module.executeAny?.(result).catch(() => { /* Ignore erros */ }))
+            .map(module => module.executeAny?.(result).catch(() => { /* Ignore errors */ }))
     );
-    await moduleForId(result.module)?.execute?.(result).catch(() => { /* Ignore erros */ });
+    await moduleForId(result.module)?.execute?.(result).catch(() => { /* Ignore errors */ });
 }
 

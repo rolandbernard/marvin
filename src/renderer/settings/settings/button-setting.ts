@@ -15,13 +15,15 @@ export class ButtonSetting extends AbstractSetting {
     desc?: ButtonConfig
 
     async onClick() {
-        if (this.desc?.confirm) {
-            const question = getTranslation(this.desc.name!, this.config) + '?';
-            if (await ipcRenderer.invoke(IpcChannels.SHOW_DIALOG, question)) {
+        if (!this.isDisabled()) {
+            if (this.desc?.confirm) {
+                const question = getTranslation(this.desc.name!, this.config) + '?';
+                if (await ipcRenderer.invoke(IpcChannels.SHOW_DIALOG, question)) {
+                    ipcRenderer.send(this.desc.action);
+                }
+            } else if (this.desc) {
                 ipcRenderer.send(this.desc.action);
             }
-        } else if (this.desc) {
-            ipcRenderer.send(this.desc.action);
         }
     }
 

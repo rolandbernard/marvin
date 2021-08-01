@@ -177,7 +177,6 @@ export class PageRoot extends LitElement {
                 box-sizing: border-box;
                 backdrop-filter: blur(5px);
                 z-index: 100;
-                margin-left: var(--scrollbar-width);
             }
             .logo-title {
                 display: flex;
@@ -283,8 +282,8 @@ export class PageRoot extends LitElement {
                             <div class="title">${getTranslation('settings', this.config)}</div>
                         </div>
                         <div class="version">
-                            v${this.config?.version}
-                            ${this.config?.platform}
+                            v${this.config?.update.version}
+                            ${this.config?.update.platform}
                         </div>
                     </div>
                     <div class="tab-drawer">

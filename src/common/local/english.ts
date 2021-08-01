@@ -29,6 +29,14 @@ const TRANSLATION_ENGLISH = {
     output: 'Result area',
     select_a_theme: 'Select a theme',
 
+    update: 'Update',
+    version: 'Version',
+    platform: 'Platform',
+    auto_update: 'Automatic updates',
+    latest: 'Latest version',
+    check_for_update: 'Check for update',
+    install_update: 'Install update',
+
     modules: 'Modules',
     active: 'Active',
     settings: 'Settings',

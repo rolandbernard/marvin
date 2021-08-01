@@ -29,6 +29,14 @@ const TRANSLATION_ITALIAN = {
     output: 'Area dei risultati',
     select_a_theme: 'Seleziona un theme',
 
+    update: 'Update',
+    version: 'Versione',
+    platform: 'Piattaforma',
+    auto_update: 'Aggiornamenti automatici',
+    latest: 'Ultima versione',
+    check_for_update: 'Controlla per l\'aggiornamento',
+    install_update: 'Installare l\'aggiornamento',
+
     modules: 'Moduli',
     active: 'Attivo',
     settings: 'Impostazioni',

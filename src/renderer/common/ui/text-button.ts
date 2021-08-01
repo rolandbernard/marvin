@@ -27,6 +27,9 @@ export class TextButton extends LitElement {
                 padding: 0;
                 margin: 0;
                 outline: none;
+                width: 15rem;
+                min-width: min-content;
+                max-width: 100%;
             }
             .button.enabled:hover {
                 border: 1px solid var(--settings-border-hover-color);
