@@ -9,6 +9,7 @@ import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-des
 import { cloneDeep } from 'common/util';
 import { getPlatform, Platform } from 'common/platform';
 import { THEMES } from 'common/themes';
+import { IpcChannels } from 'common/ipc';
 
 const config_desc = new WeakMap<Config, ConfigDescription[]>();
 
@@ -164,7 +165,7 @@ class GeneralConfig extends Config {
         this.addConfigField({
             kind: 'button',
             name: 'reset_config',
-            action: 'reset-config',
+            action: IpcChannels.RESET_CONFIG,
             confirm: true,
         });
     }
@@ -247,7 +248,7 @@ class ThemeConfig extends Config {
             name: 'theme',
             placeholder: 'select_a_theme',
             options: Object.keys(THEMES) as Translatable[],
-            action: 'change-theme',
+            action: IpcChannels.CHANGE_THEME,
         }, 0);
     }
 }

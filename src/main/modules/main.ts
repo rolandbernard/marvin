@@ -7,6 +7,7 @@ import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { Query } from 'common/query';
 import { getPlatform, isDevelopment, Platform } from 'common/platform';
+import { IpcChannels } from 'common/ipc';
 
 import { config } from 'main/config';
 import { module, moduleForId } from 'main/modules';
@@ -98,7 +99,7 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     hideWindow() {
-        this.window?.webContents.send('hide');
+        this.window?.webContents.send(IpcChannels.HIDE_WINDOW);
         // Give the renderer time to hide the results. Otherwise the old results will be visible
         // for the first frame when showing the window for the next query.
         setTimeout(() => {
@@ -107,7 +108,7 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     showWindow() {
-        this.window?.webContents.send('show', config, config.getDescription());
+        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
         this.window?.show();
         if (config.general.recenter_on_show) {
             this.window?.center();
@@ -159,7 +160,7 @@ export class MainModule implements Module<SimpleResult> {
         this.updateTrayIcon();
         this.registerShortcut();
         this.updateLoginItem();
-        this.window?.webContents.send('show', config, config.getDescription());
+        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
     }
 
     async deinit() {

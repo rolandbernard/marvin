@@ -4,6 +4,7 @@ import { LitElement, property } from 'lit-element';
 
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';
+import { IpcChannels } from 'common/ipc';
 
 export abstract class QueryExecutor extends LitElement {
 
@@ -31,7 +32,7 @@ export abstract class QueryExecutor extends LitElement {
 
     constructor() {
         super();
-        ipcRenderer.on('query-result', (_msg, results: Result[], finished: boolean) => {
+        ipcRenderer.on(IpcChannels.SEARCH_RESULT, (_msg, results: Result[], finished: boolean) => {
             this.onQueryResult(results, finished);
         });
     }
@@ -69,7 +70,7 @@ export abstract class QueryExecutor extends LitElement {
         }, 100);
         clearTimeout(this.query_timeout!);
         this.query_timeout = setTimeout(() => {
-            ipcRenderer.send('query', this.query);
+            ipcRenderer.send(IpcChannels.SEARCH_QUERY, this.query);
         }, this.config?.general.debounce_time);
     }
 

@@ -6,6 +6,7 @@ import { Query } from 'common/query';
 import { GlobalConfig } from 'common/config';
 import { mergeDeep } from 'common/util';
 import { THEMES } from 'common/themes';
+import { IpcChannels } from 'common/ipc';
 
 import { executeResult, searchQuery } from 'main/executor';
 import { config, resetConfig, updateConfig } from 'main/config';
@@ -28,7 +29,7 @@ type RunnerResult = Result & {
 function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], finished: boolean) {
     if (id === execution_count) {
         original_option.length = 0;
-        sender.send('query-result', results.map((opt, id) => {
+        sender.send(IpcChannels.SEARCH_RESULT, results.map((opt, id) => {
             const reduced_option: RunnerResult = { ...opt, id: id };
             if (reduced_option.kind === 'text-result') {
                 if (reduced_option.text.length > MAX_TRANSFER_LEN) {
@@ -60,11 +61,11 @@ async function handleQuery(query: string, sender: WebContents) {
     sendUpdatedOptions(begin_count, sender, results, true);
 }
 
-ipcMain.on('query', (msg, query: string) => {
+ipcMain.on(IpcChannels.SEARCH_QUERY, (msg, query: string) => {
     handleQuery(query, msg.sender);
 });
 
-ipcMain.on('execute', (_msg, result: RunnerResult) => {
+ipcMain.on(IpcChannels.EXECUTE_RESULT, (_msg, result: RunnerResult) => {
     const key = result.id;
     if (key in original_option) {
         executeResult(original_option[key]);
@@ -73,7 +74,7 @@ ipcMain.on('execute', (_msg, result: RunnerResult) => {
     }
 });
 
-ipcMain.on('drag', async (event, option: Result) => {
+ipcMain.on(IpcChannels.DRAG_RESULT, async (event, option: Result) => {
     if (option.file) {
         event.sender.startDrag({
             file: option.file,
@@ -82,26 +83,26 @@ ipcMain.on('drag', async (event, option: Result) => {
     }
 });
 
-ipcMain.on('update-config', async (msg, new_config: GlobalConfig) => {
+ipcMain.on(IpcChannels.UPDATE_CONFIG, async (msg, new_config: GlobalConfig) => {
     await updateConfig(new_config);
-    msg.sender.send('show', config, config.getDescription());
+    msg.sender.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
     await updateModules();
 });
 
-ipcMain.on('reset-config', async (msg) => {
+ipcMain.on(IpcChannels.RESET_CONFIG, async (msg) => {
     await resetConfig();
-    msg.sender.send('show', config, config.getDescription());
+    msg.sender.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
     await updateModules();
 });
 
-ipcMain.on('change-theme', async (msg, theme: keyof typeof THEMES) => {
+ipcMain.on(IpcChannels.CHANGE_THEME, async (msg, theme: keyof typeof THEMES) => {
     mergeDeep(config.theme, THEMES[theme]);
     await updateConfig();
-    msg.sender.send('show', config, config.getDescription());
+    msg.sender.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
     await updateModules();
 });
 
-ipcMain.handle('show-dialog', (msg, text: string) => {
+ipcMain.handle(IpcChannels.SHOW_DIALOG, (msg, text: string) => {
     const window = BrowserWindow.fromWebContents(msg.sender);
     if (window) {
         return dialog.showMessageBoxSync(window, {

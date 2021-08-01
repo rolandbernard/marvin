@@ -5,6 +5,7 @@ import { ipcRenderer } from 'electron';
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';
 import { copyCase } from 'common/util';
+import { IpcChannels } from 'common/ipc';
 
 import { getConfigStyles } from 'renderer/common/theme';
 import { QueryExecutor } from 'renderer/common/executor';
@@ -20,11 +21,11 @@ export class PageRoot extends QueryExecutor {
 
     constructor() {
         super();
-        ipcRenderer.on('show', (_msg, config: GlobalConfig) => {
+        ipcRenderer.on(IpcChannels.SHOW_WINDOW, (_msg, config: GlobalConfig) => {
             this.config = config;
-            ipcRenderer.send('query', this.query);
+            ipcRenderer.send(IpcChannels.SEARCH_QUERY, this.query);
         });
-        ipcRenderer.on('hide', () => {
+        ipcRenderer.on(IpcChannels.HIDE_WINDOW, () => {
             this.query = '';
             this.selected = 0;
             this.results = [];
@@ -32,12 +33,12 @@ export class PageRoot extends QueryExecutor {
     }
 
     executeResult(result: Result) {
-        ipcRenderer.send('execute', result);
+        ipcRenderer.send(IpcChannels.EXECUTE_RESULT, result);
         window.close();
     }
 
     onDrag(e: CustomEvent) {
-        ipcRenderer.send('drag', e.detail.result);
+        ipcRenderer.send(IpcChannels.DRAG_RESULT, e.detail.result);
     }
 
     static get styles() {

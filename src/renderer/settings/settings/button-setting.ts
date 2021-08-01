@@ -4,6 +4,7 @@ import { customElement, html } from 'lit-element';
 
 import { ButtonConfig } from 'common/config-desc';
 import { getTranslation } from 'common/local/locale';
+import { IpcChannels } from 'common/ipc';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
@@ -16,7 +17,7 @@ export class ButtonSetting extends AbstractSetting {
     async onClick() {
         if (this.desc?.confirm) {
             const question = getTranslation(this.desc.name!, this.config) + '?';
-            if (await ipcRenderer.invoke('show-dialog', question)) {
+            if (await ipcRenderer.invoke(IpcChannels.SHOW_DIALOG, question)) {
                 ipcRenderer.send(this.desc.action);
             }
         } else if (this.desc) {

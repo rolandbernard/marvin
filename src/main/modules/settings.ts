@@ -7,6 +7,7 @@ import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { Query } from 'common/query';
 import { isDevelopment } from 'common/platform';
+import { IpcChannels } from 'common/ipc';
 
 import { config } from 'main/config';
 import { module } from 'main/modules';
@@ -47,12 +48,12 @@ export class SettingsModule implements Module<SimpleResult> {
     }
 
     hideWindow() {
-        this.window?.webContents.send('hide');
+        this.window?.webContents.send(IpcChannels.HIDE_WINDOW);
         this.window?.hide();
     }
 
     showWindow() {
-        this.window?.webContents.send('show', config, config.getDescription());
+        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
         this.window?.show();
         this.window?.focus();
     }
@@ -62,7 +63,7 @@ export class SettingsModule implements Module<SimpleResult> {
     }
 
     async update() {
-        this.window?.webContents.send('show', config, config.getDescription());
+        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
     }
 
     async deinit() {

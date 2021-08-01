@@ -9,6 +9,7 @@ import { TextResult } from 'common/result';
 import { Module } from 'common/module';
 import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { time, TimeUnit } from 'common/time';
+import { IpcChannels } from 'common/ipc';
 
 import { module } from 'main/modules';
 import { moduleConfig, config } from 'main/config';
@@ -32,11 +33,6 @@ async function updateClipboard() {
     await writeFile(CLIPBOARD_PATH, JSON.stringify(clipboard_history), { encoding: 'utf8' });
 }
 
-ipcMain.on('reset-clipboard', () => {
-    clipboard_history = [];
-    updateClipboard();
-});
-
 const MODULE_ID = 'clipboard';
 
 class ClipboardConfig extends ModuleConfig {
@@ -54,11 +50,16 @@ class ClipboardConfig extends ModuleConfig {
         this.addConfigField({
             kind: 'button',
             name: 'clear_history',
-            action: 'reset-clipboard',
+            action: IpcChannels.RESET_CLIPBOARD,
             confirm: true,
         });
     }
 }
+
+ipcMain.on(IpcChannels.RESET_CLIPBOARD, () => {
+    clipboard_history = [];
+    updateClipboard();
+});
 
 @module(MODULE_ID)
 export class ClipboardModule implements Module<TextResult> {
