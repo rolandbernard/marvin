@@ -8,6 +8,7 @@ import { IpcChannels } from 'common/ipc';
 
 import { config, updateConfig } from 'main/config';
 import { module } from 'main/modules';
+import { openUrl } from 'main/adapters/url-handler';
 
 autoUpdater.logger = null;
 
@@ -25,6 +26,10 @@ async function checkForUpdate() {
     }
     await updateConfig();
 }
+
+ipcMain.on(IpcChannels.OPEN_UPDATE, () => {
+    openUrl('https://github.com/rolandbernard/marvin/releases/latest');
+});
 
 ipcMain.on(IpcChannels.CHECK_FOR_UPDATE, async (msg) => {
     if (!isDevelopment()) {

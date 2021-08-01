@@ -15,5 +15,6 @@ export enum IpcChannels {
     REFRESH_APPLICATIONS = 'refresh-applications',
     CHECK_FOR_UPDATE = 'check-for-update',
     INSTALL_UPDATE = 'install-update',
+    OPEN_UPDATE = 'open-update',
 }
 

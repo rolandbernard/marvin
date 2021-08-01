@@ -272,6 +272,12 @@ class UpdateConfig extends Config {
         super();
         this.addConfigField({
             kind: 'button',
+            name: 'open_in_browser',
+            confirm: false,
+            action: IpcChannels.OPEN_UPDATE,
+        });
+        this.addConfigField({
+            kind: 'button',
             name: 'check_for_update',
             confirm: false,
             action: IpcChannels.CHECK_FOR_UPDATE,

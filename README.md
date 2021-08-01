@@ -19,7 +19,40 @@ This is a keystroke launcher for Linux and Windows.
 
 ## Installation
 
-You can download the latest release of Marvin [here](https://github.com/rolandbernard/marvin/releases).
+You can download the latest release of Marvin [here](https://github.com/rolandbernard/marvin/releases/latest).
+For both Linux and Windows, portable versions are available in `marvin-*.*.*.zip` and
+`Marvin-*.*.*-win.zip` respectively.
+
+### Windows
+
+For Windows, you can download and execute the installer called `Marvin-Setup-*.*.*.exe` from
+[here](https://github.com/rolandbernard/marvin/releases/tag/latest). Because the executable is not
+signed by Microsoft, Windows will most likely warn you before starting the installer.
+
+### Linux
+
+For Linux, you can download the AppImage. For an easy installation, you can execute the following
+command:
+```
+wget -qO- https://raw.githubusercontent.com/rolandbernard/marvin/master/install.sh | bash
+```
+
+If you prefer, you can change the build configuration in `electron-builder.yml` and build a
+different package type ([electron-builder docs](https://www.electron.build/configuration/linux)).
+
+
+## Updates
+
+You can go to the `Update` tab in the settings to check the currently installed version. Use the
+`Check for update` button to check for a newer version. To open the latest release in the browser,
+use the `Open in browser` button.
+
+If a newer version is available, the `Install update` button will be enabled, and you can press it to
+directly install the update and restart the application. When enabling the `Automatic update`
+setting, the updates will be downloaded automatically and installed when closing the application.
+
+The direct update features can work on Linux depending on your setup, but it is not very reliable.
+If you used the installation script, it should work as expected.
 
 
 ## Settings
