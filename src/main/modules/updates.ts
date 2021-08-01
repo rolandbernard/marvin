@@ -1,5 +1,5 @@
 
-import { app, ipcMain } from 'electron';
+import { ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 
 import { Module } from 'common/module';
@@ -38,20 +38,10 @@ ipcMain.on(IpcChannels.INSTALL_UPDATE, async () => {
     if (!isDevelopment()) {
         try {
             await autoUpdater.downloadUpdate();
-            autoUpdater.quitAndInstall(false, true);
+            autoUpdater.quitAndInstall();
         } catch (e) {
             config.update.can_update = false;
         }
-    }
-});
-
-app.on('quit', () => {
-    try {
-        if (config.update.auto_update) {
-            autoUpdater.quitAndInstall(true, false);
-        }
-    } catch (e) {
-        /* Ignore errors */
     }
 });
 
@@ -74,8 +64,10 @@ export class UpdateModule implements Module<any> {
     async update() {
         if (isDevelopment() || !config.update.auto_update) {
             autoUpdater.autoDownload = false;
+            autoUpdater.autoInstallOnAppQuit = false;
         } else {
             autoUpdater.autoDownload = true;
+            autoUpdater.autoInstallOnAppQuit = true;
             await checkForUpdate();
         }
     }
