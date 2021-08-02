@@ -32,7 +32,7 @@ class WebSearchEntry extends Config {
 
 class WebSearchConfig extends ModuleConfig {
     @configKind('quality')
-    quality = 1;
+    quality = 0.75;
 
     @configKind('boolean')
     url_preview = false;

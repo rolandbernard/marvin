@@ -14,7 +14,7 @@ const MODULE_ID = 'color';
 
 class ColorConfig extends ModuleConfig {
     @configKind('quality')
-    quality = 1;
+    quality = 0.8;
 
     @configKind('boolean')
     color_preview = true;
