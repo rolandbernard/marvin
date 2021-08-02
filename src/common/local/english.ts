@@ -154,6 +154,9 @@ const TRANSLATION_ENGLISH = {
     email: 'Email',
     email_description: 'This module allows one to quickly start writing a new email',
     open_new_email: 'Open new email',
+
+    duckduckgo_search: 'DuckDuckGo Search',
+    duckduckgo_search_description: 'This module gives you the DuckDuckGo search results for your query',
 };
 
 export default TRANSLATION_ENGLISH;

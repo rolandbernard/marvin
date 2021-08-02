@@ -154,6 +154,9 @@ const TRANSLATION_GERMAN = {
     email: 'E-Mail',
     email_description: 'Mit diesem Modul ist es möglich schnell eine neue E-Mail zu beginnen',
     open_new_email: 'Neue E-Mail öffnen',
+
+    duckduckgo_search: 'DuckDuckGo Search',
+    duckduckgo_search_description: 'Dieses Modul liefert Ihnen die DuckDuckGo-Suchergebnisse für Ihre Anfrage',
 };
 
 export default TRANSLATION_GERMAN;

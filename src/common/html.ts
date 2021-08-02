@@ -127,7 +127,6 @@ function matchesSelectors(element: HtmlElement, query: string[]): boolean {
             } else if (selector[0] === '#') {
                 return element.attributes['id'] !== selector.substr(1);
             } else if (selector[0] === '.') {
-                console.log(element.attributes['class']?.split(/\s+/), selector.substr(1))
                 return !element.attributes['class']?.split(/\s+/)?.includes(selector.substr(1));
             } else {
                 return selector !== element.tag;
