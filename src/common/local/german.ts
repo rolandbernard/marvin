@@ -29,6 +29,14 @@ const TRANSLATION_GERMAN = {
     output: 'Ergebnisbereich',
     select_a_theme: 'Wählen Sie ein Theme',
 
+    update: 'Update',
+    version: 'Version',
+    platform: 'Platform',
+    auto_update: 'Automatische Updates',
+    latest: 'Neueste Version',
+    check_for_update: 'Auf Update prüfen',
+    install_update: 'Update installieren',
+
     modules: 'Module',
     active: 'Aktiv',
     settings: 'Einstellungen',

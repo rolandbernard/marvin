@@ -1,6 +1,6 @@
 {
     "name": "marvin",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "This is a keystroke launcher for Linux",
     "repository": "https://github.com/rolandbernard/marvin/",
     "author": "Roland Bernard",
@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "algebrite": "^1.4.0",
+        "electron-updater": "^4.3.9",
         "lit-element": "^2.5.1",
         "lit-html": "^1.4.1",
         "mathjs": "^9.4.4",

@@ -9,6 +9,7 @@ import 'renderer/settings/settings/boolean-setting';
 import 'renderer/settings/settings/button-setting';
 import 'renderer/settings/settings/code-setting';
 import 'renderer/settings/settings/color-setting';
+import 'renderer/settings/settings/info-setting';
 import 'renderer/settings/settings/object-setting';
 import 'renderer/settings/settings/path-setting';
 import 'renderer/settings/settings/quality-setting';

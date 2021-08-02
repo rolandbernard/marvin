@@ -9,6 +9,7 @@ import { ConfigDescription, ObjectConfig, SimpleConfig } from 'common/config-des
 import { cloneDeep } from 'common/util';
 import { getPlatform, Platform } from 'common/platform';
 import { THEMES } from 'common/themes';
+import { IpcChannels } from 'common/ipc';
 
 const config_desc = new WeakMap<Config, ConfigDescription[]>();
 
@@ -164,7 +165,7 @@ class GeneralConfig extends Config {
         this.addConfigField({
             kind: 'button',
             name: 'reset_config',
-            action: 'reset-config',
+            action: IpcChannels.RESET_CONFIG,
             confirm: true,
         });
     }
@@ -247,20 +248,59 @@ class ThemeConfig extends Config {
             name: 'theme',
             placeholder: 'select_a_theme',
             options: Object.keys(THEMES) as Translatable[],
-            action: 'change-theme',
+            action: IpcChannels.CHANGE_THEME,
         }, 0);
     }
 }
 
-export class GlobalConfig extends Config {
-    readonly version = app.getVersion();
-    readonly platform = getPlatform();
+class UpdateConfig extends Config {
+    @configKind('info')
+    version = app.getVersion();
 
+    @configKind('info')
+    platform = getPlatform();
+
+    @configKind('boolean')
+    auto_update = false;
+
+    @configKind('info')
+    latest = app.getVersion();
+
+    can_update = false;
+
+    constructor() {
+        super();
+        this.addConfigField({
+            kind: 'button',
+            name: 'open_in_browser',
+            confirm: false,
+            action: IpcChannels.OPEN_UPDATE,
+        });
+        this.addConfigField({
+            kind: 'button',
+            name: 'check_for_update',
+            confirm: false,
+            action: IpcChannels.CHECK_FOR_UPDATE,
+        });
+        this.addConfigField({
+            kind: 'button',
+            name: 'install_update',
+            disabled: { index: ['update', 'can_update'], compare: false },
+            confirm: true,
+            action: IpcChannels.INSTALL_UPDATE,
+        });
+    }
+}
+
+export class GlobalConfig extends Config {
     @config({ kind: 'page', icon: 'settings' })
     general = new GeneralConfig();
 
     @config({ kind: 'page', icon: 'palette' })
     theme = new ThemeConfig();
+
+    @config({ kind: 'page', icon: 'update' })
+    update = new UpdateConfig();
 
     @configKind('pages')
     modules: Record<ModuleId, ModuleConfig | undefined>;

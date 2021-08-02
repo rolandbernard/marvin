@@ -7,6 +7,7 @@ import { configKind, ModuleConfig } from 'common/config';
 import { Query } from 'common/query';
 import { getResultKey, Result } from 'common/result';
 import { Module } from 'common/module';
+import { IpcChannels } from 'common/ipc';
 
 import { module, moduleForId } from 'main/modules';
 import { moduleConfig } from 'main/config';
@@ -29,11 +30,6 @@ async function loadHistory() {
 async function updateHistory() {
     await writeFile(HISTORY_PATH, JSON.stringify(history), { encoding: 'utf8' });
 }
-
-ipcMain.on('reset-history', () => {
-    history = [];
-    updateHistory();
-});
 
 const MODULE_ID = 'history';
 
@@ -60,11 +56,16 @@ class HistoryConfig extends ModuleConfig {
         this.addConfigField({
             kind: 'button',
             name: 'clear_history',
-            action: 'reset-history',
+            action: IpcChannels.RESET_HISTORY,
             confirm: true,
         });
     }
 }
+
+ipcMain.on(IpcChannels.RESET_HISTORY, () => {
+    history = [];
+    updateHistory();
+});
 
 @module(MODULE_ID)
 export class ClipboardModule implements Module<HistoryResult> {

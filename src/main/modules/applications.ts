@@ -7,6 +7,7 @@ import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { time, TimeUnit } from 'common/time';
+import { IpcChannels } from 'common/ipc';
 
 import { Application, executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
 import { getDefaultPath } from 'main/adapters/file-handler';
@@ -33,13 +34,13 @@ class ApplicationsConfig extends ModuleConfig {
         this.addConfigField({
             kind: 'button',
             name: 'refresh_applications',
-            action: 'refresh-applications',
+            action: IpcChannels.REFRESH_APPLICATIONS,
             confirm: false,
         });
     }
 }
 
-ipcMain.on('refresh-applications', () => {
+ipcMain.on(IpcChannels.REFRESH_APPLICATIONS, () => {
     moduleForId<ApplicationsModule>(MODULE_ID)?.refreshApplications();
 });
 

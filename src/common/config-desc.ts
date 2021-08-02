@@ -2,6 +2,7 @@
 import { Translatable } from 'common/local/locale';
 import { Platform } from 'common/platform';
 import { DeepIndex } from 'common/util';
+import { IpcChannels } from 'common/ipc';
 
 interface BaseConfig {
     kind: string;
@@ -16,7 +17,7 @@ interface BaseConfig {
 
 export interface SimpleConfig extends BaseConfig {
     kind: 'boolean' | 'code' | 'color' | 'result' | 'path' | 'quality'
-        | 'shortcut' | 'size' | 'text' | 'time' | 'amount';
+        | 'shortcut' | 'size' | 'text' | 'time' | 'amount' | 'info';
 }
 
 export interface ObjectConfig extends BaseConfig {
@@ -39,12 +40,12 @@ export interface SelectActionConfig extends BaseConfig {
     kind: 'select-action';
     placeholder: Translatable;
     options: Translatable[];
-    action: string;
+    action: IpcChannels;
 }
 
 export interface ButtonConfig extends BaseConfig {
     kind: 'button';
-    action: string;
+    action: IpcChannels;
     confirm: boolean;
 }
 

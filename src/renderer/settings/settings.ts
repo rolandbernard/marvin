@@ -7,6 +7,7 @@ import { GlobalConfig } from 'common/config';
 import { ObjectConfig } from 'common/config-desc';
 import { getTranslation } from 'common/local/locale';
 import { DeepIndex, indexObject } from 'common/util';
+import { IpcChannels } from 'common/ipc';
 
 import { getConfigStyles } from 'renderer/common/theme';
 
@@ -33,7 +34,7 @@ export class PageRoot extends LitElement {
 
     constructor() {
         super();
-        ipcRenderer.on('show', (_msg, config: GlobalConfig, desc: ObjectConfig) => {
+        ipcRenderer.on(IpcChannels.SHOW_WINDOW, (_msg, config: GlobalConfig, desc: ObjectConfig) => {
             this.config = config;
             this.desc = desc;
             this.selectSomePage();
@@ -122,7 +123,7 @@ export class PageRoot extends LitElement {
     }
 
     onUpdate() {
-        ipcRenderer.send('update-config', this.config);
+        ipcRenderer.send(IpcChannels.UPDATE_CONFIG, this.config);
     }
 
     static get styles() {
@@ -176,7 +177,6 @@ export class PageRoot extends LitElement {
                 box-sizing: border-box;
                 backdrop-filter: blur(5px);
                 z-index: 100;
-                margin-left: var(--scrollbar-width);
             }
             .logo-title {
                 display: flex;
@@ -282,8 +282,8 @@ export class PageRoot extends LitElement {
                             <div class="title">${getTranslation('settings', this.config)}</div>
                         </div>
                         <div class="version">
-                            v${this.config?.version}
-                            ${this.config?.platform}
+                            v${this.config?.update.version}
+                            ${this.config?.update.platform}
                         </div>
                     </div>
                     <div class="tab-drawer">
