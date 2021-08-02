@@ -100,11 +100,11 @@ export class TranslateModule implements Module<TranslateResult> {
     parseHtmlResult(text: string): Translation[] {
         const html = parseHtml(text);
         return selectAll(html, '.exact .lemma, .inexact .lemma').flatMap(meaning => {
-            const original = innerText(selectAll(meaning, '.lemma_desc a')[0] ?? '');
+            const original = innerText(selectAll(meaning, '.lemma_desc a')[0], true, true);
             return selectAll(meaning, '.translation').map(translation => ({
                 original: original,
-                translated: innerText(selectAll(translation, 'a')[0] ?? ''),
-                type: selectAll(translation, '.tag_type')[0]?.attributes['title'],
+                translated: innerText(selectAll(translation, 'a')[0], true, true),
+                type: innerText(selectAll(translation, '.tag_type')[0]?.attributes['title'], true, true),
             }))
         });
     }
