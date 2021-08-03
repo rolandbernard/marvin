@@ -109,12 +109,25 @@ export class TranslateModule implements Module<TranslateResult> {
         });
     }
 
+    decodeBuffer(data: Buffer): string {
+        const utf8 = data.toString('utf8');
+        const match = utf8.match(/(charset|encoding)\s*=\s*['"]?([-\w]+)['"]?/i);
+        let encoding = 'utf8';
+        if (match?.[2].toLowerCase() === 'latin-9') {
+            encoding = 'iso-8859-15';
+        }
+        try {
+            return new TextDecoder(encoding).decode(data);
+        } catch (e) {
+            return utf8;
+        }
+    }
+
     async queryApi(query: Query, word: string, from: string, to: string): Promise<TranslateResult[]> {
         try {
             const response = await fetch(`${API_ROOT}/${from}-${to}/search?query=${encodeURIComponent(word)}&ajax=1`);
-            const data = await response.buffer();
-            const text = new TextDecoder('iso-8859-15').decode(data);
-            return this.parseHtmlResult(text).map(translation => ({
+            const data = this.decodeBuffer(await response.buffer());
+            return this.parseHtmlResult(data).map(translation => ({
                 module: MODULE_ID,
                 query: query.text,
                 kind: 'simple-result',
