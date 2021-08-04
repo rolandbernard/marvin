@@ -10,7 +10,7 @@ import { Platform, getPlatform } from 'common/platform';
 export const modules: Record<ModuleId, Module<Result>> = { };
 
 // This loads all typescript files in the modules directory
-importAll(require.context('main/modules', true, /\.ts?$/));
+importAll(require.context('./modules', true, /\.ts$/));
 
 export function registerModule(key: ModuleId, module: Module<any>) {
     modules[key] = module;
