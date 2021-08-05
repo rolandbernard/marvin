@@ -15,6 +15,7 @@ const TRANSLATION_ENGLISH = {
     exclusive_module_prefix: 'Exclusive prefix',
     enhanced_search: 'Enhanced search',
     reset_config: 'Reset to defaults',
+    ignore_mouse: 'Ignore mouse',
 
     theme: 'Theme',
     background_color: 'Background color',
@@ -154,6 +155,9 @@ const TRANSLATION_ENGLISH = {
     email: 'Email',
     email_description: 'This module allows one to quickly start writing a new email',
     open_new_email: 'Open new email',
+
+    duckduckgo_search: 'DuckDuckGo Search',
+    duckduckgo_search_description: 'This module gives you the DuckDuckGo search results for your query',
 };
 
 export default TRANSLATION_ENGLISH;

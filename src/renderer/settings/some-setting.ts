@@ -1,25 +1,11 @@
 
 import { customElement, html } from 'lit-element';
 
-import { AbstractSetting } from 'renderer//settings/abstract-setting';
+import { importAll } from 'common/util';
 
-import 'renderer/settings/settings/amount-setting';
-import 'renderer/settings/settings/array-setting';
-import 'renderer/settings/settings/boolean-setting';
-import 'renderer/settings/settings/button-setting';
-import 'renderer/settings/settings/code-setting';
-import 'renderer/settings/settings/color-setting';
-import 'renderer/settings/settings/info-setting';
-import 'renderer/settings/settings/object-setting';
-import 'renderer/settings/settings/path-setting';
-import 'renderer/settings/settings/quality-setting';
-import 'renderer/settings/settings/result-setting';
-import 'renderer/settings/settings/select-action-setting';
-import 'renderer/settings/settings/select-setting';
-import 'renderer/settings/settings/shortcut-setting';
-import 'renderer/settings/settings/size-setting';
-import 'renderer/settings/settings/text-setting';
-import 'renderer/settings/settings/time-setting';
+import { AbstractSetting } from 'renderer/settings/abstract-setting';
+
+importAll(require.context('./settings', true, /\.ts$/));
 
 @customElement('some-setting')
 export class SomeSetting extends AbstractSetting {

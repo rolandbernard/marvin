@@ -20,13 +20,11 @@ const MODULE_ID = 'main';
 
 if (getPlatform() === Platform.LINUX) {
     // Transparency will not work without this
-    app.commandLine.appendSwitch("disable-gpu");
+    app.commandLine.appendSwitch('use-gl', 'desktop');
 }
 
-if (getPlatform() === Platform.WINDOWS) {
-    // Remove animation when showing the window
-    app.commandLine.appendSwitch("wm-window-animations-disabled");
-}
+// Remove animation when showing the window
+app.commandLine.appendSwitch('wm-window-animations-disabled');
 
 @module(MODULE_ID as any) // This module has no config => needs no translation
 export class MainModule implements Module<SimpleResult> {
@@ -80,6 +78,7 @@ export class MainModule implements Module<SimpleResult> {
             icon: join(__dirname, Logo),
             title: 'Marvin',
         });
+
         const hideWindow = (e: Event) => {
             e.preventDefault();
             this.hideWindow();
@@ -101,6 +100,11 @@ export class MainModule implements Module<SimpleResult> {
         });
 
         this.window.loadURL(`file://${join(__dirname, 'app.html')}`);
+    }
+
+    updateWindow() {
+        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
+        this.window?.setIgnoreMouseEvents(config.general.ignore_mouse);
     }
 
     hideWindow() {
@@ -158,6 +162,7 @@ export class MainModule implements Module<SimpleResult> {
         setTimeout(() => {
             // This has to be delayed, because otherwise transparency will not work on linux
             this.createWindow();
+            this.updateWindow();
         }, 500)
     }
 
@@ -165,7 +170,7 @@ export class MainModule implements Module<SimpleResult> {
         this.updateTrayIcon();
         this.registerShortcut();
         this.updateLoginItem();
-        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
+        this.updateWindow();
     }
 
     async deinit() {

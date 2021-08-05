@@ -100,19 +100,33 @@ export class TranslateModule implements Module<TranslateResult> {
     parseHtmlResult(text: string): Translation[] {
         const html = parseHtml(text);
         return selectAll(html, '.exact .lemma, .inexact .lemma').flatMap(meaning => {
-            const original = innerText(selectAll(meaning, '.lemma_desc a')[0] ?? '');
+            const original = innerText(selectAll(meaning, '.lemma_desc a')[0], true, true);
             return selectAll(meaning, '.translation').map(translation => ({
                 original: original,
-                translated: innerText(selectAll(translation, 'a')[0] ?? ''),
-                type: selectAll(translation, '.tag_type')[0]?.attributes['title'],
+                translated: innerText(selectAll(translation, 'a')[0], true, true),
+                type: innerText(selectAll(translation, '.tag_type')[0]?.attributes['title'], true, true),
             }))
         });
+    }
+
+    decodeBuffer(data: Buffer): string {
+        const utf8 = data.toString('utf8');
+        const match = utf8.match(/(charset|encoding)\s*=\s*['"]?([-\w]+)['"]?/i);
+        let encoding = 'utf8';
+        if (match?.[2].toLowerCase() === 'latin-9') {
+            encoding = 'iso-8859-15';
+        }
+        try {
+            return new TextDecoder(encoding).decode(data);
+        } catch (e) {
+            return utf8;
+        }
     }
 
     async queryApi(query: Query, word: string, from: string, to: string): Promise<TranslateResult[]> {
         try {
             const response = await fetch(`${API_ROOT}/${from}-${to}/search?query=${encodeURIComponent(word)}&ajax=1`);
-            const data = await response.text();
+            const data = this.decodeBuffer(await response.buffer());
             return this.parseHtmlResult(data).map(translation => ({
                 module: MODULE_ID,
                 query: query.text,

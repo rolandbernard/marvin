@@ -2,13 +2,9 @@
 import { css, customElement, html, LitElement, property } from 'lit-element';
 
 import { Preview } from 'common/result';
+import { importAll } from 'common/util';
 
-import 'renderer/main/previews/audio-preview';
-import 'renderer/main/previews/color-preview';
-import 'renderer/main/previews/embed-preview';
-import 'renderer/main/previews/iframe-preview';
-import 'renderer/main/previews/image-preview';
-import 'renderer/main/previews/video-preview';
+importAll(require.context('./previews', true, /\.ts$/));
 
 @customElement('some-preview')
 export class SomePreview extends LitElement {

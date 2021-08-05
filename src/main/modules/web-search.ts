@@ -32,14 +32,14 @@ class WebSearchEntry extends Config {
 
 class WebSearchConfig extends ModuleConfig {
     @configKind('quality')
-    quality = 1;
+    quality = 0.75;
 
     @configKind('boolean')
     url_preview = false;
 
     @configDesc({ kind: 'array', default: new WebSearchEntry() })
     patterns = [
-        new WebSearchEntry('d?', 'https://duckduckgo.com/?q=$'),
+        new WebSearchEntry('k?', 'https://duckduckgo.com/?q=$'),
         new WebSearchEntry('g?', 'https://www.google.com/search?q=$'),
         new WebSearchEntry('b?', 'https://www.bing.com/search?q=$'),
         new WebSearchEntry('w?', 'https://en.wikipedia.org/wiki/Special:Search?search=$'),

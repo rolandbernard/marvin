@@ -7,7 +7,7 @@ export interface HtmlTag {
 
 export type HtmlElement = HtmlTag | string;
 
-const TAG_REGEX = /<\s*?([-\w]+|!)([^>]*?)>|<\/\s*?([-\w]+)>|([^<]+)/g;
+const TAG_REGEX = /<!--.*?-->|<\s*?([-\w]+)([^>]*?)>|<\/\s*?([-\w]+)>|([^<]+)/g;
 const ATTR_REGEX = /([-\w]+)(=('[^']*'|"[^"]*"))?/g;
 
 const SINGLETON_TAGS = [
@@ -32,22 +32,20 @@ export function parseHtml(text: string): HtmlElement {
         if (match[1]) {
             // Opening tag with classes
             const tag = match[1].toLowerCase();
-            if (tag !== '!') {
-                const attributes: Record<string, string> = {};
-                let attr_match: RegExpExecArray | null;
-                while (attr_match = ATTR_REGEX.exec(match[2])) {
-                    const value = attr_match[3] ?? '""';
-                    attributes[attr_match[1]] = value.substr(1, value.length - 2);
-                }
-                const value = {
-                    tag: tag,
-                    attributes: attributes,
-                    content: [ ],
-                };
-                stack[stack.length - 1].content.push(value);
-                if (!SINGLETON_TAGS.includes(tag)) {
-                    stack.push(value);
-                }
+            const attributes: Record<string, string> = {};
+            let attr_match: RegExpExecArray | null;
+            while (attr_match = ATTR_REGEX.exec(match[2])) {
+                const value = attr_match[3] ?? '""';
+                attributes[attr_match[1]] = value.substr(1, value.length - 2);
+            }
+            const value = {
+                tag: tag,
+                attributes: attributes,
+                content: [ ],
+            };
+            stack[stack.length - 1].content.push(value);
+            if (!SINGLETON_TAGS.includes(tag)) {
+                stack.push(value);
             }
         } else if (match[3]) {
             // Closing tag with classes
@@ -63,11 +61,38 @@ export function parseHtml(text: string): HtmlElement {
     return stack[0];
 }
 
-export function innerText(element: HtmlElement): string {
-    if (typeof element === 'string') {
+const ESCAPE_CODES: Record<string, string> = {
+    'amp': '&',
+    'lt': '<',
+    'gt': '>',
+    'nbsp': ' ',
+    'copy': '©',
+    'frac14': '¼',
+    'frac12': '½',
+    'frac34': '¾',
+};
+
+function escapeHtmlCodes(text: string): string {
+    return text.replace(/&(#x?(\d+)|\w+);/g, (text, name: string, digit: string) => {
+        if (digit) {
+            return String.fromCodePoint(parseInt(digit, name[1] === 'x' ? 16 : 10));
+        } else if (name in ESCAPE_CODES) {
+            return ESCAPE_CODES[name];
+        } else {
+            return text;
+        }
+    });
+}
+
+export function innerText(element: HtmlElement = '', trim = false, escape = false): string {
+    if (escape) {
+        return escapeHtmlCodes(innerText(element, trim));
+    } else if (trim) {
+        return innerText(element).replace(/\s+/g, ' ').trim();
+    } else if (typeof element === 'string') {
         return element;
     } else {
-        return element.content.map(innerText).join('');
+        return element.content.map(elem => innerText(elem)).join('');
     }
 }
 
@@ -76,7 +101,30 @@ function matchesSelectors(element: HtmlElement, query: string[]): boolean {
         return false;
     } else {
         return !query.some(selector => {
-            if (selector[0] === '#') {
+            let match: RegExpMatchArray | null;
+            if (selector === '*') {
+                return false;
+            } else if (match = selector.match(/\[\s*([-\w]+)\s*(([~|^$*]?=)\s*("[^"]*"|'[^']*'))?\s*\]/)) {
+                if (match[2]) {
+                    const value = match[4].substr(1, match[4].length - 2);
+                    if (match[3] === '=') {
+                        return element.attributes[match[1]] !== value;
+                    } else if (match[3] === '~=') {
+                        return !element.attributes[match[1]]?.split(/\s+/)?.includes(value);
+                    } else if (match[3] === '|=') {
+                        return element.attributes[match[1]] !== value
+                            && !element.attributes[match[1]]?.startsWith(`${value}-`);
+                    } else if (match[3] === '^=') {
+                        return !element.attributes[match[1]]?.startsWith(value);
+                    } else if (match[3] === '$=') {
+                        return !element.attributes[match[1]]?.endsWith(value);
+                    } else if (match[3] === '*=') {
+                        return !element.attributes[match[1]]?.includes(value);
+                    }
+                } else {
+                    return !(match[1] in element.attributes);
+                }
+            } else if (selector[0] === '#') {
                 return element.attributes['id'] !== selector.substr(1);
             } else if (selector[0] === '.') {
                 return !element.attributes['class']?.split(/\s+/)?.includes(selector.substr(1));
@@ -109,7 +157,7 @@ function selectAllHelper(element: HtmlElement, query: string[][][]): HtmlTag[] {
     }
 }
 
-const SELECTOR_MATCH = /(#\w+|\.\w+|\w+)/g;
+const SELECTOR_MATCH = /(\*|\[[-\w]+([~|^$*]?=("[^"]*"|'[^']*'))?\]|#[-\w]+|\.[-\w]+|[-\w]+)/g;
 
 export function selectAll(element: HtmlElement, query: string): HtmlTag[] {
     const selector = query

@@ -15,6 +15,7 @@ const TRANSLATION_ITALIAN = {
     exclusive_module_prefix: 'Prefisso esclusivo',
     enhanced_search: 'Ricerca avanzata',
     reset_config: 'Ripristinare le impostazioni',
+    ignore_mouse: 'Ignora il mouse',
 
     theme: 'Theme',
     background_color: 'Colore di sfondo',
@@ -157,6 +158,9 @@ const TRANSLATION_ITALIAN = {
     email: 'E-mail',
     email_description: 'Con questo modulo è possibile avviare rapidamente una nuova e-mail',
     open_new_email: 'Apri una nuova e-mail',
+
+    duckduckgo_search: 'DuckDuckGo Search',
+    duckduckgo_search_description: 'Questo modulo ti dà i risultati della ricerca di DuckDuckGo per la tua richiesta',
 };
 
 export default TRANSLATION_ITALIAN;

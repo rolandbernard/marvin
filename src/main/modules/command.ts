@@ -19,7 +19,7 @@ interface CommandResult extends SimpleResult {
 
 class CommandConfig extends ModuleConfig {
     @configKind('quality')
-    quality = 1;
+    quality = 0.8;
 
     constructor() {
         super(true, '>');

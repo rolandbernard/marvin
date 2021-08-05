@@ -18,7 +18,7 @@ interface EmailResult extends SimpleResult {
 
 class EmailConfig extends ModuleConfig {
     @configKind('quality')
-    quality = 1;
+    quality = 0.9;
 
     constructor() {
         super(true);

@@ -16,7 +16,7 @@ const MODULE_ID = 'calculator';
 
 class CalculatorConfig extends ModuleConfig {
     @configKind('quality')
-    quality = 1;
+    quality = 0.5;
 
     @configDesc({ kind: 'select', options: [ 'mathjs', 'algebrite', 'mathjs_algebrite' ] })
     backend = 'mathjs';
