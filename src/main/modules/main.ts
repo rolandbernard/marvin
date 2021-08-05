@@ -20,11 +20,11 @@ const MODULE_ID = 'main';
 
 if (getPlatform() === Platform.LINUX) {
     // Transparency will not work without this
-    app.commandLine.appendSwitch("disable-gpu");
+    app.commandLine.appendSwitch('use-gl', 'desktop');
 }
 
 // Remove animation when showing the window
-app.commandLine.appendSwitch("wm-window-animations-disabled");
+app.commandLine.appendSwitch('wm-window-animations-disabled');
 
 @module(MODULE_ID as any) // This module has no config => needs no translation
 export class MainModule implements Module<SimpleResult> {
