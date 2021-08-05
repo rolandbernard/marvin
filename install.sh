@@ -31,5 +31,6 @@ Exec=${SCRIPT}
 Terminal=false
 " > ${DESKTOP}
 
+sudo rm -f ${BIN}
 sudo ln -s ${SCRIPT} ${BIN}
 
