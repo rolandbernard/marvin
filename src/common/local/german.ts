@@ -15,6 +15,7 @@ const TRANSLATION_GERMAN = {
     exclusive_module_prefix: 'Exklusiver Modulpräfix',
     enhanced_search: 'Verbesserte Suche',
     reset_config: 'Einstellingen zurücksetzen',
+    ignore_mouse: 'Maus ignorieren',
 
     theme: 'Theme',
     background_color: 'Hintergundfarbe',

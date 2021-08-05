@@ -15,6 +15,7 @@ const TRANSLATION_ITALIAN = {
     exclusive_module_prefix: 'Prefisso esclusivo',
     enhanced_search: 'Ricerca avanzata',
     reset_config: 'Ripristinare le impostazioni',
+    ignore_mouse: 'Ignora il mouse',
 
     theme: 'Theme',
     background_color: 'Colore di sfondo',

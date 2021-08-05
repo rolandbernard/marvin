@@ -143,6 +143,9 @@ class GeneralConfig extends Config {
     max_results = 200;
 
     @configKind('boolean')
+    ignore_mouse = false;
+
+    @configKind('boolean')
     incremental_results = true;
 
     @config({ kind: 'time', disabled: { index: ['general', 'incremental_results'], compare: false } })

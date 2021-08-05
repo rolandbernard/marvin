@@ -78,6 +78,7 @@ export class MainModule implements Module<SimpleResult> {
             icon: join(__dirname, Logo),
             title: 'Marvin',
         });
+
         const hideWindow = (e: Event) => {
             e.preventDefault();
             this.hideWindow();
@@ -99,6 +100,11 @@ export class MainModule implements Module<SimpleResult> {
         });
 
         this.window.loadURL(`file://${join(__dirname, 'app.html')}`);
+    }
+
+    updateWindow() {
+        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
+        this.window?.setIgnoreMouseEvents(config.general.ignore_mouse);
     }
 
     hideWindow() {
@@ -156,6 +162,7 @@ export class MainModule implements Module<SimpleResult> {
         setTimeout(() => {
             // This has to be delayed, because otherwise transparency will not work on linux
             this.createWindow();
+            this.updateWindow();
         }, 500)
     }
 
@@ -163,7 +170,7 @@ export class MainModule implements Module<SimpleResult> {
         this.updateTrayIcon();
         this.registerShortcut();
         this.updateLoginItem();
-        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
+        this.updateWindow();
     }
 
     async deinit() {

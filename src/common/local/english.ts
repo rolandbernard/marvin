@@ -15,6 +15,7 @@ const TRANSLATION_ENGLISH = {
     exclusive_module_prefix: 'Exclusive prefix',
     enhanced_search: 'Enhanced search',
     reset_config: 'Reset to defaults',
+    ignore_mouse: 'Ignore mouse',
 
     theme: 'Theme',
     background_color: 'Background color',
