@@ -41,7 +41,7 @@ export class WindowsModule implements Module<WindowsResult> {
             secondary: window.application,
             quality: Math.max(
                 query.matchText(window.title),
-                query.matchText(window.application)
+                query.matchText(window.application) * 0.75
             ),
             autocomplete: this.config.prefix + window.title,
             window: window.window,
