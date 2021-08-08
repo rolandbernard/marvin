@@ -75,7 +75,7 @@ export class SimpleResultComponent extends LitElement {
             <icon-display
                 class="icon"
                 .icon="${this.result?.icon}"
-                .fallback="${this.result?.primary[0]}"
+                .fallback="${this.result?.primary[0] ?? ''}"
             ></icon-display>
             <div class="text">
                 <div class="primary">

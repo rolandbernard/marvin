@@ -6,30 +6,41 @@ import { Icon } from 'common/result';
 
 import 'renderer/common/ui/material-icon';
 
+@customElement('image-wrapper')
+export class ImageWrapper extends HTMLElement {
+    url?: string;
+
+    static get observedAttributes() {
+        return ['src'];
+    }
+
+    constructor() {
+        super();
+        this.attachShadow({mode: 'open'});
+        this.render();
+    }
+
+    render() {
+        const url = this.getAttribute('src');
+        if (url && this.url !== url) {
+            this.shadowRoot!.innerHTML = `<object style="width: 100%; height: 100%;" data="${url}" type="image/png"><slot></slot></object>`;
+            this.url = url;
+        }
+    }
+
+    attributeChangedCallback() {
+        this.render();
+    }
+}
+
 @customElement('icon-display')
 export class IconDisplay extends LitElement {
-
-    @property({ attribute: false })
-    config?: GlobalConfig;
 
     @property({ attribute: false })
     icon?: Icon;
 
     @property({ attribute: false })
     fallback: string = '';
-
-    @property({ attribute: false })
-    error = false;
-
-    onError() {
-        this.error = true;
-    }
-
-    updated(props: Map<string, unknown>) {
-        if (props.has('icon')) {
-            this.error = false;
-        }
-    }
 
     static get styles() {
         return css`
@@ -57,13 +68,14 @@ export class IconDisplay extends LitElement {
     }
 
     render() {
-        if (this.icon?.url && !this.error) {
+        if (this.icon?.url) {
             return html`
-                <img
-                    class="icon image"
-                    src="${this.icon.url}"
-                    @error="${this.onError}"
-                />
+                <image-wrapper class="icon image" src="${this.icon.url}">
+                    <icon-display
+                        .icon="${{ ...this.icon, url: undefined }}"
+                        .fallback="${this.fallback}"
+                    ></icon-display>
+                </image-wrapper>
             `;
         } else if (this.icon?.material) {
             return html`

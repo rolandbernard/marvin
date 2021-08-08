@@ -46,7 +46,7 @@ export class TextResultComponent extends LitElement {
             <icon-display
                 class="icon"
                 .icon="${this.result?.icon}"
-                .fallback="${this.result?.text[0]}"
+                .fallback="${this.result?.text[0] ?? ''}"
             ></icon-display>
             <div class="text">
                 ${highlightTextUsingMatch(this.result?.text, query)}
