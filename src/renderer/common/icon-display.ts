@@ -25,6 +25,12 @@ export class IconDisplay extends LitElement {
         this.error = true;
     }
 
+    updated(props: Map<string, unknown>) {
+        if (props.has('icon')) {
+            this.error = false;
+        }
+    }
+
     static get styles() {
         return css`
             :host {

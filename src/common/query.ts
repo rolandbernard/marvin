@@ -7,38 +7,32 @@ export class Query {
     readonly text: string;
     readonly regex: RegExp;
 
+    escapeRegex(text: string, map?: (c: string) => string, join = '') {
+        return text.split('').map((ch) => {
+            // Escape special regex characters
+            if ([
+                '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
+            '^', '$', '?', '|',
+            ].includes(ch)) {
+                return '\\' + ch;
+            } else {
+                return ch;
+            }
+        }).map(map ?? (ch => ch)).join(join);
+    }
+
     constructor(raw: string, text: string, advanced: boolean) {
         this.raw = raw;
         this.advanced = advanced;
         this.text = text.trim();
         if (this.advanced) {
             this.regex = new RegExp(
-                this.text.split('').map((ch) => {
-                    // Escape special regex characters
-                    if ([
-                        '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
-                        '^', '$', '?', '|',
-                    ].includes(ch)) {
-                        return '\\' + ch;
-                    } else {
-                        return ch;
-                    }
-                }).map(ch => `(${ch})`).join('(.*?)'),
+                `(?=(${this.escapeRegex(this.text, ch => `(${ch})`, '(.*?)')}))`,
                 'ig'
             );
         } else {
             this.regex = new RegExp(
-                `(${this.text.split('').map((ch) => {
-                    // Escape special regex characters
-                    if ([
-                        '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
-                        '^', '$', '?', '|',
-                    ].includes(ch)) {
-                        return '\\' + ch;
-                    } else {
-                        return ch;
-                    }
-                }).join('')})`,
+                `((${this.escapeRegex(this.text)}))`,
                 'i'
             );
         }
@@ -52,24 +46,37 @@ export class Query {
         }
     }
 
-    matchText(text: string): number {
+    bestMatch(text: string): string | undefined {
         text = text.substr(0, MAX_MATCH_LENGTH);
-        const match = text.match(this.regex);
-        if (match && text.length > 0 && this.text.length > 0) {
-            const best_match = match.reduce((a, b) => a.length <= b.length ? a : b);
-            const starts_with = text.toLowerCase().startsWith(best_match.toLowerCase());
-            if (this.text.length === best_match.length) {
-                if (starts_with) {
-                    return 0.9 + 0.1 * (this.text.length / text.length);
+        let best: string | undefined;
+        for (let match of text.matchAll(this.regex)) {
+            if (!best || match[1].length < best.length) {
+                best = match[1];
+            }
+        }
+        return best;
+    }
+
+    matchText(text: string): number {
+        if (text.length > 0 && this.text.length > 0) {
+            const best_match = this.bestMatch(text);
+            if (best_match) {
+                const starts_with = text.toLowerCase().startsWith(best_match.toLowerCase());
+                if (this.text.length === best_match.length) {
+                    if (starts_with) {
+                        return 0.9 + 0.1 * (this.text.length / text.length);
+                    } else {
+                        return 0.8 + 0.1 * (this.text.length / text.length);
+                    }
                 } else {
-                    return 0.8 + 0.1 * (this.text.length / text.length);
+                    if (starts_with) {
+                        return 0.2 + 0.5 * (this.text.length / best_match.length) + 0.1 * (this.text.length / text.length);
+                    } else {
+                        return 0.1 + 0.6 * (this.text.length / best_match.length) + 0.1 * (this.text.length / text.length);
+                    }
                 }
             } else {
-                if (starts_with) {
-                    return 0.2 + 0.5 * (this.text.length / best_match.length) + 0.1 * (this.text.length / text.length);
-                } else {
-                    return 0.1 + 0.6 * (this.text.length / best_match.length) + 0.1 * (this.text.length / text.length);
-                }
+                return 0.0;
             }
         } else {
             return 0.0;
@@ -77,14 +84,15 @@ export class Query {
     }
 
     matchGroups(text: string): string[] {
-        const match = text.match(this.regex);
-        if (match) {
-            const best_match = match.reduce((a, b) => a.length <= b.length ? a : b);
-            if (best_match.length !== 0) {
-                const groups = this.regex.exec(best_match)!;
-                groups[0] = text.substr(0, text.indexOf(best_match));
-                groups.push(text.substr(text.indexOf(best_match) + best_match.length));
-                return groups;
+        if (text.length > 0 && this.text.length > 0) {
+            const match = this.bestMatch(text);
+            if (match && match.length !== 0) {
+                const groups = this.regex.exec(match)!;
+                return [
+                    text.substr(0, text.indexOf(match)),
+                    ...groups.slice(2),
+                    text.substr(text.indexOf(match) + match.length),
+                ];
             } else {
                 return [ text ];
             }
