@@ -53,11 +53,13 @@ export class PageRoot extends QueryExecutor {
             }
             .window {
                 margin: 10px;
-                max-height: calc(100% - 20px);
+                height: calc(100% - 20px);
                 display: flex;
                 flex-direction: column;
-                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
-                border-radius: var(--border-radius) var(--border-radius);
+                z-index: 1;
+            }
+            .input-wrap {
+                position: relative;
             }
             .input {
                 flex: 0 0 auto;
@@ -65,18 +67,36 @@ export class PageRoot extends QueryExecutor {
                 box-shadow: var(--box-shadow-position) var(--input-shadow-color);
                 border-radius: var(--border-radius) var(--border-radius) 0 0;
                 overflow: hidden;
-                z-index: 1;
+                display: block;
+                z-index: 10;
+            }
+            .input-shadow {
+                position: absolute;
+                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
+                border-radius: var(--border-radius) var(--border-radius) 0 0;
+                width: 100%;
+                height: 100%;
+                z-index: -10;
             }
             .output-area {
                 flex: 1 1 auto;
                 position: relative;
-                height: fit-content;
+                height: 0;
+                z-index: -1;
+            }
+            .output-shadow {
                 border-radius: 0 0 var(--border-radius) var(--border-radius);
                 overflow: hidden;
+                box-shadow: var(--box-shadow-position) var(--output-shadow-color);
+                display: flex;
+                width: 100%;
+                max-height: 100%;
             }
             .output {
                 width: 100%;
                 max-height: 100%;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                overflow-x: hidden;
                 overflow-y: overlay;
             }
             .result {
@@ -114,31 +134,36 @@ export class PageRoot extends QueryExecutor {
                 style="${getConfigStyles(this.config)}"
                 @keydown="${this.onKeyDown}"
             >
-                <input-field
-                    class="input"
-                    .text="${this.query}"
-                    .prediction="${copyCase(this.selectedResult()?.autocomplete ?? '', this.query)}"
-                    .loading=${this.loading}
-                    .config="${this.config}"
-                    @change="${this.onQueryChange}"
-                ></input-field>
+                <div class="input-wrap">
+                    <div class="input-shadow"></div>
+                    <input-field
+                        class="input"
+                        .text="${this.query}"
+                        .prediction="${copyCase(this.selectedResult()?.autocomplete ?? '', this.query)}"
+                        .loading=${this.loading}
+                        .config="${this.config}"
+                        @change="${this.onQueryChange}"
+                    ></input-field>
+                </div>
                 <div class="output-area">
-                    <div class="output">
-                        <div class="result">
-                            <output-list
-                                class="output-list"
-                                .config="${this.config}"
-                                .results="${this.results}"
-                                .selected="${this.selected}"
-                                .centered="${this.centered}"
-                                .query="${this.query}"
-                                @hover="${this.onHover}"
-                                @execute="${this.onExecute}"
-                                @drag="${this.onDrag}"
-                            ></output-list>
-                            <some-preview
-                                .preview="${this.selectedResult()?.preview}"
-                            ></some-preview>
+                    <div class="output-shadow">
+                        <div class="output">
+                            <div class="result">
+                                <output-list
+                                    class="output-list"
+                                    .config="${this.config}"
+                                    .results="${this.results}"
+                                    .selected="${this.selected}"
+                                    .centered="${this.centered}"
+                                    .query="${this.query}"
+                                    @hover="${this.onHover}"
+                                    @execute="${this.onExecute}"
+                                    @drag="${this.onDrag}"
+                                ></output-list>
+                                <some-preview
+                                    .preview="${this.selectedResult()?.preview}"
+                                ></some-preview>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 Marvin
 ======
 
-This is a keystroke launcher for Linux and Windows.
+This is an app launcher for Linux and Windows.
 
 ![screenshot](assets/main.png)
 
@@ -129,6 +129,12 @@ This module allows you to quickly lookup definitions and synonyms for words.
 This module gives you the DuckDuckGo Instant Answers for your query.
 
 ![screenshot](assets/duckduckgo.png)
+
+### DuckDuckGo Search
+
+This module gives you the DuckDuckGo Search results for your query.
+
+![screenshot](assets/duckduckgo-search.png)
 
 ### Email
 
