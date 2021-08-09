@@ -5,6 +5,8 @@ const TRANSLATION_ENGLISH = {
     autostart: 'Autostart',
     language: 'Language',
     debounce_time: 'Debounce time',
+    zoom: 'Zoom',
+    zoom_settings: 'Zoom (Settings)',
     width: 'Width',
     max_height: 'Maximum height',
     max_results: 'Maximum results',

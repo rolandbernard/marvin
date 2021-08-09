@@ -17,7 +17,7 @@ interface BaseConfig {
 
 export interface SimpleConfig extends BaseConfig {
     kind: 'boolean' | 'code' | 'color' | 'result' | 'path' | 'quality'
-        | 'shortcut' | 'size' | 'text' | 'time' | 'amount' | 'info';
+        | 'shortcut' | 'size' | 'text' | 'time' | 'amount' | 'info' | 'number';
 }
 
 export interface ObjectConfig extends BaseConfig {

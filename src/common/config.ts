@@ -133,6 +133,12 @@ class GeneralConfig extends Config {
     @configKind('time')
     debounce_time = time(20, TimeUnit.MILLISECONDS);
 
+    @configKind('number')
+    zoom_settings = 1;
+
+    @configKind('number')
+    zoom = 1;
+
     @configKind('size')
     width = 600;
 

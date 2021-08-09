@@ -5,6 +5,8 @@ const TRANSLATION_GERMAN = {
     autostart: 'Autostart',
     language: 'Sprache',
     debounce_time: 'Debounce time',
+    zoom: 'Zoom',
+    zoom_settings: 'Zoom (Einstellingen)',
     width: 'Breite',
     max_height: 'Maximale Höhe',
     max_results: 'Maximale Ergebnisse',
