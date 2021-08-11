@@ -5,6 +5,8 @@ const TRANSLATION_ITALIAN = {
     autostart: 'Autostart',
     language: 'Lingua',
     debounce_time: 'Debounce time',
+    zoom: 'Zoom',
+    zoom_settings: 'Zoom (Impostazioni)',
     width: 'Larghezza',
     max_height: 'Altezza massima',
     max_results: 'Risultati massimi',

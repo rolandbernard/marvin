@@ -115,7 +115,7 @@ function Get-Icon($appId) {
             $logoBase64 = ""
         }
     }
-    return 'data:image/png;base64,' + $logoBase64
+    return $logoBase64
 }
 $apps |
     % { @{ name = $_.Name; file = 'shell:AppsFolder\\' + $_.AppID; icon = Get-Icon($_.AppID) } } |
@@ -129,7 +129,7 @@ $apps |
                 id: application.file,
                 file: application.file,
                 application: application.file,
-                icon: application.icon,
+                icon: application.icon ? `data:image/png;base64,${application.icon}` : undefined,
                 name: { default: application.name },
                 description: { },
                 other: { },
@@ -162,7 +162,7 @@ function Get-Icon($filename) {
     $stream = New-Object IO.MemoryStream
     $bitmap = [System.Drawing.Icon]::ExtractAssociatedIcon($filename).toBitmap()
     $bitmap.Save($stream, [System.Drawing.Imaging.ImageFormat]::Png)
-    $result = 'data:image/png;base64,' + [System.Convert]::ToBase64String($stream.ToArray())
+    $result = [System.Convert]::ToBase64String($stream.ToArray())
     $stream.Dispose()
     $stream.Close()
     return $result
@@ -182,7 +182,7 @@ ${folders} |
                 id: application.target,
                 file: application.file,
                 application: application.file,
-                icon: application.icon,
+                icon: application.icon ? `data:image/png;base64,${application.icon}` : undefined,
                 name: { default: application.name },
                 description: { },
                 other: { },

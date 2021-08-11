@@ -73,8 +73,8 @@ export class MainModule implements Module<SimpleResult> {
             show: false,
             transparent: true,
             alwaysOnTop: true,
-            width: config.general.width + 20,
-            height: config.general.max_height + 20,
+            width: (config.general.width + 20) * config.general.zoom,
+            height: (config.general.max_height + 20) * config.general.zoom,
             icon: join(__dirname, Logo),
             title: 'Marvin',
         });
@@ -103,8 +103,14 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     updateWindow() {
-        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
+        this.window?.setBounds({
+            width: (config.general.width + 20) * config.general.zoom,
+            height: (config.general.max_height + 20) * config.general.zoom
+        });
+        this.window?.center();
+        this.window?.webContents.setZoomFactor(config.general.zoom);
         this.window?.setIgnoreMouseEvents(config.general.ignore_mouse);
+        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
     }
 
     hideWindow() {

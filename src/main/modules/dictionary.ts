@@ -100,12 +100,12 @@ export class DictionaryModule implements Module<DictionaryResult> {
             const data: DictionaryApiBody = await response.json();
             if (data instanceof Array) {
                 return data.flatMap(word =>
-                    (word.phonetics ? [{
+                    (word.phonetics && word.phonetics.length > 0 ? [{
                         module: MODULE_ID,
                         query: query.text,
                         kind: 'simple-result',
                         icon: { material: 'library_books' },
-                        primary: word.phonetics.map(ph => ph.text).join(', '),
+                        primary: word.phonetics!.map(ph => ph.text).join(', '),
                         quality: this.config.quality,
                     } as DictionaryResult] : []).concat(word.meanings.flatMap(meaning =>
                         meaning.definitions.flatMap(definition => {

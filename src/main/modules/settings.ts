@@ -60,9 +60,11 @@ export class SettingsModule implements Module<SimpleResult> {
 
     async init() {
         this.createWindow();
+        this.update();
     }
 
     async update() {
+        this.window?.webContents.setZoomFactor(config.general.zoom_settings);
         this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
     }
 

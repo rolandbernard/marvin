@@ -23,7 +23,7 @@ export class PageRoot extends QueryExecutor {
         super();
         ipcRenderer.on(IpcChannels.SHOW_WINDOW, (_msg, config: GlobalConfig) => {
             this.config = config;
-            ipcRenderer.send(IpcChannels.SEARCH_QUERY, this.query);
+            this.sendQueryRequest();
         });
         ipcRenderer.on(IpcChannels.HIDE_WINDOW, () => {
             this.query = '';

@@ -56,7 +56,7 @@ function recursiveBookmarkSearch(bookmarks: any): Bookmark[] {
             return [{
                 name: bookmarks.title,
                 url: bookmarks.uri,
-                icon: bookmarks.iconuri,
+                icon: bookmarks.iconuri?.startsWith('fake-favicon-uri:') ? undefined : bookmarks.iconuri,
             }];
         } else {
             let ret: Bookmark[] = [];

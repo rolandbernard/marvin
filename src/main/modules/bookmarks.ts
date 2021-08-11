@@ -63,7 +63,11 @@ export class BookmarkModule implements Module<BookmarkResult> {
                 },
                 primary: bookmark.name,
                 secondary: `${getTranslation('open_in_browser', config)}: ${bookmark.url}`,
-                quality: Math.max(match, query.matchAny([bookmark.name, bookmark.url])),
+                quality: Math.max(
+                    match,
+                    query.matchText(bookmark.name),
+                    query.matchText(bookmark.url) * 0.75
+                ),
                 autocomplete: this.config.prefix + bookmark.name,
                 url: bookmark.url,
                 preview: this.config.url_preview ? {
