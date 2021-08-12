@@ -84,7 +84,7 @@ This module allows you to start applications.
 
 ### Bookmarks
 
-This module allows you to search through your Firefox, Midori and Chromium/Google Chrome bookmarks.
+This module allows you to search through your Firefox and Chromium/Google Chrome/(New) Edge/Brave bookmarks.
 
 ![screenshot](assets/bookmarks.png)
 
