@@ -1,0 +1,7 @@
+<svg width="512" height="512" version="1.1" viewBox="0 0 135.47 135.47" xmlns="http://www.w3.org/2000/svg">
+ <g fill-rule="evenodd">
+  <path transform="scale(.26458)" d="m486.26 44.689-230.24 76.746v79.096l169.15-56.381v345.2l61.092-20.365v-424.29zm-398.04 99.945v345.16l61.092-20.365v-304.43l-61.092-20.363z" fill="#efcb68" style="paint-order:stroke fill markers"/>
+  <path transform="scale(.26458)" d="m28.475 45.586v424.29l59.746 19.916v-345.16l167.8 55.934v-79.133l-167.8-55.934-59.746-19.916zm396.69 98.564-59.746 19.914v305.37l59.746 19.916v-345.2z" fill="#160c28" style="paint-order:stroke fill markers"/>
+  <path transform="scale(.26458)" d="m426.41 24.738-169.15 56.381-167.69-55.896-61.092 20.363 227.54 75.85 61.092-20.365 169.15-56.381-59.852-19.951z" fill="#ceb673" style="paint-order:stroke fill markers"/>
+ </g>
+</svg>

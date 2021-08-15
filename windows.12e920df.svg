@@ -1,0 +1,21 @@
+<svg version="1.1" viewBox="0 0 88 88" xmlns="http://www.w3.org/2000/svg">
+ <path d="m4.0657 15.325 32.364-4.4076 0.01415 31.218-32.349 0.18422zm32.349 30.407 0.025121 31.245-32.349-4.4475-0.0018138-27.007zm3.9233-35.391 42.912-6.2629v37.66l-42.912 0.34067zm42.922 35.685-0.010066 37.491-42.912-6.0565-0.060126-31.504z" fill="#fff"/>
+ <script>{
+            document.currentScript.dataset.injected = true;
+            const o = JSON.parse('{"userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4464.5 Safari/537.36","appVersion":"5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4464.5 Safari/537.36","platform":"Linux","vendor":"Google Inc.","product":"Gecko","oscpu":"[delete]","buildID":"[delete]","productSub":"20030107","userAgentData":{"brands":[{"brand":" Not A;Brand","version":"99"},{"brand":"Chromium","version":"91"},{"brand":"Google Chrome","version":"91"}],"mobile":false}}');
+
+            for (const key of Object.keys(o)) {
+              if (o[key] === '[delete]') {
+                delete Object.getPrototypeOf(window.navigator)[key];
+              }
+              else {
+                navigator.__defineGetter__(key, () =&gt; {
+                  if (o[key] === 'empty') {
+                    return '';
+                  }
+                  return o[key];
+                });
+              }
+            }
+          }</script>
+</svg>
