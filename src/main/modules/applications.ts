@@ -48,7 +48,7 @@ ipcMain.on(IpcChannels.REFRESH_APPLICATIONS, () => {
 export class ApplicationsModule implements Module<ApplicationsResult> {
     readonly configs = ApplicationsConfig;
 
-    refresh?: NodeJS.Timer;
+    last_load?: number;
 
     get config() {
         return moduleConfig<ApplicationsConfig>(MODULE_ID);
@@ -60,20 +60,19 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
 
     async init() {
         if (this.config.active) {
-            this.refreshApplications();
-            this.refresh = setInterval(() => {
-                this.refreshApplications();
-            }, this.config.refresh_interval_min);
+            this.refresh();
         }
     }
 
     async update() {
-        await this.deinit();
         await this.init();
     }
 
-    async deinit() {
-        clearInterval(this.refresh!);
+    async refresh() {
+        if (!this.last_load || (Date.now() - this.last_load) > this.config.refresh_interval_min) {
+            this.last_load = Date.now();
+            await this.refreshApplications();
+        }
     }
 
     forLanguage(names?: Record<string, string>): string | undefined {
@@ -115,7 +114,7 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
             return [];
         }
     }
-
+    
     async rebuild(query: Query, result: ApplicationsResult): Promise<ApplicationsResult | undefined> {
         const application = (await getAllApplications()).find(app => app.id === result.app_id);
         return application && this.itemForApplication(query, application);

@@ -63,9 +63,9 @@ function filterAndSortQueryResults(results: Result[]): Result[] {
 
 export async function searchQuery(query: Query, callback?: (results: Result[]) => unknown): Promise<Result[]> {
     let results: Result[] = [];
-    const modules = findPossibleModules(query);
+    const possible_modules = findPossibleModules(query);
     await Promise.all(
-        modules.map(async id => {
+        possible_modules.map(async id => {
             const result = await searchQueryInModule(id, query);
             results.push(...result);
             if (callback) {
@@ -74,14 +74,15 @@ export async function searchQuery(query: Query, callback?: (results: Result[]) =
             }
         })
     );
+    possible_modules.map(id => modules[id].refresh?.().catch(() => { /* Ignore errors */ }));
     return filterAndSortQueryResults(results);
 }
 
 export async function executeResult(result: Result) {
+    await moduleForId(result.module)?.execute?.(result).catch(() => { /* Ignore errors */ });
     await Promise.all(
         Object.values(modules)
             .map(module => module.executeAny?.(result).catch(() => { /* Ignore errors */ }))
     );
-    await moduleForId(result.module)?.execute?.(result).catch(() => { /* Ignore errors */ });
 }
 

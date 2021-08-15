@@ -69,12 +69,22 @@ export class CurrencyConverterModule implements Module<SimpleResult> {
         return moduleConfig<CurrencyConfig>(MODULE_ID);
     }
 
-    async loadCurrencyRates() {
+    async init() {
+        if (this.config.active) {
+            this.refresh();
+        }
+    }
+
+    async update() {
+        await this.init();
+    }
+
+    async refresh() {
         if (!this.last_rate || !this.rates || Date.now() - this.last_rate > this.config.refresh_interval_min) {
+            this.last_rate = Date.now();
             const response = await fetch(`${API_ROOT}/latest`);
             const json = await response.json();
             this.rates = json.rates;
-            this.last_rate = Date.now();
         }
     }
 
@@ -97,7 +107,6 @@ export class CurrencyConverterModule implements Module<SimpleResult> {
     async itemForQuery(query: Query, text: string, raw?: string): Promise<SimpleResult | undefined> {
         const { value, from, to } = this.parseQuery(text);
         if (value !== undefined && from && to) {
-            await this.loadCurrencyRates();
             const round = Math.pow(10, this.config.round_to);
             const result = Math.round(value / this.rates![from] * this.rates![to] * round) / round;
             return {

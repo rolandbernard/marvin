@@ -4,6 +4,7 @@ import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
 import { Module } from 'common/module';
 import { getAllTranslations, getTranslation } from 'common/local/locale';
+import { time, TimeUnit } from 'common/time';
 
 import { module } from 'main/modules';
 import { config, moduleConfig } from 'main/config';
@@ -19,6 +20,9 @@ interface BookmarkResult extends SimpleResult {
 }
 
 class BookmarkConfig extends ModuleConfig {
+    @configKind('time')
+    refresh_interval_min = time(1, TimeUnit.SECOND);
+
     @configKind('quality')
     default_quality = 0;
 
@@ -45,12 +49,25 @@ export class BookmarkModule implements Module<BookmarkResult> {
     get config() {
         return moduleConfig<BookmarkConfig>(MODULE_ID);
     }
+    
+    async init() {
+        if (this.config.active) {
+            await this.refresh();
+        }
+    }
+
+    async update() {
+        await this.init();
+    }
+    
+    async refresh() {
+        if (!this.last_load || (Date.now() - this.last_load) > this.config.refresh_interval_min) {
+            this.last_load = Date.now();
+            await updateBookmarkCache(this.config.chromium_directories, this.config.firefox_directories);
+        }
+    }
 
     async search(query: Query): Promise<BookmarkResult[]> {
-        if (!this.last_load || (Date.now() - this.last_load) > 1000) {
-            updateBookmarkCache(this.config.chromium_directories, this.config.firefox_directories);
-            this.last_load = Date.now();
-        }
         if (query.text.length > 0) {
             const match = query.matchAny(getAllTranslations('bookmarks'), getTranslation('bookmarks', config));
             return (await getAllBookmarks()).map(bookmark => ({
