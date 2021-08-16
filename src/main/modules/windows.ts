@@ -1,9 +1,10 @@
 
-import { ModuleConfig } from 'common/config';
+import { ModuleConfig, configKind } from 'common/config';
 import { Query } from 'common/query';
 import { SimpleResult } from 'common/result';
-import { Module } from 'common/module';
+import { time, TimeUnit } from 'common/time';
 
+import { Module } from 'common/module';
 import { moduleConfig } from 'main/config';
 import { module } from 'main/modules';
 import { focusWindow, openWindows, updateWindowCache, Window } from 'main/adapters/windows';
@@ -16,6 +17,9 @@ interface WindowsResult extends SimpleResult {
 }
 
 class WindowsConfig extends ModuleConfig {
+    @configKind('time')
+    refresh_interval_min = time(1, TimeUnit.SECOND);
+
     constructor() {
         super(true);
     }
@@ -29,6 +33,23 @@ export class WindowsModule implements Module<WindowsResult> {
 
     get config() {
         return moduleConfig<WindowsConfig>(MODULE_ID);
+    }   
+
+    async init() {
+        if (this.config.active) {
+            this.refresh();
+        }
+    }
+    
+    async update() {
+        await this.init();
+    }
+    
+    async refresh() {
+        if (!this.last_load || (Date.now() - this.last_load) > this.config.refresh_interval_min) {
+            this.last_load = Date.now();
+            await updateWindowCache();
+        }
     }
 
     itemForWindow(query: Query, window: Window): WindowsResult {
@@ -49,10 +70,6 @@ export class WindowsModule implements Module<WindowsResult> {
     }
 
     async search(query: Query): Promise<WindowsResult[]> {
-        if (!this.last_load || (Date.now() - this.last_load) > 1000) {
-            updateWindowCache();
-            this.last_load = Date.now();
-        }
         if (query.text.length > 0) {
             return (await openWindows()).map(window => this.itemForWindow(query, window));
         } else {
