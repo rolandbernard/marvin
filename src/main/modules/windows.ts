@@ -37,7 +37,7 @@ export class WindowsModule implements Module<WindowsResult> {
 
     async init() {
         if (this.config.active) {
-            await this.refresh();
+            this.refresh();
         }
     }
     

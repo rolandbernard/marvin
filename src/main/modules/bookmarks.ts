@@ -52,7 +52,7 @@ export class BookmarkModule implements Module<BookmarkResult> {
     
     async init() {
         if (this.config.active) {
-            await this.refresh();
+            this.refresh();
         }
     }
 
