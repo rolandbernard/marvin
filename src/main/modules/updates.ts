@@ -37,6 +37,7 @@ ipcMain.on(IpcChannels.CHECK_FOR_UPDATE, async (msg) => {
 ipcMain.on(IpcChannels.INSTALL_UPDATE, async () => {
     if (!isDevelopment()) {
         try {
+            await checkForUpdate();
             await autoUpdater.downloadUpdate();
             autoUpdater.quitAndInstall();
         } catch (e) {

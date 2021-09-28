@@ -8,7 +8,8 @@ export class Query {
     readonly regex: RegExp;
 
     escapeRegex(text: string, map?: (c: string) => string, join = '') {
-        return text.split('').map((ch) => {
+        return this.normalizeString(text.substr(0, MAX_MATCH_LENGTH))
+            .split('').map((ch) => {
             // Escape special regex characters
             if ([
                 '\\', '.', '*', '+', '[', ']', '(', ')', '{', '}',
@@ -46,6 +47,12 @@ export class Query {
         }
     }
 
+    normalizeString(text: string): string {
+        return text.normalize('NFKD')
+            .replace(/[\u0300-\u036F]/g, '')
+            .replace(/\s+/g, ' ');
+    }
+
     bestMatch(text: string): string | undefined {
         text = text.substr(0, MAX_MATCH_LENGTH);
         let best: string | undefined;
@@ -57,7 +64,8 @@ export class Query {
         return best;
     }
 
-    matchText(text: string): number {
+    matchText(full_text: string): number {
+        const text = this.normalizeString(full_text.substr(0, MAX_MATCH_LENGTH));
         if (text.length > 0 && this.text.length > 0) {
             const best_match = this.bestMatch(text);
             if (best_match) {
