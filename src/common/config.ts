@@ -155,7 +155,7 @@ class GeneralConfig extends Config {
     incremental_results = true;
 
     @config({ kind: 'time', disabled: { index: ['general', 'incremental_results'], compare: false } })
-    incremental_result_debounce = time(20, TimeUnit.MILLISECONDS);
+    incremental_result_debounce = time(50, TimeUnit.MILLISECONDS);
 
     @configKind('boolean')
     smooth_scrolling = true;

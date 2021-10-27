@@ -46,11 +46,9 @@ export abstract class QueryExecutor extends LitElement {
             this.centered = true;
             this.loading = false;
         } else {
-            this.result_timeout = setTimeout(() => {
-                this.results = results;
-                this.selected = 0;
-                this.centered = true;
-            }, this.config?.general.incremental_result_debounce);
+            this.results = results;
+            this.selected = 0;
+            this.centered = true;
         }
     }
 

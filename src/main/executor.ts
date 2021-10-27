@@ -74,7 +74,12 @@ export async function searchQuery(query: Query, callback?: (results: Result[]) =
             }
         })
     );
-    possible_modules.map(id => modules[id].refresh?.().catch(() => { /* Ignore errors */ }));
+    setTimeout(() => {
+        // We don't really care when this is executed
+        Object.keys(modules)
+            .filter(id => !config.modules[id] || config.modules[id]!.active)
+            .map(id => modules[id].refresh?.().catch(() => { /* Ignore errors */ }))
+    });
     return filterAndSortQueryResults(results);
 }
 

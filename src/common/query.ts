@@ -7,6 +7,12 @@ export class Query {
     readonly text: string;
     readonly regex: RegExp;
 
+    normalizeString(text: string): string {
+        return text.normalize('NFKD')
+            .replace(/[\u0300-\u036F]/g, '')
+            .replace(/\s+/g, ' ');
+    }
+
     escapeRegex(text: string, map?: (c: string) => string, join = '') {
         return this.normalizeString(text.substr(0, MAX_MATCH_LENGTH))
             .split('').map((ch) => {
@@ -47,12 +53,6 @@ export class Query {
         }
     }
 
-    normalizeString(text: string): string {
-        return text.normalize('NFKD')
-            .replace(/[\u0300-\u036F]/g, '')
-            .replace(/\s+/g, ' ');
-    }
-
     bestMatch(text: string): string | undefined {
         text = text.substr(0, MAX_MATCH_LENGTH);
         let best: string | undefined;
@@ -65,7 +65,7 @@ export class Query {
     }
 
     matchText(full_text: string): number {
-        const text = this.normalizeString(full_text.substr(0, MAX_MATCH_LENGTH));
+        const text = full_text.substr(0, MAX_MATCH_LENGTH);
         if (text.length > 0 && this.text.length > 0) {
             const best_match = this.bestMatch(text);
             if (best_match) {
