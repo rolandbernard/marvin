@@ -37,7 +37,7 @@ const MODULE_ID = 'clipboard';
 
 class ClipboardConfig extends ModuleConfig {
     @configKind('time')
-    refresh_time = time(20, TimeUnit.MILLISECONDS);
+    refresh_time = time(200, TimeUnit.MILLISECONDS);
 
     @configKind('amount')
     maximum_history = 1000;

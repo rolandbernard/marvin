@@ -8,7 +8,7 @@ import { mergeDeep } from 'common/util';
 import { THEMES } from 'common/themes';
 import { IpcChannels } from 'common/ipc';
 
-import { executeResult, searchQuery } from 'main/executor';
+import { executeResult, searchQuery, filterAndSortQueryResults } from 'main/executor';
 import { config, resetConfig, updateConfig } from 'main/config';
 import { updateModules } from 'main/modules';
 
@@ -31,7 +31,7 @@ type RunnerResult = Result & {
 };
 
 function transformResultArray(results: Result[] ): RunnerResult[] {
-    return results.map((opt, id) => {
+    return filterAndSortQueryResults(results).map((opt, id) => {
         const reduced_option: RunnerResult = { ...opt, id: id };
         if (reduced_option.kind === 'text-result') {
             if (reduced_option.text.length > MAX_TRANSFER_LEN) {
@@ -61,7 +61,7 @@ function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], 
     }
 }
 
-async function handleQuery(query: string, sender: WebContents) {
+export async function handleQuery(query: string, sender: WebContents) {
     last_send = Date.now();
     execution_count++;
     const begin_count = execution_count;

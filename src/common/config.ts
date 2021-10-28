@@ -131,7 +131,7 @@ class GeneralConfig extends Config {
     language = Language.English;
 
     @configKind('time')
-    debounce_time = time(20, TimeUnit.MILLISECONDS);
+    debounce_time = time(10, TimeUnit.MILLISECONDS);
 
     @configKind('number')
     zoom_settings = 1;
@@ -155,7 +155,7 @@ class GeneralConfig extends Config {
     incremental_results = true;
 
     @config({ kind: 'time', disabled: { index: ['general', 'incremental_results'], compare: false } })
-    incremental_result_debounce = time(50, TimeUnit.MILLISECONDS);
+    incremental_result_debounce = time(100, TimeUnit.MILLISECONDS);
 
     @configKind('boolean')
     smooth_scrolling = true;

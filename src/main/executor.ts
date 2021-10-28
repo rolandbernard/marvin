@@ -44,7 +44,7 @@ async function searchQueryInModule(id: ModuleId, query: Query): Promise<Result[]
     }
 }
 
-function filterAndSortQueryResults(results: Result[]): Result[] {
+export function filterAndSortQueryResults(results: Result[]): Result[] {
     const existing = new Set<string>();
     return results
         .filter(option => option.quality > 0)
@@ -69,7 +69,6 @@ export async function searchQuery(query: Query, callback?: (results: Result[]) =
             const result = await searchQueryInModule(id, query);
             results.push(...result);
             if (callback) {
-                results = filterAndSortQueryResults(results);
                 callback(results);
             }
         })
@@ -80,7 +79,7 @@ export async function searchQuery(query: Query, callback?: (results: Result[]) =
             .filter(id => !config.modules[id] || config.modules[id]!.active)
             .map(id => modules[id].refresh?.().catch(() => { /* Ignore errors */ }))
     });
-    return filterAndSortQueryResults(results);
+    return results;
 }
 
 export async function executeResult(result: Result) {
