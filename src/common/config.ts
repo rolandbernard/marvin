@@ -146,7 +146,7 @@ class GeneralConfig extends Config {
     max_height = 500;
 
     @configKind('amount')
-    max_results = 200;
+    max_results = 50;
 
     @configKind('boolean')
     ignore_mouse = false;

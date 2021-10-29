@@ -110,13 +110,12 @@ export class ButtonLike extends LitElement {
 
     render() {
         const classes = classMap({
-            'button': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
         });
         return html`
             <div
-                class="${classes}"
+                class="button ${classes}"
                 @mousedown="${this.onMouseDown}"
                 @mouseup="${this.onMouseUpOrLeave}"
                 @mouseleave="${this.onMouseUpOrLeave}"

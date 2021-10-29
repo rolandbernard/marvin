@@ -34,13 +34,12 @@ export class ArraySetting extends AbstractSetting {
                 const name = getTranslation(this.desc?.base?.name!, this.config);
                 const large = desc.kind === 'object';
                 const classes = classMap({
-                    'setting': true,
                     'large': large,
                 });
                 return html`
                     <tr class="row">
                         ${large ? undefined : html`<td class="name">${name}</td>`}
-                        <td class="${classes}" colspan="${large ? 2 : 1}">
+                        <td class="setting ${classes}" colspan="${large ? 2 : 1}">
                             <some-setting
                                 .config="${this.config}"
                                 .desc="${desc}"

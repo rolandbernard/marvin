@@ -123,7 +123,6 @@ export class SelectField<Type> extends LitElement {
 
     render() {
         const classes = classMap({
-            'select': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
             'open': this.open,
@@ -132,7 +131,7 @@ export class SelectField<Type> extends LitElement {
             '--position': (this.options?.findIndex(option => option.value === this.value) ?? 0).toString(),
         });
         return html`
-            <div class="${classes}" style="${styles}">
+            <div class="select ${classes}" style="${styles}">
                 ${!this.value
                     ? html`
                         <div

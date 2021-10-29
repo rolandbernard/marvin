@@ -45,6 +45,9 @@ function transformResultArray(results: Result[] ): RunnerResult[] {
                 reduced_option.secondary = reduced_option.secondary?.substr(0, MAX_TRANSFER_LEN) + '...';
             }
         }
+        if ((reduced_option.autocomplete?.length ?? 0) > MAX_TRANSFER_LEN) {
+            reduced_option.autocomplete = reduced_option.autocomplete?.substr(0, MAX_TRANSFER_LEN);
+        }
         original_option[id] = opt;
         return reduced_option;
     });
@@ -56,7 +59,7 @@ function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], 
             last_send = Date.now();
             original_option.length = 0;
             const message_data = transformResultArray(results);
-            sender.send(IpcChannels.SEARCH_RESULT, message_data, finished);
+            sender.send(IpcChannels.SEARCH_RESULT, JSON.stringify(message_data), finished);
         }
     }
 }

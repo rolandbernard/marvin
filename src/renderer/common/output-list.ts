@@ -59,11 +59,9 @@ export class OutputField extends LitElement {
     static get styles() {
         return css`
             :host {
-                display: flex;
-                flex-flow: column;
-                align-items: stretch;
                 background: var(--output-background);
                 text-align: left;
+                contain: content;
             }
             .result {
                 background: var(--output-background);
@@ -71,11 +69,15 @@ export class OutputField extends LitElement {
                 min-height: var(--min-element-height);
                 transition: var(--transition);
                 transition-property: background, color; 
+                contain: content;
             }
             .result.selected {
                 background: var(--output-selection-background);
                 color: var(--output-selection-text-color);
                 cursor: pointer;
+            }
+            .result-contain {
+                contain: content;
             }
         `;
     }
@@ -84,11 +86,11 @@ export class OutputField extends LitElement {
         return html`
             ${this.results?.map((result, i) => {
                 const classes = classMap({
-                    'result': true,
                     'selected': i === this.selected,
                 });
                 return html`
                     <div
+                        class="result-contain"
                         @mousemove="${() => this.onMouseMove(result, i)}"
                         @click="${() => this.onClick(result, i)}"
                         @dragstart="${(e: DragEvent) => this.onDragStart(e, result, i)}"
@@ -97,19 +99,19 @@ export class OutputField extends LitElement {
                         ${match(result.kind, {
                             'simple-result': html`
                                 <simple-result
-                                    class="${classes}"
+                                    class="result ${classes}"
                                     .result="${result as SimpleResult}"
                                 ></simple-result>
                             `,
                             'text-result': html`
                                 <text-result
-                                    class="${classes}"
+                                    class="result ${classes}"
                                     .result="${result as TextResult}"
                                 ></text-result>
                             `,
                             'html-result': html`
                                 <html-result
-                                    class="${classes}"
+                                    class="result ${classes}"
                                     .result="${result as HtmlResult}"
                                 ></html-result>
                             `,

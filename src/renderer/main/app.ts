@@ -59,6 +59,7 @@ export class PageRoot extends QueryExecutor {
             }
             .input-wrap {
                 position: relative;
+                contain: content;
             }
             .input {
                 flex: 0 0 auto;
@@ -82,6 +83,7 @@ export class PageRoot extends QueryExecutor {
                 position: relative;
                 height: 0;
                 z-index: -1;
+                contain: content;
             }
             .output-shadow {
                 border-radius: 0 0 var(--border-radius) var(--border-radius);

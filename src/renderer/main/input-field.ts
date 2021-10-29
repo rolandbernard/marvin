@@ -76,6 +76,7 @@ export class InputField extends LitElement {
             .prediction {
                 white-space: pre;
                 pointer-events: none;
+                user-select: none;
                 position: absolute;
                 display: inline;
                 overflow: hidden;
@@ -133,11 +134,10 @@ export class InputField extends LitElement {
             ? html`<div class="prediction">${this.prediction}</div>`
             : undefined;
         const classes = classMap({
-            'wrapper': true,
             'loading': this.loading,
         });
         return html`
-            <div class="${classes}">
+            <div class="wrapper ${classes}">
                 <svg class="icon" viewBox="0 0 95 95">
                     <path class="path" d="M 35 10 A 25 25 0 0 1 60 35"/>
                     <path class="path" d="M 60 35 A 25 25 0 0 1 35 60"/>

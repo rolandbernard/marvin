@@ -98,12 +98,11 @@ export class CodeArea extends LitElement {
 
     render() {
         const classes = classMap({
-            'input-wrap': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
         });
         return html`
-            <div class="${classes}">
+            <div class="input-wrap ${classes}">
                 <textarea
                     class="input"
                     spellcheck="false"

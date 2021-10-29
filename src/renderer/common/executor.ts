@@ -32,8 +32,8 @@ export abstract class QueryExecutor extends LitElement {
 
     constructor() {
         super();
-        ipcRenderer.on(IpcChannels.SEARCH_RESULT, (_msg, results: Result[], finished: boolean) => {
-            this.onQueryResult(results, finished);
+        ipcRenderer.on(IpcChannels.SEARCH_RESULT, (_msg, results: string, finished: boolean) => {
+            this.onQueryResult(JSON.parse(results), finished);
         });
     }
 
