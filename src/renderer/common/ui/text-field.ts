@@ -106,13 +106,12 @@ export class TextField extends LitElement {
 
     render() {
         const classes = classMap({
-            'input-wrap': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
             'wrong': this.error ? true : false,
         });
         return html`
-            <div class="${classes}">
+            <div class="input-wrap ${classes}">
                 <input
                     class="input"
                     spellcheck="false"

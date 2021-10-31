@@ -86,7 +86,6 @@ export class PageRoot extends LitElement {
                     const active = indexObject(this.config, entry_index)?.active;
                     const activatable = active !== undefined;
                     const classes = classMap({
-                        'tab': true,
                         'selected': entry_index.join('.') === this.selected!.join('.'),
                         'active': active,
                         'activatable': activatable,
@@ -94,7 +93,7 @@ export class PageRoot extends LitElement {
                     return html`
                         <button-like class="tab-button">
                             <div
-                                class="${classes}"
+                                class="tab ${classes}"
                                 @click="${() => this.selectPage(entry_index)}"
                             >
                                 <material-icon

@@ -83,14 +83,13 @@ export class ToggleSwitch extends LitElement {
 
     render() {
         const classes = classMap({
-            'input': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
         });
         return html`
             <input
                 type="checkbox"
-                class="${classes}"
+                class="input ${classes}"
                 ?disabled="${this.disabled}"
                 .checked="${this.value ?? false}"
                 @change="${this.onChange}"

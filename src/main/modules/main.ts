@@ -10,6 +10,7 @@ import { getPlatform, isDevelopment, Platform } from 'common/platform';
 import { IpcChannels } from 'common/ipc';
 
 import { config } from 'main/config';
+import { handleQuery } from 'main/runner';
 import { module, moduleForId } from 'main/modules';
 import { SettingsModule } from 'main/modules/settings';
 import { openUrl } from 'main/adapters/url-handler';
@@ -111,6 +112,7 @@ export class MainModule implements Module<SimpleResult> {
         this.window?.webContents.setZoomFactor(config.general.zoom);
         this.window?.setIgnoreMouseEvents(config.general.ignore_mouse);
         this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
+        handleQuery('', this.window?.webContents!);
     }
 
     hideWindow() {
@@ -129,6 +131,7 @@ export class MainModule implements Module<SimpleResult> {
             this.window?.center();
         }
         this.window?.focus();
+        handleQuery('', this.window?.webContents!);
     }
 
     toggleWindow() {

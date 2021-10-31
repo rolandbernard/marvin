@@ -131,7 +131,7 @@ class GeneralConfig extends Config {
     language = Language.English;
 
     @configKind('time')
-    debounce_time = time(20, TimeUnit.MILLISECONDS);
+    debounce_time = time(10, TimeUnit.MILLISECONDS);
 
     @configKind('number')
     zoom_settings = 1;
@@ -146,7 +146,7 @@ class GeneralConfig extends Config {
     max_height = 500;
 
     @configKind('amount')
-    max_results = 200;
+    max_results = 50;
 
     @configKind('boolean')
     ignore_mouse = false;
@@ -155,7 +155,7 @@ class GeneralConfig extends Config {
     incremental_results = true;
 
     @config({ kind: 'time', disabled: { index: ['general', 'incremental_results'], compare: false } })
-    incremental_result_debounce = time(20, TimeUnit.MILLISECONDS);
+    incremental_result_debounce = time(100, TimeUnit.MILLISECONDS);
 
     @configKind('boolean')
     smooth_scrolling = true;

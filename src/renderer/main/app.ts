@@ -23,7 +23,6 @@ export class PageRoot extends QueryExecutor {
         super();
         ipcRenderer.on(IpcChannels.SHOW_WINDOW, (_msg, config: GlobalConfig) => {
             this.config = config;
-            this.sendQueryRequest();
         });
         ipcRenderer.on(IpcChannels.HIDE_WINDOW, () => {
             this.query = '';
@@ -60,6 +59,7 @@ export class PageRoot extends QueryExecutor {
             }
             .input-wrap {
                 position: relative;
+                contain: content;
             }
             .input {
                 flex: 0 0 auto;
@@ -83,6 +83,7 @@ export class PageRoot extends QueryExecutor {
                 position: relative;
                 height: 0;
                 z-index: -1;
+                contain: content;
             }
             .output-shadow {
                 border-radius: 0 0 var(--border-radius) var(--border-radius);

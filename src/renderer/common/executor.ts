@@ -32,8 +32,8 @@ export abstract class QueryExecutor extends LitElement {
 
     constructor() {
         super();
-        ipcRenderer.on(IpcChannels.SEARCH_RESULT, (_msg, results: Result[], finished: boolean) => {
-            this.onQueryResult(results, finished);
+        ipcRenderer.on(IpcChannels.SEARCH_RESULT, (_msg, results: string, finished: boolean) => {
+            this.onQueryResult(JSON.parse(results), finished);
         });
     }
 
@@ -46,11 +46,9 @@ export abstract class QueryExecutor extends LitElement {
             this.centered = true;
             this.loading = false;
         } else {
-            this.result_timeout = setTimeout(() => {
-                this.results = results;
-                this.selected = 0;
-                this.centered = true;
-            }, this.config?.general.incremental_result_debounce);
+            this.results = results;
+            this.selected = 0;
+            this.centered = true;
         }
     }
 

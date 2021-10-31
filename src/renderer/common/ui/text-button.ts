@@ -51,12 +51,11 @@ export class TextButton extends LitElement {
 
     render() {
         const classes = classMap({
-            'button': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
         });
         return html`
-            <button class="${classes}">
+            <button class="button ${classes}">
                 <button-like
                     .disabled=${this.disabled}
                 >

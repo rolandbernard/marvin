@@ -1,7 +1,6 @@
 
 import { css, customElement, html, LitElement, property } from 'lit-element';
 
-import { GlobalConfig } from 'common/config';
 import { Icon } from 'common/result';
 
 import 'renderer/common/ui/material-icon';
@@ -56,6 +55,7 @@ export class IconDisplay extends LitElement {
                 height: 2rem;
                 flex: 0 0 auto;
                 overflow: hidden;
+                contain: strict;
             }
             .fallback {
                 font-family: var(--font-family);

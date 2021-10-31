@@ -5,6 +5,8 @@ import { getPlatform } from 'common/platform';
 import { executeApplicationLinux, getAllApplicationsLinux, getDefaultDirectoriesLinux, updateApplicationCacheLinux } from 'main/adapters/applications/linux';
 import { executeApplicationWindows, getAllApplicationsWindows, getDefaultDirectoriesWindows, updateApplicationCacheWindows } from 'main/adapters/applications/windows';
 
+let id_to_app: Record<string, Application> = {};
+
 export interface Application {
     icon?: string;
     name?: Record<string, string>;
@@ -24,12 +26,19 @@ export function getDefaultDirectories(): string[] {
     });
 }
 
-export function updateApplicationCache(directories: string[]) {
-    return runMatch(getPlatform(), {
+export function getApplication(id: string): Application | undefined {
+    return id_to_app[id];
+}
+
+export async function updateApplicationCache(directories: string[]) {
+    await runMatch(getPlatform(), {
         'linux': () => updateApplicationCacheLinux(directories),
         'win32': () => updateApplicationCacheWindows(directories),
         'unsupported': () => {},
     });
+    for (const app of await getAllApplications()) {
+        id_to_app[app.id] = app;
+    }
 }
 
 export function getAllApplications(): Promise<Application[]> {

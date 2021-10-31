@@ -11,7 +11,7 @@ import { getAllTranslations, getTranslation } from 'common/local/locale';
 import { time, TimeUnit } from 'common/time';
 import { IpcChannels } from 'common/ipc';
 
-import { module } from 'main/modules';
+import { module, moduleForId } from 'main/modules';
 import { moduleConfig, config } from 'main/config';
 
 const CLIPBOARD_FILENAME = 'clipboard.json';
@@ -33,11 +33,20 @@ async function updateClipboard() {
     await writeFile(CLIPBOARD_PATH, JSON.stringify(clipboard_history), { encoding: 'utf8' });
 }
 
+function clipboardRefresh() {
+    const text = clipboard.readText();
+    if (text && clipboard_history[0] !== text) {
+        clipboard_history = Array.from(new Set([text].concat(clipboard_history)))
+            .slice(0, moduleForId<ClipboardModule>(MODULE_ID)?.config.maximum_history);
+        updateClipboard();
+    }
+}
+
 const MODULE_ID = 'clipboard';
 
 class ClipboardConfig extends ModuleConfig {
     @configKind('time')
-    refresh_time = time(20, TimeUnit.MILLISECONDS);
+    refresh_time = time(200, TimeUnit.MILLISECONDS);
 
     @configKind('amount')
     maximum_history = 1000;
@@ -74,14 +83,7 @@ export class ClipboardModule implements Module<TextResult> {
     async init() {
         if (this.config.active) {
             await loadClipboard();
-            this.interval = setInterval(() => {
-                const text = clipboard.readText();
-                if (text && clipboard_history[0] !== text) {
-                    clipboard_history = Array.from(new Set([text].concat(clipboard_history)))
-                        .slice(0, this.config.maximum_history);
-                    updateClipboard();
-                }
-            }, this.config.refresh_time);
+            this.interval = setInterval(clipboardRefresh, this.config.refresh_time);
         }
     }
 

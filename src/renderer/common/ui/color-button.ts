@@ -153,14 +153,13 @@ export class ColorButton extends LitElement {
             '--color': this.color,
         });
         const classes = classMap({
-            'wrapper': true,
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
             'open': this.open,
             'top': this.top,
         });
         return html`
-            <div class="${classes}">
+            <div class="wrapper ${classes}">
                 <button class="button" @click="${this.onOpen}">
                     <button-like
                         .disabled=${this.disabled}

@@ -8,7 +8,7 @@ import { mergeDeep } from 'common/util';
 import { THEMES } from 'common/themes';
 import { IpcChannels } from 'common/ipc';
 
-import { executeResult, searchQuery } from 'main/executor';
+import { executeResult, searchQuery, filterAndSortQueryResults } from 'main/executor';
 import { config, resetConfig, updateConfig } from 'main/config';
 import { updateModules } from 'main/modules';
 
@@ -22,34 +22,50 @@ const original_option: Result[] = [];
 // actually sen the results to the renderer.
 let execution_count = 0;
 
+// Time of last result send. Must be at least incremental_results_debounce (of finished) before
+// sending again. (This is to reduce the amount of data send.)
+let last_send = 0;
+
 type RunnerResult = Result & {
     id: number
 };
 
+function transformResultArray(results: Result[] ): RunnerResult[] {
+    return filterAndSortQueryResults(results).map((opt, id) => {
+        const reduced_option: RunnerResult = { ...opt, id: id };
+        if (reduced_option.kind === 'text-result') {
+            if (reduced_option.text.length > MAX_TRANSFER_LEN) {
+                reduced_option.text = reduced_option.text.substr(0, MAX_TRANSFER_LEN) + '...';
+            }
+        } else if (reduced_option.kind === 'simple-result') {
+            if (reduced_option.primary?.length > MAX_TRANSFER_LEN) {
+                reduced_option.primary = reduced_option.primary.substr(0, MAX_TRANSFER_LEN) + '...';
+            }
+            if ((reduced_option.secondary?.length ?? 0) > MAX_TRANSFER_LEN) {
+                reduced_option.secondary = reduced_option.secondary?.substr(0, MAX_TRANSFER_LEN) + '...';
+            }
+        }
+        if ((reduced_option.autocomplete?.length ?? 0) > MAX_TRANSFER_LEN) {
+            reduced_option.autocomplete = reduced_option.autocomplete?.substr(0, MAX_TRANSFER_LEN);
+        }
+        original_option[id] = opt;
+        return reduced_option;
+    });
+}
+
 function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], finished: boolean) {
     if (id === execution_count) {
-        original_option.length = 0;
-        sender.send(IpcChannels.SEARCH_RESULT, results.map((opt, id) => {
-            const reduced_option: RunnerResult = { ...opt, id: id };
-            if (reduced_option.kind === 'text-result') {
-                if (reduced_option.text.length > MAX_TRANSFER_LEN) {
-                    reduced_option.text = reduced_option.text.substr(0, MAX_TRANSFER_LEN) + '...';
-                }
-            } else if (reduced_option.kind === 'simple-result') {
-                if (reduced_option.primary?.length > MAX_TRANSFER_LEN) {
-                    reduced_option.primary = reduced_option.primary.substr(0, MAX_TRANSFER_LEN) + '...';
-                }
-                if ((reduced_option.secondary?.length ?? 0) > MAX_TRANSFER_LEN) {
-                    reduced_option.secondary = reduced_option.secondary?.substr(0, MAX_TRANSFER_LEN) + '...';
-                }
-            }
-            original_option[id] = opt;
-            return reduced_option;
-        }), finished);
+        if (finished || (Date.now() - last_send) > config.general.incremental_result_debounce) {
+            last_send = Date.now();
+            original_option.length = 0;
+            const message_data = transformResultArray(results);
+            sender.send(IpcChannels.SEARCH_RESULT, JSON.stringify(message_data), finished);
+        }
     }
 }
 
-async function handleQuery(query: string, sender: WebContents) {
+export async function handleQuery(query: string, sender: WebContents) {
+    last_send = Date.now();
     execution_count++;
     const begin_count = execution_count;
     const results = await searchQuery(

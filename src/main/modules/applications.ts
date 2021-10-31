@@ -9,7 +9,14 @@ import { Module } from 'common/module';
 import { time, TimeUnit } from 'common/time';
 import { IpcChannels } from 'common/ipc';
 
-import { Application, executeApplication, getAllApplications, getDefaultDirectories, updateApplicationCache } from 'main/adapters/applications/applications';
+import {
+    Application,
+    executeApplication,
+    getAllApplications,
+    getDefaultDirectories,
+    updateApplicationCache,
+    getApplication
+} from 'main/adapters/applications/applications';
 import { getDefaultPath } from 'main/adapters/file-handler';
 import { config, moduleConfig } from 'main/config';
 import { module, moduleForId } from 'main/modules';
@@ -18,7 +25,6 @@ const MODULE_ID = 'applications';
 
 interface ApplicationsResult extends SimpleResult {
     module: typeof MODULE_ID;
-    application: unknown;
     app_id: string;
 }
 
@@ -102,7 +108,6 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
                 query.matchText(application.file) * 0.5,
             ),
             autocomplete: this.config.prefix + name,
-            application: application.application,
             app_id: application.id,
         };
     }
@@ -121,7 +126,7 @@ export class ApplicationsModule implements Module<ApplicationsResult> {
     }
 
     async execute(result: ApplicationsResult) {
-        executeApplication(result.application);
+        executeApplication(getApplication(result.app_id)?.application);
     }
 }
 
