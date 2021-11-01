@@ -1,5 +1,5 @@
 
-import { customElement, html, css, LitElement, property, TemplateResult } from 'lit-element';
+import { customElement, html, css, LitElement, property, TemplateResult, queryAll, query } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { ipcRenderer } from 'electron';
 
@@ -19,6 +19,7 @@ import 'renderer/common/ui/material-icon';
 import 'renderer/settings/settings-page';
 
 import Logo from 'logo.png';
+import {SettingsPage} from 'renderer/settings/settings-page';
 
 @customElement('page-root')
 export class PageRoot extends LitElement {
@@ -32,13 +33,55 @@ export class PageRoot extends LitElement {
     @property({ attribute: false })
     selected?: DeepIndex;
 
+    @property({ attribute: false })
+    visible?: DeepIndex;
+
+    @queryAll('.page')
+    pages?: SettingsPage[];
+
+    @query('.page.selected')
+    page?: SettingsPage;
+
+    @query('.tab.selected')
+    tab?: HTMLElement;
+
+    moved: boolean = false;
+    observer: IntersectionObserver;
+
     constructor() {
         super();
+        this.observer = new IntersectionObserver(entries => {
+            for (const entry of entries) {
+                (entry.target as SettingsPage).visible = entry.isIntersecting
+                    ? entry.intersectionRect.height
+                    : 0;
+            }
+            this.onScroll();
+        }, { threshold: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] });
         ipcRenderer.on(IpcChannels.SHOW_WINDOW, (_msg, config: GlobalConfig, desc: ObjectConfig) => {
             this.config = config;
             this.desc = desc;
             this.selectSomePage();
         });
+    }
+
+    getAllPages(): [ObjectConfig, DeepIndex][] {
+        const pages: [ObjectConfig, DeepIndex][] = [];
+        function computePages(desc: ObjectConfig, list: DeepIndex) {
+            if (desc.options) {
+                for (const opt of desc.options) {
+                    if (opt.kind === 'page') {
+                        pages.push([opt, [...list, opt.name!]]);
+                    } else if (opt.kind === 'pages') {
+                        computePages(opt, [...list, opt.name!]);
+                    }
+                }
+            }
+        }
+        if (this.desc) {
+            computePages(this.desc, []);
+        }
+        return pages;
     }
 
     getSelectedPage(): ObjectConfig | undefined {
@@ -68,11 +111,16 @@ export class PageRoot extends LitElement {
         }
         if (this.desc && !this.getSelectedPage()) {
             this.selected = findSomePage(this.desc);
+            this.visible = this.selected;
         }
     }
 
     selectPage(index: DeepIndex) {
-        this.selected = index;
+        if (this.selected?.join('.') !== index.join('.') || this.visible?.join('.') !== index.join('.')) {
+            this.moved = false;
+            this.selected = index;
+            this.visible = index;
+        }
     }
 
     buildConfigTabs() {
@@ -86,7 +134,7 @@ export class PageRoot extends LitElement {
                     const active = indexObject(this.config, entry_index)?.active;
                     const activatable = active !== undefined;
                     const classes = classMap({
-                        'selected': entry_index.join('.') === this.selected!.join('.'),
+                        'selected': entry_index.join('.') === this.visible?.join('.'),
                         'active': active,
                         'activatable': activatable,
                     });
@@ -125,6 +173,42 @@ export class PageRoot extends LitElement {
         ipcRenderer.send(IpcChannels.UPDATE_CONFIG, this.config);
     }
 
+    onScroll() {
+        if (this.pages && this.page && this.page.visible === 0) {
+            let max = 0;
+            let max_page: SettingsPage | undefined = undefined;
+            for (const page of this.pages) {
+                if (page.visible > max) {
+                    max = page.visible;
+                    max_page = page;
+                }
+            }
+            if (max_page && this.visible?.join('.') !== max_page.index?.join('.')) {
+                this.visible = max_page.index;
+            }
+        }
+    }
+
+    updated() {
+        if (this.tab) {
+            this.tab?.scrollIntoView({
+                block: 'nearest',
+            });
+        }
+        if (this.page && !this.moved) {
+            this.page?.scrollIntoView({
+                 block: 'start',
+            });
+            this.moved = true;
+        }
+        if (this.pages) {
+            this.observer.disconnect();
+            for (const page of this.pages) {
+                this.observer.observe(page);
+            }
+        }
+    }
+
     static get styles() {
         return css`
             :host {
@@ -160,9 +244,6 @@ export class PageRoot extends LitElement {
                 display: flex;
                 flex-flow: column;
                 user-select: none;
-            }
-            .page {
-                flex: 1 1 auto;
             }
             .header {
                 flex: 0 0 auto;
@@ -265,6 +346,28 @@ export class PageRoot extends LitElement {
                 opacity: 0.75;
                 font-weight: 600;
             }
+            .page {
+                display: block;
+                padding-top: 2rem;
+            }
+            .pages {
+                flex: 1 1 auto;
+                overflow: overlay;
+            }
+            .pages::-webkit-scrollbar {
+                width: var(--scrollbar-width);
+                height: var(--scrollbar-width);
+            }
+            .pages::-webkit-scrollbar-track,
+            .pages::-webkit-scrollbar-track-piece,
+            .pages::-webkit-resizer,
+            .pages::-webkit-scrollbar-corner,
+            .pages::-webkit-scrollbar-button {
+                display: none;
+            }
+            .pages::-webkit-scrollbar-thumb {
+                background: var(--settings-selection-background);
+            }
         `;
     }
 
@@ -289,13 +392,22 @@ export class PageRoot extends LitElement {
                         ${this.buildConfigTabs()}
                     </div>
                 </div>
-                <settings-page
-                    class="page"
-                    .config="${this.config}"
-                    .desc="${this.getSelectedPage()}"
-                    .index="${this.selected}"
-                    @update="${this.onUpdate}"
-                ></settings-page>
+                <div class="pages">
+                    ${this.getAllPages().map(([desc, index]) => {
+                        const classes = classMap({
+                            'selected': index.join('.') === this.selected!.join('.'),
+                        });
+                        return html`
+                            <settings-page
+                                class="page ${classes}"
+                                .config="${this.config}"
+                                .desc="${desc}"
+                                .index="${index}"
+                                @update="${this.onUpdate}"
+                            ></settings-page>
+                        `;
+                    })}
+                </div>
             </div>
         `;
     }

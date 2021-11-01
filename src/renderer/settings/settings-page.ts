@@ -12,25 +12,10 @@ import 'renderer/settings/settings-table';
 export class SettingsPage extends AbstractSetting {
     desc?: ObjectConfig;
 
+    visible: number = 0;
+
     static get styles() {
         return css`
-            :host {
-                overflow: overlay;
-            }
-            :host::-webkit-scrollbar {
-                width: var(--scrollbar-width);
-                height: var(--scrollbar-width);
-            }
-            :host::-webkit-scrollbar-track,
-            :host::-webkit-scrollbar-track-piece,
-            :host::-webkit-resizer,
-            :host::-webkit-scrollbar-corner,
-            :host::-webkit-scrollbar-button {
-                display: none;
-            }
-            :host::-webkit-scrollbar-thumb {
-                background: var(--settings-selection-background);
-            }
             .page {
                 box-shadow: var(--box-shadow-position) var(--settings-shadow-color);
                 border-radius: var(--settings-border-radius);
