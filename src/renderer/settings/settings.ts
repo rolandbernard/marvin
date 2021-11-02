@@ -36,14 +36,14 @@ export class PageRoot extends LitElement {
     @property({ attribute: false })
     visible?: DeepIndex;
 
+    @property({ attribute: false })
+    search: string = '';
+
     @queryAll('.page')
     pages?: SettingsPage[];
 
     @query('.page.selected')
     page?: SettingsPage;
-
-    @query('.tab.selected')
-    tab?: HTMLElement;
 
     moved: boolean = false;
     observer: IntersectionObserver;
@@ -186,15 +186,18 @@ export class PageRoot extends LitElement {
             if (max_page && this.visible?.join('.') !== max_page.index?.join('.')) {
                 this.visible = max_page.index;
             }
+        } else if (this.page && this.page.visible > 0) {
+            if (this.visible?.join('.') !== this.page.index?.join('.')) {
+                this.visible = this.page.index;
+            }
         }
     }
 
+    onSearchChange(e: InputEvent) {
+        this.search = (e.target as HTMLInputElement)?.value ?? '';
+    }
+
     updated() {
-        if (this.tab) {
-            this.tab?.scrollIntoView({
-                block: 'nearest',
-            });
-        }
         if (this.page && !this.moved) {
             this.page?.scrollIntoView({
                  block: 'start',
@@ -252,8 +255,7 @@ export class PageRoot extends LitElement {
                 align-items: flex-start;
                 justify-content: center;
                 padding: 2rem 1rem;
-                background: var(--settings-transparent-background);
-                height: 6rem;
+                height: 8rem;
                 box-sizing: border-box;
                 backdrop-filter: blur(5px);
                 z-index: 100;
@@ -284,8 +286,7 @@ export class PageRoot extends LitElement {
                 flex: 1 1 auto;
                 direction: rtl;
                 overflow-y: overlay;
-                padding-top: 7rem;
-                margin-top: -6rem;
+                padding-top: 1rem;
                 padding-bottom: 1rem;
             }
             .tab-drawer::-webkit-scrollbar {
@@ -347,8 +348,6 @@ export class PageRoot extends LitElement {
                 font-weight: 600;
             }
             .page {
-                display: block;
-                padding-top: 2rem;
             }
             .pages {
                 flex: 1 1 auto;
@@ -367,6 +366,24 @@ export class PageRoot extends LitElement {
             }
             .pages::-webkit-scrollbar-thumb {
                 background: var(--settings-selection-background);
+            }
+            .search-field {
+                pointer-events: all;
+                user-select: all;
+                display: flex;
+                flex-flow: row nowrap;
+                width: 100%;
+                align-items: center;
+                justify-content: stretch;
+                padding-top: 1rem;
+            }
+            .search-icon {
+                padding-right: 0.5rem;
+            }
+            .search-input {
+                padding: 0.25rem;
+                font-family: var(--font-family);
+                font-size: 1rem;
             }
         `;
     }
@@ -387,6 +404,19 @@ export class PageRoot extends LitElement {
                             v${this.config?.update.version}
                             ${this.config?.update.platform}
                         </div>
+                        <div class="search-field">
+                            <material-icon
+                                class="search-icon"
+                                name="search"
+                            ></material-icon>
+                            <input
+                                class="search-input"
+                                spellcheck="false"
+                                autocomplete="off"
+                                .value="${this.search}"
+                                @input="${this.onSearchChange}"
+                            ></input>
+                        </div>
                     </div>
                     <div class="tab-drawer">
                         ${this.buildConfigTabs()}
@@ -403,6 +433,7 @@ export class PageRoot extends LitElement {
                                 .config="${this.config}"
                                 .desc="${desc}"
                                 .index="${index}"
+                                .search="${this.search}"
                                 @update="${this.onUpdate}"
                             ></settings-page>
                         `;
