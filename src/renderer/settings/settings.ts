@@ -10,16 +10,17 @@ import { DeepIndex, indexObject } from 'common/util';
 import { IpcChannels } from 'common/ipc';
 
 import { getConfigStyles } from 'renderer/common/theme';
+import {SettingsPage} from 'renderer/settings/settings-page';
 
 import 'renderer/common/ui/button-like';
+import 'renderer/common/ui/text-field';
+import 'renderer/common/ui/material-icon';
 
 import 'renderer/styles/index.css';
 
-import 'renderer/common/ui/material-icon';
 import 'renderer/settings/settings-page';
 
 import Logo from 'logo.png';
-import {SettingsPage} from 'renderer/settings/settings-page';
 
 @customElement('page-root')
 export class PageRoot extends LitElement {
@@ -193,8 +194,8 @@ export class PageRoot extends LitElement {
         }
     }
 
-    onSearchChange(e: InputEvent) {
-        this.search = (e.target as HTMLInputElement)?.value ?? '';
+    onSearchChange(e: CustomEvent) {
+        this.search = e.detail?.value ?? '';
     }
 
     updated() {
@@ -255,7 +256,7 @@ export class PageRoot extends LitElement {
                 align-items: flex-start;
                 justify-content: center;
                 padding: 2rem 1rem;
-                height: 8rem;
+                height: 10rem;
                 box-sizing: border-box;
                 backdrop-filter: blur(5px);
                 z-index: 100;
@@ -381,9 +382,7 @@ export class PageRoot extends LitElement {
                 padding-right: 0.5rem;
             }
             .search-input {
-                padding: 0.25rem;
-                font-family: var(--font-family);
-                font-size: 1rem;
+                --input-padding: 0.52rem;
             }
         `;
     }
@@ -409,13 +408,13 @@ export class PageRoot extends LitElement {
                                 class="search-icon"
                                 name="search"
                             ></material-icon>
-                            <input
+                            <text-field
                                 class="search-input"
                                 spellcheck="false"
                                 autocomplete="off"
                                 .value="${this.search}"
-                                @input="${this.onSearchChange}"
-                            ></input>
+                                @input-change="${this.onSearchChange}"
+                            ></text-field>
                         </div>
                     </div>
                     <div class="tab-drawer">
