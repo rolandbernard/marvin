@@ -48,6 +48,7 @@ export class TextField extends LitElement {
             :host {
                 display: flex;
                 flex-flow: column;
+                --input-padding: 0.75rem;
             }
             .input-wrap {
                 display: flex;
@@ -75,7 +76,7 @@ export class TextField extends LitElement {
             }
             .input {
                 flex: 1 1 auto;
-                padding: 0.75rem;
+                padding: var(--input-padding);
                 font-family: var(--font-family);
                 color: var(--settings-text-color);
                 font-size: 1rem;

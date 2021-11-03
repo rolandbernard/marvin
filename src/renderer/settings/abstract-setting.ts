@@ -28,8 +28,12 @@ export class AbstractSetting extends LitElement {
         }
     }
 
+    configValueFor<Type>(index?: DeepIndex): Type {
+        return indexObject(this.config, index) as Type;
+    }
+
     configValue<Type>(): Type {
-        return indexObject(this.config, this.index) as Type;
+        return this.configValueFor<Type>(this.index);
     }
 
     updateConfig(value: any) {
