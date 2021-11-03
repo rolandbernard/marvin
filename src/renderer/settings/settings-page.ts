@@ -2,7 +2,9 @@
 import { css, customElement, html, property } from 'lit-element';
 
 import { getTranslation, hasTranslation } from 'common/local/locale';
-import { ObjectConfig } from 'common/config-desc';
+import { ObjectConfig, ConfigDescription } from 'common/config-desc';
+import { Query } from 'common/query';
+import { DeepIndex } from 'common/util';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
@@ -17,15 +19,39 @@ export class SettingsPage extends AbstractSetting {
 
     visible: number = 0;
 
+    shouldIncludeObject(query: Query, desc: ConfigDescription, index: DeepIndex): boolean {
+        if (hasTranslation(desc.name, this.config) && query.matchText(getTranslation(desc.name, this.config)) > 0.5) {
+            return true;
+        } else if (
+            (desc.kind === 'object' || desc.kind === 'page' || desc.kind === 'pages')
+            && desc.options?.some(d => this.shouldIncludeObject(query, d, [...index, d.name ?? '']))
+        ) {
+            return true;
+        } else if (query.matchText(JSON.stringify(this.configValueFor<any>(index)) ?? '') > 0.5) {
+            return true;
+        } else if (query.matchText(JSON.stringify(desc) ?? '') > 0.5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     filteredDescription(): ObjectConfig | undefined {
+        const query = new Query(this.search, this.search, this.config?.general.enhanced_search ?? true);
         if (this.desc) {
-            if (this.search.length === 0 || this.desc.name?.includes(this.search)) {
+            if (
+                this.search.length === 0
+                || (
+                    hasTranslation(this.desc.name, this.config)
+                    && query.matchText(getTranslation(this.desc.name, this.config)) > 0
+                )
+            ) {
                 return this.desc;
             } else {
                 return {
                     ...this.desc,
                     options: this.desc.options?.filter(
-                        desc => JSON.stringify(desc).includes(this.search)
+                        desc => this.shouldIncludeObject(query, desc, [...(this.index ?? []), desc.name ?? ''])
                     ),
                 };
             }
