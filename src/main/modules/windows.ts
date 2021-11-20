@@ -19,6 +19,9 @@ interface WindowsResult extends SimpleResult {
 class WindowsConfig extends ModuleConfig {
     @configKind('time')
     refresh_interval_min = time(1, TimeUnit.SECOND);
+    
+    @configKind('quality')
+    default_quality = 0;
 
     constructor() {
         super(true);
@@ -60,10 +63,12 @@ export class WindowsModule implements Module<WindowsResult> {
             icon: { url: window.icon },
             primary: window.title,
             secondary: window.application,
-            quality: Math.max(
-                query.matchText(window.title),
-                query.matchText(window.application) * 0.75
-            ),
+            quality: query.text.length == 0
+                ? this.config.default_quality
+                : Math.max(
+                    query.matchText(window.title),
+                    query.matchText(window.application) * 0.75
+                ),
             autocomplete: this.config.prefix + window.title,
             window: window.window,
         };
@@ -71,6 +76,8 @@ export class WindowsModule implements Module<WindowsResult> {
 
     async search(query: Query): Promise<WindowsResult[]> {
         if (query.text.length > 0) {
+            return (await openWindows()).map(window => this.itemForWindow(query, window));
+        } else if (this.config.default_quality > 0) {
             return (await openWindows()).map(window => this.itemForWindow(query, window));
         } else {
             return [];
