@@ -29,6 +29,7 @@ echo "
 Name=Marvin
 Exec=${SCRIPT}
 Terminal=false
+Type=Application
 " > ${DESKTOP}
 
 sudo rm -f ${BIN}
