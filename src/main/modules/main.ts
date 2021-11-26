@@ -10,7 +10,7 @@ import { getPlatform, isDevelopment, Platform } from 'common/platform';
 import { IpcChannels } from 'common/ipc';
 
 import { config } from 'main/config';
-import { handleQuery } from 'main/runner';
+import { handleQuery } from 'main/renderer-ipc';
 import { module, moduleForId } from 'main/modules';
 import { SettingsModule } from 'main/modules/settings';
 import { openUrl } from 'main/adapters/url-handler';

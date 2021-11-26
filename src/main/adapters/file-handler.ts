@@ -1,8 +1,18 @@
 
+import { join } from 'path';
+
 import { match, runMatch } from 'common/util';
 import { getPlatform } from 'common/platform';
 
 import { executeCommand, escapeForTerminalLinux, escapeForCmdWindows, CommandMode } from 'main/adapters/commands';
+
+export function getSocketPath(): string {
+    return match(getPlatform(), {
+        'linux': join('/tmp', 'marvin.sock'),
+        'win32': join('\\\\?\\pipe', 'tmp', 'marvin.sock'),
+        'unsupported': '',
+    });
+}
 
 export function getDefaultPath(): string {
     return match(getPlatform(), {

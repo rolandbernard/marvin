@@ -8,7 +8,7 @@ import { mergeDeep } from 'common/util';
 import { THEMES } from 'common/themes';
 import { IpcChannels } from 'common/ipc';
 
-import { executeResult, searchQuery, filterAndSortQueryResults } from 'main/executor';
+import { executeResult, searchQuery, filterAndSortQueryResults } from 'main/execution/executor';
 import { config, resetConfig, updateConfig } from 'main/config';
 import { updateModules } from 'main/modules';
 
