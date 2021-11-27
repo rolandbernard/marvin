@@ -72,11 +72,13 @@ const rendererConfig = {
             template: 'static/index.html',
             title: 'Marvin',
             filename: 'app.html',
+            chunks: [ 'app' ],
         }),
         new HtmlWebpackPlugin({
             template: 'static/index.html',
             title: 'Marvin Settings',
             filename: 'settings.html',
+            chunks: [ 'settings' ],
         }),
     ],
     target: 'electron-renderer',
