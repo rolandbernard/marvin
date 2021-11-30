@@ -57,6 +57,7 @@ const mainConfig = {
     entry: {
         'main': path.join(__dirname, 'src', 'main', 'main.ts'),
         'msg': path.join(__dirname, 'src', 'main', 'msg.ts'),
+        'worker': path.join(__dirname, 'src', 'main', 'execution', 'worker.ts'),
     },
     target: 'electron-main',
 };

@@ -28,7 +28,7 @@ export function module(id: Translatable, platform?: Platform | Platform[]) {
     }
 }
 
-export function moduleForId<Type extends Module<any>>(id: ModuleId): Type | undefined {
+export function moduleForId<Type extends Module<any> = Module<Result>>(id: ModuleId): Type | undefined {
     // Assert that the type is correct. This simplifies using this function.
     return modules[id] as Type;
 }
