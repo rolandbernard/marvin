@@ -5,7 +5,7 @@ import { GlobalConfig } from 'common/config';
 
 interface WorkerIpcBaseCommand {
     kind: string;
-    id: number;
+    id?: number;
 }
 
 interface WorkerIpcSimpleCommand extends WorkerIpcBaseCommand {
@@ -41,13 +41,18 @@ interface WorkerIpcExecuteCommand extends WorkerIpcBaseCommand {
     result: Result;
 }
 
+interface WorkerIpcMethodCommand extends WorkerIpcBaseCommand {
+    kind: 'call';
+    method: string;
+}
+
 export type WorkerIpcCommand =
     WorkerIpcSimpleCommand | WorkerIpcConfigCommand | WorkerIpcQueryCommand
-    | WorkerIpcRebuildCommand | WorkerIpcExecuteCommand;
+    | WorkerIpcRebuildCommand | WorkerIpcExecuteCommand | WorkerIpcMethodCommand;
 
 interface WorkerIpcBaseResponse {
     kind: string;
-    id: number;
+    id?: number;
 }
 
 interface WorkerIpcVoidResponse extends WorkerIpcBaseResponse {

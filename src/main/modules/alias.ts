@@ -4,8 +4,9 @@ import { Query } from 'common/query';
 import { Result } from 'common/result';
 import { Module } from 'common/module';
 
-import { module, moduleForId } from 'main/modules';
+import { module } from 'main/modules';
 import { moduleConfig } from 'main/config';
+import { rebuildModule } from 'main/execution/workers';
 
 const MODULE_ID = 'alias';
 
@@ -43,13 +44,11 @@ export class AliasModule implements Module<Result> {
     async rebuildEntries(query: Query) {
         const aliases = this.config.aliases.filter(entry => entry.result);
         for (const entry of aliases) {
-            const module = moduleForId(entry.result!.module);
-            if (module) {
-                if (module.rebuild) {
-                    entry.result = await module.rebuild(query, entry.result!);
+            if (entry.result) {
+                const new_entry = await rebuildModule(entry.result.module, query, entry.result);
+                if (new_entry) {
+                    entry.result = new_entry;
                 }
-            } else {
-                delete entry.result;
             }
         }
     }

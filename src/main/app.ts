@@ -8,24 +8,23 @@ import { runMatch } from 'common/util';
 import { loadConfig } from 'main/config';
 import { initModules, deinitModules, moduleForId } from 'main/modules';
 import { initGlobalIpc, GlobalIpcCommand } from 'main/global-ipc';
-import { MainModule } from 'main/modules/main';
-import { SettingsModule } from 'main/modules/settings';
+import { invokeModule } from 'main/execution/workers';
 
 import 'main/renderer-ipc';
 
 async function handleIpcCommand(cmd: GlobalIpcCommand) {
     return runMatch(cmd.kind, {
         'show': () => {
-            moduleForId<MainModule>('main')?.showWindow();
+            invokeModule('main', 'showWindow');
         },
         'toggle': () => {
-            moduleForId<MainModule>('main')?.toggleWindow();
+            invokeModule('main', 'toggleWindow');
         },
         'hide': () => {
-            moduleForId<MainModule>('main')?.hideWindow();
+            invokeModule('main', 'hide');
         },
         'settings': () => {
-            moduleForId<SettingsModule>('settings')?.showWindow();
+            invokeModule('settings', 'showWindow');
         },
         'quit': () => {
             app.quit();

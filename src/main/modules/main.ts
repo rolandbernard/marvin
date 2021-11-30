@@ -11,8 +11,8 @@ import { IpcChannels } from 'common/ipc';
 
 import { config } from 'main/config';
 import { handleQuery } from 'main/renderer-ipc';
-import { module, moduleForId } from 'main/modules';
-import { SettingsModule } from 'main/modules/settings';
+import { module } from 'main/modules';
+import { invokeModule } from 'main/execution/workers';
 import { openUrl } from 'main/adapters/url-handler';
 
 import Logo from 'logo.png';
@@ -52,7 +52,7 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     openSettings() {
-        moduleForId<SettingsModule>('settings')?.showWindow();
+        invokeModule('settings', 'showWindow');
     }
 
     createWindow() {
