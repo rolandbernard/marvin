@@ -102,6 +102,7 @@ export class ClipboardModule implements Module<HistoryResult> {
                 const rebuild = await this.rebuildResult(query, option);
                 if (rebuild) {
                     let quality = 0.5 * rebuild.quality * query.matchAny([
+                        (query as any).text ?? '',
                         (option as any).text ?? '',
                         (option as any).primary ?? '',
                         (option as any).secondary ?? ''
