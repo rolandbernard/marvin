@@ -8,7 +8,7 @@ import { Query } from 'common/query';
 
 import { config } from 'main/config';
 import { moduleForId } from 'main/modules';
-import { WorkerIpcCommand, WorkerIpcResponse, WorkerData } from 'main/execution/worker-ipc'
+import { WorkerIpcCommand, WorkerIpcResponse, WorkerData, runWorkerCommand } from 'main/execution/worker-ipc'
 
 const worker_pool: Record<ModuleId, Worker> = {};
 
@@ -53,19 +53,25 @@ function createModuleWorker(module: ModuleId) {
 }
 
 function executeForModule(module: ModuleId, cmd: WorkerIpcCommand): Promise<WorkerIpcResponse> {
-    return new Promise(async (res, rej) => {
-        if (!(module in worker_pool)) {
-            createModuleWorker(module);
+    return new Promise((res, rej) => {
+        if (moduleForId(module)?.local) {
+            runWorkerCommand(module, cmd)
+                .then(res)
+                .catch(rej);
+        } else {
+            if (!(module in worker_pool)) {
+                createModuleWorker(module);
+            }
+            cmd.id = next_id;
+            worker_waits[module].push({
+                id: next_id,
+                res: res,
+                rej: rej,
+            });
+            next_id++;
+            worker_pool[module].postMessage(cmd);
+            rej();
         }
-        cmd.id = next_id;
-        worker_waits[module].push({
-            id: next_id,
-            res: res,
-            rej: rej,
-        });
-        next_id++;
-        worker_pool[module].postMessage(cmd);
-        rej();
     });
 }
 
@@ -121,13 +127,10 @@ export async function rebuildModule(module: ModuleId, query: Query, result: Resu
 }
 
 export async function executeModule(module: ModuleId, result: Result) {
-    const res = await executeForModule(module, {
+    await executeForModule(module, {
         kind: 'execute',
         result: result,
     });
-    if (res.kind === 'result') {
-        return res.result;
-    }
 }
 
 export async function executeAnyModule(module: ModuleId, result: Result) {

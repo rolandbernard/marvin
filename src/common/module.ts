@@ -5,6 +5,7 @@ import { Query } from 'common/query';
 
 export interface Module<ModuleResult extends Result> {
     readonly configs?: new () => ModuleConfig;
+    readonly local?: boolean; // All modules that can not run in a worker thread should set this to true.
 
     init?: () => Promise<void>;
     update?: () => Promise<void>;

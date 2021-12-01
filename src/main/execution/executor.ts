@@ -83,9 +83,7 @@ export async function searchQuery(query: Query, callback?: (results: Result[]) =
 }
 
 export async function executeResult(result: Result) {
-    const res = await executeModule(result.module, result);
-    if (res) {
-        forActiveModules(module => executeAnyModule(module, res));
-    }
+    await executeModule(result.module, result);
+    forActiveModules(module => executeAnyModule(module, result));
 }
 
