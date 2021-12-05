@@ -40,7 +40,7 @@ class HistoryConfig extends ModuleConfig {
     searchable = true;
 
     @configKind('quality')
-    quality = 0.5;
+    default_quality = 0.5;
 
     @configKind('amount')
     maximum_history = 1000;
@@ -102,6 +102,7 @@ export class ClipboardModule implements Module<HistoryResult> {
                 const rebuild = await this.rebuildResult(query, option);
                 if (rebuild) {
                     let quality = 0.5 * rebuild.quality * query.matchAny([
+                        (query as any).text ?? '',
                         (option as any).text ?? '',
                         (option as any).primary ?? '',
                         (option as any).secondary ?? ''
@@ -121,14 +122,14 @@ export class ClipboardModule implements Module<HistoryResult> {
             }))).flat().sort((a, b) =>
                 this.config.sort_by_frequency ? b.history_frequency! - a.history_frequency! : 0
             );
-        } else if (this.config.quality > 0) {
+        } else if (this.config.default_quality > 0) {
             return (await Promise.all(history.map(async option => {
                 const rebuild = await this.rebuildResult(query, option);
                 if (rebuild) {
                     return [{
                         ...rebuild,
                         query: query.text,
-                        quality: this.config.quality,
+                        quality: this.config.default_quality,
                         history_frequency: option.history_frequency,
                     }];
                 } else {

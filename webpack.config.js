@@ -1,4 +1,5 @@
 
+const fs = require('fs');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -6,7 +7,16 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const devtool = process.env.NODE_ENV === 'production' ? undefined : 'inline-source-map';
 
+fs.rmSync(path.join(__dirname, 'bundle'), {
+    force: true,
+    recursive: true,
+})
+
 const commonConfig = {
+    output: {
+        filename: '[name].js',
+        path: path.join(__dirname, 'bundle'),
+    },
     module: {
         rules: [
             {
@@ -22,6 +32,11 @@ const commonConfig = {
                 use: ["style-loader", "css-loader"],
             },
         ],
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
     },
     resolve: {
         extensions: ['.ts', '.js'],
@@ -39,47 +54,35 @@ const commonConfig = {
 
 const mainConfig = {
     ...commonConfig,
-    entry: path.join(__dirname, 'src', 'main', 'main.ts'),
-    output: {
-        filename: 'main.js',
-        path: path.join(__dirname, 'bundle'),
+    entry: {
+        'main': path.join(__dirname, 'src', 'main', 'main.ts'),
+        'msg': path.join(__dirname, 'src', 'main', 'msg.ts'),
     },
     target: 'electron-main',
 };
 
-const rendererMainConfig = {
+const rendererConfig = {
     ...commonConfig,
-    entry: path.join(__dirname, 'src', 'renderer', 'main', 'app.ts'),
-    output: {
-        filename: 'app.js',
-        path: path.join(__dirname, 'bundle'),
+    entry: {
+        'app': path.join(__dirname, 'src', 'renderer', 'main', 'app.ts'),
+        'settings': path.join(__dirname, 'src', 'renderer', 'settings', 'settings.ts'),
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: 'static/index.html',
             title: 'Marvin',
             filename: 'app.html',
+            chunks: [ 'app' ],
+        }),
+        new HtmlWebpackPlugin({
+            template: 'static/index.html',
+            title: 'Marvin Settings',
+            filename: 'settings.html',
+            chunks: [ 'settings' ],
         }),
     ],
     target: 'electron-renderer',
 };
 
-const rendererSettingsConfig = {
-    ...commonConfig,
-    entry: path.join(__dirname, 'src', 'renderer', 'settings', 'settings.ts'),
-    output: {
-        filename: 'settings.js',
-        path: path.join(__dirname, 'bundle'),
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'static/index.html',
-            title: 'Marvin Settings',
-            filename: 'settings.html',
-        }),
-    ],
-    target: 'electron-renderer',
-}
-
-module.exports = [mainConfig, rendererMainConfig, rendererSettingsConfig];
+module.exports = [ mainConfig, rendererConfig ];
 
