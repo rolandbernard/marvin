@@ -41,6 +41,7 @@ async function startApp() {
         try {
             await initGlobalIpc(handleIpcCommand);
         } catch (e) {
+            console.error(e);
             console.error('Failed to start IPC server.');
         }
         await loadConfig();

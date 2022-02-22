@@ -1,5 +1,6 @@
 
 import { Socket, createServer, createConnection } from 'net';
+import { rm } from 'fs/promises'
 
 import { getSocketPath } from 'main/adapters/file-handler';
 
@@ -17,7 +18,11 @@ export interface GlobalIpcSimpleCommand extends GlobalIpcBaseCommand {
 export type GlobalIpcCommand = GlobalIpcSimpleCommand;
 
 export function initGlobalIpc(handler: (cmd: GlobalIpcCommand) => unknown): Promise<void> {
-    return new Promise((res, rej) => {
+    return new Promise(async (res, rej) => {
+        const path = getSocketPath();
+        try {
+            await rm(path, { force: true });
+        } catch (e) { /* Ignore errors */ }
         const server = createServer(socket => {
             connections.add(socket);
             socket.on('end', () => {
@@ -31,7 +36,7 @@ export function initGlobalIpc(handler: (cmd: GlobalIpcCommand) => unknown): Prom
         });
         server.on('listening', res);
         server.on('error', rej);
-        server.listen(getSocketPath());
+        server.listen(path);
     });
 }
 

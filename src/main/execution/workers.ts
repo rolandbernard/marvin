@@ -1,5 +1,4 @@
 
-import { Worker } from 'worker_threads';
 import { join } from 'path';
 
 import { ModuleId } from 'common/module';
@@ -7,71 +6,13 @@ import { Result } from 'common/result';
 import { Query } from 'common/query';
 
 import { config } from 'main/config';
-import { moduleForId } from 'main/modules';
-import { WorkerIpcCommand, WorkerIpcResponse, WorkerData, runWorkerCommand } from 'main/execution/worker-ipc'
-
-const worker_pool: Record<ModuleId, Worker> = {};
-
-interface WorkerWaitingRequest {
-    id: number;
-    res: (res: WorkerIpcResponse) => unknown;
-    rej: () => unknown;
-}
-
-const worker_waits: Record<ModuleId, WorkerWaitingRequest[]> = {};
-
-let next_id = 0;
-
-function createModuleWorker(module: ModuleId) {
-    const worker_data: WorkerData = {
-        module: module,
-    };
-    const worker = new Worker(join(__dirname, 'worker.js'), {
-        workerData: worker_data,
-    });
-    worker_waits[module] = [];
-    worker_pool[module] = worker;
-    worker.addListener('exit', () => {
-        delete worker_pool[module];
-        for (const w of worker_waits[module]) {
-            w.rej();
-        }
-        delete worker_waits[module];
-    });
-    worker.addListener('message', (res: WorkerIpcResponse) => {
-        const idx = worker_waits[module].findIndex(w => w.id === res.id);
-        if (idx !== -1) {
-            const wait = worker_waits[module][idx];
-            worker_waits[module].splice(idx, 1);
-            if (res.kind === 'error') {
-                wait.rej();
-            } else {
-                wait.res(res);
-            }
-        }
-    });
-}
+import { WorkerIpcCommand, WorkerIpcResponse, runWorkerCommand } from 'main/execution/worker-ipc'
 
 function executeForModule(module: ModuleId, cmd: WorkerIpcCommand): Promise<WorkerIpcResponse> {
     return new Promise((res, rej) => {
-        if (moduleForId(module)?.local) {
-            runWorkerCommand(module, cmd)
-                .then(res)
-                .catch(rej);
-        } else {
-            if (!(module in worker_pool)) {
-                createModuleWorker(module);
-            }
-            cmd.id = next_id;
-            worker_waits[module].push({
-                id: next_id,
-                res: res,
-                rej: rej,
-            });
-            next_id++;
-            worker_pool[module].postMessage(cmd);
-            rej();
-        }
+        runWorkerCommand(module, cmd)
+            .then(res)
+            .catch(rej);
     });
 }
 

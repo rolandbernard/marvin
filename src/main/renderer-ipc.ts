@@ -13,7 +13,7 @@ import { config, resetConfig, updateConfig } from 'main/config';
 import { updateModules } from 'main/modules';
 
 // This variable is used to ensure that if a earlier query finishes after a later query, it will not
-// actually sen the results to the renderer.
+// actually send the results to the renderer.
 let execution_count = 0;
 
 // Time of last result send. Must be at least incremental_results_debounce (of finished) before
