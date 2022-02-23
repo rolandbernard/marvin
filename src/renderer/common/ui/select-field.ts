@@ -23,6 +23,9 @@ export class SelectField<Type> extends LitElement {
     disabled?: boolean;
 
     @property({ attribute: false })
+    noborder?: boolean;
+
+    @property({ attribute: false })
     open = false;
 
     onOpen() {
@@ -65,11 +68,13 @@ export class SelectField<Type> extends LitElement {
             .disabled, .placeholder {
                 color: var(--settings-border-hover-color);
             }
+            .border .value {
+                border: 1px solid var(--settings-border-color);
+            }
             .value {
                 padding: 0.75rem;
                 background: var(--settings-background);
                 border-radius: var(--settings-input-border-radius);
-                border: 1px solid var(--settings-border-color);
                 position: relative;
                 transition: var(--transition);
                 transition-property: border, box-shadow; 
@@ -77,10 +82,10 @@ export class SelectField<Type> extends LitElement {
             .disabled .value, .open .value {
                 pointer-events: none;
             }
-            .enabled:hover .value {
+            .border.enabled:hover .value {
                 border: 1px solid var(--settings-border-hover-color);
             }
-            .enabled:focus-within .value {
+            .border.enabled:focus-within .value {
                 border-color: var(--settings-active-color);
                 box-shadow: 0 0 0 1px var(--settings-active-color);
             }
@@ -127,6 +132,7 @@ export class SelectField<Type> extends LitElement {
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
             'open': this.open,
+            'border': !this.noborder,
         });
         const styles = styleMap({
             '--position': (this.options?.findIndex(option => option.value === this.value) ?? 0).toString(),

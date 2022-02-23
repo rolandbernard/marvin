@@ -39,8 +39,9 @@ export class TimeSetting extends AbstractSetting {
                 width: 100%;
             }
             .select {
-                margin: -1px;
-                width: 4.5rem;
+                width: 4.65rem;
+                border-left: 1px solid var(--settings-border-color);
+                box-sizing: border-box;
             }
         `;
     }
@@ -71,6 +72,7 @@ export class TimeSetting extends AbstractSetting {
                     .value="${this.unit as any}"
                     .options="${options}"
                     .disabled="${this.isDisabled()}"
+                    .noborder="${true}"
                     @change="${this.onUnitChange}"
                 ></select-field>
             </text-field>
