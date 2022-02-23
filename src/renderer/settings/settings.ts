@@ -202,7 +202,7 @@ export class PageRoot extends LitElement {
     updated() {
         if (this.page && !this.moved) {
             this.page?.scrollIntoView({
-                 block: 'start',
+                block: 'start',
             });
             this.moved = true;
         }

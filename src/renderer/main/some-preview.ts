@@ -7,6 +7,8 @@ import { importAll, fakeTemplateArray } from 'common/util';
 
 importAll(require.context('./previews', true, /\.ts$/));
 
+const template_cache: Record<string, TemplateStringsArray | undefined> = {};
+
 @customElement('some-preview')
 export class SomePreview extends LitElement {
 
@@ -14,10 +16,15 @@ export class SomePreview extends LitElement {
     preview?: Preview;
 
     element(tag: string, ...attributes: any[]) {
-        return html(fakeTemplateArray([
-            `<${tag} .preview="`,
-            `"></${tag}>`,
-        ]), ...attributes);
+        let template = template_cache[tag];
+        if (!template) {
+            template = fakeTemplateArray([
+                `<${tag} .preview="`,
+                `"></${tag}>`,
+            ]);
+            template_cache[tag] = template;
+        }
+        return html(template, ...attributes);
     }
 
     static get styles() {
