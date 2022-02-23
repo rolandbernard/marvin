@@ -1,5 +1,6 @@
 
-import { css, customElement, html, property } from 'lit-element';
+import { css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 import { getTranslation, hasTranslation } from 'common/local/locale';
 import { ObjectConfig, ConfigDescription } from 'common/config-desc';

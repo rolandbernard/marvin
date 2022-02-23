@@ -1,7 +1,8 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map';
-import { styleMap } from 'lit-html/directives/style-map';
+import { LitElement, css, html } from 'lit';
+import { property, customElement } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import 'renderer/common/ui/material-icon';
 import 'renderer/common/ui/button-like';

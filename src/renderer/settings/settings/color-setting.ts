@@ -1,5 +1,6 @@
 
-import { css, customElement, html } from 'lit-element';
+import { css, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 

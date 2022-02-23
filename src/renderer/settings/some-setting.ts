@@ -1,7 +1,8 @@
 
-import { customElement, html } from 'lit-element';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import { importAll } from 'common/util';
+import { importAll, fakeTemplateArray } from 'common/util';
 
 import { AbstractSetting } from 'renderer/settings/abstract-setting';
 
@@ -11,13 +12,13 @@ importAll(require.context('./settings', true, /\.ts$/));
 export class SomeSetting extends AbstractSetting {
 
     element(tag: string, ...attributes: any[]) {
-        return html([
+        return html(fakeTemplateArray([
             `<${tag} .config="`,
             `" .desc="`,
             `" .index="`,
             `" @update="`,
             `"></${tag}>`,
-        ] as any, ...attributes);
+        ]), ...attributes);
     }
 
     render() {

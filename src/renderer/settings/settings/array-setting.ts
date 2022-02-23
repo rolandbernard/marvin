@@ -1,6 +1,7 @@
 
-import { css, customElement, html } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map';
+import { css, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { getTranslation } from 'common/local/locale';
 import { ArrayConfig } from 'common/config-desc';

@@ -1,6 +1,7 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { LitElement, css, html } from 'lit';
+import { property, customElement } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { GlobalConfig } from 'common/config';
 import { HtmlResult } from 'common/result';

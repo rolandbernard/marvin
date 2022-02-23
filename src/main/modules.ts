@@ -1,10 +1,8 @@
 
-import { Constructor } from 'lit-element';
-
 import { Result } from 'common/result';
 import { ModuleId, Module } from 'common/module'
 import { Translatable } from 'common/local/locale';
-import { importAll } from 'common/util';
+import { importAll, Constructor } from 'common/util';
 import { Platform, getPlatform } from 'common/platform';
 
 import { config } from 'main/config';

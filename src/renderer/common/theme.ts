@@ -1,5 +1,5 @@
 
-import { styleMap } from 'lit-html/directives/style-map';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import { GlobalConfig } from 'common/config';
 import { parseColor, multiplyColor, colorAsHex } from 'common/color';

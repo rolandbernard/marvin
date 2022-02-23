@@ -19,11 +19,6 @@ import Logo from 'logo.png';
 
 const MODULE_ID = 'main';
 
-if (getPlatform() === Platform.LINUX) {
-    // Transparency will not work without this
-    app.commandLine.appendSwitch('use-gl', 'desktop');
-}
-
 // Remove animation when showing the window
 app.commandLine.appendSwitch('wm-window-animations-disabled');
 
@@ -168,11 +163,8 @@ export class MainModule implements Module<SimpleResult> {
         this.updateTrayIcon();
         this.registerShortcut();
         this.updateLoginItem();
-        setTimeout(() => {
-            // This has to be delayed, because otherwise transparency will not work on linux
-            this.createWindow();
-            this.updateWindow();
-        }, 500)
+        this.createWindow();
+        this.updateWindow();
     }
 
     async update() {

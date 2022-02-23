@@ -1,6 +1,7 @@
 
 import { ipcRenderer } from 'electron';
-import { LitElement, property } from 'lit-element';
+import { LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 import { GlobalConfig } from 'common/config';
 import { Result } from 'common/result';

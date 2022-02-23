@@ -83,7 +83,7 @@ export class CurrencyConverterModule implements Module<SimpleResult> {
         if (!this.last_rate || !this.rates || Date.now() - this.last_rate > this.config.refresh_interval_min) {
             this.last_rate = Date.now();
             const response = await fetch(`${API_ROOT}/latest`);
-            const json = await response.json();
+            const json: any = await response.json();
             this.rates = json.rates;
         }
     }

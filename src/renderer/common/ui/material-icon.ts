@@ -1,5 +1,6 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { LitElement, css, html } from 'lit';
+import { property, customElement } from 'lit/decorators.js';
 
 @customElement('material-icon')
 export class MaterialIcon extends LitElement {

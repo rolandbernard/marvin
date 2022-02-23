@@ -1,8 +1,9 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { LitElement, css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 import { Preview } from 'common/result';
-import { importAll } from 'common/util';
+import { importAll, fakeTemplateArray } from 'common/util';
 
 importAll(require.context('./previews', true, /\.ts$/));
 
@@ -13,10 +14,10 @@ export class SomePreview extends LitElement {
     preview?: Preview;
 
     element(tag: string, ...attributes: any[]) {
-        return html([
+        return html(fakeTemplateArray([
             `<${tag} .preview="`,
             `"></${tag}>`,
-        ] as any, ...attributes);
+        ]), ...attributes);
     }
 
     static get styles() {

@@ -1,5 +1,6 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { LitElement, css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 import { IFramePreview } from 'common/result';
 
