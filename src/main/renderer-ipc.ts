@@ -1,7 +1,7 @@
 
 import { app, BrowserWindow, dialog, ipcMain, WebContents } from 'electron';
 
-import { Result } from 'common/result';
+import { Result, getResultKey } from 'common/result';
 import { Query } from 'common/query';
 import { GlobalConfig } from 'common/config';
 import { mergeDeep } from 'common/util';
@@ -12,25 +12,26 @@ import { executeResult, searchQuery, filterAndSortQueryResults } from 'main/exec
 import { config, resetConfig, updateConfig } from 'main/config';
 import { updateModules } from 'main/modules';
 
-const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will be cropped to this length.
-
-// This stores the original_options because we only send cropped text fields.
-// (Fixes a performance issue when the clipboard contains a very long text)
-const original_option: Result[] = [];
-
 // This variable is used to ensure that if a earlier query finishes after a later query, it will not
-// actually sen the results to the renderer.
+// actually send the results to the renderer.
 let execution_count = 0;
 
 // Time of last result send. Must be at least incremental_results_debounce (of finished) before
 // sending again. (This is to reduce the amount of data send.)
 let last_send = 0;
 
+const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will be cropped to this length.
+
+// This stores the original_options because we only send cropped text fields.
+// (Fixes a performance issue when the clipboard contains a very long text)
+const original_option: Result[] = [];
+
 type RunnerResult = Result & {
     id: number
 };
 
-function transformResultArray(results: Result[] ): RunnerResult[] {
+function transformResultArray(results: Result[]): RunnerResult[] {
+    original_option.length = 0;
     return filterAndSortQueryResults(results).map((opt, id) => {
         const reduced_option: RunnerResult = { ...opt, id: id };
         if (reduced_option.kind === 'text-result') {
@@ -57,9 +58,7 @@ function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], 
     if (id === execution_count) {
         if (finished || (Date.now() - last_send) > config.general.incremental_result_debounce) {
             last_send = Date.now();
-            original_option.length = 0;
-            const message_data = transformResultArray(results);
-            sender.send(IpcChannels.SEARCH_RESULT, JSON.stringify(message_data), finished);
+            sender.send(IpcChannels.SEARCH_RESULT, transformResultArray(results), finished);
         }
     }
 }
@@ -83,7 +82,10 @@ ipcMain.on(IpcChannels.SEARCH_QUERY, (msg, query: string) => {
 
 ipcMain.on(IpcChannels.EXECUTE_RESULT, (_msg, result: RunnerResult) => {
     const key = result.id;
-    if (key in original_option) {
+    if (
+        key in original_option
+        && getResultKey(original_option[key]) === getResultKey(result)
+    ) {
         executeResult(original_option[key]);
     } else {
         executeResult(result);

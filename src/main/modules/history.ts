@@ -9,8 +9,9 @@ import { getResultKey, Result } from 'common/result';
 import { Module } from 'common/module';
 import { IpcChannels } from 'common/ipc';
 
-import { module, moduleForId } from 'main/modules';
+import { module } from 'main/modules';
 import { moduleConfig } from 'main/config';
+import { rebuildModule } from 'main/execution/workers';
 
 const HISTORY_FILENAME = 'history.json';
 const HISTORY_PATH = join(app.getPath('userData'), HISTORY_FILENAME);
@@ -82,17 +83,11 @@ export class ClipboardModule implements Module<HistoryResult> {
     }
 
     async rebuildResult(query: Query, result: HistoryResult): Promise<Result | undefined> {
-        const module = moduleForId(result.module);
-        if (module) {
-            if (module.rebuild) {
-                try {
-                    return await module.rebuild(query, result);
-                } catch (e) {
-                    return result;
-                }
-            } else {
-                return result;
-            }
+        const new_result = await rebuildModule(result.module, query, result);
+        if (new_result) {
+            return new_result;
+        } else {
+            return result;
         }
     }
 

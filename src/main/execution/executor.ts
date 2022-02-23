@@ -1,9 +1,10 @@
 
 import { Query } from 'common/query';
 import { ModuleId } from 'common/module';
-import { getResultKey, Result } from 'common/result';
+import { Result, getResultKey } from 'common/result';
 
-import { moduleForId, modules } from 'main/modules';
+import { modules, forActiveModules } from 'main/modules';
+import { searchModule, refreshModule, executeModule, executeAnyModule } from 'main/execution/workers';
 import { config } from 'main/config';
 
 /// Checks whether there exists a prefix that applies to this query. If one exists only return
@@ -35,15 +36,6 @@ function findPossibleModules(query: Query): ModuleId[] {
         .filter(id => !config.modules[id] || (config.modules[id]!.active && !config.modules[id]!.prefix));
 }
 
-async function searchQueryInModule(id: ModuleId, query: Query): Promise<Result[]> {
-    try {
-        query = query.withoutPrefix(config.modules[id]?.prefix ?? '');
-        return (await modules[id].search?.(query)) ?? [];
-    } catch (e) {
-        return [];
-    }
-}
-
 export function filterAndSortQueryResults(results: Result[]): Result[] {
     const existing = new Set<string>();
     return results
@@ -61,6 +53,15 @@ export function filterAndSortQueryResults(results: Result[]): Result[] {
         .slice(0, config.general.max_results);
 }
 
+async function searchQueryInModule(id: ModuleId, query: Query): Promise<Result[]> {
+    try {
+        query = query.withoutPrefix(config.modules[id]?.prefix ?? '');
+        return await searchModule(id, query) ?? [];
+    } catch (e) {
+        return [];
+    }
+}
+
 export async function searchQuery(query: Query, callback?: (results: Result[]) => unknown): Promise<Result[]> {
     let results: Result[] = [];
     const possible_modules = findPossibleModules(query);
@@ -69,24 +70,20 @@ export async function searchQuery(query: Query, callback?: (results: Result[]) =
             const result = await searchQueryInModule(id, query);
             results.push(...result);
             if (callback) {
+                results = filterAndSortQueryResults(results);
                 callback(results);
             }
         })
     );
     setTimeout(() => {
         // We don't really care when this is executed
-        Object.keys(modules)
-            .filter(id => !config.modules[id] || config.modules[id]!.active)
-            .map(id => modules[id].refresh?.().catch(() => { /* Ignore errors */ }))
+        forActiveModules(module => refreshModule(module));
     });
-    return results;
+    return filterAndSortQueryResults(results);
 }
 
 export async function executeResult(result: Result) {
-    await moduleForId(result.module)?.execute?.(result).catch(() => { /* Ignore errors */ });
-    await Promise.all(
-        Object.values(modules)
-            .map(module => module.executeAny?.(result).catch(() => { /* Ignore errors */ }))
-    );
+    await executeModule(result.module, result);
+    forActiveModules(module => executeAnyModule(module, result));
 }
 

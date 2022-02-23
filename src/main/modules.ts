@@ -7,6 +7,9 @@ import { Translatable } from 'common/local/locale';
 import { importAll } from 'common/util';
 import { Platform, getPlatform } from 'common/platform';
 
+import { config } from 'main/config';
+import { initModule, updateModule, deinitModule } from 'main/execution/workers';
+
 export const modules: Record<ModuleId, Module<Result>> = { };
 
 // This loads all typescript files in the modules directory
@@ -28,26 +31,32 @@ export function module(id: Translatable, platform?: Platform | Platform[]) {
     }
 }
 
-export function moduleForId<Type extends Module<any>>(id: ModuleId): Type | undefined {
+export function moduleForId<Type extends Module<any> = Module<Result>>(id: ModuleId): Type | undefined {
     // Assert that the type is correct. This simplifies using this function.
     return modules[id] as Type;
 }
 
+export function forActiveModules(op: (id: ModuleId) => unknown): Promise<unknown> {
+    return Promise.all(
+        Object.keys(modules)
+            .filter(id => !config.modules[id] || config.modules[id]!.active)
+            .map(op)
+    );
+}
+
+export function forAllModules(op: (id: ModuleId) => unknown): Promise<unknown> {
+    return Promise.all(Object.keys(modules).map(op));
+}
+
 export async function initModules() {
-    for (const module of Object.values(modules)) {
-        await module.init?.().catch(() => { /* Ignore errors */ });
-    }
+    await forAllModules(module => initModule(module));
 }
 
 export async function updateModules() {
-    for (const module of Object.values(modules)) {
-        await module.update?.().catch(() => { /* Ignore errors */ });
-    }
+    await forAllModules(module => updateModule(module));
 }
 
 export async function deinitModules() {
-    for (const module of Object.values(modules)) {
-        await module.deinit?.().catch(() => { /* Ignore errors */ });
-    }
+    await forAllModules(module => deinitModule(module));
 }
 
