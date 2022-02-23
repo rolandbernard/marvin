@@ -90,6 +90,12 @@ export class TextField extends LitElement {
                 color: var(--settings-border-hover-color);
                 user-select: none;
             }
+            .input:hover::-webkit-outer-spin-button,
+            .input:hover::-webkit-inner-spin-button,
+            .input:focus::-webkit-outer-spin-button,
+            .input:focus::-webkit-inner-spin-button {
+                opacity: 0.2;
+            }
             .slot {
                 flex: 0 0 auto;
             }
