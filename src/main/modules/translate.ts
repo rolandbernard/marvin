@@ -126,7 +126,7 @@ export class TranslateModule implements Module<TranslateResult> {
     async queryApi(query: Query, word: string, from: string, to: string): Promise<TranslateResult[]> {
         try {
             const response = await fetch(`${API_ROOT}/${from}-${to}/search?query=${encodeURIComponent(word)}&ajax=1`);
-            const data = this.decodeBuffer(await response.buffer());
+            const data = this.decodeBuffer(Buffer.from(await response.arrayBuffer()));
             return this.parseHtmlResult(data).map(translation => ({
                 module: MODULE_ID,
                 query: query.text,
