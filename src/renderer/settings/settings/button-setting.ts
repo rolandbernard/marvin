@@ -1,6 +1,7 @@
 
 import { ipcRenderer } from 'electron';
-import { customElement, html } from 'lit-element';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 import { ButtonConfig } from 'common/config-desc';
 import { getTranslation } from 'common/local/locale';

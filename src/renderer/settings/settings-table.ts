@@ -1,5 +1,6 @@
 
-import { css, customElement, html, TemplateResult } from 'lit-element';
+import { TemplateResult, css, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 import { DeepIndex } from 'common/util';
 import { getTranslation } from 'common/local/locale';

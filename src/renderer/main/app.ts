@@ -1,5 +1,6 @@
 
-import { customElement, html, css } from 'lit-element';
+import { css, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { ipcRenderer } from 'electron';
 
 import { GlobalConfig } from 'common/config';

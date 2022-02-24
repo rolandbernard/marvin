@@ -1,6 +1,7 @@
 
-import { css, customElement, html, LitElement, property, query } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map';
+import { LitElement, css, html } from 'lit';
+import { property, customElement, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('button-like')
 export class ButtonLike extends LitElement {

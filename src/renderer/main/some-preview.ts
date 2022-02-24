@@ -1,10 +1,13 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { LitElement, css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 import { Preview } from 'common/result';
-import { importAll } from 'common/util';
+import { importAll, fakeTemplateArray } from 'common/util';
 
 importAll(require.context('./previews', true, /\.ts$/));
+
+const template_cache: Record<string, TemplateStringsArray | undefined> = {};
 
 @customElement('some-preview')
 export class SomePreview extends LitElement {
@@ -13,10 +16,15 @@ export class SomePreview extends LitElement {
     preview?: Preview;
 
     element(tag: string, ...attributes: any[]) {
-        return html([
-            `<${tag} .preview="`,
-            `"></${tag}>`,
-        ] as any, ...attributes);
+        let template = template_cache[tag];
+        if (!template) {
+            template = fakeTemplateArray([
+                `<${tag} .preview="`,
+                `"></${tag}>`,
+            ]);
+            template_cache[tag] = template;
+        }
+        return html(template, ...attributes);
     }
 
     static get styles() {

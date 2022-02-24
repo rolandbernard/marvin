@@ -1,6 +1,7 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map';
+import { LitElement, css, html } from 'lit';
+import { property, customElement } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('text-field')
 export class TextField extends LitElement {
@@ -88,6 +89,12 @@ export class TextField extends LitElement {
             .disabled .input {
                 color: var(--settings-border-hover-color);
                 user-select: none;
+            }
+            .input:hover::-webkit-outer-spin-button,
+            .input:hover::-webkit-inner-spin-button,
+            .input:focus::-webkit-outer-spin-button,
+            .input:focus::-webkit-inner-spin-button {
+                opacity: 0.2;
             }
             .slot {
                 flex: 0 0 auto;

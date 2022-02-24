@@ -97,7 +97,7 @@ export class DictionaryModule implements Module<DictionaryResult> {
     async queryApi(query: Query, word: string, lang: string): Promise<DictionaryResult[]> {
         try {
             const response = await fetch(`${API_ROOT}/entries/${lang}/${encodeURIComponent(word)}`);
-            const data: DictionaryApiBody = await response.json();
+            const data: DictionaryApiBody = (await response.json()) as any;
             if (data instanceof Array) {
                 return data.flatMap(word =>
                     (word.phonetics && word.phonetics.length > 0 ? [{

@@ -1,5 +1,6 @@
 
-import { css, customElement, html } from 'lit-element';
+import { css, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 import { getTranslation } from 'common/local/locale';
 
@@ -24,13 +25,11 @@ export class SizeSetting extends AbstractSetting {
                 width: 100%;
             }
             .unit {
-                margin: -1px;
                 width: 4.4rem;
                 font-family: var(--font-family);
                 font-size: 1rem;
                 color: var(--settings-text-color);
                 border-left: 1px solid var(--settings-border-color);
-                border-radius: var(--settings-input-border-radius);
                 padding: 0.75rem;
                 box-sizing: border-box;
                 text-align: left;

@@ -93,7 +93,7 @@ export class DuckDuckGoModule implements Module<DuckDuckGoResult> {
     async queryApi(query: Query): Promise<DuckDuckGoResult[]> {
         try {
             const response = await fetch(`${API_ROOT}/?q=${encodeURIComponent(query.text)}&format=json&no_redirect=1`);
-            const data: DuckDuckGoApiBody = await response.json();
+            const data: DuckDuckGoApiBody = (await response.json()) as any;
             const results: DuckDuckGoResult[] = [];
             if (data.Redirect) {
                 results.push({

@@ -1,6 +1,7 @@
 
-import { css, customElement, html, LitElement, property } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
+import { LitElement, css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import { ColorPreview } from 'common/result';
 

@@ -1,6 +1,7 @@
 
-import { customElement, html, css, LitElement, property, TemplateResult, queryAll, query } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map';
+import { LitElement, TemplateResult, css, html } from 'lit';
+import { customElement, property, query, queryAll } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { ipcRenderer } from 'electron';
 
 import { GlobalConfig } from 'common/config';
@@ -201,7 +202,7 @@ export class PageRoot extends LitElement {
     updated() {
         if (this.page && !this.moved) {
             this.page?.scrollIntoView({
-                 block: 'start',
+                block: 'start',
             });
             this.moved = true;
         }
