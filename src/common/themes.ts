@@ -36,18 +36,18 @@ export const THEMES = {
     default: {
         border_radius: 5,
         input: {
-            background_color: '#1f252a',
-            text_color: '#ffffff',
-            accent_color: '#f0f0f0',
-            shadow_color: '#00000000',
+            background_color: "#1a1e22",
+            text_color: "#ffffff",
+            accent_color: "#f0f0f0",
+            shadow_color: "#00000000"
         },
         output: {
-            background_color: '#262c33',
-            text_color: '#f0f0f0',
-            accent_color: '#f0f0f0',
-            select_color: '#313943',
-            select_text_color: '#f0f0f0',
-            shadow_color: '#00000020',
+            background_color: "#1f2327",
+            text_color: "#f0f0f0",
+            accent_color: "#f0f0f0",
+            select_color: "#313943",
+            select_text_color: "#f0f0f0",
+            shadow_color: "#00000020"
         },
         settings: {
             background_color: '#ffffff',
@@ -62,28 +62,28 @@ export const THEMES = {
     all_dark: {
         border_radius: 5,
         input: {
-            background_color: '#1f252a',
-            text_color: '#ffffff',
-            accent_color: '#f0f0f0',
-            shadow_color: '#00000000',
+            background_color: "#1a1e22",
+            text_color: "#ffffff",
+            accent_color: "#f0f0f0",
+            shadow_color: "#00000000"
         },
         output: {
-            background_color: '#262c33',
-            text_color: '#f0f0f0',
-            accent_color: '#f0f0f0',
-            select_color: '#313943',
-            select_text_color: '#f0f0f0',
-            shadow_color: '#00000020',
+            background_color: "#1f2327",
+            text_color: "#f0f0f0",
+            accent_color: "#f0f0f0",
+            select_color: "#313943",
+            select_text_color: "#f0f0f0",
+            shadow_color: "#00000020"
         },
         settings: {
-            background_color: '#262c33',
-            text_color: '#f0f0f0',
-            accent_color: '#b0b0b0',
-            select_color: '#313943',
-            select_text_color: '#f0f0f0',
-            active_color: '#1ca54c',
-            shadow_color: '#00000020',
-        },
+            background_color: "#171a1e",
+            text_color: "#f0f0f0",
+            accent_color: "#b0b0b0",
+            select_color: "#313943",
+            select_text_color: "#f0f0f0",
+            active_color: "#1ca54c",
+            shadow_color: "#00000020"
+        }
     },
     black: {
         border_radius: 0,
