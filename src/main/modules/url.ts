@@ -18,7 +18,7 @@ interface UrlResult extends SimpleResult {
 
 class UrlConfig extends ModuleConfig {
     @configKind('quality')
-    quality = 1;
+    quality = 0.75;
 
     @configKind('boolean')
     url_preview = false;
@@ -27,6 +27,8 @@ class UrlConfig extends ModuleConfig {
         super(true);
     }
 }
+
+const URL_PATTERN = /^https?:\/\/.*$|^(\w|-)+(\.(\w|-)+)*\.[a-z]{2,}(\/.*)?$/iu;
 
 @module(MODULE_ID)
 export class UrlModule implements Module<UrlResult> {
@@ -37,13 +39,7 @@ export class UrlModule implements Module<UrlResult> {
     }
 
     isValidUrl(str: string): boolean {
-        const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-        return pattern.test(str);
+        return URL_PATTERN.test(str);
     }
 
     completeUrl(str: string): string {
@@ -62,7 +58,7 @@ export class UrlModule implements Module<UrlResult> {
             icon: { material: 'language' },
             primary: url,
             secondary: getTranslation('open_in_browser', config),
-            quality: this.config.quality,
+            quality: query.text === url ? 1 : this.config.quality,
             url: url,
             preview: this.config.url_preview ? {
                 kind: 'iframe-preview',

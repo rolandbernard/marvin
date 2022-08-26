@@ -25,6 +25,8 @@ class EmailConfig extends ModuleConfig {
     }
 }
 
+const MAIL_PATTERN = /^mailto:.*$|^[^@]+@(\w|-)+(\.(\w|-)+)*\.[a-z]{2,}$/iu;
+
 @module(MODULE_ID)
 export class EmailModule implements Module<EmailResult> {
     readonly configs = EmailConfig;
@@ -34,10 +36,7 @@ export class EmailModule implements Module<EmailResult> {
     }
 
     isValidEmail(str: string): boolean {
-        const pattern = new RegExp('^(mailto:)?' +
-            '[^@]+@' +
-            '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}$', 'i');
-        return pattern.test(str);
+        return MAIL_PATTERN.test(str);
     }
 
     completeEmail(str: string): string {
