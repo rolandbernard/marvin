@@ -53,7 +53,7 @@ export class SettingsModule implements Module<SimpleResult> {
     }
 
     showWindow() {
-        this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
+        this.update();
         this.window?.show();
         this.window?.focus();
     }

@@ -6,7 +6,7 @@ import { getPlatform, isDevelopment, Platform } from 'common/platform';
 import { runMatch } from 'common/util';
 
 import { loadConfig } from 'main/config';
-import { initModules, deinitModules, moduleForId } from 'main/modules';
+import { initModules, deinitModules } from 'main/modules';
 import { initGlobalIpc, GlobalIpcCommand } from 'main/global-ipc';
 import { invokeModule } from 'main/execution/workers';
 

@@ -137,7 +137,7 @@ export class CurrencyConverterModule implements Module<SimpleResult> {
     }
 
     async execute(result: SimpleResult) {
-        clipboard.writeText(result.primary.substr(2));
+        clipboard.writeText(result.primary.substring(2));
     }
 }
 
