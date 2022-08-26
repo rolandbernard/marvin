@@ -120,6 +120,7 @@ export class MainModule implements Module<SimpleResult> {
     }
 
     showWindow() {
+        this.window?.webContents.setZoomFactor(config.general.zoom);
         this.window?.webContents.send(IpcChannels.SHOW_WINDOW, config, config.getDescription());
         this.window?.show();
         if (config.general.recenter_on_show) {

@@ -68,7 +68,7 @@ export function multiplyColor([a, b, c, d]: Color, [e, f, g, h]: Color): Color {
 
 function parseValue(string: string, max = 1.0): number {
     if (string.endsWith('%')) {
-        const value = parseFloat(string.substr(0, string.length - 1));
+        const value = parseFloat(string.substring(0, string.length - 1));
         return value / 100;
     } else {
         const value = parseFloat(string);

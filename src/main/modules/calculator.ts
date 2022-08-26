@@ -65,7 +65,7 @@ export class CalculatorModule implements Module<SimpleResult> {
             }
             return results.filter((val, index) =>
                 !['', 'nil', 'null', 'undefined'].includes(val.primary.replace('=', '').trim())
-                && val.primary.substr(2).replaceAll(' ', '').trim() !== query.text.replaceAll(' ', '').trim()
+                && val.primary.substring(2).replaceAll(' ', '').trim() !== query.text.replaceAll(' ', '').trim()
                 && results.findIndex((v) => v.primary.replaceAll(' ', '').trim() === val.primary.replaceAll(' ', '').trim()) === index
             );
         } else {
@@ -74,7 +74,7 @@ export class CalculatorModule implements Module<SimpleResult> {
     }
 
     async execute(result: SimpleResult) {
-        clipboard.writeText(result.primary.substr(2));
+        clipboard.writeText(result.primary.substring(2));
     }
 }
 

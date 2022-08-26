@@ -14,7 +14,7 @@ export class Query {
     }
 
     escapeRegex(text: string, map?: (c: string) => string, join = '') {
-        return this.normalizeString(text.substr(0, MAX_MATCH_LENGTH))
+        return this.normalizeString(text.substring(0, MAX_MATCH_LENGTH))
             .split('').map((ch) => {
             // Escape special regex characters
             if ([
@@ -54,7 +54,7 @@ export class Query {
     }
 
     bestMatch(text: string): string | undefined {
-        text = text.substr(0, MAX_MATCH_LENGTH);
+        text = text.substring(0, MAX_MATCH_LENGTH);
         let best: string | undefined;
         for (let match of text.matchAll(this.regex)) {
             if (!best || match[1].length < best.length) {
@@ -65,7 +65,7 @@ export class Query {
     }
 
     matchText(full_text: string): number {
-        const text = full_text.substr(0, MAX_MATCH_LENGTH);
+        const text = full_text.substring(0, MAX_MATCH_LENGTH);
         if (text.length > 0 && this.text.length > 0) {
             const best_match = this.bestMatch(text);
             if (best_match) {
@@ -97,9 +97,9 @@ export class Query {
             if (match && match.length !== 0) {
                 const groups = this.regex.exec(match)!;
                 return [
-                    text.substr(0, text.indexOf(match)),
+                    text.substring(0, text.indexOf(match)),
                     ...groups.slice(2),
-                    text.substr(text.indexOf(match) + match.length),
+                    text.substring(text.indexOf(match) + match.length),
                 ];
             } else {
                 return [ text ];

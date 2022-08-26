@@ -36,7 +36,7 @@ export function parseHtml(text: string): HtmlElement {
             let attr_match: RegExpExecArray | null;
             while (attr_match = ATTR_REGEX.exec(match[2])) {
                 const value = attr_match[3] ?? '""';
-                attributes[attr_match[1]] = value.substr(1, value.length - 2);
+                attributes[attr_match[1]] = value.substring(1, value.length - 1);
             }
             const value = {
                 tag: tag,
@@ -95,7 +95,7 @@ function matchesSelectors(element: HtmlElement, query: string[]): boolean {
                 return false;
             } else if (match = selector.match(/\[\s*([-\w]+)\s*(([~|^$*]?=)\s*("[^"]*"|'[^']*'))?\s*\]/)) {
                 if (match[2]) {
-                    const value = match[4].substr(1, match[4].length - 2);
+                    const value = match[4].substring(1, match[4].length - 1);
                     if (match[3] === '=') {
                         return element.attributes[match[1]] !== value;
                     } else if (match[3] === '~=') {
@@ -114,9 +114,9 @@ function matchesSelectors(element: HtmlElement, query: string[]): boolean {
                     return !(match[1] in element.attributes);
                 }
             } else if (selector[0] === '#') {
-                return element.attributes['id'] !== selector.substr(1);
+                return element.attributes['id'] !== selector.substring(1);
             } else if (selector[0] === '.') {
-                return !element.attributes['class']?.split(/\s+/)?.includes(selector.substr(1));
+                return !element.attributes['class']?.split(/\s+/)?.includes(selector.substring(1));
             } else {
                 return selector !== element.tag;
             }

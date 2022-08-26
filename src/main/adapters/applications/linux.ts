@@ -129,14 +129,14 @@ function parseDesktopFile(data: string) {
                 entry = 'desktop';
                 application[entry] = {};
             } else if (line.startsWith('[Desktop Action')) {
-                entry = line.substr(16).trim().replace(']', '');
+                entry = line.substring(16).trim().replace(']', '');
                 application[entry] = {};
             }
         } else if (entry) {
             let option;
             if (line.includes('=')) {
                 const split = line.indexOf('=');
-                option = [ line.substr(0, split).trim(), line.substr(split + 1).trim() ];
+                option = [ line.substring(0, split).trim(), line.substring(split + 1).trim() ];
             } else {
                 option = [ line.trim() ];
             }

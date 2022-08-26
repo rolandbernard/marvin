@@ -24,11 +24,13 @@ export type Translation = typeof TRANSLATIONS[Language];
 export type Translatable = keyof Translation;
 
 export function getTranslation(text: Translatable, config?: GlobalConfig): string {
-    return TRANSLATIONS[config?.general.language ?? 'en'][text] ?? TRANSLATIONS['en'][text] ?? text;
+    const lang_preference: Language = config?.general.language ?? Language.English;
+    return TRANSLATIONS[lang_preference][text] ?? TRANSLATIONS['en'][text] ?? text;
 }
 
 export function hasTranslation(text?: string, config?: GlobalConfig): text is Translatable {
-    return (text && TRANSLATIONS[config?.general.language ?? 'en'][text as Translatable]) ? true : false;
+    const lang_preference: Language = config?.general.language ?? Language.English;
+    return (text && TRANSLATIONS[lang_preference][text as Translatable]) ? true : false;
 }
 
 export function getAllTranslations(text: keyof Translation): string[] {
