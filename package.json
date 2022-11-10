@@ -29,7 +29,7 @@
         "@types/node-fetch": "^2.5.12",
         "@types/webpack-env": "^1.16.2",
         "css-loader": "^5.2.6",
-        "electron": "^17.2.0",
+        "electron": "^18.3.7",
         "electron-builder": "^22.11.7",
         "file-loader": "^6.2.0",
         "html-webpack-plugin": "^5.3.2",
