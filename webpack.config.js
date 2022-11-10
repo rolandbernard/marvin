@@ -25,7 +25,7 @@ const commonConfig = {
             },
             {
                 test: /\.(woff2|svg|png|jpe?g|gif)$/i,
-                loader: 'file-loader',
+                type: 'asset/resource',
             },
             {
                 test: /\.css$/i,

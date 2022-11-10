@@ -13,13 +13,14 @@ import { openUrl } from 'main/adapters/url-handler';
 autoUpdater.logger = null;
 
 async function checkForUpdate() {
+    config.update.can_update = false;
     try {
         const result = await autoUpdater.checkForUpdates();
-        config.update.latest = result.updateInfo.version;
-        config.update.can_update = autoUpdater.currentVersion.compare(result.updateInfo.version) < 0;
-    } catch (e) {
-        config.update.can_update = false;
-    }
+        if (result) {
+            config.update.latest = result.updateInfo.version;
+            config.update.can_update = autoUpdater.currentVersion.compare(result.updateInfo.version) < 0;
+        }
+    } catch (e) { }
     await updateConfig();
 }
 
