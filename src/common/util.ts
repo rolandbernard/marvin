@@ -26,9 +26,9 @@ export function mergeDeep(target: any, ...sources: any[]): any {
             for (const key in source) {
                 const original = target[key];
                 const replacement = source[key];
-                if (isObject(replacement) && isObject(original)) {
+                if (isObject(original) && isObject(replacement)) {
                     mergeDeep(original, replacement);
-                } else {
+                } else if (!isObject(original)) {
                     target[key] = source[key];
                 }
             }

@@ -35,7 +35,7 @@ export async function updateConfig(new_config?: GlobalConfig) {
         mergeDeep(config, new_config);
     }
     try {
-        await writeFile(config_path, JSON.stringify(config), { encoding: 'utf8' })
+        await writeFile(config_path, JSON.stringify(config, null, 4), { encoding: 'utf8' })
     } catch (e) {
         // Ignore errors, simply don't write the config
     }
