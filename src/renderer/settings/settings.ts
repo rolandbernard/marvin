@@ -125,6 +125,14 @@ export class PageRoot extends LitElement {
         }
     }
 
+    toggleActive(index: DeepIndex) {
+        const module = indexObject(this.config, index);
+        if (module && typeof module.active == 'boolean') {
+            module.active = !module.active;
+            this.onUpdate();
+        }
+    }
+
     buildConfigTabs() {
         const findConfigTabs =
             (desc: ObjectConfig, index: DeepIndex = []):
@@ -146,10 +154,21 @@ export class PageRoot extends LitElement {
                                 class="tab ${classes}"
                                 @click="${() => this.selectPage(entry_index)}"
                             >
-                                <material-icon
-                                    class="icon"
-                                    name="${entry.icon ?? (activatable ? 'fiber_manual_record' : '')}"
-                                ></material-icon>
+                                ${!entry.icon && activatable
+                                    ? html`<div
+                                        class="icon"
+                                        name="${entry.icon ?? (activatable ? 'fiber_manual_record' : '')}"
+                                    >
+                                        <div
+                                            class="circle"
+                                            @click="${() => this.toggleActive(entry_index)}"
+                                        ></div>
+                                    </div>`
+                                    : html`<material-icon
+                                        class="icon"
+                                        name="${entry.icon ?? (activatable ? 'fiber_manual_record' : '')}"
+                                    ></material-icon>`
+                                }
                                 <span>
                                     ${name}
                                 </span>
@@ -329,17 +348,36 @@ export class PageRoot extends LitElement {
                 flex: 0 0 auto;
                 font-size: 1.5rem;
                 width: 2.5rem;
+                height: 1.5rem;
+                position: relative;
                 color: var(--settings-accent-color);
                 justify-content: flex-start;
+            }
+            .tab .icon .circle {
+                width: 1.2rem;
+                height: 1.2rem;
                 transition: var(--transition);
-                transition-property: text-shadow, color; 
+                transition-property: box-shadow, background, width, height;
+                border-radius: 100%;
+                position: absolute;
+                top: 50%;
+                left: 0.75rem;
+                transform: translate(-50%, -50%);
             }
-            .tab.activatable .icon {
-                color: var(--settings-inactive-color);
+            .tab.activatable .icon .circle {
+                background: var(--settings-inactive-color);
             }
-            .tab.activatable.active .icon {
-                color: var(--settings-active-color);
-                text-shadow: 0 0 0.25rem var(--settings-active-color);
+            .tab.activatable.active .icon .circle {
+                background: var(--settings-active-color);
+                box-shadow: 0 0 0.25rem var(--settings-active-color);
+            }
+            .tab.activatable .icon .circle:hover {
+                width: 1.35rem;
+                height: 1.35rem;
+            }
+            .tab.activatable .icon .circle:active {
+                width: 1.1rem;
+                height: 1.1rem;
             }
             .subheader {
                 direction: ltr;
@@ -348,8 +386,6 @@ export class PageRoot extends LitElement {
                 padding-top: 0.5rem;
                 opacity: 0.75;
                 font-weight: 600;
-            }
-            .page {
             }
             .pages {
                 flex: 1 1 auto;
