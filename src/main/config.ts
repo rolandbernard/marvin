@@ -8,6 +8,7 @@ import { mergeDeep } from 'common/util';
 import { ModuleId } from 'common/module';
 
 import { modules } from 'main/modules';
+import { invokeModule } from './execution/workers';
 
 export let config: GlobalConfig;
 
@@ -35,6 +36,7 @@ export async function updateConfig(new_config?: GlobalConfig) {
         mergeDeep(config, new_config);
     }
     try {
+        invokeModule('settings', 'update');
         await writeFile(config_path, JSON.stringify(config, null, 4), { encoding: 'utf8' })
     } catch (e) {
         // Ignore errors, simply don't write the config

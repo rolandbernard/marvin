@@ -47,6 +47,10 @@ export interface ButtonConfig extends BaseConfig {
     kind: 'button';
     action: IpcChannels;
     confirm: boolean;
+    loading?: {
+        index: DeepIndex;
+        compare: boolean;
+    }
 }
 
 export type ConfigDescription = SimpleConfig | ObjectConfig | ArrayConfig | SelectConfig | SelectActionConfig | ButtonConfig;

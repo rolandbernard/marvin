@@ -14,13 +14,19 @@ autoUpdater.logger = null;
 
 async function checkForUpdate() {
     config.update.can_update = false;
+    config.update.checking = true;
+    await updateConfig();
     try {
         const result = await autoUpdater.checkForUpdates();
         if (result) {
             config.update.latest = result.updateInfo.version;
             config.update.can_update = autoUpdater.currentVersion.compare(result.updateInfo.version) < 0;
         }
-    } catch (e) { }
+    } catch (e) {
+        // Ignore errors?
+    } finally {
+        config.update.checking = false;
+    }
     await updateConfig();
 }
 
@@ -37,13 +43,18 @@ ipcMain.on(IpcChannels.CHECK_FOR_UPDATE, async (msg) => {
 
 ipcMain.on(IpcChannels.INSTALL_UPDATE, async () => {
     if (!isDevelopment()) {
+        config.update.updating = true;
+        await updateConfig();
         try {
             await checkForUpdate();
             await autoUpdater.downloadUpdate();
             autoUpdater.quitAndInstall();
         } catch (e) {
-            config.update.can_update = false;
+            // Ignore errors?
+        } finally {
+            config.update.updating = false;
         }
+        await updateConfig();
     }
 });
 
