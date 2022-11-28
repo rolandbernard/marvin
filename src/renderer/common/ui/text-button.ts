@@ -14,6 +14,9 @@ export class TextButton extends LitElement {
     @property({ attribute: false })
     disabled?: boolean;
 
+    @property({ attribute: false })
+    loading?: boolean;
+
     static get styles() {
         return css`
             .button {
@@ -59,6 +62,7 @@ export class TextButton extends LitElement {
             <button class="button ${classes}">
                 <button-like
                     .disabled=${this.disabled}
+                    .loading=${this.loading}
                 >
                     <div class="text">${this.text}</div>
                 </button-like>

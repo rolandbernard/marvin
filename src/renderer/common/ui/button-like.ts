@@ -9,6 +9,9 @@ export class ButtonLike extends LitElement {
     @property({ attribute: false })
     disabled?: boolean;
 
+    @property({ attribute: false })
+    loading?: boolean;
+
     @query('.wrapper')
     wrapper?: HTMLDivElement;
 
@@ -59,6 +62,17 @@ export class ButtonLike extends LitElement {
             }
             .button.enabled:hover, .button.enabled:focus-within {
                 background: var(--settings-hover-background);
+            }
+            .button.loading {
+                animation: loading-keyframes 1s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            @keyframes loading-keyframes {
+                0%, 100% {
+                    opacity: 1.0;
+                }
+                50% {
+                    opacity: 0.25;
+                }
             }
             .wrapper {
                 top: 0;
@@ -113,6 +127,7 @@ export class ButtonLike extends LitElement {
         const classes = classMap({
             'enabled': !this.disabled,
             'disabled': this.disabled ? true : false,
+            'loading': this.loading ? true : false,
         });
         return html`
             <div

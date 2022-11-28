@@ -276,6 +276,8 @@ class UpdateConfig extends Config {
     latest = app.getVersion();
 
     can_update = false;
+    checking = false;
+    updating = false;
 
     constructor() {
         super();
@@ -288,6 +290,7 @@ class UpdateConfig extends Config {
         this.addConfigField({
             kind: 'button',
             name: 'check_for_update',
+            loading: { index: ['update', 'checking'], compare: true },
             confirm: false,
             action: IpcChannels.CHECK_FOR_UPDATE,
         });
@@ -295,6 +298,7 @@ class UpdateConfig extends Config {
             kind: 'button',
             name: 'install_update',
             disabled: { index: ['update', 'can_update'], compare: false },
+            loading: { index: ['update', 'updating'], compare: true },
             confirm: true,
             action: IpcChannels.INSTALL_UPDATE,
         });
