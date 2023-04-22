@@ -36,7 +36,7 @@ async function loadApplicationCache() {
 async function updateCache() {
     try {
         await writeFile(CACHE_PATH, JSON.stringify(applications), { encoding: 'utf8' });
-    } catch (e) { /* Ignore errors */  }
+    } catch (e) { /* Ignore errors */ }
 }
 
 async function getIconTheme() {
@@ -78,14 +78,17 @@ function indexIconsFromPath(theme_path: string) {
 }
 
 async function createIconIndex() {
-    const icon_path = '/usr/share/icons';
     const icon_path_pixmaps = "/usr/share/pixmaps";
-    await Promise.all([
-        indexIconsFromPath(join(icon_path, await getIconTheme())),
-        indexIconsFromPath(join(icon_path, await getIconFallbackTheme())),
-        indexIconsFromPath(icon_path),
-        indexIconsFromPath(icon_path_pixmaps),
-    ]);
+    const icon_paths = [
+        '/usr/share/icons',
+        '/var/lib/flatpak/exports/share/icons',
+    ];
+    for (const icon_path of icon_paths) {
+        await indexIconsFromPath(join(icon_path, await getIconTheme()));
+        await indexIconsFromPath(join(icon_path, await getIconFallbackTheme()));
+        await indexIconsFromPath(icon_path);
+    }
+    await indexIconsFromPath(icon_path_pixmaps);
 }
 
 async function findIconPath(name: string) {
@@ -118,7 +121,7 @@ type Action = Record<string, Record<string, string>>;
 type Desktop = Record<string, Action>;
 
 function parseDesktopFile(data: string) {
-    const application: Desktop = { };
+    const application: Desktop = {};
     const lines = data.split('\n')
         .filter((line) => line)
         .map((line) => line.trim())
@@ -137,9 +140,9 @@ function parseDesktopFile(data: string) {
             let option;
             if (line.includes('=')) {
                 const split = line.indexOf('=');
-                option = [ line.substring(0, split).trim(), line.substring(split + 1).trim() ];
+                option = [line.substring(0, split).trim(), line.substring(split + 1).trim()];
             } else {
-                option = [ line.trim() ];
+                option = [line.trim()];
             }
             if (option[0].endsWith(']')) {
                 let index = option[0].split('[');
@@ -172,16 +175,16 @@ async function getApplicationIcon(icon?: string) {
 
 function collectOther(desktop: Desktop, action: Action) {
     const ret: Record<string, string[]> = {};
-    const keys = [ 'Keywords', 'Categories', 'GenericName' ];
+    const keys = ['Keywords', 'Categories', 'GenericName'];
     for (const key of keys) {
         if (desktop['desktop']?.[key]) {
             for (const lang in desktop['desktop'][key]) {
-                ret[lang] = [ ...(ret[lang] ?? []), desktop['desktop'][key][lang] ];
+                ret[lang] = [...(ret[lang] ?? []), desktop['desktop'][key][lang]];
             }
         }
         if (action[key]) {
             for (const lang in action[key]) {
-                ret[lang] = [ ...(ret[lang] ?? []), action[key][lang] ];
+                ret[lang] = [...(ret[lang] ?? []), action[key][lang]];
             }
         }
     }
@@ -211,7 +214,7 @@ export async function updateApplicationCacheLinux(directories: string[]) {
         try {
             await createIconIndex();
             indexed = true;
-        } catch (e) { /* Ignore errors */  }
+        } catch (e) { /* Ignore errors */ }
     }
     const new_applications: Application[] = [];
     for (const directory of directories) {
@@ -223,10 +226,10 @@ export async function updateApplicationCacheLinux(directories: string[]) {
                         const path = join(directory, file);
                         const data = await readFile(path, { encoding: 'utf8' });
                         await addApplication(new_applications, parseDesktopFile(data), path);
-                    } catch(e) { /* Ignore errors */ }
+                    } catch (e) { /* Ignore errors */ }
                 }
             }
-        } catch(e) { /* Ignore errors */ }
+        } catch (e) { /* Ignore errors */ }
     }
     applications = new_applications;
     await updateCache();
