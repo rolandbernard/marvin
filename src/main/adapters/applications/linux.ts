@@ -10,6 +10,7 @@ import { CommandMode, executeCommand } from 'main/adapters/commands';
 export function getDefaultDirectoriesLinux(): string[] {
     return [
         '/usr/share/applications/',
+        '/var/lib/flatpak/exports/share/applications/',
         join(app.getPath('home'), '.local/share/applications/'),
     ];
 }

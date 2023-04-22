@@ -1,4 +1,6 @@
 
+tmp.*
+
 # Build files
 bundle/
 build/
