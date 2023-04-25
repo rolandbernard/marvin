@@ -11,7 +11,7 @@ const TRANSLATION_ITALIAN = {
     max_height: 'Altezza massima',
     max_results: 'Risultati massimi',
     incremental_results: 'Risultati incrementali',
-    incremental_result_debounce: 'Risultati debounce time',
+    result_debounce: 'Risultati debounce time',
     smooth_scrolling: 'Scorrimento regolare',
     recenter_on_show: "Centrare la finestra",
     exclusive_module_prefix: 'Prefisso esclusivo',

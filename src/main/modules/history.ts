@@ -83,12 +83,7 @@ export class ClipboardModule implements Module<HistoryResult> {
     }
 
     async rebuildResult(query: Query, result: HistoryResult): Promise<Result | undefined> {
-        const new_result = await rebuildModule(result.module, query, result);
-        if (new_result) {
-            return new_result;
-        } else {
-            return result;
-        }
+        return await rebuildModule(result.module, query, result);
     }
 
     async search(query: Query): Promise<HistoryResult[]> {

@@ -8,7 +8,6 @@ import { Result } from 'common/result';
 import { IpcChannels } from 'common/ipc';
 
 export abstract class QueryExecutor extends LitElement {
-
     @property({ attribute: false })
     config?: GlobalConfig;
 
@@ -41,11 +40,12 @@ export abstract class QueryExecutor extends LitElement {
     onQueryResult(results: Result[], finished: boolean) {
         clearTimeout(this.result_timeout!);
         if (finished) {
-            clearTimeout(this.loading_timeout!);
             this.results = results;
             this.selected = 0;
             this.centered = true;
-            this.loading = false;
+            this.loading_timeout = setTimeout(() => {
+                this.loading = false;
+            }, 300);
         } else {
             this.results = results;
             this.selected = 0;
@@ -59,16 +59,14 @@ export abstract class QueryExecutor extends LitElement {
 
     sendQueryRequest() {
         clearTimeout(this.result_timeout!);
-        this.result_timeout = setTimeout(() => {
-            this.results = [];
-        }, 100);
         clearTimeout(this.loading_timeout!);
-        this.loading_timeout = setTimeout(() => {
-            this.loading = true;
-        }, 100);
         clearTimeout(this.query_timeout!);
+        this.loading = true;
         this.query_timeout = setTimeout(() => {
             ipcRenderer.send(IpcChannels.SEARCH_QUERY, this.query);
+            this.result_timeout = setTimeout(() => {
+                this.results = [];
+            }, (this.config?.general.result_debounce ?? 0) + (this.config?.general.incremental_results ? 100 : 0));
         }, this.config?.general.debounce_time);
     }
 

@@ -20,6 +20,9 @@ let execution_count = 0;
 // sending again. (This is to reduce the amount of data send.)
 let last_send = 0;
 
+// Cancel the last result promise.
+let cancel_last_results = () => { };
+
 const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will be cropped to this length.
 
 // This stores the original_options because we only send cropped text fields.
@@ -56,7 +59,7 @@ function transformResultArray(results: Result[]): RunnerResult[] {
 
 function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], finished: boolean) {
     if (id === execution_count) {
-        if (finished || (Date.now() - last_send) > config.general.incremental_result_debounce) {
+        if (finished || (Date.now() - last_send) > config.general.result_debounce) {
             last_send = Date.now();
             sender.send(IpcChannels.SEARCH_RESULT, transformResultArray(results), finished);
         }
@@ -67,12 +70,16 @@ export async function handleQuery(query: string, sender: WebContents) {
     last_send = Date.now();
     execution_count++;
     const begin_count = execution_count;
-    const results = await searchQuery(
-        new Query(query, query, config.general.enhanced_search),
-        config.general.incremental_results
-            ? (results) => results.length !== 0 && sendUpdatedOptions(begin_count, sender, results, false)
-            : undefined
-    );
+    cancel_last_results();
+    const results = await Promise.race([
+        new Promise<Result[]>(resolve => { cancel_last_results = () => resolve([]) }),
+        searchQuery(
+            new Query(query, query, config.general.enhanced_search),
+            config.general.incremental_results
+                ? (results) => results.length !== 0 && sendUpdatedOptions(begin_count, sender, results, false)
+                : undefined
+        )
+    ]);
     sendUpdatedOptions(begin_count, sender, results, true);
 }
 
