@@ -13,7 +13,6 @@ import 'renderer/common/results/html-result';
 
 @customElement('output-list')
 export class OutputField extends LitElement {
-
     @property({ attribute: false })
     config?: GlobalConfig;
 
@@ -32,8 +31,8 @@ export class OutputField extends LitElement {
     updated() {
         if (this.centered) {
             this.element?.scrollIntoView({
-                 behavior: this.config?.general.smooth_scrolling ? 'smooth' : 'auto',
-                 block: 'center' 
+                behavior: this.config?.general.smooth_scrolling ? 'smooth' : 'auto',
+                block: 'center'
             });
         }
     }
@@ -86,10 +85,10 @@ export class OutputField extends LitElement {
     render() {
         return html`
             ${this.results?.map((result, i) => {
-                const classes = classMap({
-                    'selected': i === this.selected,
-                });
-                return html`
+            const classes = classMap({
+                'selected': i === this.selected,
+            });
+            return html`
                     <div
                         class="result-contain"
                         @mousemove="${() => this.onMouseMove(result, i)}"
@@ -98,28 +97,28 @@ export class OutputField extends LitElement {
                         draggable="${result.file ? 'true' : 'false'}"
                     >
                         ${match(result.kind, {
-                            'simple-result': html`
+                'simple-result': html`
                                 <simple-result
                                     class="result ${classes}"
                                     .result="${result as SimpleResult}"
                                 ></simple-result>
                             `,
-                            'text-result': html`
+                'text-result': html`
                                 <text-result
                                     class="result ${classes}"
                                     .result="${result as TextResult}"
                                 ></text-result>
                             `,
-                            'html-result': html`
+                'html-result': html`
                                 <html-result
                                     class="result ${classes}"
                                     .result="${result as HtmlResult}"
                                 ></html-result>
                             `,
-                        })}
+            })}
                     </div>
                 `
-            })}
+        })}
         `;
     }
 }

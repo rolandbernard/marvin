@@ -11,7 +11,7 @@ const TRANSLATION_GERMAN = {
     max_height: 'Maximale Höhe',
     max_results: 'Maximale Ergebnisse',
     incremental_results: 'Inkrementelle Erebnisse',
-    incremental_result_debounce: 'Erebnisse Debounce time',
+    result_debounce: 'Erebnisse Debounce time',
     smooth_scrolling: 'Flüssiges Scrollen',
     recenter_on_show: 'Zentrieren des Fensters',
     exclusive_module_prefix: 'Exklusiver Modulpräfix',

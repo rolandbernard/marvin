@@ -11,7 +11,7 @@ const TRANSLATION_ENGLISH = {
     max_height: 'Maximum height',
     max_results: 'Maximum results',
     incremental_results: 'Incremental results',
-    incremental_result_debounce: 'Result delay time',
+    result_debounce: 'Result delay time',
     smooth_scrolling: 'Smooth scrolling',
     recenter_on_show: 'Recenter window',
     exclusive_module_prefix: 'Exclusive prefix',
