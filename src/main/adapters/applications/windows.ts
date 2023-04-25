@@ -127,10 +127,10 @@ $apps |
         return await Promise.all(
             results.map(async (application: any) => ({
                 id: application.file,
-                file: application.file,
+                file: application.file.normalize('NFKD'),
                 application: application.file,
                 icon: application.icon ? `data:image/png;base64,${application.icon}` : undefined,
-                name: { default: application.name },
+                name: { default: application.name.normalize('NFKD') },
                 description: { },
                 other: { },
             }))
@@ -180,10 +180,10 @@ ${folders} |
         return await Promise.all(
             results.map(async (application: any) => ({
                 id: application.target,
-                file: application.file,
+                file: application.file.normalize('NFKD'),
                 application: application.file,
                 icon: application.icon ? `data:image/png;base64,${application.icon}` : undefined,
-                name: { default: application.name },
+                name: { default: application.name.normalize('NFKD') },
                 description: { },
                 other: { },
             }))

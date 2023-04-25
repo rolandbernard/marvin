@@ -18,6 +18,10 @@ export interface Application {
     id: string;
 }
 
+export function normalizeStrings(map: Record<string, string>): Record<string, string> {
+    return Object.fromEntries(Object.entries(map).map(([k, v]) => [k, v.normalize('NFKD')]));
+}
+
 export function getDefaultDirectories(): string[] {
     return runMatch(getPlatform(), {
         'linux': () => getDefaultDirectoriesLinux(),

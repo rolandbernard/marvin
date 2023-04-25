@@ -4,7 +4,7 @@ import { readFile, writeFile, stat, readdir } from 'fs/promises';
 import { join, basename } from 'path';
 import { spawn } from 'child_process';
 
-import { Application } from 'main/adapters/applications/applications';
+import { Application, normalizeStrings } from 'main/adapters/applications/applications';
 import { CommandMode, executeCommand } from 'main/adapters/commands';
 
 export function getDefaultDirectoriesLinux(): string[] {
@@ -179,12 +179,12 @@ function collectOther(desktop: Desktop, action: Action) {
     for (const key of keys) {
         if (desktop['desktop']?.[key]) {
             for (const lang in desktop['desktop'][key]) {
-                ret[lang] = [...(ret[lang] ?? []), desktop['desktop'][key][lang]];
+                ret[lang] = [...(ret[lang] ?? []), desktop['desktop'][key][lang].normalize('NFKD')];
             }
         }
         if (action[key]) {
             for (const lang in action[key]) {
-                ret[lang] = [...(ret[lang] ?? []), action[key][lang]];
+                ret[lang] = [...(ret[lang] ?? []), action[key][lang].normalize('NFKD')];
             }
         }
     }
@@ -196,13 +196,13 @@ async function addApplication(applications: Application[], desktop: Desktop, fil
         const action = desktop[action_name];
         applications.push({
             id: `${file} __DO__ ${action_name}`,
-            file: file,
+            file: file.normalize('NFKD'),
             application: action,
             icon: await getApplicationIcon(action['Icon']?.['default'])
                 ?? await getApplicationIcon(desktop['desktop']?.['Icon']?.['default']),
-            name: desktop['desktop']?.['Name'] ?? {},
-            action: action['Name'] ?? {},
-            description: action['Comment'] ?? desktop['desktop']?.['Comment'] ?? {},
+            name: normalizeStrings(desktop['desktop']?.['Name'] ?? {}),
+            action: normalizeStrings(action['Name'] ?? {}),
+            description: normalizeStrings(action['Comment'] ?? desktop['desktop']?.['Comment'] ?? {}),
             other: collectOther(desktop, action),
         });
     }
