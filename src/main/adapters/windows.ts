@@ -28,8 +28,8 @@ async function updateWindowCacheLinux() {
     windows = result?.stdout?.split('\n').filter(line => line)
         .map(line => line.split(' ').map((elm) => elm.trim()).filter((elm) => elm.length >= 1))
         .map(line => ({
-            title: line.slice(4).join(' '),
-            application: line[2],
+            title: line.slice(4).join(' ').normalize('NFKD'),
+            application: line[2].normalize('NFKD'),
             window: line[0],
         })) ?? [];
 }
@@ -124,8 +124,8 @@ public class RunningWindows {
         const result = await executeCommand(script, CommandMode.SIMPLE, 'powershell');
         windows = JSON.parse(result?.stdout ?? '[]')
             .map((window: any) => ({
-                title: window.Title,
-                application: basename(window.File),
+                title: window.Title.normalize('NFKD'),
+                application: basename(window.File).normalize('NFKD'),
                 window: window.Handle,
             }));
     } catch (e) {

@@ -49,12 +49,12 @@ function recursiveBookmarkSearch(bookmarks: any): Bookmark[] {
     if (bookmarks instanceof Object) {
         if (bookmarks.type === 'url') {
             return [{
-                name: bookmarks.name,
+                name: bookmarks.name.normalize('NFKD'),
                 url: bookmarks.url,
             }];
         } else if (bookmarks.type === 'text/x-moz-place') {
             return [{
-                name: bookmarks.title,
+                name: bookmarks.title.normalize('NFKD'),
                 url: bookmarks.uri,
                 icon: bookmarks.iconuri?.startsWith('fake-favicon-uri:') ? undefined : bookmarks.iconuri,
             }];
