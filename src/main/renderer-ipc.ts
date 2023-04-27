@@ -14,7 +14,8 @@ import { updateModules } from 'main/modules';
 
 // This variable is used to ensure that if a earlier query finishes after a later query, it will not
 // actually send the results to the renderer.
-let execution_count = 0;
+let query_count = 0;
+let result_count = 0;
 
 // Time of last result send. Must be at least incremental_results_debounce (of finished) before
 // sending again. (This is to reduce the amount of data send.)
@@ -27,16 +28,19 @@ const MAX_TRANSFER_LEN = 200; // Text in the results sent to the renderer will b
 
 // This stores the original_options because we only send cropped text fields.
 // (Fixes a performance issue when the clipboard contains a very long text)
-const original_option: Result[] = [];
+const original_option: Record<number, Result[]> = {};
 
 type RunnerResult = Result & {
-    id: number
+    result: number,
+    id: number,
 };
 
 function transformResultArray(results: Result[]): RunnerResult[] {
-    original_option.length = 0;
+    result_count++;
+    delete original_option[result_count - 16];
+    original_option[result_count] = [];
     return filterAndSortQueryResults(results).map((opt, id) => {
-        const reduced_option: RunnerResult = { ...opt, id: id };
+        const reduced_option: RunnerResult = { ...opt, id, result: result_count };
         if (reduced_option.kind === 'text-result') {
             if (reduced_option.text.length > MAX_TRANSFER_LEN) {
                 reduced_option.text = reduced_option.text.substring(0, MAX_TRANSFER_LEN) + '...';
@@ -52,13 +56,13 @@ function transformResultArray(results: Result[]): RunnerResult[] {
         if ((reduced_option.autocomplete?.length ?? 0) > MAX_TRANSFER_LEN) {
             reduced_option.autocomplete = reduced_option.autocomplete?.substring(0, MAX_TRANSFER_LEN);
         }
-        original_option[id] = opt;
+        original_option[result_count][id] = opt;
         return reduced_option;
     });
 }
 
 function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], finished: boolean) {
-    if (id === execution_count) {
+    if (id === query_count) {
         if (finished || (Date.now() - last_send) > config.general.result_debounce) {
             last_send = Date.now();
             sender.send(IpcChannels.SEARCH_RESULT, transformResultArray(results), finished);
@@ -68,8 +72,8 @@ function sendUpdatedOptions(id: number, sender: WebContents, results: Result[], 
 
 export async function handleQuery(query: string, sender: WebContents) {
     last_send = Date.now();
-    execution_count++;
-    const begin_count = execution_count;
+    query_count++;
+    const begin_count = query_count;
     cancel_last_results();
     const results = await Promise.race([
         new Promise<Result[]>(resolve => { cancel_last_results = () => resolve([]) }),
@@ -88,12 +92,11 @@ ipcMain.on(IpcChannels.SEARCH_QUERY, (msg, query: string) => {
 });
 
 ipcMain.on(IpcChannels.EXECUTE_RESULT, (_msg, result: RunnerResult) => {
-    const key = result.id;
     if (
-        key in original_option
-        && getResultKey(original_option[key]) === getResultKey(result)
+        result.result in original_option
+        && result.id in original_option[result.result]
     ) {
-        executeResult(original_option[key]);
+        executeResult(original_option[result.result][result.id]);
     } else {
         executeResult(result);
     }

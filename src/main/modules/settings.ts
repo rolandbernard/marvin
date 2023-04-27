@@ -33,6 +33,7 @@ export class SettingsModule implements Module<SimpleResult> {
             width: config.general.width * 2,
             icon: join(__dirname, Logo),
             title: 'Marvin ' + getTranslation('settings', config),
+            backgroundColor: config.theme.settings.background_color,
         });
 
         if (!inDevelopment) {
