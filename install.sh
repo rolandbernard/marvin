@@ -21,7 +21,7 @@ wget -P ${DIR} ${URL}/Marvin-${VERSION}.AppImage
 chmod uga+x ${DIR}/Marvin-${VERSION}.AppImage
 
 rm -f ${SCRIPT}
-echo -e '#!/bin/sh' "\n${DIR}/Marvin-*.AppImage" > ${SCRIPT}
+echo -e '#!/bin/sh' "\n${DIR}/Marvin-*.AppImage $@" > ${SCRIPT}
 chmod a+x ${SCRIPT}
 
 echo "
