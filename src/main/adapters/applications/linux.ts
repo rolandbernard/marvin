@@ -9,9 +9,9 @@ import { CommandMode, executeCommand } from 'main/adapters/commands';
 
 export function getDefaultDirectoriesLinux(): string[] {
     return [
+        join(app.getPath('home'), '.local/share/applications/'),
         '/usr/share/applications/',
         '/var/lib/flatpak/exports/share/applications/',
-        join(app.getPath('home'), '.local/share/applications/'),
     ];
 }
 
@@ -74,8 +74,18 @@ function findFilesIn(path: string): Promise<string[]> {
     });
 }
 
+function iconFileSortKey(path: string): number {
+    const match = path.match(/([0-9]+)x[0-9]+/);
+    if (match) {
+        return parseInt(match[1]);
+    } else {
+        return 0;
+    }
+}
+
 async function indexIconsFromPath(theme_path: string) {
     const files = await findFilesIn(theme_path);
+    files.sort((a, b) => iconFileSortKey(b) - iconFileSortKey(a));
     for (const file of files) {
         if (!icon_index[basename(file)]) {
             icon_index[basename(file)] = file;
@@ -89,6 +99,7 @@ async function indexIconsFromPath(theme_path: string) {
 async function createIconIndex() {
     const icon_path_pixmaps = "/usr/share/pixmaps";
     const icon_paths = [
+        join(app.getPath('home'), '.local/share/icons'),
         '/usr/share/icons',
         '/var/lib/flatpak/exports/share/icons',
     ];
