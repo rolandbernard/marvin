@@ -49,32 +49,41 @@ async function getIconFallbackTheme() {
     return theme?.stdout.trim() ?? '';
 }
 
-function indexIconsFromPath(theme_path: string) {
+function findFilesIn(path: string): Promise<string[]> {
     return new Promise((res, rej) => {
         try {
-            const child = spawn('find', ['-L', theme_path, '-type', 'f']);
-            child.on('exit', res);
-            child.on('error', rej);
+            const files: string[] = [];
             let last = '';
+            const child = spawn('find', ['-L', path, '-type', 'f']);
+            child.on('error', rej);
+            child.on('exit', () => {
+                files.push(last);
+                res(files);
+            });
             child.stdout.setEncoding('utf8');
             child.stdout.on('data', (chunk: string) => {
                 const split = (last + chunk).split('\n');
                 if (split.length > 0) {
                     last = split.pop()!;
-                    for (const file of split) {
-                        if (!icon_index[basename(file)]) {
-                            icon_index[basename(file)] = file;
-                        }
-                        if (!icon_index[basename(file).toLowerCase()]) {
-                            icon_index[basename(file).toLowerCase()] = file;
-                        }
-                    }
+                    files.push(...split);
                 }
             });
         } catch (e) {
             rej(e);
         }
     });
+}
+
+async function indexIconsFromPath(theme_path: string) {
+    const files = await findFilesIn(theme_path);
+    for (const file of files) {
+        if (!icon_index[basename(file)]) {
+            icon_index[basename(file)] = file;
+        }
+        if (!icon_index[basename(file).toLowerCase()]) {
+            icon_index[basename(file).toLowerCase()] = file;
+        }
+    }
 }
 
 async function createIconIndex() {
@@ -219,11 +228,10 @@ export async function updateApplicationCacheLinux(directories: string[]) {
     const new_applications: Application[] = [];
     for (const directory of directories) {
         try {
-            const files = await readdir(directory);
-            for (const file of files) {
-                if (file.endsWith('.desktop')) {
+            const files = await findFilesIn(directory);
+            for (const path of files) {
+                if (path.endsWith('.desktop')) {
                     try {
-                        const path = join(directory, file);
                         const data = await readFile(path, { encoding: 'utf8' });
                         await addApplication(new_applications, parseDesktopFile(data), path);
                     } catch (e) { /* Ignore errors */ }
