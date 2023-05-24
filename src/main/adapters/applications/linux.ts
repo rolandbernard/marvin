@@ -55,11 +55,6 @@ function findFilesIn(path: string): Promise<string[]> {
             const files: string[] = [];
             let last = '';
             const child = spawn('find', ['-L', path, '-type', 'f']);
-            child.on('error', rej);
-            child.on('exit', () => {
-                files.push(last);
-                res(files);
-            });
             child.stdout.setEncoding('utf8');
             child.stdout.on('data', (chunk: string) => {
                 const split = (last + chunk).split('\n');
@@ -67,6 +62,11 @@ function findFilesIn(path: string): Promise<string[]> {
                     last = split.pop()!;
                     files.push(...split);
                 }
+            });
+            child.on('error', rej);
+            child.on('close', () => {
+                files.push(last);
+                res(files);
             });
         } catch (e) {
             rej(e);
