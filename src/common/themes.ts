@@ -50,32 +50,6 @@ export const THEMES = {
             shadow_color: "#00000020"
         },
         settings: {
-            background_color: '#ffffff',
-            text_color: '#000000',
-            accent_color: '#505050',
-            select_color: '#e0e0e0',
-            select_text_color: '#000000',
-            active_color: '#23d160',
-            shadow_color: '#00000020',
-        },
-    },
-    all_dark: {
-        border_radius: 5,
-        input: {
-            background_color: "#1a1e22",
-            text_color: "#ffffff",
-            accent_color: "#f0f0f0",
-            shadow_color: "#00000000"
-        },
-        output: {
-            background_color: "#1f2327",
-            text_color: "#f0f0f0",
-            accent_color: "#f0f0f0",
-            select_color: "#313943",
-            select_text_color: "#f0f0f0",
-            shadow_color: "#00000020"
-        },
-        settings: {
             background_color: "#171a1e",
             text_color: "#f0f0f0",
             accent_color: "#b0b0b0",
@@ -85,21 +59,21 @@ export const THEMES = {
             shadow_color: "#00000020"
         }
     },
-    black: {
-        border_radius: 0,
+    light: {
+        border_radius: 5,
         input: {
-            background_color: '#000000',
-            text_color: '#ffffff',
-            accent_color: '#f0f0f0',
-            shadow_color: '#00000000',
+            background_color: "#ffffff",
+            text_color: "#000000",
+            accent_color: "#505050",
+            shadow_color: "#00000000"
         },
         output: {
-            background_color: '#000000',
-            text_color: '#f0f0f0',
-            accent_color: '#f0f0f0',
-            select_color: '#202020',
-            select_text_color: '#f0f0f0',
-            shadow_color: '#00000020',
+            background_color: "#f0f0f0",
+            text_color: "#000000",
+            accent_color: "#505050",
+            select_color: "#e0e0e0",
+            select_text_color: "#000000",
+            shadow_color: "#00000020"
         },
         settings: {
             background_color: '#ffffff',
@@ -111,7 +85,7 @@ export const THEMES = {
             shadow_color: '#00000020',
         },
     },
-    all_black: {
+    black: {
         border_radius: 0,
         input: {
             background_color: '#000000',
@@ -140,13 +114,13 @@ export const THEMES = {
     semi_transparent: {
         border_radius: 5,
         input: {
-            background_color: '#1f252af5',
+            background_color: '#1a1e22f5',
             text_color: '#ffffff',
             accent_color: '#f0f0f0',
             shadow_color: '#00000000',
         },
         output: {
-            background_color: '#262c33d0',
+            background_color: '#1f2327d0',
             text_color: '#f0f0f0',
             accent_color: '#f0f0f0',
             select_color: '#313943d0',
@@ -154,13 +128,13 @@ export const THEMES = {
             shadow_color: '#00000020',
         },
         settings: {
-            background_color: '#ffffff',
-            text_color: '#000000',
-            accent_color: '#505050',
-            select_color: '#e0e0e0',
-            select_text_color: '#000000',
-            active_color: '#23d160',
-            shadow_color: '#00000020',
+            background_color: "#171a1e",
+            text_color: "#f0f0f0",
+            accent_color: "#b0b0b0",
+            select_color: "#313943",
+            select_text_color: "#f0f0f0",
+            active_color: "#1ca54c",
+            shadow_color: "#00000020"
         },
     },
     atom: {
