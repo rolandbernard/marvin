@@ -10,9 +10,8 @@ const TRANSLATION_COMMON = {
     mathjs_algebrite: 'Math.js + Algebrite',
 
     default: 'Default',
-    all_dark: 'All Dark',
+    light: 'Light',
     black: 'Black',
-    all_black: 'All Black',
     semi_transparent: 'Semi Transparent',
     atom: 'Atom',
     solarized: 'Solarized',
